@@ -1,9 +1,10 @@
 import "./App.css";
+import MainPage from "./components/Main/MainPage";
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello Scrooge!</h1>
+      <MainPage />
     </div>
   );
 }
