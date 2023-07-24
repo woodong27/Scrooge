@@ -1,9 +1,31 @@
+.header {
+  margin: 20px auto;
+}
+
 .box {
+  position: relative;
   width: 294px;
-  height: 63px;
-  border-top: 1px solid black;
+  height: 80px;
+  border: 1px solid black;
+  margin: 20px auto;
+  border-radius: 15px;
 }
 
 .name {
-  text-align: center;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+
+.amount {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}
+.date {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  color: #61646b;
 }
