@@ -1,0 +1,9 @@
+.box {
+  width: 294px;
+  height: 63px;
+  border-top: 1px solid black;
+}
+
+.name {
+  text-align: center;
+}
