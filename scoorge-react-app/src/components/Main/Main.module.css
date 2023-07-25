@@ -1,0 +1,26 @@
+.header34 {
+  font-size: 34px;
+  margin: 0 auto;
+}
+
+p {
+  margin: 15px auto;
+}
+
+.btn {
+  margin-top: 10px;
+  background-color: #5db075;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+  border: #5db075 solid 4px;
+  padding: 30px;
+  border-radius: 50%;
+}

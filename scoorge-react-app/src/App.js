@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainPage from "./components/Main/MainPage";
+import Main from "./components/Main/Main";
 import DailyCalcul from "./components/Main/DailyCalcul/DailyCalcul";
+import NavBar from "./components/Nav/NavBar";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />}></Route>
-          <Route path="/300" element={<DailyCalcul />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />}></Route>
+        <Route path="/300" element={<DailyCalcul />}></Route>
+      </Routes>
+      <NavBar />
+    </BrowserRouter>
   );
 }
 

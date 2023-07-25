@@ -11,14 +11,14 @@
 .modal-content {
   background-color: #fff;
   position: fixed;
-  margin: auto;
   z-index: 2;
+  margin: auto;
+  inset: 0;
   width: 60%;
   height: 70%;
-  inset: 0;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .modal-content button {
@@ -44,4 +44,5 @@ li {
   margin: 15px;
   background-color: #f5f5f5;
   border-radius: 10px;
+  cursor: pointer;
 }

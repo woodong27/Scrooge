@@ -1,7 +1,7 @@
 .progress-bar-container {
   /* display: flexbox; */
   width: 300px;
-  margin: 50px auto 20px;
+  margin: 50px auto;
   padding: 10px;
 }
 

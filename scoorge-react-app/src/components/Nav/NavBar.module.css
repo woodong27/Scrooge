@@ -1,0 +1,27 @@
+.list {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  list-style-type: none;
+  width: 100%;
+  height: 65px;
+  justify-content: space-evenly;
+  padding: 0;
+  border-top: 1px solid #efeff0;
+  padding-top: 10px;
+}
+
+.list li {
+  background-color: white;
+  cursor: pointer;
+  margin: 0;
+}
+
+.list img {
+  width: 28px;
+  height: 28px;
+}
+
+.list p {
+  font-size: 12px;
+}
