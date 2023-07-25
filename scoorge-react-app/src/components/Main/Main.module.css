@@ -1,6 +1,15 @@
 .header34 {
+  width: 300px;
   font-size: 34px;
   margin: 0 auto;
+}
+
+.card {
+  margin: auto;
+  box-sizing: border-box;
+  width: 328px;
+  height: 445px;
+  box-shadow: #a2d660;
 }
 
 p {
@@ -21,6 +30,6 @@ p {
   width: 200px;
   height: 200px;
   border: #5db075 solid 4px;
-  padding: 30px;
+  padding: 46px;
   border-radius: 50%;
 }
