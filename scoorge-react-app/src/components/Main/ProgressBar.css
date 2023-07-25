@@ -1,4 +1,5 @@
 .progress-bar-container {
+  /* display: flexbox; */
   width: 300px;
   margin: 50px auto 20px;
   padding: 10px;

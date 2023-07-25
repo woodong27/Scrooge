@@ -4,7 +4,6 @@ import "./ProgressBar.css"; // CSS 파일 불러오기
 const ProgressBar = () => {
   const [progress, setProgress] = useState(0);
 
-  // 프로그레스 바 업데이트를 위한 useEffect 사용
   useEffect(() => {
     setProgress((prevProgress) => {
       // 100% 이상이 되지 않도록 처리
