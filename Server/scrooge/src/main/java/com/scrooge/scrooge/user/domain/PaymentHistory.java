@@ -3,6 +3,7 @@ package com.scrooge.scrooge.user.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,10 +18,11 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreatedDate
     @Column(nullable = false)
     private LocalDateTime paid_at;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String category;
 
     @Column(nullable = false)

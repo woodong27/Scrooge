@@ -1,5 +1,6 @@
 package com.scrooge.scrooge.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -22,17 +22,33 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn
+    @Column(length = 255, nullable = false)
+    private String email;
+
+    @Column(length = 20, nullable = false)
+    private String name;
+
+    @Column(length = 20, nullable = false)
+    private String nickname;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "level_id")
     private Level level;
 
-    private String name;
-    private String nickname;
-    private String email;
+    @Column(length = 255, nullable = false)
+    @JsonIgnore
     private String password;
+
+    @Column(nullable = false)
     private int exp;
+
+    @Column(nullable = false)
     private int streak;
+
+    @Column(nullable = false)
     private int weekly_goal;
+
+    @Column(nullable = false)
     private int weekly_consum;
 
     @CreatedDate
