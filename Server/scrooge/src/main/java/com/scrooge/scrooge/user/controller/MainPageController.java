@@ -1,6 +1,8 @@
 package com.scrooge.scrooge.user.controller;
 
+import com.scrooge.scrooge.user.domain.User;
 import com.scrooge.scrooge.user.domain.UserOwningAvatar;
+import com.scrooge.scrooge.user.dto.MainPageDto;
 import com.scrooge.scrooge.user.repository.UserOwningAvatarRepository;
 import com.scrooge.scrooge.user.repository.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +24,11 @@ public class MainPageController {
     }
 
     @GetMapping
-    public MainPageDto getMainPage(@PathVariable BigInteger id) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
-        UserOwningAvatar userOwningAvatar = userOwningAvatarRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("UserOwningAvatar not found for user with id " + userId));
+    public MainPageDto getMainPage(@PathVariable Long id) {
+        User user = userRepository.findById(id);
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+        UserOwningAvatar userOwningAvatar = userOwningAvatarRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("UserOwningAvatar not found for user with id " + user.getId()));
 
         return new MainPageDto(user.getNickname(), user.getLevelId(), user.getExp(), userOwningAvatar.getIsMainAvatar());
     }
