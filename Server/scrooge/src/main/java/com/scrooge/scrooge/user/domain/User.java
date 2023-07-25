@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn
     private Level level;
 
@@ -35,4 +37,14 @@ public class User {
 
     @CreatedDate
     private LocalDateTime joined_at;
+
+    /* 연결 */
+
+    // 사용자가 소유한 아바타 목록
+    @OneToMany(mappedBy = "user")
+    private List<UserOwningAvatar> userOwningAvatars = new ArrayList<>();
+
+    // 소비 내역
+    @OneToMany(mappedBy = "user")
+    private List<PaymentHistory> paymentHistories = new ArrayList<>();
 }
