@@ -8,15 +8,20 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.app.NotificationManagerCompat
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         if(!isNotificationPermissionGranted()) {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
+
     }
 
     private fun isNotificationPermissionGranted(): Boolean {
@@ -28,4 +33,5 @@ class MainActivity : AppCompatActivity() {
             return NotificationManagerCompat.getEnabledListenerPackages(applicationContext).contains(applicationContext.packageName)
         }
     }
+
 }
