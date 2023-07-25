@@ -35,6 +35,10 @@ public class User {
     @JoinColumn(name = "level_id")
     private Level level;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "main_avatar_id")
+    private Avatar mainAvatar;
+
     @Column(length = 255, nullable = false)
     @JsonIgnore
     private String password;
@@ -57,10 +61,10 @@ public class User {
     /* 연결 */
 
     // 사용자가 소유한 아바타 목록
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserOwningAvatar> userOwningAvatars = new ArrayList<>();
 
     // 소비 내역
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
 }
