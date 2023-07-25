@@ -5,6 +5,8 @@ import com.scrooge.scrooge.user.domain.UserOwningAvatar;
 import com.scrooge.scrooge.user.dto.MainPageDTO;
 import com.scrooge.scrooge.user.repository.UserOwningAvatarRepository;
 import com.scrooge.scrooge.user.repository.UserRepository;
+import com.scrooge.scrooge.user.service.MainPageService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,21 +18,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/main")
 public class MainPageController {
-    private final UserRepository userRepository;
-    private final UserOwningAvatarRepository userOwningAvatarRepository;
+    private final MainPageService mainPageService;
 
-    public MainPageController(UserRepository userRepository, UserOwningAvatarRepository userOwningAvatarRepository) {
-        this.userRepository = userRepository;
-        this.userOwningAvatarRepository = userOwningAvatarRepository;
+    public MainPageController(MainPageService mainPageService) {
+        this.mainPageService = mainPageService;
     }
 
     @GetMapping("/{userId}")
-    public MainPageDTO getMainPage(@PathVariable Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
-        UserOwningAvatar userOwningAvatar = userOwningAvatarRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("UserOwningAvatar not found for user with id " + user.getId()));
-
-        return new MainPageDTO(user.getNickname(), user.getLevel(), user.getExp(), user.getMainAvatar());
+    public ResponseEntity<MainPageDTO> getUserMainPageInfo(@PathVariable Long userId) {
+        Optional<MainPageDTO> mainPageDTO = mainPageService.getUserMainPageInfo(userId);
+        return mainPageDTO.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }
