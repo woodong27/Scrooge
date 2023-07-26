@@ -8,7 +8,7 @@ import retrofit2.http.POST
 
 interface ApiService {
     private val Base_URL: String
-        get() = "http://10.0.2.2:8080/"
+        get() = "http://192.168.160.177:8080/"
 
     @POST("payment-history")
     fun postPayInfo(@Body userInfo: PayInfo) : Call<ResponseResult>
