@@ -1,6 +1,6 @@
 package com.scrooge.scrooge.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.scrooge.scrooge.payment.domain.PaymentHistory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,40 +21,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
-    @Column(length = 255, nullable = false)
-    private String email;
-
-    @Column(length = 20, nullable = false)
-    private String name;
-
-    @Column(length = 20, nullable = false)
-    private String nickname;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "level_id")
+    @ManyToOne
+    @JoinColumn
     private Level level;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "main_avatar_id")
-    private Avatar mainAvatar;
-
-    @Column(length = 255, nullable = false)
-    @JsonIgnore
+    private String name;
+    private String nickname;
+    private String email;
     private String password;
-
-    @Column(nullable = false)
     private int exp;
-
-    @Column(nullable = false)
     private int streak;
-
-    @Column(nullable = false)
     private int weekly_goal;
-
-    @Column(nullable = false)
     private int weekly_consum;
+    // int -> Integer 로 변경하는게 좋을 것 같다.
 
     @CreatedDate
     private LocalDateTime joined_at;
@@ -62,10 +43,10 @@ public class User {
     /* 연결 */
 
     // 사용자가 소유한 아바타 목록
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<UserOwningAvatar> userOwningAvatars = new ArrayList<>();
 
     // 소비 내역
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
 }

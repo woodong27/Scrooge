@@ -22,7 +22,7 @@ public class PaymentHistory {
     @Column(nullable = false)
     private LocalDateTime paid_at;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String category;
 
     @Column(nullable = false)
