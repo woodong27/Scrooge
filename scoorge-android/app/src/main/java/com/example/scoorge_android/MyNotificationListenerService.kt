@@ -34,7 +34,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                                     "PackageName: $packageName\n" +
                                     "Title: $extraTitle\n" +
                                     "Card: ${test[0].trim()}\n"
-                                    + "Price: ${test[1].trim()}\n"
+                                    + "Price: ${test[1].trim().replace(",", "")}\n"
                         )
                     }
 
@@ -46,7 +46,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                                     "PackageName: $packageName\n" +
                                     "Title: $extraTitle\n" +
                                     "Card: ${test[0].trim()}\n"
-                                    + "Price: ${test[1].trim()}\n"
+                                    + "Price: ${test[1].trim().replace(",", "")}\n"
                         )
                     }
                 }
