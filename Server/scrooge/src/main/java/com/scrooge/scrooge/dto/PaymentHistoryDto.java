@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor //인자 없이 객체 생성 가능
 public class PaymentHistoryDto {
     private Long id;
-    private LocalDateTime paid_at;
+    private LocalDateTime paidAt;
     private String category;
     private Integer amount;
-    private String used_at;
-    private String card_name;
+    private String usedAt;
+    private String cardName;
 
     /*연결*/
     private Long userId;
@@ -21,11 +21,11 @@ public class PaymentHistoryDto {
     @Builder
     public PaymentHistoryDto(PaymentHistory paymentHistory) {
         this.id = paymentHistory.getId();
-        this.paid_at = paymentHistory.getPaid_at();
+        this.paidAt = paymentHistory.getPaidAt();
         this.category = paymentHistory.getCategory();
         this.amount = paymentHistory.getAmount();
-        this.used_at = paymentHistory.getUsed_at();
-        this.card_name = paymentHistory.getCard_name();
+        this.usedAt = paymentHistory.getUsedAt();
+        this.cardName = paymentHistory.getCardName();
         this.userId = paymentHistory.getUser().getId();
     }
 }

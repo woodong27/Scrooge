@@ -44,15 +44,16 @@ public class User {
     @Column
     private int streak;
 
-    @Column
-    private int weekly_goal;
+    @Column(name = "weekly_goal")
+    private int weeklyGoal;
 
-    @Column
-    private int weekly_consum;
+    @Column(name = "weekly_consum")
+    private int weeklyConsum;
     // int -> Integer 로 변경하는게 좋을 것 같다.
 
     @CreatedDate
-    private LocalDateTime joined_at;
+    @Column(name = "joined_at")
+    private LocalDateTime joinedAt;
 
     /* 연결 */
 
@@ -63,4 +64,10 @@ public class User {
     // 소비 내역
     @OneToMany(mappedBy = "user")
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserOwningBadge> userOwningBadges = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserSelectedQuest> userSelectedQuests = new ArrayList<>();
 }

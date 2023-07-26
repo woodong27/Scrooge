@@ -18,20 +18,21 @@ public class UserDto {
     private String password;
     private int exp;
     private int streak;
-    private int weekly_goal;
-    private int weekly_consum;
+    private int weeklyGoal;
+    private int weeklyConsum;
     private LocalDateTime joined_at;
 
     @Builder
     public UserDto(User user) {
-        this.id = user.getUserId();
+        this.id = user.getId();
         this.name = user.getName();
         this.nickname = user.getNickname();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.exp = user.getExp();
         this.streak = user.getStreak();
-        this.weekly_consum = user.getWeekly_consum();
-        this.joined_at = user.getJoined_at();
+        this.weeklyConsum = user.getWeeklyConsum();
+        this.weeklyGoal = user.getWeeklyGoal();
+        this.joined_at = user.getJoinedAt();
     }
 }

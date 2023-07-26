@@ -28,9 +28,9 @@ public class UserService {
 
         user.setExp(0);
         user.setStreak(0);
-        user.setWeekly_consum(0);
-        user.setWeekly_goal(0);
-        user.setJoined_at(LocalDateTime.now());
+        user.setWeeklyConsum(0);
+        user.setWeeklyGoal(0);
+        user.setJoinedAt(LocalDateTime.now());
 
         Level defaultLevel = levelRepository.findById(1L).orElse(null);
         user.setLevel(defaultLevel);
