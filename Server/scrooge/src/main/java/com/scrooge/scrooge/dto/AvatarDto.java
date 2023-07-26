@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 public class AvatarDto {
     private Long id;
     private String name;
-    private String img_address;
+    private String imgAddress;
 
     @Builder
     public AvatarDto(Avatar avatar) {
         this.id = avatar.getId();
         this.name = avatar.getName();
-        this.img_address = avatar.getImg_address();
+        this.imgAddress = avatar.getImgAddress();
     }
 }

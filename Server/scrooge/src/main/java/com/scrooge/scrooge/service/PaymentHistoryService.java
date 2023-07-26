@@ -21,11 +21,11 @@ public class PaymentHistoryService {
         PaymentHistory paymentHistory = new PaymentHistory();
 
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
-        paymentHistory.setUsed_at(paymentHistoryDto.getUsed_at());
-        paymentHistory.setCard_name(paymentHistoryDto.getCard_name());
+        paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
+        paymentHistory.setCardName(paymentHistoryDto.getCardName());
 
         /* 연결 */
-        paymentHistory.setUser(userRepository.findByUserId(userId));
+        paymentHistory.setUser(userRepository.findById(userId).orElse(null));
 
         return paymentHistoryRepository.save(paymentHistory);
 
