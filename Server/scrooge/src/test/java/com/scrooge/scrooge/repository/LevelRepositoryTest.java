@@ -16,14 +16,14 @@ public class LevelRepositoryTest {
     public void createLevel() {
         Level level = new Level();
         level.setLevel(1);
-        level.setRequired_exp(100);
+        level.setRequiredExp(100);
         level.setGacha(5);
         levelRepository.save(level);
 
         Level foundLevel = levelRepository.findById(level.getId()).orElse(null);
         assertNotNull(foundLevel);
         assertEquals(level.getLevel(), foundLevel.getLevel());
-        assertEquals(level.getRequired_exp(), foundLevel.getRequired_exp());
+        assertEquals(level.getRequiredExp(), foundLevel.getRequiredExp());
         assertEquals(level.getGacha(), foundLevel.getGacha());
     }
 }

@@ -16,12 +16,12 @@ public class AvatarRepositoryTest {
     public void createAvatar() {
         Avatar avatar = new Avatar();
         avatar.setName("avt1");
-        avatar.setImg_address("C:\\Users\\SSAFY\\Desktop\\S09P12E106\\Server\\scrooge\\src\\main\\resources\\static\\assets\\sample_avatar.png");
+        avatar.setImgAddress("C:\\Users\\SSAFY\\Desktop\\S09P12E106\\Server\\scrooge\\src\\main\\resources\\static\\assets\\sample_avatar.png");
         avatarRepository.save(avatar);
 
         Avatar foundAvatar = avatarRepository.findById(avatar.getId()).orElse(null);
         assertNotNull(foundAvatar);
         assertEquals(avatar.getName(), foundAvatar.getName());
-        assertEquals(avatar.getImg_address(), foundAvatar.getImg_address());
+        assertEquals(avatar.getImgAddress(), foundAvatar.getImgAddress());
     }
 }

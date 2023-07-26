@@ -29,21 +29,21 @@ public class UserRepositoryTest {
         user.setPassword("test");
         user.setExp(10);
         user.setStreak(1);
-        user.setWeekly_goal(5);
-        user.setWeekly_consum(2);
+        user.setWeeklyGoal(5);
+        user.setWeeklyConsum(2);
 
         Level level = new Level();
         level.setLevel(1);
-        level.setRequired_exp(100);
+        level.setRequiredExp(100);
         level.setGacha(1);
         level = levelRepository.save(level);
         user.setLevel(level);
 
         Avatar avatar = new Avatar();
         avatar.setName("test1");
-        avatar.setImg_address("C:\\Users\\SSAFY\\Desktop\\S09P12E106\\Server\\scrooge\\src\\main\\resources\\static\\assets\\sample_avatar.png");
+        avatar.setImgAddress("C:\\Users\\SSAFY\\Desktop\\S09P12E106\\Server\\scrooge\\src\\main\\resources\\static\\assets\\sample_avatar.png");
         avatar = avatarRepository.save(avatar);
-        user.setMain_avatar(avatar);
+        user.setMainAvatar(avatar);
 
         userRepository.save(user);
 
@@ -55,7 +55,7 @@ public class UserRepositoryTest {
         assertEquals(user.getPassword(), foundUser.getPassword());
         assertEquals(user.getExp(), foundUser.getExp());
         assertEquals(user.getStreak(), foundUser.getStreak());
-        assertEquals(user.getWeekly_goal(), foundUser.getWeekly_goal());
-        assertEquals(user.getWeekly_consum(), foundUser.getWeekly_consum());
+        assertEquals(user.getWeeklyGoal(), foundUser.getWeeklyGoal());
+        assertEquals(user.getWeeklyConsum(), foundUser.getWeeklyConsum());
     }
 }
