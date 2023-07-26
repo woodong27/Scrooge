@@ -22,17 +22,32 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "level_id")
     private Level level;
 
+    @Column(length = 20, nullable = false)
     private String name;
+
+    @Column(length = 20, nullable = false)
     private String nickname;
+
+    @Column(length = 255, nullable = false)
     private String email;
+
+    @Column(length = 255, nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private int exp;
+
+    @Column
     private int streak;
+
+    @Column
     private int weekly_goal;
+
+    @Column
     private int weekly_consum;
     // int -> Integer 로 변경하는게 좋을 것 같다.
 
