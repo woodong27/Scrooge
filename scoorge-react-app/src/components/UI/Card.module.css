@@ -1,0 +1,25 @@
+.card {
+  margin: auto;
+  position: relative;
+  width: 330px;
+  height: 445px;
+  border-radius: 10px;
+  border: 1.5px solid #000;
+
+  /* scv가 그려지는 효과 */
+  stroke-width: 1.5px;
+  stroke: #000;
+  background-color: white;
+}
+
+.card_shadow {
+  z-index: -1;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 330px;
+  height: 445px;
+  border-radius: 10px;
+  border: 1.5px solid #000;
+  background: var(--test, #a2d660);
+}
