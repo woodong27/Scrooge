@@ -26,6 +26,6 @@ public class PaymentHistoryDto {
         this.amount = paymentHistory.getAmount();
         this.used_at = paymentHistory.getUsed_at();
         this.card_name = paymentHistory.getCard_name();
-        this.userId = paymentHistory.getUser().getUserId();
+        this.userId = paymentHistory.getUser().getId();
     }
 }

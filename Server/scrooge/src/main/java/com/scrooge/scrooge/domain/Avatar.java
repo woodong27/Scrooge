@@ -14,7 +14,6 @@ public class Avatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column(nullable = false, length = 255)
@@ -22,5 +21,4 @@ public class Avatar {
 
     @Column(nullable = false, length = 255)
     private String img_address;
-
 }

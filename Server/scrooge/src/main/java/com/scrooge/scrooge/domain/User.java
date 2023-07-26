@@ -20,7 +20,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
@@ -38,7 +38,7 @@ public class User {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private int exp;
 
     @Column
