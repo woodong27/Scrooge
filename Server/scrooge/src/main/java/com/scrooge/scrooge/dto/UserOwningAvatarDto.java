@@ -20,9 +20,9 @@ public class UserOwningAvatarDto {
     @Builder
     public UserOwningAvatarDto(UserOwningAvatar userOwningAvatar) {
         this.id = userOwningAvatar.getId();
-        this.acquired_at = userOwningAvatar.getAcquired_at();
-        this.is_main_avatar = userOwningAvatar.getIs_main_avatar();//다시 확인
-        this.userId = userOwningAvatar.getUser().getUserId();
+        this.acquired_at = userOwningAvatar.getAcquiredAt();
+        this.is_main_avatar = userOwningAvatar.getIsMainAvatar();//다시 확인
+        this.userId = userOwningAvatar.getUser().getId();
         this.avatarId = userOwningAvatar.getAvatar().getId();
     }
 

@@ -1,18 +1,17 @@
 package com.scrooge.scrooge.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPageDto {
+public class SignUpRequestDto {
+
+    private String name;
     private String nickname;
-    private Long levelId;
-    private int exp;
-    private Long mainAvatarId;
-    private int weeklyGoal;
-    private int weeklyConsum;
-    private Long mainBadgeId;
+    private String email;
+    private String password;
 }
