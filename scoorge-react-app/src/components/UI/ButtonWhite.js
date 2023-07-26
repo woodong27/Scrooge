@@ -1,4 +1,4 @@
-import styles from "./ButtonGreen.module.css";
+import styles from "./ButtonWhite.module.css";
 
 const ButtonGreen = (props) => {
   return (

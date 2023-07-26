@@ -1,26 +1,30 @@
-.card {
-  margin: auto;
+.primary {
+  margin: 0 auto;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 330px;
-  height: 445px;
+  height: 50px;
   border-radius: 10px;
   border: 1.5px solid #000;
-  top: 40px;
+  background-color: white;
+  font-size: 24px;
+  cursor: pointer;
 
   /* scv가 그려지는 효과 */
   stroke-width: 1.5px;
   stroke: #000;
-  background-color: white;
 }
 
-.card_shadow {
+.shadow {
   z-index: -1;
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 5px;
+  left: 5px;
   width: 330px;
-  height: 445px;
+  height: 50px;
   border-radius: 10px;
   border: 1.5px solid #000;
-  background: var(--test, #a2d660);
+  background: #a2d660;
 }

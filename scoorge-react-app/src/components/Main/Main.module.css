@@ -25,4 +25,12 @@ p {
 
 .box {
   position: relative;
+  margin-bottom: 50px;
+}
+
+.foot {
+  display: flex;
+  flex-flow: column;
+  row-gap: 15px;
+  margin-top: 80px;
 }

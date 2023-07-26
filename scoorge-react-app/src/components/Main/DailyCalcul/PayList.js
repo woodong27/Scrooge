@@ -3,14 +3,14 @@ import Modal from "../../UI/Modal";
 import styles from "./PayList.module.css";
 
 const PayList = (props) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modal, setModal] = useState(false);
 
   const handleOpenModal = () => {
-    setModalOpen(true);
+    setModal(true);
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false);
+    setModal(false);
   };
 
   return (
@@ -21,7 +21,7 @@ const PayList = (props) => {
       <button className={styles.btn} onClick={handleOpenModal}>
         상세 보기
       </button>
-      {modalOpen && (
+      {modal && (
         <Modal
           onCloseModal={handleCloseModal}
           name={props.name}

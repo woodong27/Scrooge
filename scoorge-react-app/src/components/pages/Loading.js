@@ -1,7 +1,7 @@
 import styles from "./Loading.module.css";
 import ButtonGreen from "../UI/ButtonGreen";
 
-const Loading = () => {
+const Loading = (props) => {
   return (
     <div className={styles.body}>
       <div className={styles.main}>
@@ -23,7 +23,7 @@ const Loading = () => {
           src={`${process.env.PUBLIC_URL}/images/loading-cats.png`}
           alt="고양이들"
         />
-        <ButtonGreen text="지금 시작하기"></ButtonGreen>
+        <ButtonGreen text="지금 시작하기" onClick={props.onLogin}></ButtonGreen>
       </div>
     </div>
   );

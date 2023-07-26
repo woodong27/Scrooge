@@ -9,6 +9,7 @@
   border-radius: 10px;
   border: 1.5px solid #000;
   font-size: 24px;
+  cursor: pointer;
 
   /* scv가 그려지는 효과 */
   stroke-width: 1.5px;
