@@ -22,7 +22,7 @@ public class UserOwningAvatar {
     LocalDateTime acquired_at; //습득 날짜
 
     @Column
-    private boolean is_main_avatar = false; //대표이미지 여부
+    private Boolean is_main_avatar = false; //대표이미지 여부
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)

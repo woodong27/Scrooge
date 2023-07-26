@@ -1,5 +1,6 @@
 package com.scrooge.scrooge.user.domain;
 
+import com.scrooge.scrooge.payment.domain.PaymentHistory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn
@@ -34,6 +35,7 @@ public class User {
     private int streak;
     private int weekly_goal;
     private int weekly_consum;
+    // int -> Integer 로 변경하는게 좋을 것 같다.
 
     @CreatedDate
     private LocalDateTime joined_at;

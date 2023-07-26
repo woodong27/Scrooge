@@ -1,15 +1,16 @@
-package com.scrooge.scrooge.user.domain;
+package com.scrooge.scrooge.payment.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.scrooge.scrooge.user.domain.User;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payment_history")
-@Getter @Setter
+@Data
 @NoArgsConstructor
 public class PaymentHistory {
 
@@ -17,14 +18,15 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
+    @CreationTimestamp
     private LocalDateTime paid_at;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String category;
 
     @Column(nullable = false)
-    private int amount;
+    private Integer amount;
 
     @Column(length = 255, nullable = false)
     private String used_at;
