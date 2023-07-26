@@ -20,7 +20,8 @@ public class UserDto {
     private int streak;
     private int weeklyGoal;
     private int weeklyConsum;
-    private LocalDateTime joined_at;
+    private LocalDateTime joinedAt;
+
 
     @Builder
     public UserDto(User user) {
@@ -33,6 +34,6 @@ public class UserDto {
         this.streak = user.getStreak();
         this.weeklyConsum = user.getWeeklyConsum();
         this.weeklyGoal = user.getWeeklyGoal();
-        this.joined_at = user.getJoinedAt();
+        this.joinedAt = user.getJoinedAt();
     }
 }

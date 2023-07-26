@@ -43,7 +43,7 @@ public class UserRepositoryTest {
         avatar.setName("test1");
         avatar.setImgAddress("C:\\Users\\SSAFY\\Desktop\\S09P12E106\\Server\\scrooge\\src\\main\\resources\\static\\assets\\sample_avatar.png");
         avatar = avatarRepository.save(avatar);
-        user.setMainAvatar(avatar);
+        user.setMainAvatarId(avatar.getId());
 
         userRepository.save(user);
 
