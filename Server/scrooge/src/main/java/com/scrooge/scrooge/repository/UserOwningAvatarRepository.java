@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface UserOwningAvatarRepository extends JpaRepository<UserOwningAvatar, Long> {
 
-    @Query("SELECT uoa FROM UserOwningAvatar uos WHERE uoa.user.id = ?1 AND uoa.isMainAvatar = true")
+    @Query("SELECT uoa FROM UserOwningAvatar uoa WHERE uoa.user.id = ?1 AND uoa.isMainAvatar = true")
     Optional<UserOwningAvatar> findMainAvatarByUserId(Long userId);
 }

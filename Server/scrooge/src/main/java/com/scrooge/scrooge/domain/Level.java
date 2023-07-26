@@ -21,8 +21,8 @@ public class Level {
     @Column(nullable = false)
     private int level;
 
-    @Column(nullable = false)
-    private int required_exp;
+    @Column(nullable = false, name = "required_exp")
+    private int requiredExp;
 
     @Column(nullable = false)
     private int gacha;
