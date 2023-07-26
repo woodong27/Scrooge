@@ -1,6 +1,5 @@
-package com.scrooge.scrooge.user.domain;
+package com.scrooge.scrooge.domain;
 
-import com.scrooge.scrooge.payment.domain.PaymentHistory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,9 @@
-package com.scrooge.scrooge.user.dto;
+package com.scrooge.scrooge.dto;
 
-import com.scrooge.scrooge.user.domain.UserOwningAvatar;
+import com.scrooge.scrooge.domain.UserOwningAvatar;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.el.parser.BooleanNode;
 
 import java.time.LocalDateTime;
 

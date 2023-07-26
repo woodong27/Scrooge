@@ -1,6 +1,6 @@
-package com.scrooge.scrooge.user.dto;
+package com.scrooge.scrooge.dto;
 
-import com.scrooge.scrooge.user.domain.Avatar;
+import com.scrooge.scrooge.domain.Avatar;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

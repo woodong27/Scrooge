@@ -1,6 +1,6 @@
-package com.scrooge.scrooge.user.dto;
+package com.scrooge.scrooge.dto;
 
-import com.scrooge.scrooge.user.domain.Level;
+import com.scrooge.scrooge.domain.Level;
 import lombok.*;
 
 @Data // 모든 필드에 대한 getter와 setter 메서드 생성

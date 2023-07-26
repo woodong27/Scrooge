@@ -1,9 +1,7 @@
-package com.scrooge.scrooge.payment.domain;
+package com.scrooge.scrooge.domain;
 
-import com.scrooge.scrooge.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

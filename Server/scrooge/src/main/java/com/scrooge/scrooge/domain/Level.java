@@ -1,4 +1,4 @@
-package com.scrooge.scrooge.user.domain;
+package com.scrooge.scrooge.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

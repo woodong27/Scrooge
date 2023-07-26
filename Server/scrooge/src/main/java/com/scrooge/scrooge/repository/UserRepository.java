@@ -1,6 +1,6 @@
-package com.scrooge.scrooge.user.repository;
+package com.scrooge.scrooge.repository;
 
-import com.scrooge.scrooge.user.domain.User;
+import com.scrooge.scrooge.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

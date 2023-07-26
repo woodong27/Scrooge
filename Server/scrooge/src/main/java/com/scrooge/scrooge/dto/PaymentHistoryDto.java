@@ -1,7 +1,6 @@
-package com.scrooge.scrooge.payment.dto;
+package com.scrooge.scrooge.dto;
 
-import com.scrooge.scrooge.payment.domain.PaymentHistory;
-import com.scrooge.scrooge.user.domain.User;
+import com.scrooge.scrooge.domain.PaymentHistory;
 import lombok.*;
 
 import java.time.LocalDateTime;
