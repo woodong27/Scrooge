@@ -62,11 +62,31 @@ INSERT INTO quest (title, description, max_count) VALUES ('커피스틱 타먹�
 INSERT INTO quest (title, description, max_count) VALUES ('커피스틱 타먹기', '비싼 카페 대신 맛있는 커피스틱을 이용해봐요', 3);
 
 -- Avatar data
-INSERT INTO avatar (name, img_address) VALUES ('Avatar 0', 'static/assets/avatar/avatar1.png');
-INSERT INTO avatar (name, img_address) VALUES ('Avatar 1', 'static/assets/avatar/avatar2.png');
-INSERT INTO avatar (name, img_address) VALUES ('Avatar 2', 'static/assets/avatar/avatar3.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar0', 'static/assets/avatars/0.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar1', 'static/assets/avatars/1.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar2', 'static/assets/avatars/2.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar3', 'static/assets/avatars/3.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar4', 'static/assets/avatars/4.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar5', 'static/assets/avatars/5.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar6', 'static/assets/avatars/6.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar7', 'static/assets/avatars/7.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar8', 'static/assets/avatars/8.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar9', 'static/assets/avatars/9.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar10', 'static/assets/avatars/10.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar11', 'static/assets/avatars/11.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar12', 'static/assets/avatars/12.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar13', 'static/assets/avatars/13.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar14', 'static/assets/avatars/14.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar15', 'static/assets/avatars/15.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar16', 'static/assets/avatars/16.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar17', 'static/assets/avatars/17.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar18', 'static/assets/avatars/18.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar19', 'static/assets/avatars/19.png');
+INSERT INTO avatar (name, img_address) VALUES ('avatar20', 'static/assets/avatars/20.png');
+
+
 
 -- Badge data
-INSERT INTO badge (badge_name, badge_description, img_address) VALUES ('Badge 1', 'Description for Badge 1', 'static/assets/badge/badge1.png');
-INSERT INTO badge (badge_name, badge_description, img_address) VALUES ('Badge 2', 'Description for Badge 2', 'static/assets/badge/badge2.png');
-INSERT INTO badge (badge_name, badge_description, img_address) VALUES ('Badge 3', 'Description for Badge 3', 'static/assets/badge/badge3.png');
+INSERT INTO badge (badge_name, badge_description, img_address) VALUES ('badge1', '7일 연속 접속 시 부여되는 뱃지', 'static/assets/badge/badge1.png');
+INSERT INTO badge (badge_name, badge_description, img_address) VALUES ('badge2', '14일 연속 접속 시 부여되는 뱃지', 'static/assets/badge/badge2.png');
+INSERT INTO badge (badge_name, badge_description, img_address) VALUES ('badge3', '21일 연속 접속 시 부여되는 뱃지', 'static/assets/badge/badge3.png');
