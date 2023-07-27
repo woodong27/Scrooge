@@ -45,20 +45,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-//    public Optional<UserDto> userInfo(Long userId) {
-//        return userRepository.findRelatedEntitiesById(userId).map(user -> {
-//            MainPageDto mainPageDto = new MainPageDto();
-//            mainPageDto.setNickname(user.getNickname());
-//            mainPageDto.setExp(user.getExp());
-//            mainPageDto.setWeeklyConsum(user.getWeeklyConsum());
-//            mainPageDto.setWeeklyGoal(user.getWeeklyGoal());
-//            mainPageDto.setMainAvatar(user.getMainAvatar());
-//            mainPageDto.setMainBadge(user.getMainBadge());
-//            mainPageDto.setLevel(user.getLevel());
-//            return mainPageDto;
-//        });
-//    }
-
     public Optional<UserDto> getUserInfo(Long userId) {
         return userRepository.findWithRelatedEntitiesById(userId).map(user -> {
             UserDto userDto = new UserDto();
@@ -81,7 +67,6 @@ public class UserService {
                     .collect(Collectors.toList()));
 
             List<UserOwningBadge> userOwningBadges = userOwningBadgeRepository.findUserOwningBadgesById(userId);
-            System.out.println(userOwningBadges);
             userDto.setUserOwningBadges(userOwningBadges.stream()
                     .map(UserOwningBadgeDto::new)
                     .collect(Collectors.toList()));
