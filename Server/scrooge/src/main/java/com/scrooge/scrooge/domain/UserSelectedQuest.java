@@ -1,6 +1,5 @@
 package com.scrooge.scrooge.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserSelectedQuest {
 
     @Id
@@ -19,8 +17,9 @@ public class UserSelectedQuest {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    
+    // 직렬화 안되고 에러뜨던거 EAGER로 바꾸니까 해결됐음
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quest_id")
     private Quest quest;
 

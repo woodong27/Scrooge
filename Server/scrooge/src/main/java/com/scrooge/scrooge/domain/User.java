@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedEntityGraph(name = "user.withMainAvatarAndMainBadgeAndLevel", attributeNodes = {
+@NamedEntityGraph(name = "user.withRelatedEntities", attributeNodes = {
         @NamedAttributeNode("mainAvatar"),
         @NamedAttributeNode("mainBadge"),
         @NamedAttributeNode("level")
@@ -27,7 +27,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
     private Level level;
 
@@ -43,11 +43,11 @@ public class User {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_avatar_id")
     private Avatar mainAvatar;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_badge_id")
     private Badge mainBadge;
 
@@ -71,16 +71,16 @@ public class User {
     /* 연결 */
 
     // 사용자가 소유한 아바타 목록
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserOwningAvatar> userOwningAvatars = new ArrayList<>();
 
     // 소비 내역
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserOwningBadge> userOwningBadges = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserSelectedQuest> userSelectedQuests = new ArrayList<>();
 }
