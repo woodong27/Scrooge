@@ -13,13 +13,14 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/main-page")
 public class MainPageController {
 
     private final MainPageService mainPageService;
 
-//    @GetMapping("/{userId}")
-//    public ResponseEntity<MainPageDto> getUserMainPageInfo(@PathVariable("userId") Long userId) {
-//        Optional<MainPageDto> mainPageDto = mainPageService.getUserMainPageInfo(userId);
-//        return mainPageDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-//    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<MainPageDto> getUserMainPageInfo(@PathVariable("userId") Long userId) {
+        Optional<MainPageDto> mainPageDto = mainPageService.getUserMainPageInfo(userId);
+        return mainPageDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
 }

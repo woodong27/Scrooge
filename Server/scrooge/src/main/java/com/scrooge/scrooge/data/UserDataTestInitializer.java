@@ -20,6 +20,8 @@ public class UserDataTestInitializer implements CommandLineRunner {
     private final AvatarRepository avatarRepository;
     private final UserOwningBadgeRepository userOwningBadgeRepository;
     private final BadgeRepository badgeRepository;
+    private final UserSelectedQuestRepository userSelectedQuestRepository;
+    private final QuestRepository questRepository;
 
     @Override
     public void run(String... args) {
@@ -41,9 +43,15 @@ public class UserDataTestInitializer implements CommandLineRunner {
         badge.setImgAddress("test_address");
         badge = badgeRepository.save(badge);
 
+        Quest quest = new Quest();
+        quest.setTitle("test_quest");
+        quest.setDescription("quest for test");
+        quest.setMaxCount(3);
+        quest = questRepository.save(quest);
+
         User user = new User();
-        user.setName("test");
-        user.setNickname("test");
+        user.setName("test_user");
+        user.setNickname("testUser");
         user.setEmail("test@example.com");
         user.setPassword("pass123");
         user.setExp(0);
@@ -73,6 +81,13 @@ public class UserDataTestInitializer implements CommandLineRunner {
         userOwningBadge.setBadge(badge);
         userOwningBadge.setAcquiredAt(LocalDateTime.now());
         userOwningBadgeRepository.save(userOwningBadge);
-    }
 
+        UserSelectedQuest userSelectedQuest = new UserSelectedQuest();
+        userSelectedQuest.setUser(user);
+        userSelectedQuest.setQuest(quest);
+        userSelectedQuest.setCompleteCount(0);
+        userSelectedQuestRepository.save(userSelectedQuest);
+    }
 }
+
+
