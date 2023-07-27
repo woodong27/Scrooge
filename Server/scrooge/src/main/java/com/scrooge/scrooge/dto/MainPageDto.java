@@ -12,4 +12,7 @@ public class MainPageDto {
     private Long levelId;
     private int exp;
     private Long mainAvatarId;
+    private int weeklyGoal;
+    private int weeklyConsum;
+    private Long mainBadgeId;
 }

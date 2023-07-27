@@ -20,7 +20,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
@@ -38,21 +38,22 @@ public class User {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private int exp;
 
     @Column
     private int streak;
 
-    @Column
-    private int weekly_goal;
+    @Column(name = "weekly_goal")
+    private int weeklyGoal;
 
-    @Column
-    private int weekly_consum;
+    @Column(name = "weekly_consum")
+    private int weeklyConsum;
     // int -> Integer 로 변경하는게 좋을 것 같다.
 
     @CreatedDate
-    private LocalDateTime joined_at;
+    @Column(name = "joined_at")
+    private LocalDateTime joinedAt;
 
     /* 연결 */
 

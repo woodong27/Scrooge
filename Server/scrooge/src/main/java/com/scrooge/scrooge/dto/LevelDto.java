@@ -9,14 +9,14 @@ public class LevelDto {
 
     private Long id;
     private int level;
-    private int required_exp;
+    private int requiredExp;
     private int gacha;
 
     @Builder
     public LevelDto(Level level) {
         this.id = level.getId();
         this.level = level.getLevel();
-        this.required_exp = level.getRequired_exp();
+        this.requiredExp = level.getRequiredExp();
         this.gacha = level.getGacha();
     }
 
