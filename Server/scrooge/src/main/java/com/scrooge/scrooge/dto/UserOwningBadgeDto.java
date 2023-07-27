@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 public class UserOwningBadgeDto {
 
     private Long id;
-    private User user;
+//    private User user;
     private Badge badge;
     private LocalDateTime acquiredAt;
 
     @Builder
-    private UserOwningBadgeDto(UserOwningBadge userOwningBadge) {
+    public UserOwningBadgeDto(UserOwningBadge userOwningBadge) {
         this.id = userOwningBadge.getId();
-        this.user = userOwningBadge.getUser();
+//        this.user = userOwningBadge.getUser();
         this.badge = userOwningBadge.getBadge();
         this.acquiredAt = userOwningBadge.getAcquiredAt();
     }

@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface UserOwningAvatarRepository extends JpaRepository<UserOwningAvatar, Long> {
 
-//    @Query("SELECT uoa FROM UserOwningAvatar uoa WHERE uoa.user.id = ?1 AND uoa.isMainAvatar = true")
-//    Optional<UserOwningAvatar> findMainAvatarByUserId(Long userId);
     @Query("SELECT uoa FROM UserOwningAvatar uoa WHERE uoa.user.id = ?1")
     List<UserOwningAvatar> findUserOwningAvatarsById(Long userId);
 }

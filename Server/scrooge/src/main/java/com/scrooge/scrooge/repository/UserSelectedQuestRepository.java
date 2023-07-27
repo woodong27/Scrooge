@@ -11,5 +11,5 @@ import java.util.List;
 public interface UserSelectedQuestRepository extends JpaRepository<UserSelectedQuest, Long> {
 
     @Query("SELECT usq FROM UserSelectedQuest usq WHERE usq.user.id = ?1")
-    List<UserSelectedQuest> findUserSelectedQuestById(Long userId);
+    List<UserSelectedQuest> findUserSelectedQuestsById(Long userId);
 }

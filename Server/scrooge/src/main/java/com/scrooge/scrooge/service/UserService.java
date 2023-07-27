@@ -62,6 +62,7 @@ public class UserService {
     public Optional<UserDto> getUserInfo(Long userId) {
         return userRepository.findWithRelatedEntitiesById(userId).map(user -> {
             UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
             userDto.setName(user.getName());
             userDto.setNickname(user.getNickname());
             userDto.setEmail(user.getEmail());
@@ -78,16 +79,18 @@ public class UserService {
             userDto.setUserOwningAvatars(userOwningAvatars.stream()
                     .map(UserOwningAvatarDto::new)
                     .collect(Collectors.toList()));
-//
-//            List<UserOwningBadge> userOwningBadges = userOwningBadgeRepository.findUserOwningBadgesById(userId);
-//            userDto.setUserOwningBadges(userOwningBadges.stream()
-//                    .map(UserOwningBadgeDto::new)
-//                    .collect(Collectors.toList()));
-//
-//            List<UserSelectedQuest> userSelectedQuests = userSelectedQuestRepository.findUserSelectedQuestById(userId);
-//            userDto.setUserSelectedQuests(userSelectedQuests.stream()
-//                    .map(UserSelectedQuestDto::new)
-//                    .collect(Collectors.toList()));
+
+            List<UserOwningBadge> userOwningBadges = userOwningBadgeRepository.findUserOwningBadgesById(userId);
+            System.out.println(userOwningBadges);
+            userDto.setUserOwningBadges(userOwningBadges.stream()
+                    .map(UserOwningBadgeDto::new)
+                    .collect(Collectors.toList()));
+
+            List<UserSelectedQuest> userSelectedQuests = userSelectedQuestRepository.findUserSelectedQuestsById(userId);
+            System.out.println(userSelectedQuests);
+            userDto.setUserSelectedQuests(userSelectedQuests.stream()
+                    .map(UserSelectedQuestDto::new)
+                    .collect(Collectors.toList()));
 
             return userDto;
         });

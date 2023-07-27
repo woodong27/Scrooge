@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 public class UserSelectedQuestDto {
 
     private Long id;
-    private User user;
+//    private User user;
     private Quest quest;
     private int completeCount;
 
     @Builder
-    private UserSelectedQuestDto(UserSelectedQuest userSelectedQuest) {
+    public UserSelectedQuestDto(UserSelectedQuest userSelectedQuest) {
         this.id = userSelectedQuest.getId();
-        this.user = userSelectedQuest.getUser();
+//        this.user = userSelectedQuest.getUser();
         this.quest = userSelectedQuest.getQuest();
         this.completeCount = userSelectedQuest.getCompleteCount();
     }

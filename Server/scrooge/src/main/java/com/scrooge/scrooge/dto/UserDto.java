@@ -30,20 +30,25 @@ public class UserDto {
     private List<UserOwningBadgeDto> userOwningBadges;
     private List<UserSelectedQuestDto> userSelectedQuests;
 
-//    @Builder
-//    public UserDto(User user) {
-//        this.id = user.getId();
-//        this.name = user.getName();
-//        this.nickname = user.getNickname();
-//        this.email = user.getEmail();
-//        this.exp = user.getExp();
-//        this.streak = user.getStreak();
-//        this.weeklyConsum = user.getWeeklyConsum();
-//        this.weeklyGoal = user.getWeeklyGoal();
-//        this.joinedAt = user.getJoinedAt();
-//        this.level = user.getLevel();
-//        this.mainBadge = user.getMainBadge();
-//        this.mainAvatar = user.getMainAvatar();
-//        this.userOwningAvatars = user.getUserOwningAvatars()
-//    }
+    @Builder
+    public UserDto(User user,
+                   List<UserOwningAvatarDto> userOwningAvatars
+                   ,List<UserOwningBadgeDto> userOwningBadges
+                   ,List<UserSelectedQuestDto> userSelectedQuests) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.exp = user.getExp();
+        this.streak = user.getStreak();
+        this.weeklyConsum = user.getWeeklyConsum();
+        this.weeklyGoal = user.getWeeklyGoal();
+        this.joinedAt = user.getJoinedAt();
+        this.level = user.getLevel();
+        this.mainBadge = user.getMainBadge();
+        this.mainAvatar = user.getMainAvatar();
+        this.userOwningAvatars = userOwningAvatars;
+        this.userOwningBadges = userOwningBadges;
+        this.userSelectedQuests = userSelectedQuests;
+    }
 }
