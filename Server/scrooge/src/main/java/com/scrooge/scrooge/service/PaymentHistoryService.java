@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,15 +23,23 @@ public class PaymentHistoryService {
         PaymentHistory paymentHistory = new PaymentHistory();
 
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
-        paymentHistory.setUsed_at(paymentHistoryDto.getUsed_at());
-        paymentHistory.setCard_name(paymentHistoryDto.getCard_name());
+        paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
+        paymentHistory.setCardName(paymentHistoryDto.getCardName());
 
         /* 연결 */
-        paymentHistory.setUser(userRepository.findByUserId(userId));
+        paymentHistory.setUser(userRepository.findById(userId).orElse(null));
 
         return paymentHistoryRepository.save(paymentHistory);
-
     }
+
+    // userId에 따른 소비 내역 출력
+    public List<PaymentHistoryDto> getPaymentHistoryByUserId(Long userId) {
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByUserId(userId);
+        return paymentHistories.stream()
+                .map(PaymentHistoryDto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 
