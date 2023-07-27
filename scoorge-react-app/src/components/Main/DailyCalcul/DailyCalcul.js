@@ -1,5 +1,5 @@
 import PayList from "./PayList";
-import "./DailyCalcul.css";
+import styles from "./DailyCalcul.module.css";
 
 const DailyCalcul = () => {
   const Dummy = [
@@ -21,7 +21,7 @@ const DailyCalcul = () => {
   ];
   return (
     <div>
-      <div className="header">7월 19일 소비</div>
+      <div className={styles.header}>7월 19일 소비</div>
       {Dummy.map((e) => (
         <PayList
           key={Math.random()}

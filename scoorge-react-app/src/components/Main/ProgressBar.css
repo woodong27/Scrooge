@@ -1,7 +1,8 @@
 .progress-bar-container {
+  position: absolute;
+  bottom: -40px;
   width: 300px;
-  margin: 50px auto 20px;
-  padding: 10px;
+  margin: 0 15px auto;
 }
 
 .progress-bar-bg {
@@ -14,10 +15,12 @@
 }
 
 .progress-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
   position: absolute;
   background: #5db075;
   height: 30px;
-  transition: width 0.3s;
   border-radius: 15px;
 }
 

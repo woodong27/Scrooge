@@ -1,16 +1,35 @@
 body {
-  margin: 0;
   font-family: "NeoDunggeunmo", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: #a9d9f4;
+  background-image: url("../public/images/bg-images.png");
+  background-size: cover;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+
+  & :visited {
+    text-decoration: none;
+    color: black;
+  }
 }
 
 @font-face {
   font-family: "NeoDunggeunmo";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.3/NeoDunggeunmo.woff")
     format("woff");
+
   font-weight: normal;
   font-style: normal;
 }
