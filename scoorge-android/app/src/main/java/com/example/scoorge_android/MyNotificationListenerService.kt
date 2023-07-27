@@ -17,7 +17,7 @@ class MyNotificationListenerService : NotificationListenerService() {
 
     companion object {
         private const val SAMSUNG_PAY_PACKAGE_NAME = "com.samsung.android.spay"
-        //private const val KAKAO_PACKAGE_NAME = "com.kakao.talk"
+//        private const val KAKAO_PACKAGE_NAME = "com.kakao.talk"
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
@@ -35,6 +35,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                 when (packageName) {
                     SAMSUNG_PAY_PACKAGE_NAME
                     -> {
+                        val userId = 1L; // 나중에 userId를 받아오는 작업이 필요하다.
                         val test: List<String> = extraText.split("₩")
                         val card_name = test[0].trim()
                         val amount = test[1].trim().replace(",", "").toInt()
@@ -50,7 +51,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                         /* 레트로핏 테스트 */
                         val requestParams = PayInfo(used_at, card_name, amount)
 
-                        RetrofitService.instance.postPayInfo(requestParams)
+                        RetrofitService.instance.postPayInfo(userId, requestParams)
                             .enqueue(object : retrofit2.Callback<ResponseResult>{
                                 override fun onResponse(
                                     call: Call<ResponseResult>,
@@ -75,12 +76,12 @@ class MyNotificationListenerService : NotificationListenerService() {
 //                                    "Card: ${test[0].trim()}\n"
 //                                    + "Price: ${test[1].trim().replace(",", "")}\n"
 //                        )
-//
+//                        val userId = 1L; // 나중에 userId를 받아오는 작업이 필요하다.
 //                        /* 레트로핏 테스트 */
-//                        val requestParams = PayInfo(used_at = used_at, card_name = test[0].trim(),
+//                        val requestParams = PayInfo(usedAt = used_at, cardName = test[0].trim(),
 //                            amount = test[1].trim().replace(",", "").toInt() )
 //
-//                        RetrofitService.instance.postPayInfo(requestParams)
+//                        RetrofitService.instance.postPayInfo(userId, requestParams)
 //                            .enqueue(object : retrofit2.Callback<ResponseResult>{
 //                                override fun onResponse(
 //                                    call: Call<ResponseResult>,
