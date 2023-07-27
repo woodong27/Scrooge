@@ -56,6 +56,12 @@ public class PaymentHistoryService {
                 .collect(Collectors.toList());
     }
 
+    // userId 각각의 paymentHistory 조회
+    public PaymentHistoryDto getPaymentHistoryEach(Long userId, Long paymentHistoryId) {
+        PaymentHistory paymentHistory = paymentHistoryRepository.findByIdAndUserId(paymentHistoryId, userId);
+        if(paymentHistory == null) return null;
+        return new PaymentHistoryDto(paymentHistory);
+    }
 
     // 소비내역을 수정하는 비즈니스 로직
     public PaymentHistory updatePaymentHistory(Long userId, PaymentHistoryDto paymentHistoryDto) throws AccessDeniedException {
@@ -76,6 +82,7 @@ public class PaymentHistoryService {
 
         return paymentHistoryRepository.save(paymentHistory);
     }
+
 
 
 }

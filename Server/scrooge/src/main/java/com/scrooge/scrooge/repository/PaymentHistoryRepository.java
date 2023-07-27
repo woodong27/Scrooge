@@ -11,4 +11,5 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
     @Query("SELECT pmh FROM PaymentHistory pmh WHERE pmh.user.id = ?1")
     List<PaymentHistory> findByUserId(Long userId);
     List<PaymentHistory> findByUserIdAndPaidAtBetween(Long userId, LocalDateTime todayStart, LocalDateTime todayEnd);
+    PaymentHistory findByIdAndUserId(Long paymentHistoryId, Long userId);
 }

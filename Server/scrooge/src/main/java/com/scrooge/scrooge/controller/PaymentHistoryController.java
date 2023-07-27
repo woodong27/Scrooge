@@ -61,6 +61,18 @@ public class PaymentHistoryController {
     }
 
     // user의 소비내역 하나를 조회하는 API
+    @Operation(summary = "user의 소비내역 하나를 조회하는 API", description = "user의 소비내역 하나를 조회하는 API")
+    @GetMapping("/{userId}/{paymentHistoryId}")
+    public ResponseEntity<PaymentHistoryDto> selectPaymentHistoryEach(
+            @PathVariable("userId")Long userId,
+            @PathVariable("paymentHistoryId")Long paymentHistoryId
+    ) {
+        PaymentHistoryDto paymentHistoryDto = paymentHistoryService.getPaymentHistoryEach(userId, paymentHistoryId);
+        if(paymentHistoryDto == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(paymentHistoryDto);
+    }
 
     // userId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다.
     @Operation(summary = "userId를 가진 사용자의 paymentId를 가진 소비내역을 수정하는 API", description = "소비내역 수정")
