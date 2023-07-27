@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +37,20 @@ public class PaymentHistoryService {
         return paymentHistoryRepository.save(paymentHistory);
     }
 
-    // userId에 따른 소비 내역 출력
+    // userId에 따른 전체 소비 내역 조회
     public List<PaymentHistoryDto> getPaymentHistoryByUserId(Long userId) {
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByUserId(userId);
+        return paymentHistories.stream()
+                .map(PaymentHistoryDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // userId의 오늘 전체 소비 내역 조회
+    public List<PaymentHistoryDto> getPaymentHistoryByUserIdToday(Long userId) {
+        LocalDateTime todayStart = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByUserIdAndPaidAtBetween(userId, todayStart, todayEnd);
         return paymentHistories.stream()
                 .map(PaymentHistoryDto::new)
                 .collect(Collectors.toList());
@@ -62,4 +76,6 @@ public class PaymentHistoryService {
 
         return paymentHistoryRepository.save(paymentHistory);
     }
+
+
 }

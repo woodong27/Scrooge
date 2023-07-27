@@ -34,7 +34,7 @@ public class PaymentHistoryController {
     private final PaymentHistoryService paymentHistoryService;
     private final UserRepository userRepository;
 
-    @Operation(summary = "POST PaymentHistory", description = "소비내역 등록")
+    @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping("/{userId}")
     public ResponseEntity<?> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("userId") Long userId) {
         Optional<User> user = userRepository.findById(userId);
@@ -44,18 +44,26 @@ public class PaymentHistoryController {
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
-
-
-    // user별 소비내역 조회하는 함수
-    @Operation(summary = "GET PaymentHistory", description = "소비내역 조회")
+    // user별 소비내역 전체를 조회하는 API
+    @Operation(summary = "user별 소비내역 전체를 조회하는 API", description = "소비내역 조회")
     @GetMapping("/{userId}")
     public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@PathVariable("userId") Long userId) {
         List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByUserId(userId);
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
+    // 오늘 user의 소비내역 전체를 조회하는 API
+    @Operation(summary = "오늘 user의 소비내역 전체를 조회하는 API", description = "오늘 소비내역 조회")
+    @GetMapping("/{userId}/today")
+    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistoryByUserIdToday(@PathVariable("userId") Long userId) {
+        List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByUserIdToday(userId);
+        return ResponseEntity.ok(paymentHistoryDtos);
+    }
+
+    // user의 소비내역 하나를 조회하는 API
+
     // userId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다.
-    @Operation(summary = "PUT PaymentHistory", description = "소비내역 수정")
+    @Operation(summary = "userId를 가진 사용자의 paymentId를 가진 소비내역을 수정하는 API", description = "소비내역 수정")
     @PutMapping("/{userId}/{paymentHistoryId}")
     public ResponseEntity<?> updatePaymentHistory(
             @PathVariable("userId")Long userId,
