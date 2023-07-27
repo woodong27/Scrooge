@@ -16,13 +16,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraph(name = "user.withMainAvatarAndMainBadgeAndLevel", attributeNodes = {
+        @NamedAttributeNode("mainAvatar"),
+        @NamedAttributeNode("mainBadge"),
+        @NamedAttributeNode("level")
+})
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "level_id")
     private Level level;
 
@@ -37,6 +42,14 @@ public class User {
 
     @Column(length = 255, nullable = false)
     private String password;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "main_avatar_id")
+    private Avatar mainAvatar;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "main_badge_id")
+    private Badge mainBadge;
 
     @Column
     private int exp;

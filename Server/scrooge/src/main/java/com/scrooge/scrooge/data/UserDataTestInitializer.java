@@ -1,13 +1,7 @@
 package com.scrooge.scrooge.data;
 
-import com.scrooge.scrooge.domain.Avatar;
-import com.scrooge.scrooge.domain.Level;
-import com.scrooge.scrooge.domain.User;
-import com.scrooge.scrooge.domain.UserOwningAvatar;
-import com.scrooge.scrooge.repository.AvatarRepository;
-import com.scrooge.scrooge.repository.LevelRepository;
-import com.scrooge.scrooge.repository.UserOwningAvatarRepository;
-import com.scrooge.scrooge.repository.UserRepository;
+import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -24,6 +18,8 @@ public class UserDataTestInitializer implements CommandLineRunner {
     private final LevelRepository levelRepository;
     private final UserOwningAvatarRepository userOwningAvatarRepository;
     private final AvatarRepository avatarRepository;
+    private final UserOwningBadgeRepository userOwningBadgeRepository;
+    private final BadgeRepository badgeRepository;
 
     @Override
     public void run(String... args) {
@@ -39,6 +35,12 @@ public class UserDataTestInitializer implements CommandLineRunner {
         avatar.setImgAddress("test_address");
         avatar = avatarRepository.save(avatar);
 
+        Badge badge = new Badge();
+        badge.setBadgeName("test_badge");
+        badge.setBadgeDescription("badge for test");
+        badge.setImgAddress("test_address");
+        badge = badgeRepository.save(badge);
+
         User user = new User();
         user.setName("test");
         user.setNickname("test");
@@ -46,6 +48,10 @@ public class UserDataTestInitializer implements CommandLineRunner {
         user.setPassword("pass123");
         user.setExp(0);
         user.setStreak(0);
+
+        // 메인 뱃지, 메인 아바타 설정
+        user.setMainAvatar(avatar);
+        user.setMainBadge(badge);
 
         //테스트용 더미 주간 목표+현재 소비량
         user.setWeeklyConsum(270000);
@@ -56,12 +62,17 @@ public class UserDataTestInitializer implements CommandLineRunner {
         user = userRepository.save(user);
 
         UserOwningAvatar userOwningAvatar = new UserOwningAvatar();
-        userOwningAvatar.setId(1L);
         userOwningAvatar.setAcquiredAt(LocalDateTime.now());
-        userOwningAvatar.setIsMainAvatar(true);
+//        userOwningAvatar.setIsMainAvatar(true);
         userOwningAvatar.setUser(user);
         userOwningAvatar.setAvatar(avatar);
         userOwningAvatarRepository.save(userOwningAvatar);
+
+        UserOwningBadge userOwningBadge = new UserOwningBadge();
+        userOwningBadge.setUser(user);
+        userOwningBadge.setBadge(badge);
+        userOwningBadge.setAcquiredAt(LocalDateTime.now());
+        userOwningBadgeRepository.save(userOwningBadge);
     }
 
 }
