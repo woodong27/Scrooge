@@ -39,16 +39,15 @@ public class PaymentHistoryController {
     public ResponseEntity<?> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("userId") Long userId) {
         Optional<User> user = userRepository.findById(userId);
 
-        //User user = userService.getUserByUserseq(userSeq); 이런 코드 필요,,
-        //User user =
-
         SuccessResp successResp = new SuccessResp(1);
         PaymentHistory paymentHistory = paymentHistoryService.addPaymentHistory(userId, paymentHistoryDto);
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
 
+
     // user별 소비내역 조회하는 함수
+    @Operation(summary = "GET PaymentHistory", description = "소비내역 조회")
     @GetMapping("/{userId}")
     public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@PathVariable("userId") Long userId) {
         List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByUserId(userId);
@@ -56,6 +55,7 @@ public class PaymentHistoryController {
     }
 
     // userId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다.
+    @Operation(summary = "PUT PaymentHistory", description = "소비내역 수정")
     @PutMapping("/{userId}/{paymentHistoryId}")
     public ResponseEntity<?> updatePaymentHistory(
             @PathVariable("userId")Long userId,
