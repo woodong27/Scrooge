@@ -29,7 +29,4 @@ public class UserOwningBadge {
     @CreatedDate
     @Column(name = "acquired_at")
     private LocalDateTime acquiredAt;
-
-    @Column(name = "is_main_badge")
-    private Boolean isMainBadge = false;
 }

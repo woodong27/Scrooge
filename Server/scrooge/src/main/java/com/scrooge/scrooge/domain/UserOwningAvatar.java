@@ -22,8 +22,8 @@ public class UserOwningAvatar {
     @CreatedDate
     LocalDateTime acquiredAt; //습득 날짜
 
-    @Column(name = "is_main_avatar")
-    private Boolean isMainAvatar = false; //대표이미지 여부
+//    @Column(name = "is_main_avatar")
+//    private Boolean isMainAvatar = false; //대표이미지 여부
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
