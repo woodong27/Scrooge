@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 @Tag(name="PaymentHistory", description = "소비내역 API")
 @RestController
+@RequestMapping("/payment-history")
 @RequiredArgsConstructor
 public class PaymentHistoryController {
 
@@ -33,7 +35,7 @@ public class PaymentHistoryController {
     private final UserRepository userRepository;
 
     @Operation(summary = "POST PaymentHistory", description = "소비내역 등록")
-    @PostMapping("/payment-history/{userId}")
+    @PostMapping("/{userId}")
     public ResponseEntity<?> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("userId") Long userId) {
         Optional<User> user = userRepository.findById(userId);
 
@@ -47,10 +49,27 @@ public class PaymentHistoryController {
 
 
     // user별 소비내역 조회하는 함수
-    @GetMapping("/payment-history/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@PathVariable("userId") Long userId) {
         List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByUserId(userId);
         return ResponseEntity.ok(paymentHistoryDtos);
+    }
+
+    // userId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다.
+    @PutMapping("/{userId}/{paymentHistoryId}")
+    public ResponseEntity<?> updatePaymentHistory(
+            @PathVariable("userId")Long userId,
+            @PathVariable("paymentHistoryId")Long paymentHistoryId,
+            @RequestBody PaymentHistoryDto paymentHistoryDto
+    ) {
+        paymentHistoryDto.setId(paymentHistoryId);
+        SuccessResp successResp = new SuccessResp(1);
+        try{
+            PaymentHistory updatePaymentHistory = paymentHistoryService.updatePaymentHistory(userId, paymentHistoryDto);
+            return new ResponseEntity<>(successResp, HttpStatus.OK);
+        } catch(AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("userId와 paymentHistory의 userId가 일치하지 않습니다.");
+        }
     }
 
 
