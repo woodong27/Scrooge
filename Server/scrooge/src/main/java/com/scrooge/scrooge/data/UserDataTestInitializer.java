@@ -34,7 +34,7 @@ public class UserDataTestInitializer implements CommandLineRunner {
 
         Avatar avatar = new Avatar();
         avatar.setName("test_avatar");
-        avatar.setImgAddress("test_address");
+        avatar.setImgAddress("/static/assets/sample_avatar.png");
         avatar = avatarRepository.save(avatar);
 
         Badge badge = new Badge();
