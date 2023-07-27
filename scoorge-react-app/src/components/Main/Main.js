@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
+import { Fragment, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import Card from "../UI/Card";

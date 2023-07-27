@@ -27,6 +27,7 @@ const PayList = (props) => {
           name={props.name}
           amount={props.amount}
           date={props.date}
+          cardName={props.cardName}
         />
       )}
     </div>

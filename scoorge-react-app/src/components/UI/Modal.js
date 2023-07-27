@@ -9,7 +9,8 @@ const Modal = (props) => {
         <div className={styles.content}>
           <div className={styles.handle}> </div>
           <h2>{props.name}</h2>
-          <p>{props.amount}</p>
+          <h4>{props.cardName}</h4>
+          <p>{props.amount}원</p>
           <button onClick={props.onCloseModal}>닫기</button>
         </div>
         <div className={styles.category}>
