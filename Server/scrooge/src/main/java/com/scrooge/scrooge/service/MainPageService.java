@@ -2,7 +2,7 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.UserOwningAvatar;
 import com.scrooge.scrooge.dto.MainPageDto;
-//import com.scrooge.scrooge.repository.UserOwningAvatarRepository;
+import com.scrooge.scrooge.repository.UserOwningAvatarRepository;
 import com.scrooge.scrooge.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,4 +29,5 @@ public class MainPageService {
 //            return mainPageDto;
 //        });
 //    }
+
 }

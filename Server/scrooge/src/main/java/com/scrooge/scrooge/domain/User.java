@@ -64,4 +64,10 @@ public class User {
     // 소비 내역
     @OneToMany(mappedBy = "user")
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserOwningBadge> userOwningBadges = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserSelectedQuest> userSelectedQuests = new ArrayList<>();
 }
