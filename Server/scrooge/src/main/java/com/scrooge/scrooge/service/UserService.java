@@ -72,7 +72,7 @@ public class UserService {
                     .collect(Collectors.toList()));
 
             List<UserSelectedQuest> userSelectedQuests = userSelectedQuestRepository.findUserSelectedQuestsById(userId);
-            System.out.println(userSelectedQuests);
+//            System.out.println(userSelectedQuests);
             userDto.setUserSelectedQuests(userSelectedQuests.stream()
                     .map(UserSelectedQuestDto::new)
                     .collect(Collectors.toList()));

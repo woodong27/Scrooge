@@ -19,7 +19,7 @@ public class UserSelectedQuest {
     private User user;
     
     // 직렬화 안되고 에러뜨던거 EAGER로 바꾸니까 해결됐음
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quest_id")
     private Quest quest;
 
