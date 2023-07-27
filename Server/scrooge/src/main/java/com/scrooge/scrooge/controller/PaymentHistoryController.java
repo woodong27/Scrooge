@@ -6,6 +6,8 @@ import com.scrooge.scrooge.dto.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.repository.UserRepository;
 import com.scrooge.scrooge.service.PaymentHistoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name="PaymentHistory", description = "소비내역 API")
 @RestController
 @RequiredArgsConstructor
 public class PaymentHistoryController {
@@ -29,6 +32,7 @@ public class PaymentHistoryController {
     private final PaymentHistoryService paymentHistoryService;
     private final UserRepository userRepository;
 
+    @Operation(summary = "POST PaymentHistory", description = "소비내역 등록")
     @PostMapping("/payment-history/{userId}")
     public ResponseEntity<?> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("userId") Long userId) {
         Optional<User> user = userRepository.findById(userId);
