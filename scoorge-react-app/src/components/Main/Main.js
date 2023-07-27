@@ -29,7 +29,7 @@ const Main = (props) => {
               <img
                 className={styles.img}
                 src={`${process.env.PUBLIC_URL}/Character/${
-                  ~~(Math.random() * 6) + 1
+                  ~~(Math.random() * 88) + 1
                 }.png`}
                 alt="캐릭터"
               />

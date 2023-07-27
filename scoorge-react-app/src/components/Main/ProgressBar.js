@@ -7,7 +7,7 @@ const ProgressBar = () => {
   useEffect(() => {
     setProgress((prevProgress) => {
       // 100% 이상이 되지 않도록 처리
-      return 70;
+      return 10;
     });
   }, []);
 
