@@ -12,33 +12,24 @@ const DailyCalcul = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  // const Dummy = [
-  //   {
-  //     name: "(주)우아한형제들",
-  //     amount: "12,000",
-  //     date: "17:52",
-  //   },
-  //   {
-  //     name: "다이소",
-  //     amount: "5,000",
-  //     date: "21:00",
-  //   },
-  //   {
-  //     name: "교촌치킨",
-  //     amount: "2,000",
-  //     date: "23:00",
-  //   },
-  // ];
+  const getCurrentDate = () => {
+    const today = new Date();
+    const month = today.toLocaleString("default", { month: "long" });
+    const day = today.getDate();
+    return `${month} ${day}일 소비`;
+  };
 
   return (
     <div>
-      <div className={styles.header}>7월 19일 소비</div>
+      <div className={styles.header} id="date">
+        {getCurrentDate()}
+      </div>
       {data.map((item) => (
         <PayList
           key={item.userId}
           name={item.usedAt}
           amount={item.amount}
-          date={item.paidAt}
+          date={item.paidAt.split("T")[1]}
           cardName={item.cardName}
         ></PayList>
       ))}
