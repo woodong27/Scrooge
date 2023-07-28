@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface ArticleGoodRepository extends JpaRepository<ArticleGood, Long> {
     @Query("select ag from ArticleGood ag where ag.article.id = :articleId and ag.user.id = :userId")
     ArticleGood findByArticleIdAndUserId(Long articleId, Long userId);
+
+    @Query("SELECT COUNT(ag) FROM ArticleGood ag WHERE ag.article.id = :articleId")
+    Integer countByArticleId(Long articleId);
 }

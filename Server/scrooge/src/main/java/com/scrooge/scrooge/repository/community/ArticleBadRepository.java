@@ -7,4 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ArticleBadRepository extends JpaRepository<ArticleBad, Long> {
     @Query("select ab from ArticleBad ab where ab.article.id = :articleId and ab.user.id = :userId")
     ArticleBad findByArticleIdAndUserId(Long articleId, Long userId);
+
+    @Query("SELECT COUNT(ab) from ArticleBad  ab where ab.article.id = :articleId")
+    Integer countByArticleId(Long articleId);
 }

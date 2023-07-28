@@ -2,6 +2,7 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.domain.community.ArticleGood;
+import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
 import com.scrooge.scrooge.repository.UserRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
@@ -43,6 +44,18 @@ public class CommunityService {
         }
     }
 
+    // 사용자가 Article을 좋아요 했는지 검사하는 메서드
+    public Integer getCommunityGoodCheck(ArticleGoodDto articleGoodDto) {
+        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndUserId(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        if (articleGood != null) return 1;
+        else return 0;
+    }
+
+    // Article의 전체 좋아요 수 조회하는 메서드
+    public Integer getCommunityGoodCount(Long articleId) {
+        return articleGoodRepository.countByArticleId(articleId);
+    }
+
     // Article 싫어요를 구현하는 메서드
     @Transactional
     public ArticleBad addCommunityBad(Long articleId, Long userId) {
@@ -61,5 +74,18 @@ public class CommunityService {
         if(articleBad != null) {
             articleBadRepository.delete(articleBad);
         }
+    }
+
+    // 사용자가 Article 싫어요를 했는지 검사하는 메서드
+    public Integer getCommunityBadCheck(ArticleBadDto articleBadDto) {
+        ArticleBad articleBad = articleBadRepository.findByArticleIdAndUserId(articleBadDto.getArticleId(), articleBadDto.getUserId());
+
+        if(articleBad != null) return 1;
+        else return 0;
+    }
+
+    // Article의 전체 싫어요 수 조회하는 메서드
+    public Integer getCommunityBadCount(Long articleId) {
+        return articleBadRepository.countByArticleId(articleId);
     }
 }
