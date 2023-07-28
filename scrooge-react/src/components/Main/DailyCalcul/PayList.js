@@ -17,7 +17,7 @@ const PayList = (props) => {
     <div className={styles.box}>
       <p className={styles.name}>{props.name}</p>
       <p className={styles.amount}>{props.amount}</p>
-      <p className={styles.date}>{props.date}</p>
+      <p className={styles.date}>{props.date.split("T")}</p>
       <button className={styles.btn} onClick={handleOpenModal}>
         상세 보기
       </button>
