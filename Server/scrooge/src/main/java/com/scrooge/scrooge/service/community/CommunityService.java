@@ -1,5 +1,6 @@
 package com.scrooge.scrooge.service.community;
 
+import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.domain.community.ArticleGood;
@@ -15,12 +16,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
 
     private final UserRepository userRepository;
+
+    private final FileUploadProperties fileUploadProperties;
 
     // 커뮤니티 글을 등록하는 메서드
     @Transactional
@@ -34,6 +43,22 @@ public class CommunityService {
 
         // 이미지 파일 등록 구현
 
+        // 업로드할 위치 설정
+        String uploadLocation = fileUploadProperties.getUploadLocation();
+
+        // 업로드된 사진의 파일명을 랜덤 UUID로 생성
+        String fileName = UUID.randomUUID().toString() + "_" + img.getOriginalFilename();
+
+        try {
+            // 업로드할 위치에 파일 저장
+            byte[] bytes = img.getBytes();
+            Path filePath = Paths.get(uploadLocation + File.separator + fileName);
+            Files.write(filePath, bytes);
+        } catch (IOException e) { // 파일 저장 중 예외 처리
+            e.printStackTrace();
+        }
+
+        article.setImgAdress(fileName);
 
     }
 }

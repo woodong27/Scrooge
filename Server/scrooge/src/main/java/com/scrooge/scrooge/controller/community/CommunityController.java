@@ -6,6 +6,7 @@ import com.scrooge.scrooge.service.community.CommunityService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,10 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class CommunityController {
 
+
     private final CommunityService communityService;
 
-    @PostMapping
-    public ResponseEntity<?> createArticle(@RequestBody ArticleDto articleDto, @RequestParam("img") MultipartFile img) {
+    @PostMapping(consumes="multipart/form-data")
+    public ResponseEntity<?> createArticle(@RequestBody ArticleDto articleDto, @RequestParam MultipartFile img) {
          communityService.createArticle(articleDto, img);
 
         SuccessResp successResp = new SuccessResp(1);
