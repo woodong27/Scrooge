@@ -26,7 +26,7 @@ const DailyCalcul = () => {
       </div>
       {data.map((item) => (
         <PayList
-          key={item.userId}
+          key={item.id}
           name={item.usedAt}
           amount={item.amount}
           date={item.paidAt.split("T")[1]}
