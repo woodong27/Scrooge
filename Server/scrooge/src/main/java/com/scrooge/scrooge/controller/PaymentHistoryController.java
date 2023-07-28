@@ -29,6 +29,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/payment-history")
 @RequiredArgsConstructor
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PaymentHistoryController {
 
     private final PaymentHistoryService paymentHistoryService;
