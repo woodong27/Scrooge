@@ -1,4 +1,12 @@
 .header {
   font-size: 34px;
-  margin-top: 60px;
+  margin-top: 40px;
+}
+
+.box {
+  overflow-y: scroll;
+  height: 320px;
+}
+.box::-webkit-scrollbar {
+  display: none;
 }
