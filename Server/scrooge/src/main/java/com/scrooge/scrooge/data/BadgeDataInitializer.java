@@ -32,8 +32,8 @@ public class BadgeDataInitializer implements CommandLineRunner {
         };
 
         String[] imgAddresses = {
-                "static/assets/badge/badge1.png", "static/assets/badge/badge2.png", "static/assets/badge/badge3.png",
-                "static/assets/badge/badge4.png", "static/assets/badge/badge5.png", "static/assets/badge/badge6.png"
+                "assets/badge/badge1.png", "assets/badge/badge2.png", "assets/badge/badge3.png",
+                "assets/badge/badge4.png", "assets/badge/badge5.png", "assets/badge/badge6.png"
         };
 
         for (int i = 0; i < badgeNames.length; i++) {

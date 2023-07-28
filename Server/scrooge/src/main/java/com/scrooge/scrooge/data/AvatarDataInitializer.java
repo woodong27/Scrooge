@@ -30,13 +30,13 @@ public class AvatarDataInitializer implements CommandLineRunner {
         };
 
         String[] imgAddresses = {
-                "static/assets/avatars/0.png", "static/assets/avatars/1.png", "static/assets/avatars/2.png",
-                "static/assets/avatars/3.png", "static/assets/avatars/4.png", "static/assets/avatars/5.png",
-                "static/assets/avatars/6.png", "static/assets/avatars/7.png", "static/assets/avatars/8.png",
-                "static/assets/avatars/9.png", "static/assets/avatars/10.png", "static/assets/avatars/11.png",
-                "static/assets/avatars/12.png", "static/assets/avatars/13.png", "static/assets/avatars/14.png",
-                "static/assets/avatars/15.png", "static/assets/avatars/16.png", "static/assets/avatars/17.png",
-                "static/assets/avatars/18.png", "static/assets/avatars/19.png", "static/assets/avatars/20.png"
+                "assets/avatars/0.png", "assets/avatars/1.png", "assets/avatars/2.png",
+                "assets/avatars/3.png", "assets/avatars/4.png", "assets/avatars/5.png",
+                "assets/avatars/6.png", "assets/avatars/7.png", "assets/avatars/8.png",
+                "assets/avatars/9.png", "assets/avatars/10.png", "assets/avatars/11.png",
+                "assets/avatars/12.png", "assets/avatars/13.png", "assets/avatars/14.png",
+                "assets/avatars/15.png", "assets/avatars/16.png", "assets/avatars/17.png",
+                "assets/avatars/18.png", "assets/avatars/19.png", "assets/avatars/20.png"
         };
 
         for (int i = 0; i < names.length; i++) {
