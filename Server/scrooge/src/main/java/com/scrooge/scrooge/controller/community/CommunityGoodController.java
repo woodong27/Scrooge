@@ -2,7 +2,7 @@ package com.scrooge.scrooge.controller.community;
 
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.service.CommunityService;
+import com.scrooge.scrooge.service.community.CommunityGoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CommunityGoodController {
 
-    private final CommunityService communityService;
+    private final CommunityGoodService communityGoodService;
 
     // 환호 기능 구현
     @Operation(summary = "커뮤니티 글 좋아요 등록")
@@ -24,7 +24,7 @@ public class CommunityGoodController {
     public ResponseEntity<?> addCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        communityGoodService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
@@ -34,7 +34,7 @@ public class CommunityGoodController {
     public ResponseEntity<?> cancleCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityService.cancleCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        communityGoodService.cancleCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
@@ -42,7 +42,7 @@ public class CommunityGoodController {
     @Operation(summary = "사용자가 커뮤니티 글을 좋아요 했는지 체크")
     @GetMapping("/like-check")
     public ResponseEntity<?> getCommunityGoodCheck(@RequestBody ArticleGoodDto articleGoodDto) throws Exception {
-        Integer result = communityService.getCommunityGoodCheck(articleGoodDto);
+        Integer result = communityGoodService.getCommunityGoodCheck(articleGoodDto);
         if (result >= 0) return new ResponseEntity<Integer>(result, HttpStatus.OK);
         else throw new Exception();
     }
@@ -51,7 +51,7 @@ public class CommunityGoodController {
     @Operation(summary = "커뮤니티 글 좋아요 전체 수 조회")
     @GetMapping("/like-count/{articleId}")
     public ResponseEntity<?> getCommunityGoodCount(@PathVariable("articleId")Long articleId) {
-        Integer result = communityService.getCommunityGoodCount(articleId);
+        Integer result = communityGoodService.getCommunityGoodCount(articleId);
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
 
