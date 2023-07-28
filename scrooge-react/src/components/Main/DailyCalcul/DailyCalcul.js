@@ -30,7 +30,7 @@ const DailyCalcul = () => {
             key={item.id}
             name={item.usedAt}
             amount={item.amount}
-            date={item.paidAt.split("T")[1]}
+            date={item.paidAt.split("T")[1].split(".")[0]}
             cardName={item.cardName}
           ></PayList>
         ))}
