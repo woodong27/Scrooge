@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useEffect, Fragment, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import Card from "../UI/Card";
@@ -7,6 +7,15 @@ import DailyCalcul from "./DailyCalcul/DailyCalcul";
 
 const Main = (props) => {
   const [isConsum, setIsConsum] = useState(false);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/user/1")
+      .then((resp) => resp.json())
+      .then((data) => setData(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const consumTrueHandler = () => {
     setIsConsum(true);
@@ -18,21 +27,22 @@ const Main = (props) => {
   return (
     <Fragment>
       <Card>
-        {!isConsum && (
+        {!isConsum && data && data.level && data.mainAvatar && (
           <div>
             <div className={styles.header34}>
-              <p>Lv. 3</p>
-              <p>돈그만써</p>
+              <p>Lv. {data.level.level}</p>
+              <p>{data.name}</p>
             </div>
             <div className={styles.box}>
               <img
                 className={styles.img}
-                src={`${process.env.PUBLIC_URL}/Character/${
-                  ~~(Math.random() * 88) + 1
-                }.png`}
+                src={`${process.env.PUBLIC_URL}/Character/${data.mainAvatar.id}.png`}
                 alt="캐릭터"
               />
-              <ProgressBar />
+              <ProgressBar
+                weeklyConsum={data.weeklyConsum}
+                weeklyGoal={data.weeklyGoal}
+              />
             </div>
             <button className={styles.btn} onClick={consumTrueHandler}>
               일일정산
