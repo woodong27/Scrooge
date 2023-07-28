@@ -6,10 +6,7 @@ import com.scrooge.scrooge.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,16 +15,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserService {
+public class MemberService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
-    private final UserOwningAvatarRepository userOwningAvatarRepository;
-    private final UserOwningBadgeRepository userOwningBadgeRepository;
-    private final UserSelectedQuestRepository userSelectedQuestRepository;
+    private final MemberOwningAvatarRepository memberOwningAvatarRepository;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
 
-    public User signUp(SignUpRequestDto signUpRequestDto) {
-        User user = new User();
+    public Member signUp(SignUpRequestDto signUpRequestDto) {
+        Member user = new Member();
         user.setName(signUpRequestDto.getName());
         user.setNickname(signUpRequestDto.getNickname());
         user.setEmail(signUpRequestDto.getEmail());
@@ -42,12 +39,12 @@ public class UserService {
         Level defaultLevel = levelRepository.findById(1L).orElse(null);
         user.setLevel(defaultLevel);
 
-        return userRepository.save(user);
+        return memberRepository.save(user);
     }
 
-    public Optional<UserDto> getUserInfo(Long userId) {
-        return userRepository.findWithRelatedEntitiesById(userId).map(user -> {
-            UserDto userDto = new UserDto();
+    public Optional<MemberDto> getUserInfo(Long memberId) {
+        return memberRepository.findWithRelatedEntitiesById(memberId).map(user -> {
+            MemberDto userDto = new MemberDto();
             userDto.setId(user.getId());
             userDto.setName(user.getName());
             userDto.setNickname(user.getNickname());
@@ -61,20 +58,20 @@ public class UserService {
             userDto.setMainBadge(user.getMainBadge());
             userDto.setMainAvatar(user.getMainAvatar());
 
-            List<UserOwningAvatar> userOwningAvatars = userOwningAvatarRepository.findUserOwningAvatarsById(userId);
-            userDto.setUserOwningAvatars(userOwningAvatars.stream()
-                    .map(UserOwningAvatarDto::new)
+            List<MemberOwningAvatar> userOwningAvatars = memberOwningAvatarRepository.findMemberOwningAvatarsById(memberId);
+            userDto.setMemberOwningAvatars(userOwningAvatars.stream()
+                    .map(MemberOwningAvatarDto::new)
                     .collect(Collectors.toList()));
 
-            List<UserOwningBadge> userOwningBadges = userOwningBadgeRepository.findUserOwningBadgesById(userId);
-            userDto.setUserOwningBadges(userOwningBadges.stream()
-                    .map(UserOwningBadgeDto::new)
+            List<MemberOwningBadge> userOwningBadges = memberOwningBadgeRepository.findMemberOwningBadgesById(memberId);
+            userDto.setMemberOwningBadges(userOwningBadges.stream()
+                    .map(MemberOwningBadgeDto::new)
                     .collect(Collectors.toList()));
 
-            List<UserSelectedQuest> userSelectedQuests = userSelectedQuestRepository.findUserSelectedQuestsById(userId);
+            List<MemberSelectedQuest> userSelectedQuests = memberSelectedQuestRepository.findMemberSelectedQuestsById(memberId);
 //            System.out.println(userSelectedQuests);
-            userDto.setUserSelectedQuests(userSelectedQuests.stream()
-                    .map(UserSelectedQuestDto::new)
+            userDto.setMemberSelectedQuests(userSelectedQuests.stream()
+                    .map(MemberSelectedQuestDto::new)
                     .collect(Collectors.toList()));
 
             return userDto;

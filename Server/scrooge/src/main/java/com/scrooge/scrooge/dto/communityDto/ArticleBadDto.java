@@ -12,13 +12,13 @@ public class ArticleBadDto {
     private Long id;
 
     /* 연결 */
-    private Long userId;
+    private Long memberId;
     private Long articleId;
 
     @Builder
     public ArticleBadDto(ArticleBad articleBad) {
         this.id = articleBad.getId();
-        this.userId = articleBad.getUser().getId();
+        this.memberId = articleBad.getMember().getId();
         this.articleId = articleBad.getArticle().getId();
     }
 

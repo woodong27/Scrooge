@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, Long> {
-    @Query("SELECT pmh FROM PaymentHistory pmh WHERE pmh.user.id = ?1")
-    List<PaymentHistory> findByUserId(Long userId);
-    List<PaymentHistory> findByUserIdAndPaidAtBetween(Long userId, LocalDateTime todayStart, LocalDateTime todayEnd);
-    PaymentHistory findByIdAndUserId(Long paymentHistoryId, Long userId);
+    @Query("SELECT pmh FROM PaymentHistory pmh WHERE pmh.member.id = ?1")
+    List<PaymentHistory> findByMemberId(Long memberId);
+    List<PaymentHistory> findByMemberIdAndPaidAtBetween(Long memberId, LocalDateTime todayStart, LocalDateTime todayEnd);
+    PaymentHistory findByIdAndMemberId(Long paymentHistoryId, Long memberId);
 }

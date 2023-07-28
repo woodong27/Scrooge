@@ -16,12 +16,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedEntityGraph(name = "user.withRelatedEntities", attributeNodes = {
+@NamedEntityGraph(name = "member.withRelatedEntities", attributeNodes = {
         @NamedAttributeNode("mainAvatar"),
         @NamedAttributeNode("mainBadge"),
         @NamedAttributeNode("level")
 })
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,15 +72,15 @@ public class User {
 
     // 사용자가 소유한 아바타 목록
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserOwningAvatar> userOwningAvatars = new ArrayList<>();
+    private List<MemberOwningAvatar> memberOwningAvatars = new ArrayList<>();
 
     // 소비 내역
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserOwningBadge> userOwningBadges = new ArrayList<>();
+    private List<MemberOwningBadge> memberOwningBadgesOwningBadges = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserSelectedQuest> userSelectedQuests = new ArrayList<>();
+    private List<MemberSelectedQuest> memberSelectedQuests = new ArrayList<>();
 }

@@ -19,7 +19,7 @@ public class ArticleDto {
     private LocalDateTime updatedAt;
 
     /*연결*/
-    private Long userId;
+    private Long memberId;
 
     @Builder
     public ArticleDto(Article article) {

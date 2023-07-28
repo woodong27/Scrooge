@@ -1,8 +1,7 @@
 package com.scrooge.scrooge.dto;
 
 import com.scrooge.scrooge.domain.Badge;
-import com.scrooge.scrooge.domain.User;
-import com.scrooge.scrooge.domain.UserOwningBadge;
+import com.scrooge.scrooge.domain.MemberOwningBadge;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +12,14 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserOwningBadgeDto {
+public class MemberOwningBadgeDto {
 
     private Long id;
-//    private User user;
     private Badge badge;
     private LocalDateTime acquiredAt;
 
     @Builder
-    public UserOwningBadgeDto(UserOwningBadge userOwningBadge) {
+    public MemberOwningBadgeDto(MemberOwningBadge userOwningBadge) {
         this.id = userOwningBadge.getId();
 //        this.user = userOwningBadge.getUser();
         this.badge = userOwningBadge.getBadge();
