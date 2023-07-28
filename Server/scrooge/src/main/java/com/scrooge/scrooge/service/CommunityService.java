@@ -54,5 +54,12 @@ public class CommunityService {
         return articleBadRepository.save(articleBad);
     }
 
+    // Article 싫어요를 취소하는 메서드
+    public void cancelCommunityBad(Long articleId, Long userId) {
+        ArticleBad articleBad = articleBadRepository.findByArticleIdAndUserId(articleId, userId);
 
+        if(articleBad != null) {
+            articleBadRepository.delete(articleBad);
+        }
+    }
 }

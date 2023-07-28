@@ -4,6 +4,7 @@ import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.domain.community.ArticleGood;
 import com.scrooge.scrooge.dto.SuccessResp;
+import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import com.scrooge.scrooge.service.CommunityService;
@@ -33,29 +34,38 @@ public class CommunityController {
     public ResponseEntity<?> addCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        ArticleGood articleGood = communityService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        communityService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
     // 환호 취소 구현
-    @DeleteMapping("/like/{articleId}/{userId}")
-    public ResponseEntity<?> cancleCommunityGood(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
+    @DeleteMapping("/like")
+    public ResponseEntity<?> cancleCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityService.cancleCommunityGood(articleId, userId);
+        communityService.cancleCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
     // 야유 기능 구현
-    @PostMapping("/unlike/{articleId}/{userId}")
-    public ResponseEntity<?> addCommunityBad(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
+    @PostMapping("/unlike")
+    public ResponseEntity<?> addCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        ArticleBad articleBad = communityService.addCommunityBad(articleId, userId);
+        communityService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
+
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
     // 아유 기능 취소 구현
+    @DeleteMapping("/unlike")
+    public ResponseEntity<?> cancelCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
+
+        SuccessResp successResp = new SuccessResp(1);
+        communityService.cancelCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
+
+        return new ResponseEntity<>(successResp, HttpStatus.OK);
+    }
 
 
 }
