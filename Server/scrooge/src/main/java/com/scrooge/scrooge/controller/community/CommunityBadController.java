@@ -2,7 +2,7 @@ package com.scrooge.scrooge.controller.community;
 
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
-import com.scrooge.scrooge.service.CommunityService;
+import com.scrooge.scrooge.service.community.CommunityBadService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CommunityBadController {
 
-    private final CommunityService communityService;
+    private final CommunityBadService communityBadService;
 
     // 야유 기능 구현
     @PostMapping("/unlike")
     public ResponseEntity<?> addCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
+        communityBadService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
 
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
@@ -32,7 +32,7 @@ public class CommunityBadController {
     public ResponseEntity<?> cancelCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityService.cancelCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
+        communityBadService.cancelCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
 
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
@@ -40,7 +40,7 @@ public class CommunityBadController {
     // 사용자가 아유를 했는지 체크하기
     @GetMapping("/unlike-check")
     public ResponseEntity<?> getCommunityBadCheck(@RequestBody ArticleBadDto articleBadDto) throws Exception{
-        Integer result = communityService.getCommunityBadCheck(articleBadDto);
+        Integer result = communityBadService.getCommunityBadCheck(articleBadDto);
         if(result >= 0) return new ResponseEntity<Integer>(result, HttpStatus.OK);
         else throw new Exception();
     }
@@ -48,7 +48,7 @@ public class CommunityBadController {
     // 글 전체 싫어요 수 조회
     @GetMapping("/unlike-count/{articleId}")
     public ResponseEntity<?> getCommunityBadCount(@PathVariable("articleId")Long articleId) {
-        Integer result = communityService.getCommunityBadCount(articleId);
+        Integer result = communityBadService.getCommunityBadCount(articleId);
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
 }
