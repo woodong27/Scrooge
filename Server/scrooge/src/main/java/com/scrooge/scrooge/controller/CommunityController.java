@@ -29,11 +29,11 @@ public class CommunityController {
     /* 환호/야유 기능 구현 */
 
     // 환호 기능 구현
-    @PostMapping("/like/{articleId}/{userId}")
-    public ResponseEntity<?> addCommunityGood(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
+    @PostMapping("/like")
+    public ResponseEntity<?> addCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        ArticleGood articleGood = communityService.addCommunityGood(articleId, userId);
+        ArticleGood articleGood = communityService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
@@ -54,5 +54,8 @@ public class CommunityController {
         ArticleBad articleBad = communityService.addCommunityBad(articleId, userId);
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
+
+    // 아유 기능 취소 구현
+
 
 }
