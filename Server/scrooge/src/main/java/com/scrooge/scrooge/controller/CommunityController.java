@@ -1,6 +1,7 @@
 package com.scrooge.scrooge.controller;
 
 import com.scrooge.scrooge.domain.community.Article;
+import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.domain.community.ArticleGood;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
@@ -27,11 +28,21 @@ public class CommunityController {
 
     /* 환호/야유 기능 구현 */
 
+    // 환호 기능 구현
     @PostMapping("/like/{articleId}/{userId}")
     public ResponseEntity<?> addCommunityGood(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
 
         SuccessResp successResp = new SuccessResp(1);
         ArticleGood articleGood = communityService.addCommunityGood(articleId, userId);
+        return new ResponseEntity<>(successResp, HttpStatus.OK);
+    }
+
+    // 야유 기능 구현
+    @PostMapping("/unlike/{articleId}/{userId}")
+    public ResponseEntity<?> addCommunityBad(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
+
+        SuccessResp successResp = new SuccessResp(1);
+        ArticleBad articleBad = communityService.addCommunityBad(articleId, userId);
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
