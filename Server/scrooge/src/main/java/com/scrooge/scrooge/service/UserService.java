@@ -1,15 +1,19 @@
 package com.scrooge.scrooge.service;
 
-import com.scrooge.scrooge.domain.Level;
-import com.scrooge.scrooge.domain.User;
-import com.scrooge.scrooge.dto.SignUpRequestDto;
-import com.scrooge.scrooge.repository.LevelRepository;
-import com.scrooge.scrooge.repository.UserRepository;
+import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.dto.*;
+import com.scrooge.scrooge.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +22,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final LevelRepository levelRepository;
+    private final UserOwningAvatarRepository userOwningAvatarRepository;
+    private final UserOwningBadgeRepository userOwningBadgeRepository;
+    private final UserSelectedQuestRepository userSelectedQuestRepository;
 
     public User signUp(SignUpRequestDto signUpRequestDto) {
         User user = new User();
@@ -36,5 +43,56 @@ public class UserService {
         user.setLevel(defaultLevel);
 
         return userRepository.save(user);
+    }
+
+//    public Optional<UserDto> userInfo(Long userId) {
+//        return userRepository.findRelatedEntitiesById(userId).map(user -> {
+//            MainPageDto mainPageDto = new MainPageDto();
+//            mainPageDto.setNickname(user.getNickname());
+//            mainPageDto.setExp(user.getExp());
+//            mainPageDto.setWeeklyConsum(user.getWeeklyConsum());
+//            mainPageDto.setWeeklyGoal(user.getWeeklyGoal());
+//            mainPageDto.setMainAvatar(user.getMainAvatar());
+//            mainPageDto.setMainBadge(user.getMainBadge());
+//            mainPageDto.setLevel(user.getLevel());
+//            return mainPageDto;
+//        });
+//    }
+
+    public Optional<UserDto> getUserInfo(Long userId) {
+        return userRepository.findWithRelatedEntitiesById(userId).map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setName(user.getName());
+            userDto.setNickname(user.getNickname());
+            userDto.setEmail(user.getEmail());
+            userDto.setExp(user.getExp());
+            userDto.setStreak(user.getStreak());
+            userDto.setWeeklyGoal(user.getWeeklyGoal());
+            userDto.setWeeklyConsum(user.getWeeklyConsum());
+            userDto.setJoinedAt(user.getJoinedAt());
+            userDto.setLevel(user.getLevel());
+            userDto.setMainBadge(user.getMainBadge());
+            userDto.setMainAvatar(user.getMainAvatar());
+
+            List<UserOwningAvatar> userOwningAvatars = userOwningAvatarRepository.findUserOwningAvatarsById(userId);
+            userDto.setUserOwningAvatars(userOwningAvatars.stream()
+                    .map(UserOwningAvatarDto::new)
+                    .collect(Collectors.toList()));
+
+            List<UserOwningBadge> userOwningBadges = userOwningBadgeRepository.findUserOwningBadgesById(userId);
+            System.out.println(userOwningBadges);
+            userDto.setUserOwningBadges(userOwningBadges.stream()
+                    .map(UserOwningBadgeDto::new)
+                    .collect(Collectors.toList()));
+
+            List<UserSelectedQuest> userSelectedQuests = userSelectedQuestRepository.findUserSelectedQuestsById(userId);
+            System.out.println(userSelectedQuests);
+            userDto.setUserSelectedQuests(userSelectedQuests.stream()
+                    .map(UserSelectedQuestDto::new)
+                    .collect(Collectors.toList()));
+
+            return userDto;
+        });
     }
 }
