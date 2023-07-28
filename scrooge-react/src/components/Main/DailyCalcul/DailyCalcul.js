@@ -24,15 +24,17 @@ const DailyCalcul = () => {
       <div className={styles.header} id="date">
         {getCurrentDate()}
       </div>
-      {data.map((item) => (
-        <PayList
-          key={item.id}
-          name={item.usedAt}
-          amount={item.amount}
-          date={item.paidAt.split("T")[1]}
-          cardName={item.cardName}
-        ></PayList>
-      ))}
+      <div className={styles.box}>
+        {data.map((item) => (
+          <PayList
+            key={item.id}
+            name={item.usedAt}
+            amount={item.amount}
+            date={item.paidAt.split("T")[1]}
+            cardName={item.cardName}
+          ></PayList>
+        ))}
+      </div>
     </div>
   );
 };
