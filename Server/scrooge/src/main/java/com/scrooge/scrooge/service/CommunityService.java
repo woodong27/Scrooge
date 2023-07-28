@@ -34,6 +34,15 @@ public class CommunityService {
         return articleGoodRepository.save(articleGood);
     }
 
+    // Article 좋아요 취소를 구현하는 메서드
+    @Transactional
+    public void cancleCommunityGood(Long articleId, Long userId) {
+        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndUserId(articleId, userId);
+        if(articleGood != null) {
+            articleGoodRepository.delete(articleGood);
+        }
+    }
+
     // Article 싫어요를 구현하는 메서드
     @Transactional
     public ArticleBad addCommunityBad(Long articleId, Long userId) {
@@ -44,4 +53,6 @@ public class CommunityService {
 
         return articleBadRepository.save(articleBad);
     }
+
+
 }

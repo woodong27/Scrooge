@@ -37,6 +37,15 @@ public class CommunityController {
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
+    // 환호 취소 구현
+    @DeleteMapping("/like/{articleId}/{userId}")
+    public ResponseEntity<?> cancleCommunityGood(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
+
+        SuccessResp successResp = new SuccessResp(1);
+        communityService.cancleCommunityGood(articleId, userId);
+        return new ResponseEntity<>(successResp, HttpStatus.OK);
+    }
+
     // 야유 기능 구현
     @PostMapping("/unlike/{articleId}/{userId}")
     public ResponseEntity<?> addCommunityBad(@PathVariable("articleId") Long articleId, @PathVariable("userId") Long userId) {
