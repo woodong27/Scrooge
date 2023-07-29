@@ -8,15 +8,15 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-public class UserSelectedQuest {
+public class MemberSelectedQuest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
     
     // 직렬화 안되고 에러뜨던거 EAGER로 바꾸니까 해결됐음
     @ManyToOne(fetch = FetchType.EAGER)

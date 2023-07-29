@@ -1,11 +1,10 @@
 package com.scrooge.scrooge.domain.community;
 
+import com.scrooge.scrooge.domain.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.scrooge.scrooge.domain.User;
 
 @Entity
 @Table(name = "article_good")
@@ -19,8 +18,8 @@ public class ArticleGood {
 
     /* 연결 */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")

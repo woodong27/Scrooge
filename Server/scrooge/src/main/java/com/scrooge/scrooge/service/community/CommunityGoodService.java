@@ -2,7 +2,7 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleGood;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.repository.UserRepository;
+import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class CommunityGoodService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final ArticleGoodRepository articleGoodRepository;
 
@@ -23,10 +23,10 @@ public class CommunityGoodService {
 
     // Article 좋아요를 구현하는 메서드
     @Transactional
-    public ArticleGood addCommunityGood(Long articleId, Long userId) {
+    public ArticleGood addCommunityGood(Long articleId, Long memberId) {
         ArticleGood articleGood = new ArticleGood();
 
-        articleGood.setUser(userRepository.findById(userId).orElse(null));
+        articleGood.setMember(memberRepository.findById(memberId).orElse(null));
         articleGood.setArticle(articleRepository.findById(articleId).orElse(null));
 
         return articleGoodRepository.save(articleGood);
@@ -34,8 +34,8 @@ public class CommunityGoodService {
 
     // Article 좋아요 취소를 구현하는 메서드
     @Transactional
-    public void cancleCommunityGood(Long articleId, Long userId) {
-        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndUserId(articleId, userId);
+    public void cancleCommunityGood(Long articleId, Long memberId) {
+        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndMemberId(articleId, memberId);
         if(articleGood != null) {
             articleGoodRepository.delete(articleGood);
         }
@@ -43,7 +43,7 @@ public class CommunityGoodService {
 
     // 사용자가 Article을 좋아요 했는지 검사하는 메서드
     public Integer getCommunityGoodCheck(ArticleGoodDto articleGoodDto) {
-        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndUserId(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndMemberId(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
         if (articleGood != null) return 1;
         else return 0;
     }

@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-public class UserOwningBadge {
+public class MemberOwningBadge {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "badge_id")
