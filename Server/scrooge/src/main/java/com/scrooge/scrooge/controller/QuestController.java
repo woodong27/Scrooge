@@ -1,6 +1,5 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.domain.Quest;
 import com.scrooge.scrooge.dto.QuestDto;
 import com.scrooge.scrooge.service.QuestService;
 import io.swagger.v3.oas.annotations.Operation;

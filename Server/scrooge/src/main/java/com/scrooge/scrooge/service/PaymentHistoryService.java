@@ -38,7 +38,7 @@ public class PaymentHistoryService {
     }
 
     // userId에 따른 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByUserId(Long memberId) {
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId) {
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
         return paymentHistories.stream()
                 .map(PaymentHistoryDto::new)
@@ -46,7 +46,7 @@ public class PaymentHistoryService {
     }
 
     // userId의 오늘 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByUserIdToday(Long memberId) {
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberIdToday(Long memberId) {
         LocalDateTime todayStart = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
 

@@ -42,7 +42,7 @@ public class MemberService {
         return memberRepository.save(user);
     }
 
-    public Optional<MemberDto> getUserInfo(Long memberId) {
+    public Optional<MemberDto> getMemberInfo(Long memberId) {
         return memberRepository.findWithRelatedEntitiesById(memberId).map(user -> {
             MemberDto userDto = new MemberDto();
             userDto.setId(user.getId());
