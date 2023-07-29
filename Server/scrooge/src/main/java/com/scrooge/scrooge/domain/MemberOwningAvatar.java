@@ -9,10 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_owning_avatar")
+@Table(name = "member_owning_avatar")
 @Getter @Setter
 @NoArgsConstructor
-public class UserOwningAvatar {
+public class MemberOwningAvatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +22,10 @@ public class UserOwningAvatar {
     @CreatedDate
     LocalDateTime acquiredAt; //습득 날짜
 
-//    @Column(name = "is_main_avatar")
-//    private Boolean isMainAvatar = false; //대표이미지 여부
-
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_id")

@@ -24,7 +24,7 @@ public class CommunityGoodController {
     public ResponseEntity<?> addCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityGoodService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        communityGoodService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 
@@ -34,7 +34,7 @@ public class CommunityGoodController {
     public ResponseEntity<?> cancleCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityGoodService.cancleCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getUserId());
+        communityGoodService.cancleCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
 

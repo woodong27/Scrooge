@@ -2,7 +2,7 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
-import com.scrooge.scrooge.repository.UserRepository;
+import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,24 +14,24 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class CommunityBadService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final ArticleBadRepository articleBadRepository;
 
     // Article 싫어요를 구현하는 메서드
     @Transactional
-    public ArticleBad addCommunityBad(Long articleId, Long userId) {
+    public ArticleBad addCommunityBad(Long articleId, Long memberId) {
         ArticleBad articleBad = new ArticleBad();
 
-        articleBad.setUser(userRepository.findById(userId).orElse(null));
+        articleBad.setMember(memberRepository.findById(memberId).orElse(null));
         articleBad.setArticle(articleRepository.findById(articleId).orElse(null));
 
         return articleBadRepository.save(articleBad);
     }
 
     // Article 싫어요를 취소하는 메서드
-    public void cancelCommunityBad(Long articleId, Long userId) {
-        ArticleBad articleBad = articleBadRepository.findByArticleIdAndUserId(articleId, userId);
+    public void cancelCommunityBad(Long articleId, Long memberId) {
+        ArticleBad articleBad = articleBadRepository.findByArticleIdAndMemberId(articleId, memberId);
 
         if(articleBad != null) {
             articleBadRepository.delete(articleBad);
@@ -40,7 +40,7 @@ public class CommunityBadService {
 
     // 사용자가 Article 싫어요를 했는지 검사하는 메서드
     public Integer getCommunityBadCheck(ArticleBadDto articleBadDto) {
-        ArticleBad articleBad = articleBadRepository.findByArticleIdAndUserId(articleBadDto.getArticleId(), articleBadDto.getUserId());
+        ArticleBad articleBad = articleBadRepository.findByArticleIdAndMemberId(articleBadDto.getArticleId(), articleBadDto.getMemberId());
 
         if(articleBad != null) return 1;
         else return 0;
