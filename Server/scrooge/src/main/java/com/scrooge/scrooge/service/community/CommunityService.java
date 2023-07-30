@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -89,5 +90,29 @@ public class CommunityService {
                     return articleDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    // 커뮤니티 글을 상세 조회하는 API
+    public ArticleDto getCommunityArticle(Long articleId) throws IllegalAccessException {
+        Optional<Article> article = articleRepository.findById(articleId);
+
+        if(article.isPresent()) {
+            ArticleDto articleDto = new ArticleDto();
+            articleDto.setId(article.get().getId());
+            articleDto.setContent(article.get().getContent());
+            articleDto.setImgAdress(article.get().getImgAdress());
+            articleDto.setCreatedAt(article.get().getCreatedAt());
+
+            // user 관련 정보
+            articleDto.setUserId(article.get().getUser().getId()); // 필요X?
+            articleDto.setNickname(article.get().getUser().getNickname());
+            articleDto.setAvatarImgAddress(article.get().getUser().getMainAvatar().getImgAddress());
+
+            return articleDto;
+        }
+        else {
+            throw new IllegalAccessException("Article not found with ID: " + articleId);
+        }
+
     }
 }

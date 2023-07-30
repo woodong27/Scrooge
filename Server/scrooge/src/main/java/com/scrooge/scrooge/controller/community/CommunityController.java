@@ -38,4 +38,11 @@ public class CommunityController {
         return ResponseEntity.ok(articleDtos);
     }
 
+    // 커뮤니티 글 상세 조회
+    @GetMapping("/{articleId}")
+    public ResponseEntity<?> getCommunityArticle(@PathVariable("articleId")Long articleId) throws IllegalAccessException {
+        ArticleDto articleDto = communityService.getCommunityArticle(articleId);
+        return ResponseEntity.ok(articleDto);
+    }
+
 }
