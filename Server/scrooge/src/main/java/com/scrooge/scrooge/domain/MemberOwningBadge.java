@@ -1,5 +1,6 @@
 package com.scrooge.scrooge.domain;
 
+import com.scrooge.scrooge.domain.member.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

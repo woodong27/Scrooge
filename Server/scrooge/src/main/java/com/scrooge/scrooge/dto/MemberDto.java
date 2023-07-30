@@ -1,6 +1,7 @@
 package com.scrooge.scrooge.dto;
 
 import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.domain.member.Member;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,9 +31,9 @@ public class MemberDto {
 
     @Builder
     public MemberDto(Member member,
-                   List<MemberOwningAvatarDto> memberOwningAvatars
-                   ,List<MemberOwningBadgeDto> memberOwningBadges
-                   ,List<MemberSelectedQuestDto> memberSelectedQuests) {
+                     List<MemberOwningAvatarDto> memberOwningAvatars
+                   , List<MemberOwningBadgeDto> memberOwningBadges
+                   , List<MemberSelectedQuestDto> memberSelectedQuests) {
         this.id = member.getId();
         this.name = member.getName();
         this.nickname = member.getNickname();

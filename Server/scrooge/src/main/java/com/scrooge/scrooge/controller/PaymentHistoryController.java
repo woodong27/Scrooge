@@ -1,6 +1,6 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.domain.Member;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;

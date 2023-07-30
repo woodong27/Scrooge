@@ -1,5 +1,6 @@
-package com.scrooge.scrooge.domain;
+package com.scrooge.scrooge.domain.member;
 
+import com.scrooge.scrooge.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

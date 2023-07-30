@@ -1,6 +1,6 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.domain.Member;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.MemberDto;
 import com.scrooge.scrooge.dto.SignUpRequestDto;
 import com.scrooge.scrooge.service.MemberService;

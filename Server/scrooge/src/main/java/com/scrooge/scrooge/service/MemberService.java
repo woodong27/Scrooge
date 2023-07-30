@@ -1,9 +1,11 @@
 package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.*;
 import com.scrooge.scrooge.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,24 +24,26 @@ public class MemberService {
     private final MemberOwningAvatarRepository memberOwningAvatarRepository;
     private final MemberOwningBadgeRepository memberOwningBadgeRepository;
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Member signUp(SignUpRequestDto signUpRequestDto) {
-        Member user = new Member();
-        user.setName(signUpRequestDto.getName());
-        user.setNickname(signUpRequestDto.getNickname());
-        user.setEmail(signUpRequestDto.getEmail());
-        user.setPassword(signUpRequestDto.getPassword());
+        Member member = new Member();
+        member.setName(signUpRequestDto.getName());
+        member.setNickname(signUpRequestDto.getNickname());
+        member.setEmail(signUpRequestDto.getEmail());
 
-        user.setExp(0);
-        user.setStreak(0);
-        user.setWeeklyConsum(0);
-        user.setWeeklyGoal(0);
-        user.setJoinedAt(LocalDateTime.now());
+        member.setPassword(bCryptPasswordEncoder.encode(signUpRequestDto.getPassword()));
+
+        member.setExp(0);
+        member.setStreak(0);
+        member.setWeeklyConsum(0);
+        member.setWeeklyGoal(0);
+        member.setJoinedAt(LocalDateTime.now());
 
         Level defaultLevel = levelRepository.findById(1L).orElse(null);
-        user.setLevel(defaultLevel);
+        member.setLevel(defaultLevel);
 
-        return memberRepository.save(user);
+        return memberRepository.save(member);
     }
 
     public Optional<MemberDto> getMemberInfo(Long memberId) {
