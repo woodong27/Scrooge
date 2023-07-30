@@ -12,6 +12,7 @@ import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +41,6 @@ public class CommunityService {
 
         Article article = new Article();
 
-        article.setTitle(articleDto.getTitle());
         article.setContent(articleDto.getContent());
         article.setUser(userRepository.findById(articleDto.getUserId()).orElse(null));
 
@@ -65,5 +67,27 @@ public class CommunityService {
 
         articleRepository.save(article); // DB에 article 저장
 
+    }
+
+    // 커뮤니티 전체 글을 조회하는 API
+    public List<ArticleDto> getAllCommunityArticles() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        List<Article> articles = articleRepository.findAll(sort);
+        return articles.stream()
+                .map(article -> {
+                    ArticleDto articleDto = new ArticleDto();
+                    articleDto.setId(article.getId());
+                    articleDto.setContent(article.getContent());
+                    articleDto.setImgAdress(article.getImgAdress());
+                    articleDto.setCreatedAt(article.getCreatedAt()); //필요X?
+
+                    // user 관련 정보
+                    articleDto.setUserId(article.getUser().getId()); //필요X?
+                    articleDto.setNickname(article.getUser().getNickname());
+                    articleDto.setAvatarImgAddress(article.getUser().getMainAvatar().getImgAddress());
+
+                    return articleDto;
+                })
+                .collect(Collectors.toList());
     }
 }

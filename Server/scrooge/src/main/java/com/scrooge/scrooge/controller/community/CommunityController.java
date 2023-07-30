@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 @Tag(name="Community", description = "커뮤니티 API")
 @RestController
@@ -27,6 +29,13 @@ public class CommunityController {
 
         SuccessResp successResp = new SuccessResp(1);
         return new ResponseEntity<>(successResp, HttpStatus.OK);
+    }
+
+    // 커뮤니티 글 전체 조회
+    @GetMapping
+    public ResponseEntity<?> getAllCommunityArticles() {
+        List<ArticleDto> articleDtos = communityService.getAllCommunityArticles();
+        return ResponseEntity.ok(articleDtos);
     }
 
 }
