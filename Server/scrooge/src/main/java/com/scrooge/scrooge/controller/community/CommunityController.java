@@ -22,7 +22,7 @@ public class CommunityController {
     private final CommunityService communityService;
 
     @PostMapping(consumes="multipart/form-data")
-    public ResponseEntity<?> createArticle(@RequestBody ArticleDto articleDto, @RequestParam MultipartFile img) {
+    public ResponseEntity<?> createArticle(ArticleDto articleDto, @RequestParam MultipartFile img) {
          communityService.createArticle(articleDto, img);
 
         SuccessResp successResp = new SuccessResp(1);

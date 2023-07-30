@@ -28,6 +28,7 @@ import java.util.UUID;
 public class CommunityService {
 
     private final UserRepository userRepository;
+    private final ArticleRepository articleRepository;
 
     private final FileUploadProperties fileUploadProperties;
 
@@ -49,16 +50,20 @@ public class CommunityService {
         // 업로드된 사진의 파일명을 랜덤 UUID로 생성
         String fileName = UUID.randomUUID().toString() + "_" + img.getOriginalFilename();
 
+        Path filePath = null;
+
         try {
             // 업로드할 위치에 파일 저장
             byte[] bytes = img.getBytes();
-            Path filePath = Paths.get(uploadLocation + File.separator + fileName);
+            filePath = Paths.get(uploadLocation + File.separator + fileName);
             Files.write(filePath, bytes);
         } catch (IOException e) { // 파일 저장 중 예외 처리
             e.printStackTrace();
         }
 
-        article.setImgAdress(fileName);
+        article.setImgAdress(filePath.toString());
+
+        articleRepository.save(article); // DB에 article 저장
 
     }
 }
