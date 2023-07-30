@@ -3,6 +3,7 @@ package com.scrooge.scrooge.controller.community;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
 import com.scrooge.scrooge.service.community.CommunityService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class CommunityController {
 
     private final CommunityService communityService;
 
+    @Operation(summary = "커뮤니티 글 등록")
     @PostMapping(consumes="multipart/form-data")
     public ResponseEntity<?> createArticle(ArticleDto articleDto, @RequestParam MultipartFile img) {
          communityService.createArticle(articleDto, img);
@@ -32,6 +34,7 @@ public class CommunityController {
     }
 
     // 커뮤니티 글 전체 조회
+    @Operation(summary = "커뮤니티 글 전체 조회")
     @GetMapping
     public ResponseEntity<?> getAllCommunityArticles() {
         List<ArticleDto> articleDtos = communityService.getAllCommunityArticles();
@@ -39,6 +42,7 @@ public class CommunityController {
     }
 
     // 커뮤니티 글 상세 조회
+    @Operation(summary = "커뮤니티 글 상세 조회")
     @GetMapping("/{articleId}")
     public ResponseEntity<?> getCommunityArticle(@PathVariable("articleId")Long articleId) throws IllegalAccessException {
         ArticleDto articleDto = communityService.getCommunityArticle(articleId);
@@ -46,6 +50,7 @@ public class CommunityController {
     }
 
     // 커뮤니티 글 삭제
+    @Operation(summary = "커뮤니티 글 삭제")
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> deleteCommunityArticle(@PathVariable("articleId")Long articleId) {
         communityService.deleteCommunityArticle(articleId);
