@@ -45,4 +45,11 @@ public class CommunityController {
         return ResponseEntity.ok(articleDto);
     }
 
+    // 커뮤니티 글 삭제
+    @DeleteMapping("/{articleId}")
+    public ResponseEntity<?> deleteCommunityArticle(@PathVariable("articleId")Long articleId) {
+        communityService.deleteCommunityArticle(articleId);
+        return ResponseEntity.ok("DELETE COMMUNITY OK");
+    }
+
 }

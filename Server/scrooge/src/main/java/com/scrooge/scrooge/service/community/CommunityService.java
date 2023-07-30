@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -114,5 +115,17 @@ public class CommunityService {
             throw new IllegalAccessException("Article not found with ID: " + articleId);
         }
 
+    }
+
+    // 커뮤니티 글을 삭제하는 API
+    public void deleteCommunityArticle(Long articleId) {
+        Optional<Article> article = articleRepository.findById(articleId);
+
+        if(article.isPresent()) {
+            Article article1 = article.get();
+            articleRepository.delete(article1);
+        } else {
+            throw new NotFoundException("해당 글이 존재하지 않습니다.");
+        }
     }
 }
