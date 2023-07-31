@@ -15,7 +15,6 @@ public class ArticleDto {
     private String content;
     private String imgAdress;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     /*연결*/
     private Long userId;
@@ -31,7 +30,6 @@ public class ArticleDto {
         this.content = article.getContent();
         this.imgAdress = article.getImgAdress();
         this.createdAt = article.getCreatedAt();
-        this.updatedAt = article.getUpdatedAt();
         this.userId = article.getUser().getId();
     }
 

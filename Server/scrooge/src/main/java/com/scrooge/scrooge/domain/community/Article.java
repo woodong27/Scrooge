@@ -29,10 +29,6 @@ public class Article {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
     /* 연결 */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
