@@ -2,7 +2,7 @@ package com.scrooge.scrooge.repository;
 
 import com.scrooge.scrooge.domain.Avatar;
 import com.scrooge.scrooge.domain.Level;
-import com.scrooge.scrooge.domain.User;
+import com.scrooge.scrooge.domain.member.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
 
     @Autowired
     LevelRepository levelRepository;
@@ -22,7 +22,7 @@ public class UserRepositoryTest {
 
     @Test
     public void createUser() {
-        User user = new User();
+        Member user = new Member();
         user.setName("a");
         user.setNickname("a");
         user.setEmail("test@test.com");
@@ -45,9 +45,9 @@ public class UserRepositoryTest {
         avatar = avatarRepository.save(avatar);
         user.setMainAvatar(avatar);
 
-        userRepository.save(user);
+        memberRepository.save(user);
 
-        User foundUser = userRepository.findById(user.getId()).orElse(null);
+        Member foundUser = memberRepository.findById(user.getId()).orElse(null);
         assertNotNull(foundUser);
         assertEquals(user.getName(), foundUser.getName());
         assertEquals(user.getNickname(), foundUser.getNickname());

@@ -11,5 +11,13 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @EntityGraph(attributePaths = {"mainAvatar", "mainBadge", "level"})
-    Optional<Member> findWithRelatedEntitiesById(Long memberId);
+    Optional<Member> findWithRelatedEntitiesByEmail(String email);
+
+    Optional<Member> findByEmail(String email);
+
+    Optional<Member> findByNickname(String nickname);
+
+    boolean existsMemberByEmail(String email);
+
+    boolean existsMemberByNickname(String nickname);
 }

@@ -2,6 +2,7 @@ package com.scrooge.scrooge.dto;
 
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.domain.member.Role;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class MemberDto {
     private Level level;
     private Avatar mainAvatar;
     private Badge mainBadge;
+    private Role role;
     private List<MemberOwningAvatarDto> memberOwningAvatars;
     private List<MemberOwningBadgeDto> memberOwningBadges;
     private List<MemberSelectedQuestDto> memberSelectedQuests;
