@@ -33,5 +33,12 @@ public class CommunityCommentController {
         return ResponseEntity.ok(articleCommentDtoList);
     }
 
+    @Operation(summary = "커뮤니티 댓글 수정")
+    @PutMapping
+    public ResponseEntity<?> updateCommunityComment(@RequestBody ArticleCommentDto articleCommentDto) {
+        ArticleCommentDto articleCommentDto1 = communityCommentService.updateCommunityComment(articleCommentDto);
+        return ResponseEntity.ok(articleCommentDto1);
+    }
+
 
 }

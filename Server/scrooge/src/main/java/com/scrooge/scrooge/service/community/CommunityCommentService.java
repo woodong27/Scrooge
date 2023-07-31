@@ -6,11 +6,14 @@ import com.scrooge.scrooge.repository.UserRepository;
 import com.scrooge.scrooge.repository.community.ArticleCommentRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +47,6 @@ public class CommunityCommentService {
                     ArticleCommentDto articleCommentDto = new ArticleCommentDto();
                     articleCommentDto.setId(articleComment.getId());
                     articleCommentDto.setContent(articleComment.getContent());
-                    articleCommentDto.setCreatedAt(articleComment.getCreatedAt());
 
                     // user 관련 정보
                     articleCommentDto.setUserId(articleComment.getUser().getId()); // 필요 X?
@@ -57,5 +59,20 @@ public class CommunityCommentService {
                     return articleCommentDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    // 댓글 수정하는 API
+    public ArticleCommentDto updateCommunityComment(ArticleCommentDto articleCommentDto) {
+        Optional<ArticleComment> articleComment = articleCommentRepository.findById(articleCommentDto.getId());
+        if(articleComment.isEmpty()) {
+            throw new NotFoundException(articleCommentDto.getId() + "의 ID를 가진 댓글을 찾을 수 없습니다.");
+        }
+        // 새로운 정보 업데이트
+        articleComment.get().setContent(articleCommentDto.getContent());
+
+        // DB에 새로운 댓글 저장
+        ArticleComment updatedComment = articleCommentRepository.save(articleComment.get());
+        return new ArticleCommentDto(updatedComment);
+
     }
 }
