@@ -85,9 +85,9 @@ public class CommunityService {
                     articleDto.setCreatedAt(article.getCreatedAt()); //필요X?
 
                     // user 관련 정보
-                    articleDto.setUserId(article.getUser().getId()); //필요X?
-                    articleDto.setNickname(article.getUser().getNickname());
-                    articleDto.setAvatarImgAddress(article.getUser().getMainAvatar().getImgAddress());
+                    articleDto.setMemberId(article.getMember().getId()); //필요X?
+                    articleDto.setNickname(article.getMember().getNickname());
+                    articleDto.setAvatarImgAddress(article.getMember().getMainAvatar().getImgAddress());
 
                     return articleDto;
                 })
@@ -106,9 +106,9 @@ public class CommunityService {
             articleDto.setCreatedAt(article.get().getCreatedAt());
 
             // user 관련 정보
-            articleDto.setUserId(article.get().getUser().getId()); // 필요X?
-            articleDto.setNickname(article.get().getUser().getNickname());
-            articleDto.setAvatarImgAddress(article.get().getUser().getMainAvatar().getImgAddress());
+            articleDto.setMemberId(article.get().getMember().getId()); // 필요X?
+            articleDto.setNickname(article.get().getMember().getNickname());
+            articleDto.setAvatarImgAddress(article.get().getMember().getMainAvatar().getImgAddress());
 
             return articleDto;
         }
