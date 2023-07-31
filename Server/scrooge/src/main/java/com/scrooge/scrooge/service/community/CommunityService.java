@@ -117,6 +117,15 @@ public class CommunityService {
 
     }
 
+    // 커뮤니티 글을 수정하는 API
+    public void updateCommunityArticle(ArticleDto articleDto) {
+        Optional<Article> article = articleRepository.findById(articleDto.getId());
+
+        // 변경사항 반영 => 내용만 수정 가능
+        article.get().setContent(articleDto.getContent());
+        articleRepository.save(article.get());
+    }
+
     // 커뮤니티 글을 삭제하는 API
     public void deleteCommunityArticle(Long articleId) {
         Optional<Article> article = articleRepository.findById(articleId);
@@ -128,4 +137,6 @@ public class CommunityService {
             throw new NotFoundException("해당 글이 존재하지 않습니다.");
         }
     }
+
+
 }

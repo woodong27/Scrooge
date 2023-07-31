@@ -6,6 +6,7 @@ import com.scrooge.scrooge.service.community.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,14 @@ public class CommunityController {
     public ResponseEntity<?> getCommunityArticle(@PathVariable("articleId")Long articleId) throws IllegalAccessException {
         ArticleDto articleDto = communityService.getCommunityArticle(articleId);
         return ResponseEntity.ok(articleDto);
+    }
+
+    // 커뮤니티 글 수정
+    @Operation(summary = "커뮤니티 글 수정")
+    @PutMapping()
+    public ResponseEntity<?> updateCommunityArticle(@RequestBody ArticleDto articleDto) {
+        communityService.updateCommunityArticle(articleDto);
+        return ResponseEntity.ok("UPDATE COMMUNITY OK");
     }
 
     // 커뮤니티 글 삭제
