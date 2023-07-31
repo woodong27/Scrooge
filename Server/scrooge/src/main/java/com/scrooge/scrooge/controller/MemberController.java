@@ -7,6 +7,7 @@ import com.scrooge.scrooge.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -32,5 +33,13 @@ public class MemberController {
     public ResponseEntity<MemberDto> getUserInfo(@PathVariable("memberId") Long memberId) {
         Optional<MemberDto> memberDto = memberService.getMemberInfo(memberId);
         return memberDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    // 주간 목표 설정
+    @Operation(summary = "주간 목표를 설정하는 API")
+    @PutMapping("/weekly-goal")
+    public ResponseEntity<?> updateWeeklyGoal(@RequestBody MemberDto memberDto) {
+        MemberDto memberDto1 = memberService.updateWeeklyGoal(memberDto);
+        return ResponseEntity.ok(memberDto1);
     }
 }
