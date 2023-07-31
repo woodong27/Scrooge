@@ -16,7 +16,7 @@ public class PaymentHistoryDto {
     private String cardName;
 
     /*연결*/
-    private Long userId;
+    private Long memberId;
 
     @Builder
     public PaymentHistoryDto(PaymentHistory paymentHistory) {
@@ -26,6 +26,6 @@ public class PaymentHistoryDto {
         this.amount = paymentHistory.getAmount();
         this.usedAt = paymentHistory.getUsedAt();
         this.cardName = paymentHistory.getCardName();
-        this.userId = paymentHistory.getUser().getId();
+        this.memberId = paymentHistory.getMember().getId();
     }
 }

@@ -22,7 +22,7 @@ public class CommunityBadController {
     public ResponseEntity<?> addCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityBadService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
+        communityBadService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getMemberId());
 
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }
@@ -32,7 +32,7 @@ public class CommunityBadController {
     public ResponseEntity<?> cancelCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
 
         SuccessResp successResp = new SuccessResp(1);
-        communityBadService.cancelCommunityBad(articleBadDto.getArticleId(), articleBadDto.getUserId());
+        communityBadService.cancelCommunityBad(articleBadDto.getArticleId(), articleBadDto.getMemberId());
 
         return new ResponseEntity<>(successResp, HttpStatus.OK);
     }

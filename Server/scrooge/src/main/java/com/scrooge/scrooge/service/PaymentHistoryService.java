@@ -2,8 +2,8 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
+import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
-import com.scrooge.scrooge.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 public class PaymentHistoryService {
 
     private final PaymentHistoryRepository paymentHistoryRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public PaymentHistory addPaymentHistory(Long userId, PaymentHistoryDto paymentHistoryDto) {
+    public PaymentHistory addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
         PaymentHistory paymentHistory = new PaymentHistory();
 
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
@@ -32,45 +32,45 @@ public class PaymentHistoryService {
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
 
         /* 연결 */
-        paymentHistory.setUser(userRepository.findById(userId).orElse(null));
+        paymentHistory.setMember(memberRepository.findById(memberId).orElse(null));
 
         return paymentHistoryRepository.save(paymentHistory);
     }
 
     // userId에 따른 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByUserId(Long userId) {
-        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByUserId(userId);
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId) {
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
         return paymentHistories.stream()
                 .map(PaymentHistoryDto::new)
                 .collect(Collectors.toList());
     }
 
     // userId의 오늘 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByUserIdToday(Long userId) {
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberIdToday(Long memberId) {
         LocalDateTime todayStart = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
 
-        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByUserIdAndPaidAtBetween(userId, todayStart, todayEnd);
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, todayStart, todayEnd);
         return paymentHistories.stream()
                 .map(PaymentHistoryDto::new)
                 .collect(Collectors.toList());
     }
 
     // userId 각각의 paymentHistory 조회
-    public PaymentHistoryDto getPaymentHistoryEach(Long userId, Long paymentHistoryId) {
-        PaymentHistory paymentHistory = paymentHistoryRepository.findByIdAndUserId(paymentHistoryId, userId);
+    public PaymentHistoryDto getPaymentHistoryEach(Long memberId, Long paymentHistoryId) {
+        PaymentHistory paymentHistory = paymentHistoryRepository.findByIdAndMemberId(paymentHistoryId, memberId);
         if(paymentHistory == null) return null;
         return new PaymentHistoryDto(paymentHistory);
     }
 
     // 소비내역을 수정하는 비즈니스 로직
-    public PaymentHistory updatePaymentHistory(Long userId, PaymentHistoryDto paymentHistoryDto) throws AccessDeniedException {
+    public PaymentHistory updatePaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) throws AccessDeniedException {
         PaymentHistory paymentHistory = paymentHistoryRepository.findById(paymentHistoryDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("PaymentHistory not found with id: " + paymentHistoryDto.getId()));
 
-        // 입력받은 userId와 findById로 찾은 paymentHistory의 userId가 같은지 확인
-        if(!paymentHistory.getUser().getId().equals(userId)) {
-            throw new AccessDeniedException("userId가 PaymentHistory의 userId와 다릅니다.");
+        // 입력받은 memberId와 findById로 찾은 paymentHistory의 memberId가 같은지 확인
+        if(!paymentHistory.getMember().getId().equals(memberId)) {
+            throw new AccessDeniedException("memberId가 PaymentHistory의 userId와 다릅니다.");
         }
 
         // 변경사항 반영

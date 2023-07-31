@@ -1,6 +1,6 @@
 package com.scrooge.scrooge.domain.community;
 
-import com.scrooge.scrooge.domain.User;
+import com.scrooge.scrooge.domain.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,8 +27,8 @@ public class ArticleComment {
 
     /* 연결 */
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "article_id")

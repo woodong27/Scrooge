@@ -7,7 +7,7 @@ import com.scrooge.scrooge.domain.community.ArticleGood;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.repository.UserRepository;
+import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
@@ -32,7 +32,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityService {
 
-    private final UserRepository userRepository;
+    
+    private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
 
     private final FileUploadProperties fileUploadProperties;
@@ -44,7 +45,7 @@ public class CommunityService {
         Article article = new Article();
 
         article.setContent(articleDto.getContent());
-        article.setUser(userRepository.findById(articleDto.getUserId()).orElse(null));
+        article.setMember(memberRepository.findById(articleDto.getMemberId()).orElse(null));
 
         // 이미지 파일 등록 구현
 

@@ -17,7 +17,7 @@ public class ArticleDto {
     private LocalDateTime createdAt;
 
     /*연결*/
-    private Long userId;
+    private Long memberId;
 
     /* 글 전체 조회를 위한 필드 */
     private String avatarImgAddress;

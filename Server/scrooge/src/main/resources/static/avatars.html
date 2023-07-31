@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Avatar List</title>
+    <script>
+        window.onload = function() {
+            fetch('/avatars')
+                .then(response => response.json())
+                .then(data => {
+                    const avatarList = document.getElementById('avatarList');
+                    data.forEach(avatar => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<h2>${avatar.name}</h2><img src="${avatar.imgAddress}" alt="avatar image" />`;
+                        avatarList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+<h1>Avatar List</h1>
+<ul id="avatarList">
+</ul>
+</body>
+</html>
