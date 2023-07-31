@@ -122,8 +122,13 @@ public class CommunityService {
         Optional<Article> article = articleRepository.findById(articleDto.getId());
 
         // 변경사항 반영 => 내용만 수정 가능
-        article.get().setContent(articleDto.getContent());
-        articleRepository.save(article.get());
+        if(article.isPresent()){
+            article.get().setContent(articleDto.getContent());
+            articleRepository.save(article.get());
+        } else {
+            throw new NotFoundException("해당 글이 존재하지 않습니다.");
+        }
+
     }
 
     // 커뮤니티 글을 삭제하는 API
