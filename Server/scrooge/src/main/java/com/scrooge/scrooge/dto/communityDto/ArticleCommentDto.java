@@ -15,7 +15,7 @@ public class ArticleCommentDto {
     private String content;
     private LocalDateTime createdAt;
     /* 연결 */
-    private Long userId;
+    private Long memberId;
     private Long articleId;
 
     /* USER 정보 */
@@ -27,7 +27,7 @@ public class ArticleCommentDto {
         this.id = articleComment.getId();
         this.content = articleComment.getContent();
         this.createdAt = articleComment.getCreatedAt();
-        this.userId = articleComment.getUser().getId();
+        this.memberId = articleComment.getMember().getId();
         this.articleId = articleComment.getArticle().getId();
     }
 

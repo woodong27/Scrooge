@@ -30,7 +30,7 @@ public class ArticleDto {
         this.content = article.getContent();
         this.imgAdress = article.getImgAdress();
         this.createdAt = article.getCreatedAt();
-        this.userId = article.getUser().getId();
+        this.memberId = article.getMember().getId();
     }
 
 }
