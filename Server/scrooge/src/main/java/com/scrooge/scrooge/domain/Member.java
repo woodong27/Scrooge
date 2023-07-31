@@ -52,16 +52,16 @@ public class Member {
     private Badge mainBadge;
 
     @Column
-    private int exp;
+    private Integer exp;
 
     @Column
-    private int streak;
+    private Integer streak;
 
     @Column(name = "weekly_goal")
-    private int weeklyGoal;
+    private Integer weeklyGoal;
 
     @Column(name = "weekly_consum")
-    private int weeklyConsum;
+    private Integer weeklyConsum;
     // int -> Integer 로 변경하는게 좋을 것 같다.
 
     @CreatedDate

@@ -2,12 +2,10 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleComment;
 import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
-import com.scrooge.scrooge.repository.UserRepository;
+import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleCommentRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
-import jdk.internal.org.jline.utils.Log;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.NotFound;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityCommentService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
 
@@ -33,7 +31,7 @@ public class CommunityCommentService {
         articleComment.setContent(articleCommentDto.getContent());
 
         // 연결
-        articleComment.setUser(userRepository.findById(articleCommentDto.getUserId()).orElse(null));
+        articleComment.setMember(memberRepository.findById(articleCommentDto.getMemberId()).orElse(null));
         articleComment.setArticle(articleRepository.findById(articleCommentDto.getArticleId()).orElse(null));
 
         articleCommentRepository.save(articleComment);
@@ -50,9 +48,9 @@ public class CommunityCommentService {
                     articleCommentDto.setContent(articleComment.getContent());
 
                     // user 관련 정보
-                    articleCommentDto.setUserId(articleComment.getUser().getId()); // 필요 X?
-                    articleCommentDto.setNickname(articleComment.getUser().getNickname());
-                    articleCommentDto.setAvatarImgAddress(articleComment.getUser().getMainAvatar().getImgAddress());
+                    articleCommentDto.setMemberId(articleComment.getMember().getId()); // 필요 X?
+                    articleCommentDto.setNickname(articleComment.getMember().getNickname());
+                    articleCommentDto.setAvatarImgAddress(articleComment.getMember().getMainAvatar().getImgAddress());
 
                     // article 관련 정보
                     articleCommentDto.setArticleId(articleComment.getArticle().getId());
