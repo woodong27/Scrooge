@@ -12,23 +12,25 @@ import java.time.LocalDateTime;
 public class ArticleDto {
 
     private Long id;
-    private String title;
     private String content;
     private String imgAdress;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     /*연결*/
     private Long memberId;
 
+    /* 글 전체 조회를 위한 필드 */
+    private String avatarImgAddress;
+    private String nickname;
+
+
     @Builder
     public ArticleDto(Article article) {
         this.id = article.getId();
-        this.title = article.getTitle();
         this.content = article.getContent();
         this.imgAdress = article.getImgAdress();
         this.createdAt = article.getCreatedAt();
-        this.updatedAt = article.getUpdatedAt();
+        this.userId = article.getUser().getId();
     }
 
 }

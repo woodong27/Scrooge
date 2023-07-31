@@ -17,7 +17,7 @@ public class CommentDto {
     private LocalDateTime updatedAt;
 
     /* 연결 */
-    private Long memberId;
+    private Long userId;
     private Long articleId;
 
     @Builder
@@ -26,7 +26,7 @@ public class CommentDto {
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
-        this.memberId = comment.getMember().getId();
+        this.userId = comment.getUser().getId();
         this.articleId = comment.getArticle().getId();
     }
 
