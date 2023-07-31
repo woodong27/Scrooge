@@ -6,10 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name="CommunityComment", description = "커뮤니티 댓글 등록 API")
 @RestController
@@ -26,5 +25,13 @@ public class CommunityCommentController {
 
         return ResponseEntity.ok(articleCommentDto);
     }
+
+    @Operation(summary = "커뮤니티 댓글 전체 조회")
+    @GetMapping("/{articleId}")
+    public ResponseEntity<?> getCommunityComment(@PathVariable("articleId") Long articleId) {
+        List<ArticleCommentDto> articleCommentDtoList = communityCommentService.getCommunityComment(articleId);
+        return ResponseEntity.ok(articleCommentDtoList);
+    }
+
 
 }

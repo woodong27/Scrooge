@@ -18,6 +18,10 @@ public class ArticleCommentDto {
     private Long userId;
     private Long articleId;
 
+    /* USER 정보 */
+    private String nickname;
+    private String avatarImgAddress;
+
     @Builder
     public ArticleCommentDto(ArticleComment articleComment) {
         this.id = articleComment.getId();
