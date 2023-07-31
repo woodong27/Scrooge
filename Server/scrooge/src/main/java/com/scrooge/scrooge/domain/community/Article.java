@@ -4,10 +4,11 @@ import com.scrooge.scrooge.domain.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "article")
@@ -33,5 +34,8 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    private List<ArticleComment> comments = new ArrayList<>();
 
 }

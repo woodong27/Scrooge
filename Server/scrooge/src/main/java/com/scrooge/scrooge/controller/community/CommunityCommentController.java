@@ -40,5 +40,12 @@ public class CommunityCommentController {
         return ResponseEntity.ok(articleCommentDto1);
     }
 
+    @Operation(summary = "커뮤니티 댓글 삭제")
+    @DeleteMapping("/{articleCommentId}")
+    public ResponseEntity<?> deleteCommunityComment(@PathVariable("articleCommentId")Long articleCommentId) {
+        communityCommentService.deleteCommunityComment(articleCommentId);
+        return ResponseEntity.ok("DELETE COMMENT OK");
+    }
+
 
 }

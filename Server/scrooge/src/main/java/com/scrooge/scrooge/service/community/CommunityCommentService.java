@@ -5,6 +5,7 @@ import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
 import com.scrooge.scrooge.repository.UserRepository;
 import com.scrooge.scrooge.repository.community.ArticleCommentRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
+import jdk.internal.org.jline.utils.Log;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.springframework.data.domain.Sort;
@@ -64,7 +65,7 @@ public class CommunityCommentService {
     // 댓글 수정하는 API
     public ArticleCommentDto updateCommunityComment(ArticleCommentDto articleCommentDto) {
         Optional<ArticleComment> articleComment = articleCommentRepository.findById(articleCommentDto.getId());
-        if(articleComment.isEmpty()) {
+        if(!articleComment.isPresent()) {
             throw new NotFoundException(articleCommentDto.getId() + "의 ID를 가진 댓글을 찾을 수 없습니다.");
         }
         // 새로운 정보 업데이트
@@ -73,6 +74,18 @@ public class CommunityCommentService {
         // DB에 새로운 댓글 저장
         ArticleComment updatedComment = articleCommentRepository.save(articleComment.get());
         return new ArticleCommentDto(updatedComment);
+    }
+
+    // 댓글 삭제하는 API
+    public void deleteCommunityComment(Long articleCommentId) {
+        Optional<ArticleComment> articleComment = articleCommentRepository.findById(articleCommentId);
+
+        if(articleComment.isPresent()) {
+            ArticleComment articleComment1 = articleComment.get();
+            articleCommentRepository.delete(articleComment1);
+        } else {
+            throw new NotFoundException("해당 댓글이 존재하지 않습니다.");
+        }
 
     }
 }
