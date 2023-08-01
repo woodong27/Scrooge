@@ -28,7 +28,7 @@ public class Challenge {
     @Column(nullable = false, name = "min_participants")
     private Integer minParticipants;
 
-    @Column(columnDefinition = "INTEGER default 20", nullable = false, name = "max_participants")
+    @Column(columnDefinition = "INTEGER default 20", name = "max_participants")
     private Integer maxParticipants;
 
     @Column(columnDefinition = "TEXT", nullable = false, name = "auth_method")
@@ -53,5 +53,4 @@ public class Challenge {
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
     private List<ChallengeExampleImage> challengeExampleImageList = new ArrayList<>();
-
 }

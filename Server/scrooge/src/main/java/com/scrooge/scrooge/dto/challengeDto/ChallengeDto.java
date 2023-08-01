@@ -18,6 +18,7 @@ public class ChallengeDto {
     private Integer maxParticipants;
     private String authMethod;
     private String period;
+    private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -30,9 +31,10 @@ public class ChallengeDto {
         this.title = challenge.getTitle();
         this.category = challenge.getCategory();
         this.minParticipants = challenge.getMinParticipants();
-        this.maxParticipants = challenge.getMaxParticipants();
+        this.maxParticipants = 20;
         this.authMethod = challenge.getAuthMethod();
         this.period = challenge.getPeriod();
+        this.description = challenge.getDescription();
         this.startDate = challenge.getStartDate();
         this.endDate = challenge.getEndDate();
         this.challengeMasterId = challenge.getChallengeMaster().getId();
