@@ -1,52 +1,56 @@
 import { Link } from "react-router-dom";
-import styles from "./NavBar.module.css";
 
-const NavBar = () => {
+const Nav = () => {
   return (
-    <ul className={styles.list}>
-      <li>
+    <ul className="flex items-end justify-evenly border-t-slate-500 fixed bottom-0 w-full z-10 bg-white">
+      <li className="h-16">
         <Link to="/">
           <img
+            className="m-auto w-7 h-7"
             src={`${process.env.PUBLIC_URL}/images/nav-icons/home.png`}
             alt="홈"
           />
-          <p>홈</p>
+          <p className="mt-2 text-sm">홈</p>
         </Link>
       </li>
-      <li>
+      <li className="h-16">
         <Link to="/300">
           <img
+            className="m-auto w-7 h-7"
             src={`${process.env.PUBLIC_URL}/images/nav-icons/peoples.png`}
             alt="커뮤니티"
           />
-          <p>커뮤니티</p>
+          <p className="mt-2 text-sm">커뮤니티</p>
         </Link>
       </li>
-      <li>
+      <li className="h-16">
         <Link to="/challenge">
           <img
+            className="m-auto w-7 h-7"
             src={`${process.env.PUBLIC_URL}/images/nav-icons/challenge.png`}
             alt="챌린지"
           />
-          <p>챌린지</p>
+          <p className="mt-2 text-sm">챌린지</p>
         </Link>
       </li>
-      <li>
+      <li className="h-16">
         <img
+          className="m-auto w-7 h-7"
           src={`${process.env.PUBLIC_URL}/images/nav-icons/quest.png`}
           alt="퀘스트"
         />
-        <p>퀘스트</p>
+        <p className="mt-2 text-sm">퀘스트</p>
       </li>
-      <li>
+      <li className="h-16">
         <img
+          className="m-auto w-7 h-7"
           src={`${process.env.PUBLIC_URL}/images/nav-icons/profile.png`}
           alt="프로필"
         />
-        <p>프로필</p>
+        <p className="mt-2 text-sm">프로필</p>
       </li>
     </ul>
   );
 };
 
-export default NavBar;
+export default Nav;
