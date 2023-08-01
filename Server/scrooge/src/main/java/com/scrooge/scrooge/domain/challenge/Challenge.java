@@ -56,4 +56,7 @@ public class Challenge {
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
     private List<ChallengeExampleImage> challengeExampleImageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
+    private List<ChallengeParticipant> challengeParticipantList = new ArrayList<>();
 }

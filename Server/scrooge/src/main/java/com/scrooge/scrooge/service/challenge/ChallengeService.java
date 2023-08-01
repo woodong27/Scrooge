@@ -3,9 +3,12 @@ package com.scrooge.scrooge.service.challenge;
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeDto;
+import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
+import com.scrooge.scrooge.dto.challengeDto.ChallengeReqDto;
+import com.scrooge.scrooge.dto.challengeDto.ChallengeRespDto;
 import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
+import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,26 +31,34 @@ public class ChallengeService {
     private final MemberRepository memberRepository;
     private final ChallengeRepository challengeRepository;
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
+    private final ChallengeParticipantRepository challengeParticipantRepository;
 
     private final FileUploadProperties fileUploadProperties;
 
     // 챌린지 생성 API
     @Transactional
-    public void createChallenge(ChallengeDto challengeDto, List<MultipartFile> images) {
+    public void createChallenge(ChallengeReqDto challengeReqDto, List<MultipartFile> images) {
         Challenge challenge = new Challenge();
 
         // 챌린지 정보 저장하기
-        challenge.setChallengeMaster(memberRepository.findById(challengeDto.getChallengeMasterId()).orElse(null));
-        challenge.setTitle(challengeDto.getTitle());
-        challenge.setPeriod(challengeDto.getPeriod());
-        challenge.setCategory(challengeDto.getCategory());
-        challenge.setMinParticipants(challengeDto.getMinParticipants());
+        challenge.setChallengeMaster(memberRepository.findById(challengeReqDto.getChallengeMasterId()).orElse(null));
+        challenge.setTitle(challengeReqDto.getTitle());
+        challenge.setPeriod(challengeReqDto.getPeriod());
+        challenge.setCategory(challengeReqDto.getCategory());
+        challenge.setMinParticipants(challengeReqDto.getMinParticipants());
         challenge.setMaxParticipants(20);
         challenge.setStatus(0);
-        challenge.setAuthMethod(challengeDto.getAuthMethod());
-        challenge.setDescription(challengeDto.getDescription());
+        challenge.setAuthMethod(challengeReqDto.getAuthMethod());
+        challenge.setDescription(challengeReqDto.getDescription());
 
         challengeRepository.save(challenge);
+
+        // challengeMaster를 challengeParticipant에 추가하기
+        ChallengeParticipant challengeParticipant = new ChallengeParticipant();
+        challengeParticipant.setTeam(0);
+        challengeParticipant.setMember(memberRepository.findById(challengeReqDto.getChallengeMasterId()).orElse(null));
+        challengeParticipant.setChallenge(challenge);
+        challengeParticipantRepository.save(challengeParticipant);
 
         // ChallengeExampleImage에 이미지 5장 저장
         saveChallengeExampleImages(challenge, images);
@@ -82,5 +94,23 @@ public class ChallengeService {
             }
         }
 
+    }
+
+    // 챌린지 전체를 조회하는 API
+    public List<ChallengeRespDto> getAllChallenges() {
+        List<Challenge> challenges = challengeRepository.findAll();
+        return challenges.stream()
+                .map(challenge -> {
+                    ChallengeRespDto challengeRespDto = new ChallengeRespDto();
+                    challengeRespDto.setId(challenge.getId());
+                    challengeRespDto.setCategory(challenge.getCategory());
+                    challengeRespDto.setTitle(challenge.getTitle());
+                    challengeRespDto.setCurrentParticipants(challenge.getChallengeParticipantList().size());
+                    challengeRespDto.setMinParticipants(challenge.getMinParticipants());
+                    challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
+
+                    return challengeRespDto;
+                })
+                .collect(Collectors.toList());
     }
 }

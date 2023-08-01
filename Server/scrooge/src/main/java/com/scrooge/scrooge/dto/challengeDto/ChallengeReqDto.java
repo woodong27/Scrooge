@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class ChallengeDto {
+public class ChallengeReqDto {
 
     private Long id;
     private String title;
@@ -27,7 +27,7 @@ public class ChallengeDto {
     private Long challengeMasterId;
 
     @Builder
-    public ChallengeDto(Challenge challenge) {
+    public ChallengeReqDto(Challenge challenge) {
         this.id = challenge.getId();
         this.title = challenge.getTitle();
         this.category = challenge.getCategory();
