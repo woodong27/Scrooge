@@ -1,4 +1,4 @@
-package com.scrooge.scrooge.dto;
+package com.scrooge.scrooge.dto.member;
 
 import com.scrooge.scrooge.domain.member.Member;
 import lombok.Builder;

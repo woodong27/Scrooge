@@ -13,6 +13,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = {"mainAvatar", "mainBadge", "level"})
     Optional<Member> findWithRelatedEntitiesByEmail(String email);
 
+    @EntityGraph(attributePaths = {"mainAvatar", "mainBadge", "level"})
+    Optional<Member> findWithRelatedEntitiesById(Long memberId);
+
     Optional<Member> findByEmail(String email);
 
     Optional<Member> findByNickname(String nickname);
