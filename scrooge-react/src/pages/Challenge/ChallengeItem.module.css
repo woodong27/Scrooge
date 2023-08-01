@@ -1,0 +1,47 @@
+.container {
+  width: 320px;
+  height: 156px;
+  margin: auto;
+  border: 1px solid black;
+  border-radius: 1rem;
+}
+
+.item_top {
+  height: 7rem;
+  display: flex;
+  align-items: center;
+}
+
+.img_container {
+  width: 50%;
+}
+
+.text_container {
+  margin-right: 0.4rem;
+}
+
+.title {
+  margin: auto;
+  text-align: left;
+}
+
+img {
+  width: 80px;
+  height: 80px;
+  margin: 0 10px;
+  border-radius: 50%;
+}
+
+p:not(.title) {
+  font-size: 12px;
+  margin: 0;
+  text-align: left;
+}
+
+button {
+  background: #b0e2ff;
+  border-radius: 1rem;
+  width: 70%;
+  height: 2rem;
+  margin: 0 auto;
+}

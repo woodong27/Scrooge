@@ -2,10 +2,10 @@
   width: 300px;
   font-size: 34px;
   margin: 0 auto;
-}
 
-p {
-  margin: 15px auto;
+  & p {
+    margin: 15px auto;
+  }
 }
 
 .btn {
