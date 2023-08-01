@@ -41,7 +41,8 @@ public class ChallengeService {
         challenge.setPeriod(challengeDto.getPeriod());
         challenge.setCategory(challengeDto.getCategory());
         challenge.setMinParticipants(challengeDto.getMinParticipants());
-        challenge.setMaxParticipants(challengeDto.getMaxParticipants());
+        challenge.setMaxParticipants(20);
+        challenge.setStatus(0);
         challenge.setAuthMethod(challengeDto.getAuthMethod());
         challenge.setDescription(challengeDto.getDescription());
 

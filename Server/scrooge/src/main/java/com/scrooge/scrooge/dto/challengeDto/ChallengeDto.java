@@ -19,6 +19,7 @@ public class ChallengeDto {
     private String authMethod;
     private String period;
     private String description;
+    private Integer status;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -35,6 +36,7 @@ public class ChallengeDto {
         this.authMethod = challenge.getAuthMethod();
         this.period = challenge.getPeriod();
         this.description = challenge.getDescription();
+        this.status = challenge.getStatus();
         this.startDate = challenge.getStartDate();
         this.endDate = challenge.getEndDate();
         this.challengeMasterId = challenge.getChallengeMaster().getId();

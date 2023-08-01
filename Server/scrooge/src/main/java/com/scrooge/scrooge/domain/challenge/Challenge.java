@@ -40,6 +40,9 @@ public class Challenge {
     @Column(length = 64, nullable = false)
     private String period; //챌린지 기간
 
+    @Column(columnDefinition = "INTEGER default 0")
+    private Integer status; //상태 (0: 시작 전, 1: 진행 중, 2: 종료)
+
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
