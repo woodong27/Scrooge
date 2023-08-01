@@ -15,7 +15,7 @@ public class WeeklyResetScheduler {
 
     private final MemberRepository memberRepository;
 
-    @Scheduled(cron = "0 0 * * 2")
+    @Scheduled(cron = "0 0 0 * * 2")
     public void resetWeeklyConsumAndGoal() {
         //Member 테이블의 모든 레코드를 가져와서 weekly_consum 값과 weekly_goal 값을 0으로 업데이트
         List<Member> members = memberRepository.findAll();
