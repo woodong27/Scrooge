@@ -50,7 +50,7 @@ public class CommunityService {
         // 이미지 파일 등록 구현
 
         // 업로드할 위치 설정
-        String uploadLocation = fileUploadProperties.getUploadLocation();
+        String uploadLocation = fileUploadProperties.getUploadLocation() + "/community";
 
         // 업로드된 사진의 파일명을 랜덤 UUID로 생성
         String fileName = UUID.randomUUID().toString() + "_" + img.getOriginalFilename();
