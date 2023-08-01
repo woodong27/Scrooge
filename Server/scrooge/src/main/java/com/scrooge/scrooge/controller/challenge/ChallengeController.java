@@ -37,6 +37,14 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeDtos);
     }
 
+    // 카테고리 별 챌린지를 조회하는 API
+    @Operation(summary = "카테고리 별 챌린지를 조회하는 API", description = "categoryId => 0: 식비, 1: 교통비, 2: 쇼핑, 3: 기타")
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<?> getChallengesbyCategory(@PathVariable("categoryId") Integer categoryId) {
+        List<ChallengeRespDto> challengeDtos = challengeService.getChallengesbyCategory(categoryId);
+        return ResponseEntity.ok(challengeDtos);
+    }
+
 
 
 }

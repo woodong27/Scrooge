@@ -113,4 +113,38 @@ public class ChallengeService {
                 })
                 .collect(Collectors.toList());
     }
+
+    // 카테고리 별 챌린지 전체를 조회하는 API
+    public List<ChallengeRespDto> getChallengesbyCategory(Integer categoryId) {
+        String category = "";
+        switch (categoryId){
+            case 0:
+                category = "식비";
+                break;
+            case 1:
+                category = "교통비";
+                break;
+            case 2:
+                category = "쇼핑";
+                break;
+            case 3:
+                category = "기타";
+                break;
+        }
+
+        List<Challenge> challenges = challengeRepository.findAllByCategory(category);
+        return challenges.stream()
+                .map(challenge -> {
+                    ChallengeRespDto challengeRespDto = new ChallengeRespDto();
+                    challengeRespDto.setId(challenge.getId());
+                    challengeRespDto.setCategory(challenge.getCategory());
+                    challengeRespDto.setTitle(challenge.getTitle());
+                    challengeRespDto.setCurrentParticipants(challenge.getChallengeParticipantList().size());
+                    challengeRespDto.setMinParticipants(challenge.getMinParticipants());
+                    challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
+
+                    return challengeRespDto;
+                })
+                .collect(Collectors.toList());
+    }
 }
