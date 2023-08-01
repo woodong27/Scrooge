@@ -9,4 +9,6 @@ import java.util.List;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
    @Query("SELECT ch FROM Challenge ch WHERE ch.category = :category")
     List<Challenge> findAllByCategory(String category);
+
+
 }

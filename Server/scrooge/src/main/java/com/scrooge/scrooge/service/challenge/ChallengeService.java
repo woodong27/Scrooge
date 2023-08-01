@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -99,40 +100,48 @@ public class ChallengeService {
     // 챌린지 전체를 조회하는 API
     public List<ChallengeRespDto> getAllChallenges() {
         List<Challenge> challenges = challengeRepository.findAll();
-        return challenges.stream()
-                .map(challenge -> {
-                    ChallengeRespDto challengeRespDto = new ChallengeRespDto();
-                    challengeRespDto.setId(challenge.getId());
-                    challengeRespDto.setCategory(challenge.getCategory());
-                    challengeRespDto.setTitle(challenge.getTitle());
-                    challengeRespDto.setCurrentParticipants(challenge.getChallengeParticipantList().size());
-                    challengeRespDto.setMinParticipants(challenge.getMinParticipants());
-                    challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
-
-                    return challengeRespDto;
-                })
-                .collect(Collectors.toList());
+        return getChallengeRespDtos(challenges);
     }
 
     // 카테고리 별 챌린지 전체를 조회하는 API
     public List<ChallengeRespDto> getChallengesbyCategory(Integer categoryId) {
         String category = "";
         switch (categoryId){
-            case 0:
+            case 1:
                 category = "식비";
                 break;
-            case 1:
+            case 2:
                 category = "교통비";
                 break;
-            case 2:
+            case 3:
                 category = "쇼핑";
                 break;
-            case 3:
+            case 4:
                 category = "기타";
                 break;
         }
 
         List<Challenge> challenges = challengeRepository.findAllByCategory(category);
+        return getChallengeRespDtos(challenges);
+    }
+
+    // 마이 챌린지 조회하는 API
+    public List<ChallengeRespDto> getMyChallenges(Long memberId, Integer statusId) {
+        List<Challenge> challenges = new ArrayList<>();
+        List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findAllByMemberId(memberId);
+
+        // status가 같은 애만 추가해주기
+        for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
+            if(statusId == challengeParticipant.getChallenge().getStatus()) {
+                challenges.add(challengeParticipant.getChallenge());
+            }
+        }
+
+        return getChallengeRespDtos(challenges);
+    }
+
+
+    private List<ChallengeRespDto> getChallengeRespDtos(List<Challenge> challenges) {
         return challenges.stream()
                 .map(challenge -> {
                     ChallengeRespDto challengeRespDto = new ChallengeRespDto();
