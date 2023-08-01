@@ -1,0 +1,22 @@
+.list {
+  display: flex;
+  position: fixed;
+  bottom: -10px;
+  list-style-type: none;
+  margin: 0;
+  width: 100%;
+  height: 65px;
+  justify-content: space-evenly;
+  padding: 20px 0 20px 0;
+  background-color: white;
+  border-top: gray 1px solid;
+
+  & img {
+    width: 28px;
+    height: 28px;
+  }
+
+  & div {
+    font-size: 12px;
+  }
+}

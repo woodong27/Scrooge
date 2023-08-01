@@ -1,11 +1,14 @@
+import styles from "./Chips.module.css"; // 모듈 CSS 파일 import
+
 const Chips = ({ chips }) => {
   return (
-    <div className="flex flex-wrap ml-5 mr-5 mt-5 justify-between">
+    <div className={`${styles.chipsContainer}`}>
+      {" "}
+      {/* 모듈 CSS 클래스 적용 */}
       {chips.map((chip, index) => (
-        <div
-          key={index}
-          className="inline-flex items-center bg-gray-300 rounded-full px-4 py-2 text-sm text-gray-800 mr-2 mb-2"
-        >
+        <div key={index} className={`${styles.chip}`}>
+          {" "}
+          {/* 모듈 CSS 클래스 적용 */}
           {chip}
         </div>
       ))}
