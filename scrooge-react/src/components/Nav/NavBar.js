@@ -23,11 +23,13 @@ const NavBar = () => {
         </Link>
       </li>
       <li>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/nav-icons/challenge.png`}
-          alt="챌린지"
-        />
-        <p>챌린지</p>
+        <Link to="/challenge">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/nav-icons/challenge.png`}
+            alt="챌린지"
+          />
+          <p>챌린지</p>
+        </Link>
       </li>
       <li>
         <img
