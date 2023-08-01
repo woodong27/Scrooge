@@ -1,8 +1,6 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.dto.LoginRequestDto;
-import com.scrooge.scrooge.dto.member.MemberDto;
-import com.scrooge.scrooge.dto.SignUpRequestDto;
+import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.member.MemberService;
@@ -42,11 +40,11 @@ public class MemberController {
     // 유저 토큰을 받아서 해당 유저 정보를 반환
     @Operation(summary = "멤버정보 API", description = "멤버정보 GET")
     @GetMapping("/info")
-    public ResponseEntity<MemberDto> getUserInfo(@RequestHeader("Authorization") String tokenHeader) {
+    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String tokenHeader) {
        String token = extractToken(tokenHeader);
 
        if (!jwtTokenProvider.validateToken(token)) {
-           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RuntimeException("유효하지 않은 토큰입니다."));
        }
 
        String email = jwtTokenProvider.extractEmail(token);
@@ -64,8 +62,29 @@ public class MemberController {
     // 주간 목표 설정
     @Operation(summary = "주간 목표를 설정하는 API")
     @PutMapping("/weekly-goal")
-    public ResponseEntity<?> updateWeeklyGoal(@RequestBody MemberDto memberDto) {
-        MemberDto memberDto1 = memberService.updateWeeklyGoal(memberDto);
-        return ResponseEntity.ok(memberDto1);
+    public ResponseEntity<?> updateWeeklyGoal(@RequestHeader("Authorization")String header, @RequestBody UpdateWeeklyGoalDto updateWeeklyGoalDto) {
+        String token = extractToken(header);
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RuntimeException("유효하지 않은 토큰입니다."));
+        }
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+        MemberDto memberDto = memberService.updateWeeklyGoal(updateWeeklyGoalDto, memberId);
+        return ResponseEntity.ok(memberDto);
+    }
+
+    @Operation(summary = "비밀번호 변경 API", description = "비밀번호 변경 API")
+    @PutMapping("/change-password")
+    public ResponseEntity<?> updatePassword(@RequestHeader("Authorization")String header, @RequestBody UpdatePasswordDto updatePasswordDto) {
+        String token = extractToken(header);
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RuntimeException("유효하지 않은 토큰입니다."));
+        }
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+        MemberDto memberDto = memberService.updatePassword(updatePasswordDto, memberId);
+        return ResponseEntity.ok(memberDto);
     }
 }
