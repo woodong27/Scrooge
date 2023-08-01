@@ -94,4 +94,5 @@ public class MemberService {
             throw new NotFoundException(memberDto.getId() + "의 ID를 가진 사용자를 찾을 수 없습니다.");
         }
     }
+
 }
