@@ -2,7 +2,7 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
-import com.scrooge.scrooge.repository.MemberRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import lombok.RequiredArgsConstructor;

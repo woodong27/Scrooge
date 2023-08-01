@@ -2,9 +2,9 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleComment;
 import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
-import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleCommentRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

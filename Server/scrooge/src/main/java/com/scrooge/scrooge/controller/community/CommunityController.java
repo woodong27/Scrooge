@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-
 @Tag(name="Community", description = "커뮤니티 API")
 @RestController
 @RequestMapping("/community")
