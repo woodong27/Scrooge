@@ -1,5 +1,5 @@
 import styles from "./Loading.module.css";
-import ButtonGreen from "../UI/ButtonGreen";
+import ButtonGreen from "../components/UI/ButtonGreen";
 
 const Loading = (props) => {
   return (

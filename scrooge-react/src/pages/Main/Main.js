@@ -1,9 +1,9 @@
 import { useEffect, Fragment, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
-import Card from "../UI/Card";
-import ButtonWhite from "../UI/ButtonWhite";
-import DailyCalcul from "./DailyCalcul/DailyCalcul";
+import Card from "../../components/UI/Card";
+import ButtonWhite from "../../components/UI/ButtonWhite";
+import DailyCalcul from "./DailyCalcul";
 
 const Main = (props) => {
   const [isConsum, setIsConsum] = useState(false);

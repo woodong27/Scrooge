@@ -1,6 +1,6 @@
-import Header from "../../UI/Header";
+import Header from "../../components/Header";
+import Chips from "../../components/UI/Chips";
 import ChallengeToggle from "./ChallengeToggle";
-import Chips from "../../UI/Chips";
 import ChallengeList from "./ChallengeList";
 
 const Challenge = ({ props }) => {

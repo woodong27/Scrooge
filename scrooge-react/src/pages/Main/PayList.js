@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Modal from "../../UI/Modal";
+import Modal from "../../components/UI/Modal";
 import styles from "./PayList.module.css";
 
 const PayList = (props) => {
