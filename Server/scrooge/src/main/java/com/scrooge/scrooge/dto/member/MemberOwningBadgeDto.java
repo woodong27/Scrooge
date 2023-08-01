@@ -1,7 +1,7 @@
-package com.scrooge.scrooge.dto;
+package com.scrooge.scrooge.dto.member;
 
 import com.scrooge.scrooge.domain.Badge;
-import com.scrooge.scrooge.domain.MemberOwningBadge;
+import com.scrooge.scrooge.domain.member.MemberOwningBadge;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

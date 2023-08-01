@@ -1,6 +1,6 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.dto.MemberDto;
+import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.service.LevelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

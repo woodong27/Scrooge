@@ -1,6 +1,6 @@
-package com.scrooge.scrooge.repository;
+package com.scrooge.scrooge.repository.member;
 
-import com.scrooge.scrooge.domain.MemberOwningAvatar;
+import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

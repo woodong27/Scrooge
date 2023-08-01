@@ -1,8 +1,8 @@
 package com.scrooge.scrooge.service;
 
-import com.scrooge.scrooge.domain.Member;
-import com.scrooge.scrooge.dto.MemberDto;
-import com.scrooge.scrooge.repository.MemberRepository;
+import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;

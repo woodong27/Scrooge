@@ -1,6 +1,6 @@
-package com.scrooge.scrooge.dto;
+package com.scrooge.scrooge.dto.member;
 
-import com.scrooge.scrooge.domain.MemberSelectedQuest;
+import com.scrooge.scrooge.domain.member.MemberSelectedQuest;
 import com.scrooge.scrooge.domain.Quest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

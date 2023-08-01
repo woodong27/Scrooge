@@ -1,5 +1,7 @@
-package com.scrooge.scrooge.domain;
+package com.scrooge.scrooge.domain.member;
 
+import com.scrooge.scrooge.domain.Badge;
+import com.scrooge.scrooge.domain.member.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

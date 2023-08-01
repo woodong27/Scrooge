@@ -1,7 +1,7 @@
 package com.scrooge.scheduler;
 
-import com.scrooge.scrooge.domain.Member;
-import com.scrooge.scrooge.repository.MemberRepository;
+import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

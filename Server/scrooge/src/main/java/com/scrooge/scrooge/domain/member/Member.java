@@ -1,5 +1,6 @@
-package com.scrooge.scrooge.domain;
+package com.scrooge.scrooge.domain.member;
 
+import com.scrooge.scrooge.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,4 +84,5 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<MemberSelectedQuest> memberSelectedQuests = new ArrayList<>();
+
 }
