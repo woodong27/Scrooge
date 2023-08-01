@@ -42,7 +42,7 @@ public class MemberService {
         String password = loginRequestDto.getPassword();
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("중복된 이메일 입니다."));
+                .orElseThrow(() -> new RuntimeException("잘못된 이메일 입니다."));
 
         if (bCryptPasswordEncoder.matches(password, member.getPassword())) {
             return jwtTokenProvider.createToken(email, member.getId());
