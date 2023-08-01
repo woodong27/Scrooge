@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./components/Main/Main";
 import DailyCalcul from "./components/Main/DailyCalcul/DailyCalcul";
-import NavBar from "./components/Nav/NavBar";
+import Nav from "./components/UI/Nav";
 import Loading from "./components/pages/Loading";
 import Challenge from "./components/pages/Challenge/Challenge";
 
@@ -28,7 +28,7 @@ function App() {
             <Route path="/300" element={<DailyCalcul />}></Route>
             <Route path="/challenge" element={<Challenge />}></Route>
           </Routes>
-          <NavBar />
+          <Nav />
         </BrowserRouter>
       )}
     </div>
