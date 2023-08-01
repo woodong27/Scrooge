@@ -52,17 +52,17 @@ public class Member {
     @JoinColumn(name = "main_badge_id")
     private Badge mainBadge;
 
-    @Column
-    private int exp;
+    @Column(columnDefinition = "int default 0")
+    private Integer exp;
 
-    @Column
-    private int streak;
+    @Column(columnDefinition = "int default 0")
+    private Integer streak;
 
-    @Column(name = "weekly_goal")
-    private int weeklyGoal;
+    @Column(name = "weekly_goal", columnDefinition = "int default 0")
+    private Integer weeklyGoal;
 
-    @Column(name = "weekly_consum")
-    private int weeklyConsum;
+    @Column(name = "weekly_consum", columnDefinition = "int default 0")
+    private Integer weeklyConsum;
     // int -> Integer 로 변경하는게 좋을 것 같다.
 
     @CreatedDate

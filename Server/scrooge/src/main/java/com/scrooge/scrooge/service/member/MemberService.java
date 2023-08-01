@@ -19,6 +19,7 @@ import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -116,6 +117,21 @@ public class MemberService {
 
             return memberDto;
         });
+    }
+
+    public MemberDto updateWeeklyGoal(MemberDto memberDto) {
+        Optional<Member> member = memberRepository.findById(memberDto.getId());
+        if(member.isPresent()) {
+            // 주간 목표 설정
+            member.get().setWeeklyGoal(memberDto.getWeeklyGoal());
+
+            // DB에 업데이트 된 사용자 저장
+            Member updatedMember = memberRepository.save(member.get());
+            return new MemberDto(updatedMember);
+        }
+        else {
+            throw new NotFoundException(memberDto.getId() + "의 ID를 가진 사용자를 찾을 수 없습니다.");
+        }
     }
 
 }

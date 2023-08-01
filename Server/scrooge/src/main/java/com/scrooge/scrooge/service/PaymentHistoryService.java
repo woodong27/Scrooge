@@ -1,11 +1,13 @@
 package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +35,23 @@ public class PaymentHistoryService {
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
 
         /* 연결 */
-        paymentHistory.setMember(memberRepository.findById(memberId).orElse(null));
 
-        return paymentHistoryRepository.save(paymentHistory);
+        // memberId에 맞는 member 가져오기
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            paymentHistory.setMember(member.get());
+
+            member.get().setWeeklyConsum(member.get().getWeeklyConsum() + paymentHistoryDto.getAmount()); // 주간 소비량에 소비내역 가격 더해주기
+            memberRepository.save(member.get());
+
+            return paymentHistoryRepository.save(paymentHistory);
+        }
+        else {
+            throw new NotFoundException(memberId + "에 해당하는 member를 찾을 수 없습니다.");
+        }
+
+
+
     }
 
     // userId에 따른 전체 소비 내역 조회
@@ -71,6 +88,19 @@ public class PaymentHistoryService {
         // 입력받은 memberId와 findById로 찾은 paymentHistory의 memberId가 같은지 확인
         if(!paymentHistory.getMember().getId().equals(memberId)) {
             throw new AccessDeniedException("memberId가 PaymentHistory의 userId와 다릅니다.");
+        }
+
+        // 이전 : paymentHistory 수정 후 : paymentHistoryDto
+        if(!paymentHistory.getAmount().equals(paymentHistoryDto.getAmount())) {
+            // memberId에 맞는 member 가져오기
+            Optional<Member> member = memberRepository.findById(memberId);
+            if(member.isPresent()) {
+                member.get().setWeeklyConsum(member.get().getWeeklyConsum() - paymentHistory.getAmount() + paymentHistoryDto.getAmount());
+                memberRepository.save(member.get());
+            }
+            else {
+                throw new NotFoundException(memberId + "를 가진 사용자는 존재하지 않습니다.");
+            }
         }
 
         // 변경사항 반영

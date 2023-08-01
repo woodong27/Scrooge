@@ -4,10 +4,11 @@ import com.scrooge.scrooge.domain.member.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "article")
@@ -19,9 +20,6 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255, nullable = false)
-    private String title;
-
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
@@ -32,13 +30,12 @@ public class Article {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
     /* 연결 */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    private List<ArticleComment> comments = new ArrayList<>();
 
 }

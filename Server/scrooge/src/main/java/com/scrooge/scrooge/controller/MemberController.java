@@ -38,7 +38,8 @@ public class MemberController {
         String token = memberService.login(loginRequestDto);
         return ResponseEntity.ok(token);
     }
-
+    
+    // 유저 토큰을 받아서 해당 유저 정보를 반환
     @Operation(summary = "멤버정보 API", description = "멤버정보 GET")
     @GetMapping("/info")
     public ResponseEntity<MemberDto> getUserInfo(@RequestHeader("Authorization") String tokenHeader) {
@@ -59,5 +60,12 @@ public class MemberController {
         }
         return null;
     }
-
+    
+    // 주간 목표 설정
+    @Operation(summary = "주간 목표를 설정하는 API")
+    @PutMapping("/weekly-goal")
+    public ResponseEntity<?> updateWeeklyGoal(@RequestBody MemberDto memberDto) {
+        MemberDto memberDto1 = memberService.updateWeeklyGoal(memberDto);
+        return ResponseEntity.ok(memberDto1);
+    }
 }
