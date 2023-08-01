@@ -5,11 +5,7 @@ import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
 import com.scrooge.scrooge.domain.member.MemberOwningBadge;
 import com.scrooge.scrooge.domain.member.MemberSelectedQuest;
-import com.scrooge.scrooge.dto.*;
-import com.scrooge.scrooge.dto.member.MemberDto;
-import com.scrooge.scrooge.dto.member.MemberOwningAvatarDto;
-import com.scrooge.scrooge.dto.member.MemberOwningBadgeDto;
-import com.scrooge.scrooge.dto.member.MemberSelectedQuestDto;
+import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
 import com.scrooge.scrooge.repository.member.MemberOwningAvatarRepository;
@@ -61,7 +57,11 @@ public class MemberService {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword());
+        if (!signUpRequestDto.getPassword1().equals(signUpRequestDto.getPassword2())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
         Member member = new Member();
         member.setName(signUpRequestDto.getName());
@@ -119,21 +119,35 @@ public class MemberService {
         });
     }
 
-    public MemberDto updateWeeklyGoal(MemberDto memberDto) {
-        Optional<Member> member = memberRepository.findById(memberDto.getId());
-        if(member.isPresent()) {
+    public MemberDto updateWeeklyGoal(UpdateWeeklyGoalDto updateWeeklyGoalDto, Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findWithRelatedEntitiesById(memberId);
+        if (optionalMember.isPresent()) {
             // 주간 목표 설정
-            member.get().setWeeklyGoal(memberDto.getWeeklyGoal());
+//            member.get().setWeeklyGoal(memberDto.getWeeklyGoal());
+            Member member = optionalMember.get();
+            member.setWeeklyGoal(updateWeeklyGoalDto.getWeeklyGoal());
+//            System.out.println(member);
 
             // DB에 업데이트 된 사용자 저장
-            Member updatedMember = memberRepository.save(member.get());
-            return new MemberDto(updatedMember);
+//            Member updatedMember = memberRepository.save(member.get());
+            return new MemberDto(member);
         }
         else {
-            throw new NotFoundException(memberDto.getId() + "의 ID를 가진 사용자를 찾을 수 없습니다.");
+            throw new NotFoundException(memberId + "의 ID을 가진 사용자를 찾을 수 없습니다.");
         }
     }
 
+    public MemberDto updatePassword(UpdatePasswordDto updatePasswordDto, Long memberId) {
+        Member member = memberRepository.findWithRelatedEntitiesById(memberId)
+                .orElseThrow(() -> new RuntimeException("해당 유저를 찾을 수 없습니다."));
+
+        if (!bCryptPasswordEncoder.matches(updatePasswordDto.getCurrentPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호를 다시 입력해주세요.");
+        }
+
+        member.setPassword(bCryptPasswordEncoder.encode(updatePasswordDto.getNewPassword()));
+        return new MemberDto(member);
+    }
 }
 
 

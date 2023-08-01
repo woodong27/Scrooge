@@ -1,4 +1,4 @@
-package com.scrooge.scrooge.dto;
+package com.scrooge.scrooge.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,5 +13,6 @@ public class SignUpRequestDto {
     private String name;
     private String nickname;
     private String email;
-    private String password;
+    private String password1;
+    private String password2;
 }
