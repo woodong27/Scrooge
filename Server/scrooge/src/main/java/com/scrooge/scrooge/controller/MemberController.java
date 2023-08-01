@@ -1,13 +1,11 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.LoginRequestDto;
-import com.scrooge.scrooge.dto.MemberDto;
+import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.dto.SignUpRequestDto;
-import com.scrooge.scrooge.jwt.JwtAuthenticationFilter;
-import com.scrooge.scrooge.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.repository.MemberRepository;
-import com.scrooge.scrooge.service.MemberService;
+import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
+import com.scrooge.scrooge.repository.member.MemberRepository;
+import com.scrooge.scrooge.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -34,32 +32,25 @@ public class MemberController {
         return ResponseEntity.ok("회원가입 완료");
     }
 
+    @Operation(summary = "로그인 API", description = "로그인 POST")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = memberService.login(loginRequestDto);
         return ResponseEntity.ok(token);
     }
 
-//    @Operation(summary = "유저 정보를 가져오는 API", description = "유저 정보 GET")
-//    @GetMapping("/{memberId}")
-//    public ResponseEntity<MemberDto> getUserInfo(@PathVariable("memberId") Long memberId) {
-//        Optional<MemberDto> memberDto = memberService.getMemberInfo(memberId);
-//        return memberDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-//    }
-
+    @Operation(summary = "멤버정보 API", description = "멤버정보 GET")
     @GetMapping("/info")
     public ResponseEntity<MemberDto> getUserInfo(@RequestHeader("Authorization") String tokenHeader) {
        String token = extractToken(tokenHeader);
 
-       if (token != null && jwtTokenProvider.validateToken(token)) {
-           String email = jwtTokenProvider.extractEmail(token);
-           Optional<MemberDto> memberDto = memberService.getInfo(email);
-
-           if(memberDto.isPresent()) {
-               return ResponseEntity.ok(memberDto.get());
-           }
+       if (!jwtTokenProvider.validateToken(token)) {
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
        }
-       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+       String email = jwtTokenProvider.extractEmail(token);
+       Optional<MemberDto> memberDto = memberService.getInfo(email);
+       return memberDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     private String extractToken(String header) {
@@ -68,4 +59,5 @@ public class MemberController {
         }
         return null;
     }
+
 }

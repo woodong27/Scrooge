@@ -1,15 +1,8 @@
 package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.Article;
-import com.scrooge.scrooge.domain.community.ArticleBad;
-import com.scrooge.scrooge.domain.community.ArticleGood;
-import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
-import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.repository.MemberRepository;
-import com.scrooge.scrooge.repository.community.ArticleBadRepository;
-import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
-import com.scrooge.scrooge.repository.community.ArticleRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

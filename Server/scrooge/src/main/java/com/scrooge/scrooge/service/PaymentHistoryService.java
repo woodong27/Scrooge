@@ -2,7 +2,7 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
-import com.scrooge.scrooge.repository.MemberRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -3,6 +3,7 @@ package com.scrooge.scrooge.repository;
 import com.scrooge.scrooge.domain.Avatar;
 import com.scrooge.scrooge.domain.Level;
 import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
