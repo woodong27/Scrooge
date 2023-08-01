@@ -9,6 +9,7 @@
   justify-content: space-evenly;
   padding: 20px 0 20px 0;
   background-color: white;
+  border-top: gray 1px solid;
 
   & li {
     cursor: pointer;

@@ -1,7 +1,7 @@
 const Header = (props) => {
   return (
     <div
-      className="w-full h-36 flex justify-center"
+      className="w-full h-36 flex justify-center flex-col items-center"
       style={{
         background:
           "linear-gradient(180deg, #A9D9F4 0%, rgba(169, 217, 244, 0.00) 100%)",
@@ -15,6 +15,7 @@ const Header = (props) => {
       >
         스크루지 파이트
       </div>
+      {props.children}
     </div>
   );
 };
