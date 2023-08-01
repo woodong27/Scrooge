@@ -1,0 +1,36 @@
+.header34 {
+  width: 300px;
+  font-size: 34px;
+  margin: 0 auto;
+
+  & p {
+    margin: 15px auto;
+  }
+}
+
+.btn {
+  margin-top: 10px;
+  background-color: #5db075;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+}
+
+.box {
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.foot {
+  display: flex;
+  flex-flow: column;
+  row-gap: 15px;
+  margin-top: 80px;
+}

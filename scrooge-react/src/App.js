@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./components/Main/Main";
-import DailyCalcul from "./components/Main/DailyCalcul/DailyCalcul";
-import NavBar from "./components/Nav/NavBar";
-import Loading from "./components/pages/Loading";
-import Challenge from "./components/pages/Challenge/Challenge";
+
+import Main from "./pages/Main/Main";
+import DailyCalcul from "./pages/Main/DailyCalcul";
+import Footer from "./components/Footer";
+import Loading from "./pages/Loading";
+import Challenge from "./pages/Challenge/Challenge";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -28,7 +29,7 @@ function App() {
             <Route path="/300" element={<DailyCalcul />}></Route>
             <Route path="/challenge" element={<Challenge />}></Route>
           </Routes>
-          <NavBar />
+          <Footer />
         </BrowserRouter>
       )}
     </div>
