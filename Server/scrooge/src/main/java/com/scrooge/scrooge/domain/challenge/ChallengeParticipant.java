@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "challenge_participant")
@@ -33,5 +35,8 @@ public class ChallengeParticipant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
+
+    @OneToMany(mappedBy = "challengeParticipant", cascade = CascadeType.REMOVE)
+    private List<ChallengeAuth> challengeAuths = new ArrayList<>();
 
 }
