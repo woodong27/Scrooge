@@ -1,5 +1,5 @@
-import { useEffect, Fragment, useState } from "react";
-import ProgressBar from "./ProgressBar";
+// import { useEffect, Fragment, useState } from "react";
+// import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import CharacterCard from "../../components/UI/CharacterCard";
 import TodayCard from "../../components/UI/TodayCard";
@@ -88,7 +88,7 @@ const Main = (props) => {
           <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
           <div className={styles.amount}>정산이 필요해요!</div>
         </div>
-        <ProgressBar></ProgressBar>
+        {/* <ProgressBar></ProgressBar> */}
       </TodayCard>
     </BackGround>
   );
