@@ -42,12 +42,12 @@ public class MemberService {
         String password = loginRequestDto.getPassword();
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("중복된 이메일 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("중복된 이메일 입니다."));
 
         if (bCryptPasswordEncoder.matches(password, member.getPassword())) {
             return jwtTokenProvider.createToken(email, member.getId());
         } else {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
     }
