@@ -44,6 +44,13 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String extractToken(String header) {
+        if (header != null && header.startsWith("Bearer")) {
+            return header.substring(7);
+        }
+        return null;
+    }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }

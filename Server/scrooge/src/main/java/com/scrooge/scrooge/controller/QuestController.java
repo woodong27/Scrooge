@@ -40,7 +40,7 @@ public class QuestController {
     @Operation(summary = "퀘스트 선택 API", description = "유저별로 매주 3개의 퀘스트를 선택할 수 있음")
     @PostMapping("/{questId}/select")
     public ResponseEntity<String> selectQuest(@RequestHeader("Authorization") String tokenHeader, @PathVariable("questId") Long questId) {
-        String token = extractToken(tokenHeader);
+        String token = jwtTokenProvider.extractToken(tokenHeader);
 
         if (!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰 입니다.");
@@ -57,7 +57,7 @@ public class QuestController {
     @Operation(summary = "퀘스트 완료 count 증가 API", description = "퀘스트 완료 count 증가 API")
     @PutMapping("/{questId}/complete")
     public ResponseEntity<?> completeQuest(@RequestHeader("Authorization") String tokenHeader, @PathVariable("questId") Long questId) {
-        String token = extractToken(tokenHeader);
+        String token = jwtTokenProvider.extractToken(tokenHeader);
 
         if (!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
@@ -65,16 +65,19 @@ public class QuestController {
 
         List<MemberSelectedQuestDto> memberSelectedQuestDtos = questService.updateCompleteCount(questId, jwtTokenProvider.extractMemberId(token));
         return ResponseEntity.ok(memberSelectedQuestDtos);
-
-
     }
 
-    private String extractToken(String header) {
-        if (header != null && header.startsWith("Bearer")) {
-            return header.substring(7);
+    @Operation(summary = "유저가 선택한 퀘스트 목록 API", description = "유저가 선택한 퀘스트 목록 반환")
+    @GetMapping("/member")
+    public ResponseEntity<?> getMemberSelectedQuest(@RequestHeader("Authorization") String header) {
+        String token = jwtTokenProvider.extractToken(header);
+
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
-        return null;
-    }
 
+        List<MemberSelectedQuestDto> memberSelectedQuestDtos = questService.getMemberSelectedQuests(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(memberSelectedQuestDtos);
+    }
 }
 

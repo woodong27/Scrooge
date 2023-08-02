@@ -90,4 +90,10 @@ public class QuestService {
                 .collect(Collectors.toList());
     }
 
+    public List<MemberSelectedQuestDto> getMemberSelectedQuests(Long memberId) {
+        List<MemberSelectedQuest> memberSelectedQuests = memberSelectedQuestRepository.findMemberSelectedQuestsById(memberId);
+        return memberSelectedQuests.stream()
+                .map(MemberSelectedQuestDto::new)
+                .collect(Collectors.toList());
+    }
 }
