@@ -18,6 +18,7 @@ public class ChallengeReqDto {
     private Integer maxParticipants;
     private String authMethod;
     private String period;
+    private Integer totalAuthCount;
     private String description;
     private Integer status;
     private LocalDateTime startDate;
@@ -35,6 +36,7 @@ public class ChallengeReqDto {
         this.maxParticipants = 20;
         this.authMethod = challenge.getAuthMethod();
         this.period = challenge.getPeriod();
+        this.totalAuthCount = challenge.getTotalAuthCount();
         this.description = challenge.getDescription();
         this.status = challenge.getStatus();
         this.startDate = challenge.getStartDate();

@@ -54,6 +54,25 @@ public class ChallengeService {
         challenge.setAuthMethod(challengeReqDto.getAuthMethod());
         challenge.setDescription(challengeReqDto.getDescription());
 
+        // Period에 따라 총 인증 횟수 정하기
+        Integer totalAuthCount = 0;
+        switch (challengeReqDto.getPeriod()) {
+            case "1주" :
+                totalAuthCount = 7;
+                break;
+            case "2주" :
+                totalAuthCount = 14;
+                break;
+            case "3주" :
+                totalAuthCount = 21;
+                break;
+            case "한달":
+                totalAuthCount = 28;
+                break;
+        }
+
+        challenge.setTotalAuthCount(totalAuthCount);
+
         challengeRepository.save(challenge);
 
         // challengeMaster를 challengeParticipant에 추가하기
