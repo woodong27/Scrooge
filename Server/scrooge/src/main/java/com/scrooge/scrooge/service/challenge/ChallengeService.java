@@ -7,6 +7,7 @@ import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeExampleImageDto;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeReqDto;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeRespDto;
+import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +92,7 @@ public class ChallengeService {
     private void saveChallengeExampleImages(Challenge challenge, List<MultipartFile> images) {
 
         // 업로드할 위치 설정
-        String uploadLocation = fileUploadProperties.getUploadLocation() + "/challenge/examples";
+        String uploadLocation = fileUploadProperties.getUploadLocation() + "/challenge/examples/" + challenge.getId();
 
         System.out.println(images.size());
 
@@ -100,6 +102,12 @@ public class ChallengeService {
             Path filePath = null;
 
             try {
+                // 업로드할 위치에 폴더가 없으면 생성
+                File uploadDir = new File(uploadLocation);
+                if(!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
                 // 업로드할 위치에 파일 저장
                 byte[] bytes = image.getBytes();
                 filePath = Paths.get(uploadLocation + File.separator + fileName);
@@ -205,6 +213,7 @@ public class ChallengeService {
         }
     }
 
+    // 챌린지 참여 API
     public void participateInChallenge(Long challengeId, Long memberId) {
         ChallengeParticipant challengeParticipant = new ChallengeParticipant();
 
@@ -223,5 +232,61 @@ public class ChallengeService {
 
         // challengeParticipant에 참여자 정보 추가하기
         challengeParticipantRepository.save(challengeParticipant);
+    }
+
+    // 챌린지 시작 API
+    public ChallengeStartRespDto startChallenge(Long challengeId) {
+        // 챌린지 시작 응답 DTO 생성
+        ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
+
+        /* 챌린지 시작 조건이 맞는지 먼저 확인 */
+
+        // 1. challengeId에 해당하는 챌린지 가져오기
+        Optional<Challenge> challenge = challengeRepository.findById(challengeId);
+        // 2. challenge의 현재 인원 가져오기
+        Integer currentParticipants = challenge.get().getChallengeParticipantList().size();
+
+        // 3. 시작 조건 확인하기
+        // 3-1. challenge의 현재 인원이 짝수 인지 확인하기
+        if(currentParticipants % 2 == 1) {
+            challengeStartRespDto.setStatus("Fail");
+            challengeStartRespDto.setMessage("현재 인원이 홀수라서 챌린지를 시작할 수 없습니다.");
+            return challengeStartRespDto;
+        }
+        // 3-2. challenge의 현재 인원이 최소 인원 이상인지 확인하기
+        else if(currentParticipants < challenge.get().getMinParticipants()){
+            challengeStartRespDto.setStatus("Fail");
+            challengeStartRespDto.setMessage("현재 인원이 최소 인원 미만이라 챌린지를 시작할 수 없습니다.");
+            return challengeStartRespDto;
+        }
+        else {
+            /* 시작할 수 있다!! */
+
+            /* challenge 테이블에서 수정되는 내용 바꾸기 */
+            // 1. status를 1(시작 전) 에서 2(진행 중)으로 변경하기
+            challenge.get().setStatus(2);
+            // 2. startDate를 오늘 날짜로 정하기
+            challenge.get().setStartDate(LocalDateTime.now());
+            // 3. endDate를 startDate에서 period(totalAuthCount) 만큼 더한 날짜로 저장
+            challenge.get().setEndDate(challenge.get().getStartDate().plusDays(challenge.get().getTotalAuthCount()));
+            challengeRepository.save(challenge.get());
+
+            /* challengeParticipant 테이블에서 수정되는 내용 바꾸기 */
+
+            // 1. challengeId에 맞는 challengeParticipant 다 찾기
+            List<ChallengeParticipant> challengeParticipantList = challenge.get().getChallengeParticipantList();
+            // 2. dailyCompletion 전부 false로 바꿔주기
+            // 3. totalCompletion 전부 0으로 바꿔주기
+            for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
+                challengeParticipant.setDailyCompletion(false);
+                challengeParticipant.setTotalCompletion(0);
+                challengeParticipantRepository.save(challengeParticipant);
+            }
+
+            // 시작 성공 응답 보내주기
+            challengeStartRespDto.setStatus("Success");
+            challengeStartRespDto.setMessage("챌린지 시작에 성공하였습니다.");
+            return challengeStartRespDto;
+        }
     }
 }

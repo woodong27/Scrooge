@@ -3,6 +3,7 @@ package com.scrooge.scrooge.controller.challenge;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeReqDto;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeRespDto;
+import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
 import com.scrooge.scrooge.service.challenge.ChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -79,12 +80,22 @@ public class ChallengeController {
         return ResponseEntity.ok("챌린지 참여 완료");
     }
 
+    // 챌린지 마스터가 챌린지를 시작하는 API
+    @Operation(summary = "챌린지 마스터가 챌린지를 시작하는 API")
+    @PutMapping("/{challengeId}/start")
+    public ResponseEntity<ChallengeStartRespDto> startChallenge(@PathVariable("challengeId") Long challengeId) {
+        ChallengeStartRespDto challengeStartRespDto = challengeService.startChallenge(challengeId);
+        return ResponseEntity.ok(challengeStartRespDto);
+    }
+
     private String extractToken(String tokenHeader) {
         if(tokenHeader != null && tokenHeader.startsWith("Bearer")) {
             return tokenHeader.substring(7);
         }
         return null;
     }
+
+
 
 
 }
