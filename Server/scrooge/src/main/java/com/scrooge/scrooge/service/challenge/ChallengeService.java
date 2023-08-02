@@ -4,9 +4,10 @@ import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
 import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
+import com.scrooge.scrooge.dto.challengeDto.ChallengeExampleImageDto;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeReqDto;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeRespDto;
-import com.scrooge.scrooge.repository.MemberRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
@@ -22,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -155,5 +157,52 @@ public class ChallengeService {
                     return challengeRespDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    // 챌린지 상세 조회 API
+    public ChallengeRespDto getChallenge(Long challengeId) throws IllegalAccessException {
+        Optional<Challenge> challenge = challengeRepository.findById(challengeId);
+
+        if(challenge.isPresent()) {
+            ChallengeRespDto challengeRespDto = new ChallengeRespDto();
+            challengeRespDto.setId(challenge.get().getId());
+            challengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
+            challengeRespDto.setCategory(challenge.get().getCategory());
+            challengeRespDto.setTitle(challenge.get().getTitle());
+            challengeRespDto.setPeriod(challenge.get().getPeriod());
+            challengeRespDto.setCurrentParticipants(challenge.get().getChallengeParticipantList().size());
+            challengeRespDto.setMinParticipants(challenge.get().getMinParticipants());
+            challengeRespDto.setAuthMethod(challenge.get().getAuthMethod());
+            challengeRespDto.setDescription(challenge.get().getDescription());
+
+            List<ChallengeExampleImage> challengeExampleImageList = challengeExampleImageRepository.findByChallengeId(challengeId);
+            challengeRespDto.setChallengeExampleImageList(challengeExampleImageList.stream()
+                    .map(ChallengeExampleImageDto::new)
+                    .collect(Collectors.toList()));
+
+            return challengeRespDto;
+        } else {
+            throw new IllegalAccessException("Challenge not found with ID: " + challengeId);
+        }
+    }
+
+    public void participateInChallenge(Long challengeId, Long memberId) {
+        ChallengeParticipant challengeParticipant = new ChallengeParticipant();
+
+        // 해당 challengeId의 challenge의 팀0 인원과 팀1의 인원 비교
+        Integer teamZeroMemberCnt = challengeParticipantRepository.countTeamZeroByChallengeId(challengeId);
+        Integer teamOneMemberCnt = challengeParticipantRepository.countTeamOneByChallengeId(challengeId);
+
+        Integer team = 0; // 팀 0으로 일단 배정
+        if(teamZeroMemberCnt > teamOneMemberCnt) { // 팀 1의 인원이 더 작을 경우 team1에 사용자 넣어주기
+            team = 1;
+        }
+
+        challengeParticipant.setTeam(team);
+        challengeParticipant.setChallenge(challengeRepository.findById(challengeId).orElse(null));
+        challengeParticipant.setMember(memberRepository.findById(memberId).orElse(null));
+
+        // challengeParticipant에 참여자 정보 추가하기
+        challengeParticipantRepository.save(challengeParticipant);
     }
 }

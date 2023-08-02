@@ -1,6 +1,6 @@
 package com.scrooge.scrooge.domain.challenge;
 
-import com.scrooge.scrooge.domain.Member;
+import com.scrooge.scrooge.domain.member.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
