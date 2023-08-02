@@ -109,12 +109,6 @@ public class MemberService {
                     .map(MemberOwningBadgeDto::new)
                     .collect(Collectors.toList()));
 
-            List<MemberSelectedQuest> userSelectedQuests = memberSelectedQuestRepository.findMemberSelectedQuestsById(member.getId());
-        //           System.out.println(userSelectedQuests);
-            memberDto.setMemberSelectedQuests(userSelectedQuests.stream()
-                    .map(MemberSelectedQuestDto::new)
-                    .collect(Collectors.toList()));
-
             return memberDto;
         });
     }

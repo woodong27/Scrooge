@@ -27,13 +27,11 @@ public class MemberDto {
     private Badge mainBadge;
     private List<MemberOwningAvatarDto> memberOwningAvatars;
     private List<MemberOwningBadgeDto> memberOwningBadges;
-    private List<MemberSelectedQuestDto> memberSelectedQuests;
 
     @Builder
     public MemberDto(Member member,
                      List<MemberOwningAvatarDto> memberOwningAvatars
-                   , List<MemberOwningBadgeDto> memberOwningBadges
-                   , List<MemberSelectedQuestDto> memberSelectedQuests) {
+                   , List<MemberOwningBadgeDto> memberOwningBadges) {
         this.id = member.getId();
         this.name = member.getName();
         this.nickname = member.getNickname();
@@ -48,7 +46,6 @@ public class MemberDto {
         this.mainAvatar = member.getMainAvatar();
         this.memberOwningAvatars = memberOwningAvatars;
         this.memberOwningBadges = memberOwningBadges;
-        this.memberSelectedQuests = memberSelectedQuests;
     }
 
     public MemberDto(Member member) {
