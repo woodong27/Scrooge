@@ -2,6 +2,6 @@
   width: 100vw;
   height: 100vh;
   background: #a9d9f4;
-  background-image: url("../../../public/images/bg-images.png");
+  background-image: url("../../public/images/bg-images.png");
   background-size: cover;
 }

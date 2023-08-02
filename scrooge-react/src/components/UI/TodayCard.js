@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./Card.module.css";
+import styles from "./TodayCard.module.css";
 
-const Card = (props) => {
+const TodayCard = (props) => {
   return (
     <div className={styles.card}>
       {props.children}
@@ -10,4 +10,4 @@ const Card = (props) => {
   );
 };
 
-export default Card;
+export default TodayCard;

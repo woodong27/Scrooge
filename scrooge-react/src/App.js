@@ -9,7 +9,7 @@ import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   const loginHandler = () => {
     setIsLogin(true);
