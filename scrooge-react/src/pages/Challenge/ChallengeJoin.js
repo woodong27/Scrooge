@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 import ButtonBlue from "../../components/Button/ButtonBlue";
 import styles from "./ChallengeJoin.module.css";
-import Back from "../../assets/back.png";
+import backImg from "../../assets/back.png";
 
 const ChallengeJoin = (props) => {
   return (
     <div className={styles.layout}>
       <Link className={styles.back} to="/challenge">
-        <img src={Back} alt="뒤로가기"></img>
+        <img src={backImg} alt="뒤로가기"></img>
       </Link>
       <img
         className={styles.img}
