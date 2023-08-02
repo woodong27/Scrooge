@@ -271,18 +271,6 @@ public class ChallengeService {
             challenge.get().setEndDate(challenge.get().getStartDate().plusDays(challenge.get().getTotalAuthCount()));
             challengeRepository.save(challenge.get());
 
-            /* challengeParticipant 테이블에서 수정되는 내용 바꾸기 */
-
-            // 1. challengeId에 맞는 challengeParticipant 다 찾기
-            List<ChallengeParticipant> challengeParticipantList = challenge.get().getChallengeParticipantList();
-            // 2. dailyCompletion 전부 false로 바꿔주기
-            // 3. totalCompletion 전부 0으로 바꿔주기
-            for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
-                challengeParticipant.setDailyCompletion(false);
-                challengeParticipant.setTotalCompletion(0);
-                challengeParticipantRepository.save(challengeParticipant);
-            }
-
             // 시작 성공 응답 보내주기
             challengeStartRespDto.setStatus("Success");
             challengeStartRespDto.setMessage("챌린지 시작에 성공하였습니다.");

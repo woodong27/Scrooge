@@ -21,12 +21,6 @@ public class ChallengeParticipant {
     @Column
     private Integer team;
 
-    @Column(name = "daily_completion")
-    private Boolean dailyCompletion;
-
-    @Column(name = "total_completion")
-    private Integer totalCompletion;
-
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
