@@ -29,6 +29,13 @@ public class BadgeService {
                 .collect(Collectors.toList());
     }
 
+    public BadgeDto getOneBadge(Long badgeId) {
+        Badge badge = badgeRepository.findById(badgeId)
+                .orElseThrow(() -> new NotFoundException("해당 뱃지가 없습니다."));
+
+        return new BadgeDto(badge);
+    }
+
     public BadgeDto selectMainBadge(Long badgeId, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));

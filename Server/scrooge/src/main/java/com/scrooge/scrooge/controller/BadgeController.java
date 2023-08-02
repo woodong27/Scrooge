@@ -29,6 +29,13 @@ public class BadgeController {
         return ResponseEntity.ok(badgeDtos);
     }
 
+    @Operation(summary = "Get Badge", description = "Get badge")
+    @GetMapping("/{badgeId}")
+    public ResponseEntity<BadgeDto> getOneBadge(@PathVariable("badgeId") Long badgeId) {
+        BadgeDto badgeDto = badgeService.getOneBadge(badgeId);
+        return ResponseEntity.ok(badgeDto);
+    }
+
     @Operation(summary = "Select MainBadge", description = "Select main badge of member")
     @PutMapping("/{badgeId}")
     public ResponseEntity<?> selectMainBadge(@RequestHeader("Authorization")String header, @PathVariable("badgeId") Long badgeId) {
