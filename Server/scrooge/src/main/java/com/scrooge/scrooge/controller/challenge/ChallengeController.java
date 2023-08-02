@@ -52,7 +52,7 @@ public class ChallengeController {
 
     // 마이 챌린지를 조회하는 API
     @Operation(summary = "마이 챌린지를 조회하는 API", description = "statusId => 1: 시작 전, 2: 진행 중, 3: 종료")
-    @GetMapping("my-challenge/{memberId}/{statusId}")
+    @GetMapping("{memberId}/{statusId}/my-challenge")
     public ResponseEntity<List<ChallengeRespDto>> getMyChallenges(@PathVariable("memberId")Long memberId, @PathVariable("statusId")Integer statusId) {
         List<ChallengeRespDto> myChallengeDtos = challengeService.getMyChallenges(memberId, statusId);
         return ResponseEntity.ok(myChallengeDtos);
