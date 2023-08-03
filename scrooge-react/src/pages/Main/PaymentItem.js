@@ -2,7 +2,11 @@ import { useState } from "react";
 import Modal from "../../components/UI/Modal";
 import styles from "./PaymentItem.module.css";
 
+const serverTimezoneOffset = 540;
+
 const PaymentItem = (props) => {
+  const serverTime = new Date(props.paidAt);
+  const localTime = new Date(serverTime.getTime() + serverTimezoneOffset * 60 * 1000);
   const [modal, setModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -18,7 +22,7 @@ const PaymentItem = (props) => {
       <p className={styles.usedAt}>{props.usedAt}</p>
       <p className={styles.amount}>{props.amount}</p>
       <p className={styles.paidAt}>
-        {props.paidAt.split("T")[1].split(".")[0]}
+        {localTime.toString().split(" ")[4]}
       </p>
       <button className={styles.btn} onClick={handleOpenModal}>
         수정

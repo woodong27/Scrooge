@@ -5,6 +5,8 @@ import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
+import com.scrooge.scrooge.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class CommunityBadService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final ArticleBadRepository articleBadRepository;
+    private final QuestService questService;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
 
     // Article 싫어요를 구현하는 메서드
     @Transactional
@@ -25,6 +29,10 @@ public class CommunityBadService {
 
         articleBad.setMember(memberRepository.findById(memberId).orElse(null));
         articleBad.setArticle(articleRepository.findById(articleId).orElse(null));
+
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 6L)) {
+            questService.completeQuest(6L, memberId);
+        }
 
         return articleBadRepository.save(articleBad);
     }
