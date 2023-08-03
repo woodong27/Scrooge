@@ -8,8 +8,15 @@ const MyPageProfile = () => {
         <ul className={styles["profile-info"]}>
           <li>Lv.3</li>
           <li>돈그만써</li>
-          <li>
-            <img src ={} alt="보유 캐릭터 수"/>
+          <li className={styles["items-info"]}>
+            <div>
+              <img src ={`${process.env.PUBLIC_URL}/images/profile-icon.png`} alt="캐릭터 아이콘"/>
+              <span>12</span>
+            </div>
+            <div>
+              <img src ={`${process.env.PUBLIC_URL}/images/badge-icon.png`} alt="뱃지 아이콘"/>
+              <span>6</span>
+            </div>
           </li>
         </ul>
         <div className={styles["edit-btn"]}>
