@@ -11,27 +11,40 @@
   stroke: #000;
   border-radius: 20px;
   text-align: left;
+  border: 1px solid var(--input-text, #8d8e90);
 
   & .date {
     font-size: 24px;
+    color: var(--green);
     padding-top: 20px;
     margin-left: 10px;
-  }
-  & .total {
-    padding-top: 14px;
-    text-align: right;
-    margin-right: 32px;
   }
 }
 
 .scrollitem {
+  margin-top: 10px;
   overflow-y: scroll;
 }
 
 .item {
-  height: 530px;
+  height: 552px;
 }
 
+.total {
+  padding-top: 14px;
+  text-align: right;
+  margin-right: 32px;
+}
+.btn {
+  width: 280px;
+  height: 50px;
+  border-radius: 20px;
+  margin: 20px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--green);
+}
 /* scrollbar 안 보이게 */
 /* .card::-webkit-scrollbar {
   display: none;

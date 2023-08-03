@@ -24,6 +24,8 @@ const PaymentHistory = () => {
     setDate(`${month} ${day}일 소비`);
   };
 
+  const postExp = () => {};
+
   return (
     <div>
       <div className={styles.empty} />
@@ -35,9 +37,12 @@ const PaymentHistory = () => {
               <PaymentItem key={it.id} {...it} />
             ))}
             <PaymentAdd />
+            <div className={styles.total}>총합: {}원</div>
+            <button className={styles.btn} onClick={postExp()}>
+              정산하기
+            </button>
           </div>
         </div>
-        <div className={styles.total}>총합: {}원</div>
       </div>
     </div>
   );
