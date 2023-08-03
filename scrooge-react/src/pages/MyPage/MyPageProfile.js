@@ -23,6 +23,9 @@ const MyPageProfile = () => {
           <img src={`${process.env.PUBLIC_URL}/images/edit-btn.png`} alt="편집 버튼"/> 
         </div> 
       </div>
+      <div>
+        경험치 바 
+      </div>
     </div>
   );
 };
