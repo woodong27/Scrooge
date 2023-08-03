@@ -19,7 +19,6 @@ const PaymentHistory = () => {
   }, []);
 
   const onCreate = (usedAt, amount, paidAt) => {
-    console.log(`여기 ${paidAt}`);
     const newItem = {
       paidAt,
       amount,
@@ -71,8 +70,8 @@ const PaymentHistory = () => {
 
         <div className={styles.scrollitem}>
           <div className={styles.item}>
-            {data.map((it) => (
-              <PaymentItem key={it.id} {...it} />
+            {data.map((it, index) => (
+              <PaymentItem key={index} {...it} />
             ))}
             <PaymentAdd onCreate={onCreate} />
             <div className={styles.total}>총합: {}원</div>
