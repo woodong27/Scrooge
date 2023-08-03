@@ -1,9 +1,11 @@
 package com.scrooge.scrooge.controller;
 
+import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
+import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.PaymentHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PaymentHistoryController {
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final PaymentHistoryService paymentHistoryService;
     private final MemberRepository memberRepository;
@@ -91,6 +95,26 @@ public class PaymentHistoryController {
         }
     }
 
+    // 하루에 한 번 정산하면 경험치 +100 해주는 API
+    @Operation(summary = "일일 정산 후 경험치 획득")
+    @PutMapping("/settlement-exp")
+    public ResponseEntity<?> updateExpAfterDailySettlement(@RequestHeader("Authorization") String tokenHeader) {
+        String token = extractToken(tokenHeader);
+
+        if(!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        MemberDto memberDto = paymentHistoryService.updateExpAfterDailySettlement(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(memberDto);
+    }
+
+    private String extractToken(String tokenHeader) {
+        if(tokenHeader != null && tokenHeader.startsWith("Bearer")) {
+            return tokenHeader.substring(7);
+        }
+        return null;
+    }
 
 
 }
