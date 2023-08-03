@@ -95,7 +95,7 @@ public class MemberService {
             memberDto.setWeeklyGoal(member.getWeeklyGoal());
             memberDto.setWeeklyConsum(member.getWeeklyConsum());
             memberDto.setJoinedAt(member.getJoinedAt());
-            memberDto.setLevel(member.getLevel());
+            memberDto.setLevelId(member.getLevel().getId());
             memberDto.setMainBadge(member.getMainBadge());
             memberDto.setMainAvatar(member.getMainAvatar());
 

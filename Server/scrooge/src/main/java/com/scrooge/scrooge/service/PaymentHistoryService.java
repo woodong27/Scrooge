@@ -3,6 +3,7 @@ package com.scrooge.scrooge.service;
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
+import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -114,5 +115,16 @@ public class PaymentHistoryService {
     }
 
 
-
+    public MemberDto updateExpAfterDailySettlement(Long memberId) {
+        Optional<Member> member =  memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            // 경험치 +100 정산해주기
+            member.get().setExp(member.get().getExp() + 100);
+            Member updatedMember = memberRepository.save(member.get());
+            return new MemberDto(updatedMember);
+        }
+        else {
+            throw new NotFoundException("해당 Member가 존재하지 않습니다.");
+        }
+    }
 }
