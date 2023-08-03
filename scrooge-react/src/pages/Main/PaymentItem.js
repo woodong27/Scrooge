@@ -17,7 +17,9 @@ const PaymentItem = (props) => {
     <div className={styles.box}>
       <p className={styles.usedAt}>{props.usedAt}</p>
       <p className={styles.amount}>{props.amount}</p>
-      <p className={styles.paidAt}>{props.paidAt.split("T")[1]}</p>
+      <p className={styles.paidAt}>
+        {props.paidAt.split("T")[1].split(".")[0]}
+      </p>
       <button className={styles.btn} onClick={handleOpenModal}>
         수정
       </button>
