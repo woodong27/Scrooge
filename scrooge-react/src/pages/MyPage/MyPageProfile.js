@@ -1,5 +1,6 @@
 import styles from "./MyPageProfile.module.css";
-
+import MyPageExpBar
+ from "./MyPageExpBar";
 const MyPageProfile = () => {
   return(
     <div className={styles["profile-container"]}>
@@ -23,9 +24,7 @@ const MyPageProfile = () => {
           <img src={`${process.env.PUBLIC_URL}/images/edit-btn.png`} alt="편집 버튼"/> 
         </div> 
       </div>
-      <div>
-        경험치 바 
-      </div>
+      <MyPageExpBar />
     </div>
   );
 };
