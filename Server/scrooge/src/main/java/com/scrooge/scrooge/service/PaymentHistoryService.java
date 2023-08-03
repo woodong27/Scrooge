@@ -6,6 +6,7 @@ import com.scrooge.scrooge.dto.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -26,6 +27,8 @@ public class PaymentHistoryService {
 
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final MemberRepository memberRepository;
+    private final QuestService questService;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
 
     @Transactional
     public PaymentHistory addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
@@ -121,6 +124,11 @@ public class PaymentHistoryService {
             // 경험치 +100 정산해주기
             member.get().setExp(member.get().getExp() + 100);
             Member updatedMember = memberRepository.save(member.get());
+
+            if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 1L)) {
+                questService.completeQuest(1L, memberId);
+            }
+
             return new MemberDto(updatedMember);
         }
         else {
