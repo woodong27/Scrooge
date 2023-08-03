@@ -53,7 +53,7 @@ const PaymentAdd = ({ onCreate }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://localhost:8080/payment-history/1", postData)
+    fetch("http://day6scrooge.duckdns.org:8081/payment-history/1", postData)
       .then((res) => res.text())
       .then(console.log);
     const currentDateTime = getCurrentDate();

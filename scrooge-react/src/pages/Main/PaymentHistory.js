@@ -10,7 +10,7 @@ const PaymentHistory = () => {
   // 오늘 소비 내역 불러오기
   useEffect(() => {
     getCurrentDate();
-    fetch("http://localhost:8080/payment-history/1/today")
+    fetch("http://day6scrooge.duckdns.org:8081/payment-history/1/today")
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -47,7 +47,10 @@ const PaymentHistory = () => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://localhost:8080/payment-history/settlement-exp", postData)
+    fetch(
+      "http://day6scrooge.duckdns.org:8081/payment-history/settlement-exp",
+      postData
+    )
       .then((res) => res.text())
       .then(console.log);
   };
