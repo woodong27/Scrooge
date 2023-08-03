@@ -25,29 +25,8 @@ public class MemberDto {
     private Level level;
     private Avatar mainAvatar;
     private Badge mainBadge;
-    private List<MemberOwningAvatarDto> memberOwningAvatars;
-    private List<MemberOwningBadgeDto> memberOwningBadges;
 
     @Builder
-    public MemberDto(Member member,
-                     List<MemberOwningAvatarDto> memberOwningAvatars
-                   , List<MemberOwningBadgeDto> memberOwningBadges) {
-        this.id = member.getId();
-        this.name = member.getName();
-        this.nickname = member.getNickname();
-        this.email = member.getEmail();
-        this.exp = member.getExp();
-        this.streak = member.getStreak();
-        this.weeklyConsum = member.getWeeklyConsum();
-        this.weeklyGoal = member.getWeeklyGoal();
-        this.joinedAt = member.getJoinedAt();
-        this.level = member.getLevel();
-        this.mainBadge = member.getMainBadge();
-        this.mainAvatar = member.getMainAvatar();
-        this.memberOwningAvatars = memberOwningAvatars;
-        this.memberOwningBadges = memberOwningBadges;
-    }
-
     public MemberDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();
@@ -62,4 +41,18 @@ public class MemberDto {
         this.mainBadge = member.getMainBadge();
         this.mainAvatar = member.getMainAvatar();
     }
+//    public MemberDto(Member member) {
+//        this.id = member.getId();
+//        this.name = member.getName();
+//        this.nickname = member.getNickname();
+//        this.email = member.getEmail();
+//        this.exp = member.getExp();
+//        this.streak = member.getStreak();
+//        this.weeklyConsum = member.getWeeklyConsum();
+//        this.weeklyGoal = member.getWeeklyGoal();
+//        this.joinedAt = member.getJoinedAt();
+//        this.level = member.getLevel();
+//        this.mainBadge = member.getMainBadge();
+//        this.mainAvatar = member.getMainAvatar();
+//    }
 }

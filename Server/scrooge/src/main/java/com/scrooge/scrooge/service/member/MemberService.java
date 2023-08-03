@@ -99,16 +99,6 @@ public class MemberService {
             memberDto.setMainBadge(member.getMainBadge());
             memberDto.setMainAvatar(member.getMainAvatar());
 
-            List<MemberOwningAvatar> userOwningAvatars = memberOwningAvatarRepository.findMemberOwningAvatarsById(member.getId());
-            memberDto.setMemberOwningAvatars(userOwningAvatars.stream()
-                    .map(MemberOwningAvatarDto::new)
-                    .collect(Collectors.toList()));
-
-            List<MemberOwningBadge> userOwningBadges = memberOwningBadgeRepository.findMemberOwningBadgesById(member.getId());
-            memberDto.setMemberOwningBadges(userOwningBadges.stream()
-                    .map(MemberOwningBadgeDto::new)
-                    .collect(Collectors.toList()));
-
             return memberDto;
         });
     }
@@ -117,13 +107,11 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findWithRelatedEntitiesById(memberId);
         if (optionalMember.isPresent()) {
             // 주간 목표 설정
-//            member.get().setWeeklyGoal(memberDto.getWeeklyGoal());
             Member member = optionalMember.get();
             member.setWeeklyGoal(updateWeeklyGoalDto.getWeeklyGoal());
-//            System.out.println(member);
 
             // DB에 업데이트 된 사용자 저장
-//            Member updatedMember = memberRepository.save(member.get());
+            memberRepository.save(member);
             return new MemberDto(member);
         }
         else {
