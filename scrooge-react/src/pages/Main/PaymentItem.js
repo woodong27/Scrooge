@@ -26,9 +26,9 @@ const PaymentItem = (props) => {
       {modal && (
         <Modal
           onCloseModal={handleCloseModal}
-          name={props.name}
+          usedAt={props.usedAt}
           amount={props.amount}
-          date={props.date}
+          paidAt={props.paidAt}
           cardName={props.cardName}
         />
       )}
