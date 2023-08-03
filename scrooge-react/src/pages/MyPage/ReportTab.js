@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ReportTab.module.css";
+import ReportWeek from "./ReportWeek";
 
 export default function ReportTab() {
   const [currentTab, setCurrentTab] = useState();
@@ -8,13 +9,11 @@ export default function ReportTab() {
     {
       id: 1,
       tabTitle: '주간',
-      title: 'title a',
-      content: 'a'
+      content: <ReportWeek />,
     },
     {
       id: 2,
       tabTitle: '월간',
-      title: 'title b',
       content: 'b'
     }
   ]
@@ -43,7 +42,7 @@ export default function ReportTab() {
           <div key={i}>
             {currentTab === `${tab.id}` &&
               <div>
-                <p>{tab.title}</p>
+                {/* <p>{tab.title}</p> */}
                 <p>{tab.content}</p>
               </div>
             }
