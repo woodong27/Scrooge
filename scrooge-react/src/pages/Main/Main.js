@@ -5,7 +5,7 @@ import styles from "./Main.module.css";
 import CharacterCard from "../../components/UI/CharacterCard";
 import TodayCard from "../../components/UI/TodayCard";
 import BackGround from "../../components/BackGround";
-import DailyCalcul from "../../pages/Main/DailyCalcul";
+import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
   // const [data, setData] = useState([]);
@@ -106,7 +106,7 @@ const Main = (props) => {
       )}
       {isConsum && (
         <div>
-          <DailyCalcul />
+          <PaymentHistory />
         </div>
       )}
     </BackGround>
