@@ -6,7 +6,9 @@ const serverTimezoneOffset = 540;
 
 const PaymentItem = (props) => {
   const serverTime = new Date(props.paidAt);
-  const localTime = new Date(serverTime.getTime() + serverTimezoneOffset * 60 * 1000);
+  const localTime = new Date(
+    serverTime.getTime() + serverTimezoneOffset * 60 * 1000
+  );
   const [modal, setModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -21,9 +23,7 @@ const PaymentItem = (props) => {
     <div className={styles.box}>
       <p className={styles.usedAt}>{props.usedAt}</p>
       <p className={styles.amount}>{props.amount}</p>
-      <p className={styles.paidAt}>
-        {localTime.toString().split(" ")[4]}
-      </p>
+      <p className={styles.paidAt}>{localTime.toString().split(" ")[4]}</p>
       <button className={styles.btn} onClick={handleOpenModal}>
         수정
       </button>
