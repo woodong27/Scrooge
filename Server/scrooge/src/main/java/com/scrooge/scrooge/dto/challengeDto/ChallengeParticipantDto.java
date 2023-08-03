@@ -11,8 +11,6 @@ public class ChallengeParticipantDto {
 
     private Long id;
     private Integer team;
-    private Boolean dailyCompletion;
-    private Integer totalCompletion;
 
     // 연결
     private Long memberId;
@@ -22,8 +20,6 @@ public class ChallengeParticipantDto {
     public ChallengeParticipantDto(ChallengeParticipant challengeParticipant) {
         this.id = challengeParticipant.getId();
         this.team = challengeParticipant.getTeam();
-        this.dailyCompletion = challengeParticipant.getDailyCompletion();
-        this.totalCompletion = challengeParticipant.getTotalCompletion();
         this.memberId = challengeParticipant.getMember().getId();
         this.challengeId = challengeParticipant.getChallenge().getId();
     }

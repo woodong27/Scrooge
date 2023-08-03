@@ -40,6 +40,9 @@ public class Challenge {
     @Column(length = 64, nullable = false)
     private String period; //챌린지 기간
 
+    @Column(name = "total_auth_count")
+    private Integer totalAuthCount; // 총 인증해야 하는 횟수
+
     @Column(columnDefinition = "INTEGER default 0")
     private Integer status; //상태 (0: 시작 전, 1: 진행 중, 2: 종료)
 
