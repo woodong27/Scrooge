@@ -54,18 +54,18 @@ public class QuestController {
         }
     }
 
-    @Operation(summary = "퀘스트 완료 count 증가 API", description = "퀘스트 완료 count 증가 API")
-    @PutMapping("/{questId}/complete")
-    public ResponseEntity<?> completeQuest(@RequestHeader("Authorization") String tokenHeader, @PathVariable("questId") Long questId) {
-        String token = jwtTokenProvider.extractToken(tokenHeader);
-
-        if (!jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
-
-        List<MemberSelectedQuestDto> memberSelectedQuestDtos = questService.updateCompleteCount(questId, jwtTokenProvider.extractMemberId(token));
-        return ResponseEntity.ok(memberSelectedQuestDtos);
-    }
+//    @Operation(summary = "퀘스트 완료 count 증가 API", description = "퀘스트 완료 count 증가 API")
+//    @PutMapping("/{questId}/complete")
+//    public ResponseEntity<?> completeQuest(@RequestHeader("Authorization") String tokenHeader, @PathVariable("questId") Long questId) {
+//        String token = jwtTokenProvider.extractToken(tokenHeader);
+//
+//        if (!jwtTokenProvider.validateToken(token)) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+//        }
+//
+//        List<MemberSelectedQuestDto> memberSelectedQuestDtos = questService.updateCompleteCount(questId, jwtTokenProvider.extractMemberId(token));
+//        return ResponseEntity.ok(memberSelectedQuestDtos);
+//    }
 
     @Operation(summary = "유저가 선택한 퀘스트 목록 API", description = "유저가 선택한 퀘스트 목록 반환")
     @GetMapping("/member")

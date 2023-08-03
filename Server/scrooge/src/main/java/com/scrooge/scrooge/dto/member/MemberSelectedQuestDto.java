@@ -15,6 +15,7 @@ public class MemberSelectedQuestDto {
     private Long id;
     private Quest quest;
     private int completeCount;
+    private boolean isDone;
 
     @Builder
     public MemberSelectedQuestDto(MemberSelectedQuest userSelectedQuest) {
@@ -22,5 +23,6 @@ public class MemberSelectedQuestDto {
 //        this.user = userSelectedQuest.getUser();
         this.quest = userSelectedQuest.getQuest();
         this.completeCount = userSelectedQuest.getCompleteCount();
+        this.isDone = userSelectedQuest.isDone();
     }
 }
