@@ -7,6 +7,7 @@ const PaymentHistory = () => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
 
+  // 오늘 소비 내역 불러오기
   useEffect(() => {
     getCurrentDate();
     fetch("http://localhost:8080/payment-history/1/today")
@@ -17,6 +18,17 @@ const PaymentHistory = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  const onCreate = (usedAt, amount, paidAt) => {
+    console.log(`여기 ${paidAt}`);
+    const newItem = {
+      paidAt,
+      amount,
+      usedAt,
+    };
+    setData([...data, newItem]);
+  };
+
+  // 오늘 날짜 가져오기
   const getCurrentDate = () => {
     const today = new Date();
     const month = today.toLocaleString("default", { month: "long" });
@@ -24,6 +36,7 @@ const PaymentHistory = () => {
     setDate(`${month} ${day}일 소비`);
   };
 
+  // 일일정산 경험치 추가 (나중에 오늘 날짜인지 확인 및 하루 한 번만 가능하게 변경)
   const postExp = () => {
     const obj = { id: "1" };
     const postData = {
@@ -61,7 +74,7 @@ const PaymentHistory = () => {
             {data.map((it) => (
               <PaymentItem key={it.id} {...it} />
             ))}
-            <PaymentAdd />
+            <PaymentAdd onCreate={onCreate} />
             <div className={styles.total}>총합: {}원</div>
             <button className={styles.btn} onClick={postExp}>
               정산하기
