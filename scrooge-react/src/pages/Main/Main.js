@@ -11,7 +11,7 @@ const Main = (props) => {
   // const [data, setData] = useState([]);
 
   // useEffect(() => {
-  //   fetch("http://localhost:8080/member")
+  //   fetch("day6scrooge.duckdns.org:8081/member")
   //  //토큰 인증.. 넣어서 하기..!! 근데 그러려면 로그인/회원가입이 먼저 되야할 것 같은디
   //     .then((resp) => resp.json())
   //     .then((data) => setData(data))
