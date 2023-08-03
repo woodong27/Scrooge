@@ -29,10 +29,14 @@ const PaymentHistory = () => {
       <div className={styles.empty} />
       <div className={styles.card}>
         <div className={styles.date}>{date}</div>
-        {data.map((it) => (
-          <PaymentItem key={it.id} {...it} />
-        ))}
-        <PaymentAdd />
+        <div className={styles.scrollitem}>
+          <div className={styles.item}>
+            {data.map((it) => (
+              <PaymentItem key={it.id} {...it} />
+            ))}
+            <PaymentAdd />
+          </div>
+        </div>
         <div className={styles.total}>총합: {}원</div>
       </div>
     </div>

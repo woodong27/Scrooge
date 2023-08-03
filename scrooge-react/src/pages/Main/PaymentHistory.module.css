@@ -4,7 +4,6 @@
 .card {
   margin: 20px;
   padding-left: 24px;
-  overflow-y: scroll;
   width: 320px;
   height: 640px;
   background-color: #fff;
@@ -19,11 +18,21 @@
     margin-left: 10px;
   }
   & .total {
-    padding-top: 4px;
+    padding-top: 14px;
     text-align: right;
     margin-right: 32px;
   }
 }
-.card::-webkit-scrollbar {
-  display: none;
+
+.scrollitem {
+  overflow-y: scroll;
 }
+
+.item {
+  height: 530px;
+}
+
+/* scrollbar 안 보이게 */
+/* .card::-webkit-scrollbar {
+  display: none;
+} */

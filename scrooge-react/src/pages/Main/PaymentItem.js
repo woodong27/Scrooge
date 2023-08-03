@@ -2,7 +2,7 @@ import { useState } from "react";
 import Modal from "../../components/UI/Modal";
 import styles from "./PaymentItem.module.css";
 
-const PayList = (props) => {
+const PaymentItem = (props) => {
   const [modal, setModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -34,4 +34,4 @@ const PayList = (props) => {
   );
 };
 
-export default PayList;
+export default PaymentItem;

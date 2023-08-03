@@ -1,37 +1,18 @@
-import { useState } from "react";
-import Modal from "../../components/UI/Modal";
-import styles from "./PaymentItem.module.css";
+import styles from "./PaymentAdd.module.css";
 
-const PayList = (props) => {
-  const [modal, setModal] = useState(false);
-
-  const handleOpenModal = () => {
-    setModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setModal(false);
-  };
+const PaymentAdd = () => {
+  const postPaymentItem = () => {};
 
   return (
     <div className={styles.box}>
-      <p className={styles.usedAt}>{props.usedAt}</p>
-      <p className={styles.amount}>{props.amount}</p>
-      <p className={styles.paidAt}>{props.paidAt.split("T")[1]}</p>
-      <button className={styles.btn} onClick={handleOpenModal}>
-        수정
+      <p className={styles.usedAt}>사용처</p>
+      <p className={styles.amount}>금액</p>
+      <p className={styles.paidAt}>결제시간</p>
+      <button className={styles.btn} onClick={postPaymentItem}>
+        추가
       </button>
-      {modal && (
-        <Modal
-          onCloseModal={handleCloseModal}
-          name={props.name}
-          amount={props.amount}
-          date={props.date}
-          cardName={props.cardName}
-        />
-      )}
     </div>
   );
 };
 
-export default PayList;
+export default PaymentAdd;

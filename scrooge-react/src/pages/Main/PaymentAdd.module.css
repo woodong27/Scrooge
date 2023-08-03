@@ -1,13 +1,10 @@
-.header {
-  margin: 20px auto;
-}
-
 .box {
   position: relative;
   width: 294px;
   height: 80px;
   margin: 10px 0;
-  border-bottom: 1px dashed var(--input-text, #8d8e90);
+
+  background: var(--input);
 }
 
 .usedAt {
