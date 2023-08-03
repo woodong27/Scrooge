@@ -49,8 +49,17 @@
   }
 }
 
+h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  width: 100px;
+}
+
 .content {
-  width: 325px;
+  width: 200px;
   margin: 0 auto;
 }
 
@@ -58,6 +67,7 @@
   width: 300px;
   height: 500px;
   margin: 0 auto;
+  margin-top: 180px;
   flex-flow: column;
   align-items: center;
   justify-content: center;
