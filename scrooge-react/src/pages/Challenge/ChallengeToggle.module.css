@@ -1,0 +1,21 @@
+.challenge-toggle {
+  width: 80%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.active_tab {
+  color: #298dc5;
+}
