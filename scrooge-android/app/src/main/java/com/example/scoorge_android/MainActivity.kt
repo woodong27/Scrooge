@@ -30,6 +30,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
 
+        val webview = findViewById<WebView>(R.id.webview)
+        webview.apply{
+            webViewClient= WebViewClient()
+            settings.javaScriptEnabled=true
+        }
+
+        webview.loadUrl("http://day6scrooge.duckdns.org:3000/")
+
+
 //        /* 알림 */
 //        createNotificationChannel(CHANNEL_ID, "testChannel", "this is a test Channel")
 //        val button = findViewById<Button>(R.id.noti_btn)
