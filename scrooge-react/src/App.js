@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Loading from "./pages/Loading";
 import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
+import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -30,6 +31,10 @@ function App() {
             <Route
               path="/challenge/join"
               element={<ChallengeJoin></ChallengeJoin>}
+            ></Route>
+            <Route
+              path="/challenge/my"
+              element={<ChallengeDetail></ChallengeDetail>}
             ></Route>
           </Routes>
           <Footer />
