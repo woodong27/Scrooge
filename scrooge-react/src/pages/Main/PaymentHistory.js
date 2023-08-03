@@ -1,4 +1,5 @@
 import PaymentItem from "./PaymentItem";
+import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import { useEffect, useState } from "react";
 
@@ -10,7 +11,9 @@ const DailyCalcul = () => {
     getCurrentDate();
     fetch("http://localhost:8080/payment-history/1/today")
       .then((resp) => resp.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        setData(data);
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -26,10 +29,11 @@ const DailyCalcul = () => {
       <div className={styles.empty} />
       <div className={styles.card}>
         <div className={styles.date}>{date}</div>
-        <div>{data.length}</div>
         {data.map((it) => (
           <PaymentItem key={it.id} {...it} />
         ))}
+        <PaymentAdd />
+        <div className={styles.total}>총합: {}원</div>
       </div>
     </div>
   );

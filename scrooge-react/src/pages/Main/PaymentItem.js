@@ -15,11 +15,11 @@ const PayList = (props) => {
 
   return (
     <div className={styles.box}>
-      <p className={styles.name}>{props.name}</p>
+      <p className={styles.usedAt}>{props.usedAt}</p>
       <p className={styles.amount}>{props.amount}</p>
-      <p className={styles.date}>{props.date.split("T")}</p>
+      <p className={styles.paidAt}>{props.paidAt.split("T")[1]}</p>
       <button className={styles.btn} onClick={handleOpenModal}>
-        상세 보기
+        수정
       </button>
       {modal && (
         <Modal
