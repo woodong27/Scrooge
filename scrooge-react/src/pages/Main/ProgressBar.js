@@ -10,7 +10,6 @@ const ProgressBar = (props) => {
 
   return (
     <div className={styles["progress-bar-container"]}>
-      <div>{console.log(props.weeklyGoal, props.weeklyConsum)}</div>
       <div className={styles["progress-bar-bg"]}>
         <div
           className={styles["progress-bar"]}
