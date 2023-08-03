@@ -15,4 +15,7 @@ public interface ChallengeParticipantRepository extends JpaRepository<ChallengeP
 
    @Query("SELECT count(cp) FROM ChallengeParticipant cp WHERE cp.challenge.id = :challengeId AND cp.team = 1")
     Integer countTeamOneByChallengeId(Long challengeId);
+
+    @Query("SELECT cp From ChallengeParticipant cp WHERE cp.member.id = :memberId AND cp.challenge.id = :challengeId")
+    ChallengeParticipant findByMemberIdAndChallengeId(Long memberId, Long challengeId);
 }
