@@ -12,4 +12,6 @@ public interface MemberOwningBadgeRepository extends JpaRepository<MemberOwningB
 
     @Query("SELECT mob FROM MemberOwningBadge mob WHERE mob.member.id = ?1")
     List<MemberOwningBadge> findMemberOwningBadgesById(Long memberId);
+
+    boolean existsByBadgeIdAndMemberId(Long badgeId, Long memberId);
 }

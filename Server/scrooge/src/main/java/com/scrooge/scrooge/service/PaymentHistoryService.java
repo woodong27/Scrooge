@@ -4,6 +4,7 @@ import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
@@ -29,6 +30,8 @@ public class PaymentHistoryService {
     private final MemberRepository memberRepository;
     private final QuestService questService;
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final BadgeService badgeService;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
 
     @Transactional
     public PaymentHistory addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
@@ -127,6 +130,10 @@ public class PaymentHistoryService {
 
             if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 1L)) {
                 questService.completeQuest(1L, memberId);
+            }
+
+            if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(1L, memberId)) {
+                badgeService.giveBadge(1L, memberId);
             }
 
             return new MemberDto(updatedMember);
