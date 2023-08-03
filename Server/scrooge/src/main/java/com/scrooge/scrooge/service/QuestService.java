@@ -11,6 +11,7 @@ import com.scrooge.scrooge.repository.QuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -47,10 +48,10 @@ public class QuestService {
     public void selectQuest(Long questId, String email) {
 
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
-        Member member = optionalMember.orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
+        Member member = optionalMember.orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
         Optional<Quest> optionalQuest = questRepository.findById(questId);
-        Quest quest = optionalQuest.orElseThrow(() -> new RuntimeException("해당 퀘스트를 찾을 수 없습니다."));
+        Quest quest = optionalQuest.orElseThrow(() -> new NotFoundException("해당 퀘스트를 찾을 수 없습니다."));
 
         if (member.getMemberSelectedQuests().size() < 3) {
             MemberSelectedQuest memberSelectedQuest = new MemberSelectedQuest();
@@ -67,16 +68,16 @@ public class QuestService {
 
     public List<MemberSelectedQuestDto> updateCompleteCount(Long questId, Long memberId) {
         MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId)
-                .orElseThrow(() ->new RuntimeException("그런 퀘스트 없습니다."));
+                .orElseThrow(() ->new NotFoundException("그런 퀘스트 없습니다."));
 
         Quest quest = questRepository.findById(questId)
-                .orElseThrow(() -> new RuntimeException("그런 퀘스트 없다"));
+                .orElseThrow(() -> new NotFoundException("그런 퀘스트 없다"));
 
         int currentCompleteCount= memberSelectedQuest.getCompleteCount();
 
         if (quest.getMaxCount() == currentCompleteCount+1) {
             Member member = memberRepository.findById(memberId)
-                    .orElseThrow(() -> new RuntimeException(("그런 회원 없다.")));
+                    .orElseThrow(() -> new NotFoundException(("그런 회원 없다.")));
             member.setExp(member.getExp()+200);
             memberRepository.save(member);
             memberSelectedQuestRepository.delete(memberSelectedQuest);

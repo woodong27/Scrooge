@@ -25,32 +25,8 @@ public class MemberDto {
     private Long levelId;
     private Avatar mainAvatar;
     private Badge mainBadge;
-    private List<MemberOwningAvatarDto> memberOwningAvatars;
-    private List<MemberOwningBadgeDto> memberOwningBadges;
-    private List<MemberSelectedQuestDto> memberSelectedQuests;
 
     @Builder
-    public MemberDto(Member member,
-                     List<MemberOwningAvatarDto> memberOwningAvatars
-                   , List<MemberOwningBadgeDto> memberOwningBadges
-                   , List<MemberSelectedQuestDto> memberSelectedQuests) {
-        this.id = member.getId();
-        this.name = member.getName();
-        this.nickname = member.getNickname();
-        this.email = member.getEmail();
-        this.exp = member.getExp();
-        this.streak = member.getStreak();
-        this.weeklyConsum = member.getWeeklyConsum();
-        this.weeklyGoal = member.getWeeklyGoal();
-        this.joinedAt = member.getJoinedAt();
-        this.levelId = member.getLevel().getId();
-        this.mainBadge = member.getMainBadge();
-        this.mainAvatar = member.getMainAvatar();
-        this.memberOwningAvatars = memberOwningAvatars;
-        this.memberOwningBadges = memberOwningBadges;
-        this.memberSelectedQuests = memberSelectedQuests;
-    }
-
     public MemberDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();
@@ -65,4 +41,18 @@ public class MemberDto {
         this.mainBadge = member.getMainBadge();
         this.mainAvatar = member.getMainAvatar();
     }
+//    public MemberDto(Member member) {
+//        this.id = member.getId();
+//        this.name = member.getName();
+//        this.nickname = member.getNickname();
+//        this.email = member.getEmail();
+//        this.exp = member.getExp();
+//        this.streak = member.getStreak();
+//        this.weeklyConsum = member.getWeeklyConsum();
+//        this.weeklyGoal = member.getWeeklyGoal();
+//        this.joinedAt = member.getJoinedAt();
+//        this.level = member.getLevel();
+//        this.mainBadge = member.getMainBadge();
+//        this.mainAvatar = member.getMainAvatar();
+//    }
 }
