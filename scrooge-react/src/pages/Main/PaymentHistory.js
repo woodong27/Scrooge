@@ -30,10 +30,12 @@ const PaymentHistory = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcmluMTRAbmF2ZXIuY29tIiwibWVtYmVySWQiOjEsImlhdCI6MTY5MTA0NDcyOCwiZXhwIjoxNjkxNjQ5NTI4fQ.JusnJ0lDLqH5nBSHCfFC40iKUbuwAHqCCxtqqrRC3W0",
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://localhost:8080/exp/daily-settlement", postData)
+    fetch("http://localhost:8080/payment-history/settlement-exp", postData)
       .then((res) => res.text())
       .then(console.log);
   };
@@ -61,7 +63,7 @@ const PaymentHistory = () => {
             ))}
             <PaymentAdd />
             <div className={styles.total}>총합: {}원</div>
-            <button className={styles.btn} onClick={postExp()}>
+            <button className={styles.btn} onClick={postExp}>
               정산하기
             </button>
           </div>
