@@ -4,7 +4,9 @@ import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeAuth;
 import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
+import com.scrooge.scrooge.dto.challengeDto.ChallengeAuthDto;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
+import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
 import com.scrooge.scrooge.repository.challenge.ChallengeAuthRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
@@ -20,8 +22,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -110,5 +114,30 @@ public class StartChallengeService {
     }
 
 
+    // 나의 인증 현황 조회하는 API
+    public MyChallengeMyAuthDto getMyChallengeMyAuth(Long challengeId, Long memberId) {
 
+        MyChallengeMyAuthDto myChallengeMyAuthDto = new MyChallengeMyAuthDto();
+
+        /* 달성률 계산하기 */
+        // 1. challengeId와 memberId에 해당하는 challengeParticipant를 가져온다.
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
+        // 2. 현재 challengeParticipant가 성공한 횟수를 가져온다.
+        Integer curSuccessCount = challengeAuthRepository.countSuccessCountByChallengeParticipantId(challengeParticipant.getId());
+        // 3. challengeId에 해당하는 challenge의 총 인증해야하는 횟수를 가져온다.
+        Integer totalAuthCount = challengeRepository.findById(challengeId).get().getTotalAuthCount();
+        //4. 현재 달성률을 계산한다.
+        double currentCompletionRate = (double)curSuccessCount / totalAuthCount * 100;
+        myChallengeMyAuthDto.setCurrentCompletionRate((int)currentCompletionRate);
+
+        /* challengeAuth 목록 리턴하기 */
+        // 1. challengeParticipant ID에 해당하는 challengeAuthList를 가져오기
+        List<ChallengeAuth> challengeAuthList = challengeAuthRepository.findAllByChallengeParticipantId(challengeParticipant.getId());
+        // 2. 직렬화,,
+        myChallengeMyAuthDto.setChallengeAuthList(challengeAuthList.stream()
+                .map(ChallengeAuthDto::new)
+                .collect(Collectors.toList()));
+
+        return myChallengeMyAuthDto;
+    }
 }

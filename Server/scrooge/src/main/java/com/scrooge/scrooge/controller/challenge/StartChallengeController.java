@@ -2,6 +2,7 @@ package com.scrooge.scrooge.controller.challenge;
 
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
+import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
 import com.scrooge.scrooge.service.challenge.ChallengeService;
 import com.scrooge.scrooge.service.challenge.StartChallengeService;
@@ -49,6 +50,18 @@ public class StartChallengeController {
 
         challengeStartRespDto = startChallengeService.createMyChallengeAuth(challengeId, jwtTokenProvider.extractMemberId(token), img);
         return ResponseEntity.ok(challengeStartRespDto);
+    }
+
+    // 사용자 인증 현황 조회 API
+    @Operation(summary = "사용자 인증 현황 조회 API")
+    @GetMapping("/{challengeId}/my-challenge/my-auth")
+    public ResponseEntity<MyChallengeMyAuthDto> getMyChallengeMyAuth(@RequestHeader("Authorization") String tokenHeader,
+                                                                     @PathVariable("challengeId") Long challengeId) {
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        MyChallengeMyAuthDto myChallengeMyAuthDto = startChallengeService.getMyChallengeMyAuth(challengeId, memberId);
+        return ResponseEntity.ok(myChallengeMyAuthDto);
     }
 
     private String extractToken (String tokenHeader){

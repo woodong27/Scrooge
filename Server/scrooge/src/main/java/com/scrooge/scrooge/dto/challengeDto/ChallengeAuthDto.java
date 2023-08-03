@@ -13,7 +13,7 @@ public class ChallengeAuthDto {
 
     private Long id;
     private LocalDateTime createdAt;
-    private String imagAddress;
+    private String imageAddress;
     private Boolean isSuccess;
 
     /* 연결 */
@@ -23,7 +23,7 @@ public class ChallengeAuthDto {
     public ChallengeAuthDto(ChallengeAuth challengeAuth) {
         this.id = challengeAuth.getId();
         this.createdAt = challengeAuth.getCreatedAt();
-        this.imagAddress = challengeAuth.getImgAddress();
+        this.imageAddress = challengeAuth.getImgAddress();
         this.isSuccess = challengeAuth.getIsSuccess();
         this.challengeParticipantId = challengeAuth.getChallengeParticipant().getId();
     }
