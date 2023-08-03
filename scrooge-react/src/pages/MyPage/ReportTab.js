@@ -24,6 +24,7 @@ export default function ReportTab() {
   }
   return (
     <div className={styles.tabContainer}>
+      {/* 탭 버튼 */}
       <div className={styles.tabs}>
         {tabs.map((tab, i) => 
           <button
@@ -36,6 +37,7 @@ export default function ReportTab() {
           </button>
         )}
       </div>
+      {/* 해당 내용 */}
       <div className={styles.content}>
         {tabs.map((tab, i) =>
           <div key={i}>

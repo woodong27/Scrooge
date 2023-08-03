@@ -1,5 +1,6 @@
 import MyPageHeader from "./MyPageHeader";
 import MyPageProfile from "./MyPageProfile";
+
 import Report from "./Report"
 
 const MyPage = () => {
