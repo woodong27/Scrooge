@@ -22,7 +22,7 @@ public class MemberDto {
     private int weeklyGoal;
     private int weeklyConsum;
     private LocalDateTime joinedAt;
-    private Level level;
+    private Long levelId;
     private Avatar mainAvatar;
     private Badge mainBadge;
 
@@ -37,7 +37,7 @@ public class MemberDto {
         this.weeklyConsum = member.getWeeklyConsum();
         this.weeklyGoal = member.getWeeklyGoal();
         this.joinedAt = member.getJoinedAt();
-        this.level = member.getLevel();
+        this.levelId = member.getLevel().getId();
         this.mainBadge = member.getMainBadge();
         this.mainAvatar = member.getMainAvatar();
     }

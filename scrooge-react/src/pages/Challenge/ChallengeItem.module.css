@@ -4,6 +4,27 @@
   margin: auto;
   border: 1px solid black;
   border-radius: 1rem;
+
+  & img {
+    width: 80px;
+    height: 80px;
+    margin: 0 10px;
+    border-radius: 50%;
+  }
+
+  & p:not(.title) {
+    font-size: 12px;
+    margin: 0;
+    text-align: left;
+  }
+
+  & button {
+    background: #b0e2ff;
+    border-radius: 1rem;
+    width: 70%;
+    height: 2rem;
+    margin: 0 auto;
+  }
 }
 
 .item_top {
@@ -23,25 +44,4 @@
 .title {
   margin: auto;
   text-align: left;
-}
-
-img {
-  width: 80px;
-  height: 80px;
-  margin: 0 10px;
-  border-radius: 50%;
-}
-
-p:not(.title) {
-  font-size: 12px;
-  margin: 0;
-  text-align: left;
-}
-
-button {
-  background: #b0e2ff;
-  border-radius: 1rem;
-  width: 70%;
-  height: 2rem;
-  margin: 0 auto;
 }

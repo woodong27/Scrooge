@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import styles from "./ChallengeItem.module.css";
 
 const ChallengeItem = (props) => {
@@ -13,7 +15,9 @@ const ChallengeItem = (props) => {
           <p>#일주일</p>
         </div>
       </div>
-      <button>참여하기</button>
+      <Link to="/challenge/join">
+        <button>참여하기</button>
+      </Link>
     </div>
   );
 };
