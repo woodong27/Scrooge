@@ -1,7 +1,10 @@
+.exp-container{
+  display: inline-flex;
+}
 .expBar {
   width: 18.1875rem;
   height: 0.6875rem;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
   border-radius: 2rem;
   background: var(--btn, #EBECF0);
   position: relative;

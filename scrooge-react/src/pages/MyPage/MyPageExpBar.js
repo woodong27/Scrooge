@@ -15,22 +15,21 @@ const MyPageExpBar = ({totalExp, currentExp}) => {
 
 
   return (
-    <div className={["exp-container"]}>
-      <div className={styles.expBar}>
-        {/* 전체 경험치 바 */}
-        <div className={styles.totalExpBar}>
-          <div className={styles.progressBar}></div>
+      <div className={["exp-container"]}>
+        <div className={styles.expBar}>
+          {/* 전체 경험치 바 */}
+          <div className={styles.totalExpBar}>
+            <div className={styles.progressBar}></div>
+          </div>
+
+          {/* 현재 경험치 바 */}
+          <div className={styles.currentExpBar} style={expBarStyle}></div>
+          {/* <div className={styles.currentExpBar}>
+            <div className={styles.progressBar}></div>
+          </div> */}
         </div>
-
-        {/* 현재 경험치 바 */}
-        <div className={styles.currentExpBar} style={expBarStyle}></div>
-        {/* <div className={styles.currentExpBar}>
-          <div className={styles.progressBar}></div>
-        </div> */}
+        <img src={`${process.env.PUBLIC_URL}/images/exp-icon.png`} alt="경험치 아이콘"/>
       </div>
-      <img src={`${process.env.PUBLIC_URL}/images/exp-icon.png`} alt="경험치 아이콘"/>
-    </div>
-
   );
 };
 
