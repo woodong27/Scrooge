@@ -3,7 +3,7 @@ import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import { useEffect, useState } from "react";
 
-const DailyCalcul = () => {
+const PaymentHistory = () => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
 
@@ -39,4 +39,4 @@ const DailyCalcul = () => {
   );
 };
 
-export default DailyCalcul;
+export default PaymentHistory;
