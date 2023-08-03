@@ -1,42 +1,43 @@
-.header {
-  margin: 20px auto;
-}
-
 .box {
   position: relative;
   width: 294px;
   height: 80px;
-  border: 1px solid black;
-  margin: 20px auto;
-  border-radius: 15px;
+  margin: 10px 0;
+
+  background: var(--input);
 }
 
-.name {
+.usedAt {
   position: absolute;
+  margin: 16px 0;
+  width: 180px;
   top: 0;
   left: 10px;
 }
 
 .amount {
   position: absolute;
+  margin: 16px 0;
+  width: 180px;
   bottom: 0;
   left: 10px;
 }
-.date {
+.paidAt {
   position: absolute;
+  margin: 16px 0;
   top: 0;
+  width: 72px;
   right: 10px;
   color: #61646b;
 }
 
 .btn {
   position: absolute;
-  background-color: #5db075;
-  color: #fff;
   bottom: 10px;
   right: 10px;
-  padding: 8px 16px;
+  padding: 4px 8px;
   border: none;
+  background: #fff;
+  border: 1px solid var(--input-text, #8d8e90);
   border-radius: 10px;
-  cursor: pointer;
 }

@@ -1,0 +1,60 @@
+.empty {
+  height: 60px;
+}
+.card {
+  margin: 20px;
+  padding-left: 24px;
+  width: 320px;
+  height: 640px;
+  background-color: #fff;
+  stroke-width: 1.5px;
+  stroke: #000;
+  text-align: left;
+  border: 2px solid var(--input-text, #8d8e90);
+  border-radius: 20px;
+
+  & .title {
+    font-size: 24px;
+    color: var(--green);
+    padding-top: 20px;
+    margin-left: 10px;
+    width: 280px;
+
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
+
+  & .date {
+    margin: 0 20px;
+  }
+}
+
+.scrollitem {
+  margin-top: 10px;
+  overflow-y: scroll;
+}
+
+.item {
+  height: 552px;
+}
+
+.total {
+  padding-top: 14px;
+  text-align: right;
+  margin-right: 32px;
+}
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  height: 50px;
+  border-radius: 20px;
+  margin: 20px 10px;
+  background-color: var(--green);
+}
+/* scrollbar 안 보이게 */
+/* .card::-webkit-scrollbar {
+  display: none;
+} */
