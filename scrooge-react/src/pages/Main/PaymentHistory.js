@@ -4,9 +4,10 @@ import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import Modal from "../../components/UI/Modal";
 
-const PaymentHistory = () => {
+const PaymentHistory = ({ total, getTotal }) => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
+  const [origin, setOrigin] = useState();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentItem = data[currentIndex];
@@ -24,6 +25,7 @@ const PaymentHistory = () => {
       setCurrentIndex(currentIndex + 1);
     } else {
       console.log("끝");
+      getTotal();
     }
   };
 
@@ -37,6 +39,10 @@ const PaymentHistory = () => {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  useEffect(() => {
+    setOrigin(total);
+  }, [total]);
 
   const onCreate = (targetId, usedAt, amount, paidAt, cardName) => {
     const newItem = {
@@ -128,7 +134,10 @@ const PaymentHistory = () => {
               <PaymentItem key={index} {...it} onEdit={onEdit} />
             ))}
             <PaymentAdd onCreate={onCreate} />
-            <div className={styles.total}>총합: {}원</div>
+            {/* 아 origin이 truthy한 값이라 이상했네...  */}
+            <div className={styles.total}>
+              {origin || origin === 0 ? `총합: ${origin}원` : "?"}
+            </div>
             <button className={styles.btn} onClick={handleOpenModal}>
               정산하기
             </button>
