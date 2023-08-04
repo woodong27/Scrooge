@@ -1,4 +1,5 @@
-import styles from "./CharList.module.css";
+// import styles from "./CharList.module.css";
+import styles from "./BadgeList.module.css";
 
 const BadgeList = () => {
   const badgeCount = 9
@@ -9,7 +10,7 @@ const BadgeList = () => {
     badges.push(
       <img
         key={i}
-        className={styles["profile-image"]}
+        className={styles.badgeImage}
         src={badgePath}
         alt={`뱃지 사진 ${i}`}
       />
@@ -17,7 +18,7 @@ const BadgeList = () => {
   };
 
   return(
-    <div className={styles.charContainer}>
+    <div className={styles.badgeContainer}>
       {badges}
     </div>
   )
