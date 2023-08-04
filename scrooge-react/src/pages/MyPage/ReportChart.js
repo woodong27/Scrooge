@@ -37,28 +37,30 @@ export default function ReportChart() {
   const avgAmt = data.reduce((acc, cur) => acc + cur.amount, 0) / data.length;
   const minAmt = data.reduce((min, cur) => (cur.amount < min ? cur.amount : min ), data[0].amount);
   return (
-      <div>
-        <div className={styles.reportContent}>
+    <div>
+      <div className={styles.reportContent}>
         <div className={styles.weekAvg}>
           <div>평균소비금액</div>
           <div>
-            <span>{Math.floor(avgAmt).toLocaleString()}</span>
+            <span><b>{Math.floor(avgAmt).toLocaleString()}</b></span>
             <span> 원</span>
           </div>
         </div>
         <div className={styles.weekMax}>
           <div>최대절약금액</div>
           <div>
-            <span>{minAmt.toLocaleString()}</span>
+            <span><b>{minAmt.toLocaleString()}</b></span>
             <span> 원</span>
           </div>
         </div>
       </div>
 
-      <BarChart width={350} height={200} data={data}>
-        <Bar dataKey="amount" fill="#8884d8" />
-        <XAxis dataKey="name" />
-      </BarChart>
+      <div className={styles.chartContainer}>
+        <BarChart width={350} height={200} data={data}>
+          <Bar dataKey="amount" fill="#A2D660" />
+          <XAxis dataKey="name" />
+        </BarChart>
+      </div>
     </div>
   );
 }

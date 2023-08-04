@@ -2,10 +2,11 @@ import react, { useState } from "react";
 import styles from "./MyPageProfile.module.css";
 import MyPageExpBar from "./MyPageExpBar";
 import Report from "./Report";
-import ItemList from "./ItemList";
+import Item from "./Item";
 
 const MyPageProfile = () => {
   const [showItemList, setShowItemList] = useState(false);
+  
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
   };
@@ -35,7 +36,7 @@ const MyPageProfile = () => {
       </div>
       <MyPageExpBar />
 
-      {showItemList ? <ItemList /> : <Report />}
+      {showItemList ? <Item /> : <Report />}
     </div>
   );
 };

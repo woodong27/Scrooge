@@ -13,3 +13,8 @@
   gap: 0.225rem;
   flex: 1 0 0;
 }
+
+.chartContainer{
+  display: flex;
+  justify-content:center;
+}
