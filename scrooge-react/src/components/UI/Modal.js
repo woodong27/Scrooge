@@ -22,7 +22,7 @@ const Modal = ({
       localContentInput.current.focus();
       return;
     }
-    onEdit(id, origin);
+    onEdit(id, origin, usedAt, cardName);
     setPrice(origin);
     toggleIsEdit();
   };
@@ -49,7 +49,9 @@ const Modal = ({
                 />
               </>
             ) : (
-              <p>{price}원</p>
+              <>
+                <p>{price}원</p>
+              </>
             )}
             {isEdit ? (
               <>

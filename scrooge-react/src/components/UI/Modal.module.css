@@ -21,17 +21,6 @@
   border-top-right-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
-  /* & button {
-    margin-top: 10px;
-    background-color: #5db075;
-    color: #fff;
-    padding: 8px 16px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  } */
-
   & ul {
     display: flex;
     flex-flow: column;
