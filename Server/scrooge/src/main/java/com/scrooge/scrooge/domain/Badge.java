@@ -24,4 +24,7 @@ public class Badge {
 
     @Column(name = "img_address", nullable = false, length = 255)
     private String imgAddress;
+
+    @Column(name = "max_count")
+    private Integer maxCount;
 }

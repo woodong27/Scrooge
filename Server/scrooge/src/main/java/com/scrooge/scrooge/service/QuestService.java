@@ -1,10 +1,14 @@
 package com.scrooge.scrooge.service;
 
+import com.scrooge.scrooge.domain.Badge;
+import com.scrooge.scrooge.domain.member.MemberOwningBadge;
 import com.scrooge.scrooge.domain.member.MemberSelectedQuest;
 import com.scrooge.scrooge.domain.Quest;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.QuestDto;
 import com.scrooge.scrooge.dto.member.MemberSelectedQuestDto;
+import com.scrooge.scrooge.repository.BadgeRepository;
+import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import com.scrooge.scrooge.repository.QuestRepository;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.awt.print.Pageable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +30,8 @@ public class QuestService {
     private final QuestRepository questRepository;
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
     private final MemberRepository memberRepository;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
+    private final BadgeService badgeService;
 
     public Optional<QuestDto> getQuest(Long questId) {
         return questRepository.findById(questId).map(quest -> {
@@ -93,8 +100,10 @@ public class QuestService {
 //    }
 
     public void completeQuest(Long questId, Long memberId) {
-        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId).orElse(null);
-        Quest quest = questRepository.findById(questId).orElse(null);
+        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId)
+                .orElseThrow(() -> new NotFoundException("이 퀘스트 안고른거 같은데"));
+        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFoundException("그런 퀘스트 없다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("그런 사람 없다."));
 
         if (memberSelectedQuest.isDone()) {
             return ;
@@ -103,7 +112,6 @@ public class QuestService {
         int currentCompleteCount = memberSelectedQuest.getCompleteCount();
 
         if (quest.getMaxCount() == currentCompleteCount + 1) {
-            Member member = memberRepository.findById(memberId).orElse(null);
             member.setExp(member.getExp() + 200);
             memberRepository.save(member);
             memberSelectedQuest.setCompleteCount(currentCompleteCount + 1);
@@ -112,6 +120,11 @@ public class QuestService {
         } else {
             memberSelectedQuest.setCompleteCount(currentCompleteCount + 1);
             memberSelectedQuestRepository.save(memberSelectedQuest);
+        }
+
+        if (!memberSelectedQuestRepository.existsByMemberIdAndIsDoneIsFalse(memberId)
+            || !memberOwningBadgeRepository.existsByBadgeIdAndMemberId(5L, memberId)) {
+            badgeService.giveBadge(5L, memberId);
         }
     }
 
