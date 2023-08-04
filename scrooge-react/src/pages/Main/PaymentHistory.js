@@ -29,12 +29,14 @@ const PaymentHistory = () => {
     setData([...data, newItem]);
   };
 
-  const onEdit = (targetId, newContent, usedAt, cardName) => {
+  const onEdit = (targetId, newContent, usedAt, cardName, category) => {
     const obj = {
       amount: newContent,
       usedAt,
       cardName,
+      category,
     };
+    console.log(obj);
     const postData = {
       method: "PUT",
       headers: {

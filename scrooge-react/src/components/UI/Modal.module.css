@@ -102,6 +102,13 @@ input {
   cursor: pointer;
 }
 
+.selected {
+  height: 48px;
+  background-color: var(--green);
+  color: #000000;
+  border-radius: 10px;
+}
+
 .underBtn {
   position: absolute;
   bottom: 40px;
@@ -110,7 +117,9 @@ input {
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
+
   & button {
+    padding: 12px;
     height: 40px;
     margin: 0 50px;
     background-color: var(--green);

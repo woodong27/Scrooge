@@ -11,12 +11,19 @@ const Modal = ({
   onCloseModal,
 }) => {
   const [origin, setOrigin] = useState(amount);
-  // const [price, setPrice] = useState(amount);
   const [place, setPlace] = useState(usedAt);
   const [category, setCategory] = useState(" ");
   const localContentInput = useRef();
   const localPlaceInput = useRef();
 
+  const buttons = [
+    { id: 1, label: "식비" },
+    { id: 2, label: "교통비" },
+    { id: 3, label: "쇼핑" },
+    { id: 4, label: "문화생활" },
+    { id: 5, label: "정기구독" },
+    { id: 6, label: "기타" },
+  ];
   const handleCategory = (category) => {
     setCategory(category);
   };
@@ -34,7 +41,7 @@ const Modal = ({
       localContentInput.current.focus();
       return;
     }
-    onEdit(id, origin, place, cardName);
+    onEdit(id, origin, place, cardName, category);
   };
 
   // 초기화 용도로 남겨두자..
@@ -77,42 +84,17 @@ const Modal = ({
         </div>
         <p className={styles.where}>어디에 썼나요?</p>
         <div className={styles.pickCategory}>
-          <button
-            className={styles.category}
-            onClick={() => handleCategory("식비")}
-          >
-            식비
-          </button>
-          <button
-            className={styles.category}
-            onClick={() => handleCategory("쇼핑")}
-          >
-            쇼핑
-          </button>
-          <button
-            className={styles.category}
-            onClick={() => handleCategory("문화생활")}
-          >
-            문화생활
-          </button>
-          <button
-            className={styles.category}
-            onClick={() => handleCategory("교통비")}
-          >
-            교통비
-          </button>
-          <button
-            className={styles.category}
-            onClick={() => handleCategory("정기구독")}
-          >
-            정기구독
-          </button>
-          <button
-            className={styles.category}
-            onClick={() => handleCategory("기타")}
-          >
-            기타
-          </button>
+          {buttons.map((button) => (
+            <button
+              key={button.id}
+              className={
+                category === button.label ? styles.selected : styles.category
+              }
+              onClick={() => handleCategory(button.label)}
+            >
+              {button.label}
+            </button>
+          ))}
         </div>
         <div className={styles.underBtn}>
           <button onClick={handleQuitEdit}>초기화</button>
