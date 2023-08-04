@@ -1,7 +1,15 @@
 .chartContainer{
-  margin: 0 0 4.625rem
+  margin: 0 0 4.625rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .charContent{
   display: flex;
+}
+
+.profile-image{
+  width: 6.25rem;
+  height: 6.25rem;
+  margin-bottom: 0.625rem;
 }
