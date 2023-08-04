@@ -2,7 +2,7 @@ import styles from "./CharList.module.css";
 
 const CharList = () => {
   return(
-    <div>
+    <div className={styles.charContainer}>
       <div className={styles.charContent}>
         <img className={styles["profile-image"]} src={`${process.env.PUBLIC_URL}/Character/1.png`} alt="프로필 사진"/>
         <img className={styles["profile-image"]} src={`${process.env.PUBLIC_URL}/Character/2.png`} alt="프로필 사진"/>

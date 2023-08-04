@@ -1,3 +1,7 @@
+.chartContainer{
+  margin: 0 0 4.625rem
+}
+
 .charContent{
   display: flex;
 }
