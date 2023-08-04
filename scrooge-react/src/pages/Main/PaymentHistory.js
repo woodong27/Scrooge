@@ -4,9 +4,30 @@ import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import Modal from "../../components/UI/Modal";
 
-const PaymentHistory = () => {
+const PaymentHistory = ({ total, getTotal }) => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
+  const [origin, setOrigin] = useState();
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentItem = data[currentIndex];
+  const [modal, setModal] = useState(false);
+  const handleOpenModal = () => {
+    setModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setModal(false);
+  };
+
+  const goNext = () => {
+    if (currentIndex < data.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      console.log("끝");
+      getTotal();
+    }
+  };
 
   // 오늘 소비 내역 불러오기
   useEffect(() => {
@@ -19,21 +40,27 @@ const PaymentHistory = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  const onCreate = (targetId, usedAt, amount, paidAt) => {
+  useEffect(() => {
+    setOrigin(total);
+  }, [total]);
+
+  const onCreate = (targetId, usedAt, amount, paidAt, cardName) => {
     const newItem = {
       id: targetId,
       paidAt,
       amount,
       usedAt,
+      cardName,
     };
     setData([...data, newItem]);
   };
 
-  const onEdit = (targetId, newContent, usedAt, cardName) => {
+  const onEdit = (targetId, newContent, usedAt, cardName, category) => {
     const obj = {
       amount: newContent,
       usedAt,
       cardName,
+      category,
     };
     const postData = {
       method: "PUT",
@@ -85,15 +112,6 @@ const PaymentHistory = () => {
       .then(console.log);
   };
 
-  const [modal, setModal] = useState(false);
-  const handleOpenModal = () => {
-    setModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setModal(false);
-  };
-
   return (
     <div>
       <div className={styles.empty} />
@@ -116,14 +134,25 @@ const PaymentHistory = () => {
               <PaymentItem key={index} {...it} onEdit={onEdit} />
             ))}
             <PaymentAdd onCreate={onCreate} />
-            <div className={styles.total}>총합: {}원</div>
+            {/* 아 origin이 truthy한 값이라 이상했네...  */}
+            <div className={styles.total}>
+              {origin || origin === 0 ? `총합: ${origin}원` : "?"}
+            </div>
             <button className={styles.btn} onClick={handleOpenModal}>
               정산하기
             </button>
           </div>
         </div>
       </div>
-      {/* {modal && <Modal onEdit={onEdit} onCloseModal={handleCloseModal} />} */}
+      {modal && (
+        <Modal
+          item={currentItem}
+          index={currentIndex}
+          goNext={goNext}
+          onEdit={onEdit}
+          onCloseModal={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
