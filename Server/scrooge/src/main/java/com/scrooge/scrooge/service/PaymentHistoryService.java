@@ -136,6 +136,7 @@ public class PaymentHistoryService {
                 badgeService.giveBadge(1L, memberId);
             }
 
+            member.get().setStreak(member.get().getStreak()+1);
             return new MemberDto(updatedMember);
         }
         else {
