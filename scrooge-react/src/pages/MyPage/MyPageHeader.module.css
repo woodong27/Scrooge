@@ -1,0 +1,25 @@
+.header-container {
+  display: inline-flex;
+  height: 1.5625rem;
+  margin: 3.81rem 0rem 2.81rem;
+  padding: 0rem 0rem 0rem 6.8125rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5.07244rem;
+  flex-shrink: 0;
+}
+
+.header-text{
+  display: flex;
+  height: 1.5rem;
+  justify-content: center;
+  /* align-items: center; */
+  /* gap: 0.625rem; */
+
+  font-size: 1.5rem;
+}
+
+.header-icon{
+  width: 1.74006rem;
+  height: 1.55138rem;
+}
