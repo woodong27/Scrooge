@@ -39,29 +39,29 @@ const Modal = ({
         <div className={styles.modal}>
           <div className={styles.handle}> </div>
           <h2>{usedAt}</h2>
-          <div>
+          <div className={styles.price}>
             {isEdit ? (
-              <>
+              <div className={styles.amount}>
                 <input
                   ref={localContentInput}
                   value={origin}
                   onChange={(e) => setOrigin(e.target.value)}
                 />
-              </>
+              </div>
             ) : (
-              <>
+              <div className={styles.amount}>
                 <p>{price}원</p>
-              </>
+              </div>
             )}
             {isEdit ? (
-              <>
+              <div className={styles.btns}>
                 <button onClick={handleQuitEdit}>취소</button>
                 <button onClick={handleEdit}>완료</button>
-              </>
+              </div>
             ) : (
-              <>
+              <div className={styles.btns}>
                 <button onClick={toggleIsEdit}>수정</button>
-              </>
+              </div>
             )}
           </div>
           <div className={styles.line}>
