@@ -9,6 +9,7 @@ const PaymentItem = (props) => {
   // const localTime = new Date(serverTime.getTime() + serverTimezoneOffset * 60 * 1000);
   const [modal, setModal] = useState(false);
 
+  console.log(props);
   const handleOpenModal = () => {
     setModal(true);
   };
