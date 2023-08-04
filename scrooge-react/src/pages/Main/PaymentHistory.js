@@ -19,12 +19,13 @@ const PaymentHistory = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  const onCreate = (targetId, usedAt, amount, paidAt) => {
+  const onCreate = (targetId, usedAt, amount, paidAt, cardName) => {
     const newItem = {
       id: targetId,
       paidAt,
       amount,
       usedAt,
+      cardName,
     };
     setData([...data, newItem]);
   };

@@ -58,6 +58,7 @@ const Modal = ({
           <div className={styles.head}>
             <span>결제 내역 </span>
             <input
+              className={styles.input}
               ref={localPlaceInput}
               value={place}
               onChange={(e) => setPlace(e.target.value)}
@@ -66,6 +67,7 @@ const Modal = ({
           <div className={styles.head}>
             <span>결제 금액 </span>
             <input
+              className={styles.input}
               ref={localContentInput}
               value={origin}
               onChange={(e) => setOrigin(e.target.value)}
