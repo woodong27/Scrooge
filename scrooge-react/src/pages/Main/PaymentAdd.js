@@ -51,11 +51,9 @@ const PaymentAdd = ({ onCreate }) => {
     fetch("http://day6scrooge.duckdns.org:8081/payment-history/1", postData)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         const koreaTime = new Date(
           new Date().getTime() + 9 * 60 * 60 * 1000
         ).toISOString();
-        console.log(koreaTime);
         onCreate(
           data.id,
           state.usedAt,

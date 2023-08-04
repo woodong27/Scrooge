@@ -8,6 +8,25 @@ const PaymentHistory = () => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentItem = data[currentIndex];
+  const [modal, setModal] = useState(false);
+  const handleOpenModal = () => {
+    setModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setModal(false);
+  };
+
+  const goNext = () => {
+    if (currentIndex < data.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      console.log("끝");
+    }
+  };
+
   // 오늘 소비 내역 불러오기
   useEffect(() => {
     getCurrentDate();
@@ -37,7 +56,6 @@ const PaymentHistory = () => {
       cardName,
       category,
     };
-    console.log(obj);
     const postData = {
       method: "PUT",
       headers: {
@@ -88,15 +106,6 @@ const PaymentHistory = () => {
       .then(console.log);
   };
 
-  const [modal, setModal] = useState(false);
-  const handleOpenModal = () => {
-    setModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setModal(false);
-  };
-
   return (
     <div>
       <div className={styles.empty} />
@@ -126,7 +135,15 @@ const PaymentHistory = () => {
           </div>
         </div>
       </div>
-      {/* {modal && <Modal onEdit={onEdit} onCloseModal={handleCloseModal} />} */}
+      {modal && (
+        <Modal
+          item={currentItem}
+          index={currentIndex}
+          goNext={goNext}
+          onEdit={onEdit}
+          onCloseModal={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

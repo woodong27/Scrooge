@@ -1,20 +1,18 @@
-import { Fragment, useState, useRef } from "react";
+import { Fragment, useState, useRef, useEffect } from "react";
 import styles from "./Modal.module.css";
 
-const Modal = ({
-  id,
-  usedAt,
-  amount,
-  paidAt,
-  cardName,
-  onEdit,
-  onCloseModal,
-}) => {
-  const [origin, setOrigin] = useState(amount);
-  const [place, setPlace] = useState(usedAt);
+const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
+  const [origin, setOrigin] = useState(item.amount);
+  const [place, setPlace] = useState(item.usedAt);
   const [category, setCategory] = useState(" ");
   const localContentInput = useRef();
   const localPlaceInput = useRef();
+
+  useEffect(() => {
+    setOrigin(item.amount);
+    setPlace(item.usedAt);
+    setCategory(" ");
+  }, [item]);
 
   const buttons = [
     { id: 1, label: "식비" },
@@ -41,12 +39,15 @@ const Modal = ({
       localContentInput.current.focus();
       return;
     }
-    onEdit(id, origin, place, cardName, category);
+    onEdit(item.id, origin, place, item.cardName, category);
+    goNext();
   };
 
   // 초기화 용도로 남겨두자..
   const handleQuitEdit = () => {
-    setOrigin(amount);
+    setOrigin(item.amount);
+    setPlace(item.usedAt);
+    setCategory("");
   };
 
   return (
@@ -75,12 +76,12 @@ const Modal = ({
           </div>
           <div className={styles.line}>
             <div className={styles.title}>결제 카드</div>
-            <div className={styles.content}>{cardName}</div>
+            <div className={styles.content}>{item.cardName}</div>
           </div>
           <div className={styles.line}>
             <div className={styles.title}>결제 일자</div>
             <div className={styles.content}>
-              {`${paidAt.slice(0, 19).split("T")[1]} `}
+              {/* {`${item.paidAt.slice(0, 19).split("T")[1]} `} */}
             </div>
           </div>{" "}
         </div>
