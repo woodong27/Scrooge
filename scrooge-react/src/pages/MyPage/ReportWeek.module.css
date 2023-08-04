@@ -2,11 +2,11 @@
   display: inline-flex;
 }
 
-.reportContainer{
+.reportContent{
   display: flex;
   width: 20.5rem;
-  align-items: flex-start;
   gap: 1rem;
+  margin: 1rem 2rem 0;
 }
 
 .weekAvg, .weekMax {
@@ -14,7 +14,11 @@
   height: 3.25rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 0.225rem;
   flex: 1 0 0;
+}
+
+.chart{
+  display: flex;
+  justify-content: center;
 }

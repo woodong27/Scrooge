@@ -14,7 +14,7 @@ export default function ReportTab() {
     {
       id: 2,
       tabTitle: '월간',
-      content: 'b'
+      content: <ReportWeek />,
     }
   ]
 
@@ -42,7 +42,6 @@ export default function ReportTab() {
           <div key={i}>
             {currentTab === `${tab.id}` &&
               <div>
-                {/* <p>{tab.title}</p> */}
                 <p>{tab.content}</p>
               </div>
             }

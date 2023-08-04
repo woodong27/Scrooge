@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ReportWeek.module.css";
+import ReportChart from "./ReportChart"
 
 // 날짜 계산
 const getWeekRange = (date) => {
@@ -9,7 +10,6 @@ const getWeekRange = (date) => {
   endOfWeek.setDate(startOfWeek.getDate() + 6); // 일요일
 
   const startDateStr = startOfWeek.toLocaleDateString("ko-KR").slice(2)
-  // const startDateStr = startOfWeek.toLocaleDateString("ko-KR").slice(5); // MM.dd 형식으로 출력
   const endDateStr = endOfWeek.toLocaleDateString("ko-KR").slice(2); // MM.dd 형식으로 출력
 
   return `${startDateStr} ~ ${endDateStr}`;
@@ -34,7 +34,7 @@ const ReportWeek = () => {
 
 
   return (
-    <div>
+    <div className={styles.reportContainer}>
       {/* 소비 날짜 */}
       <div className={styles.weekDays}>
         <button onClick={handleLastsWeek}>지난 주</button>
@@ -43,7 +43,7 @@ const ReportWeek = () => {
       </div>
 
       {/* 소비 요약 */}
-      <div className={styles.reportContainer}>
+      <div className={styles.reportContent}>
         <div className={styles.weekAvg}>
           <div>평균소비금액</div>
           <div>
@@ -58,9 +58,12 @@ const ReportWeek = () => {
             <span> 원</span>
           </div>
         </div>
-
       </div>
 
+      {/* 소비 차트 */}
+      <div className={styles.chart}>
+        <ReportChart />
+      </div>
     </div>
 
 
