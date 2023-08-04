@@ -50,22 +50,13 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  & button {
-    height: 40px;
-    background-color: var(--green);
-    border-radius: 10px;
-  }
 }
 
-.price {
+.amount {
+  font-size: 18px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-
-.btns {
-  margin: 16px 0;
+  margin-bottom: 8px;
 }
 
 .content {
@@ -74,9 +65,9 @@ h3 {
 
 .pickCategory {
   width: 300px;
-  height: 500px;
+  height: 380px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 40px;
   flex-flow: column;
   align-items: center;
   justify-content: center;
@@ -84,6 +75,7 @@ h3 {
 
 .category {
   padding: 10px;
+  margin-bottom: 16px;
   background-color: #f5f5f5;
   color: var(--black, #000);
   border-radius: 10px;
@@ -97,4 +89,17 @@ h3 {
   background-color: #d0d0d0;
   margin: auto;
   margin-top: 10px;
+}
+
+.underBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  & button {
+    height: 40px;
+    margin: 0 50px;
+    background-color: var(--green);
+    border-radius: 10px;
+  }
 }
