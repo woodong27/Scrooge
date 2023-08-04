@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import PaymentItem from "./PaymentItem";
 import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
-import { useEffect, useState } from "react";
+import Modal from "../../components/UI/Modal";
 
 const PaymentHistory = () => {
   const [data, setData] = useState([]);
@@ -19,8 +20,11 @@ const PaymentHistory = () => {
   }, []);
 
   const onCreate = (usedAt, amount, paidAt) => {
+    const koreaTime = new Date(
+      paidAt.getTime() + 9 * 60 * 60 * 1000
+    ).toISOString();
     const newItem = {
-      paidAt,
+      paidAt: koreaTime,
       amount,
       usedAt,
     };
@@ -84,6 +88,15 @@ const PaymentHistory = () => {
       .then(console.log);
   };
 
+  const [modal, setModal] = useState(false);
+  const handleOpenModal = () => {
+    setModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setModal(false);
+  };
+
   return (
     <div>
       <div className={styles.empty} />
@@ -107,12 +120,13 @@ const PaymentHistory = () => {
             ))}
             <PaymentAdd onCreate={onCreate} />
             <div className={styles.total}>총합: {}원</div>
-            <button className={styles.btn} onClick={postExp}>
+            <button className={styles.btn} onClick={handleOpenModal}>
               정산하기
             </button>
           </div>
         </div>
       </div>
+      {/* {modal && <Modal onEdit={onEdit} onCloseModal={handleCloseModal} />} */}
     </div>
   );
 };
