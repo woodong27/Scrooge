@@ -3,9 +3,10 @@ package com.scrooge.scrooge.controller;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.PaymentHistory;
-import com.scrooge.scrooge.dto.PaymentHistoryDto;
+import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.PaymentHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,12 +41,11 @@ public class PaymentHistoryController {
 
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping("/{memberId}")
-    public ResponseEntity<?> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("memberId") Long memberId) {
+    public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("memberId") Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
 
-        SuccessResp successResp = new SuccessResp(1);
-        PaymentHistory paymentHistory = paymentHistoryService.addPaymentHistory(memberId, paymentHistoryDto);
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        PaymentHistoryRespDto paymentHistoryRespDto = paymentHistoryService.addPaymentHistory(memberId, paymentHistoryDto);
+        return new ResponseEntity<>(paymentHistoryRespDto, HttpStatus.OK);
     }
 
     // Member별 소비내역 전체를 조회하는 API
