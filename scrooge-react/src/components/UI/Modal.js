@@ -43,7 +43,10 @@ const Modal = ({
       <div className={styles.body}>
         <div className={styles.modal}>
           <div className={styles.handle}> </div>
-          <h2>{usedAt}</h2>
+          <div className={styles.head}>
+            <h2>{usedAt}</h2>
+            <button> 완료 </button>
+          </div>
           <div className={styles.price}>
             {isEdit ? (
               <div className={styles.amount}>
