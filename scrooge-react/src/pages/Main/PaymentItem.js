@@ -6,6 +6,7 @@ const serverTimezoneOffset = 540;
 
 const PaymentItem = (props) => {
   const serverTime = new Date(props.paidAt);
+  console.log(props);
   const localTime = new Date(
     serverTime.getTime() + serverTimezoneOffset * 60 * 1000
   );
@@ -25,15 +26,17 @@ const PaymentItem = (props) => {
       <p className={styles.amount}>{props.amount}</p>
       <p className={styles.paidAt}>{localTime.toString().split(" ")[4]}</p>
       <button className={styles.btn} onClick={handleOpenModal}>
-        수정
+        확인
       </button>
       {modal && (
         <Modal
+          onEdit={props.onEdit}
           onCloseModal={handleCloseModal}
           usedAt={props.usedAt}
           amount={props.amount}
           paidAt={props.paidAt}
           cardName={props.cardName}
+          id={props.id}
         />
       )}
     </div>

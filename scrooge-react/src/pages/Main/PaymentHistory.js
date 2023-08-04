@@ -27,6 +27,15 @@ const PaymentHistory = () => {
     setData([...data, newItem]);
   };
 
+  const onEdit = (targetId, newContent) => {
+    console.log(`얍 ${targetId} ${newContent}`);
+    setData(
+      data.map((it) =>
+        it.id === targetId ? { ...it, content: newContent } : it
+      )
+    );
+  };
+
   // 오늘 날짜 가져오기
   const getCurrentDate = () => {
     const today = new Date();
@@ -74,7 +83,7 @@ const PaymentHistory = () => {
         <div className={styles.scrollitem}>
           <div className={styles.item}>
             {data.map((it, index) => (
-              <PaymentItem key={index} {...it} />
+              <PaymentItem key={index} {...it} onEdit={onEdit} />
             ))}
             <PaymentAdd onCreate={onCreate} />
             <div className={styles.total}>총합: {}원</div>

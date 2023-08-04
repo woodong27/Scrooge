@@ -55,15 +55,13 @@ const Main = (props) => {
               <div className={styles.border} />
 
               <span className={styles.charactercoin}>
-                {/* <img
-                  className={styles.character}
-                  src={`${process.env.PUBLIC_URL}/Character/1.png`}
-                  alt="캐릭터"
-                /> */}
-
                 <img
                   className={styles.character}
-                  src={`${process.env.PUBLIC_URL}/Character/${data.mainAvatar}.png`}
+                  src={
+                    data.mainAvatar
+                      ? `${process.env.PUBLIC_URL}/Character/${data.mainAvatar}.png`
+                      : `${process.env.PUBLIC_URL}/Character/1.png`
+                  }
                   alt="캐릭터"
                 />
 
