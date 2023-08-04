@@ -46,6 +46,16 @@ h3 {
   margin-bottom: 10px;
 }
 
+.price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btns {
+  margin: 16px 0;
+}
+
 .content {
   text-align: right;
 }

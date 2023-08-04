@@ -19,12 +19,10 @@ const PaymentHistory = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  const onCreate = (usedAt, amount, paidAt) => {
-    const koreaTime = new Date(
-      paidAt.getTime() + 9 * 60 * 60 * 1000
-    ).toISOString();
+  const onCreate = (targetId, usedAt, amount, paidAt) => {
     const newItem = {
-      paidAt: koreaTime,
+      id: targetId,
+      paidAt,
       amount,
       usedAt,
     };
@@ -37,7 +35,6 @@ const PaymentHistory = () => {
       usedAt,
       cardName,
     };
-    console.log(obj);
     const postData = {
       method: "PUT",
       headers: {
@@ -55,7 +52,7 @@ const PaymentHistory = () => {
       .then(console.log);
     setData(
       data.map((it) =>
-        it.id === targetId ? { ...it, content: newContent } : it
+        it.id === targetId ? { ...it, amount: newContent } : it
       )
     );
   };

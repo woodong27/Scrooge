@@ -48,14 +48,20 @@ const PaymentAdd = ({ onCreate }) => {
       body: JSON.stringify(obj),
     };
     fetch("http://day6scrooge.duckdns.org:8081/payment-history/1", postData)
-      .then((res) => res.text())
-      .then(console.log);
-    onCreate(state.usedAt, state.amount, new Date());
-    setState({
-      usedAt: "",
-      amount: "",
-      paidAt: "",
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        const koreaTime = new Date(
+          new Date().getTime() + 9 * 60 * 60 * 1000
+        ).toISOString();
+        console.log(koreaTime);
+        onCreate(data.id, state.usedAt, state.amount, koreaTime);
+        setState({
+          usedAt: "",
+          amount: "",
+          paidAt: "",
+        });
+      });
   };
 
   return (
