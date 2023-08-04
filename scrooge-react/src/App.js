@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./pages/Main/Main";
 import Footer from "./components/Footer";
 import Loading from "./pages/Loading";
+import Quest from "./pages/Quest/Quest";
 import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
@@ -26,6 +27,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Main onLogout={logoutHandler} />}></Route>
+            <Route path="/quest" element={<Quest />}></Route>
 
             <Route path="/challenge" element={<Challenge />}></Route>
             <Route
