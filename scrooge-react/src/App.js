@@ -8,6 +8,7 @@ import Quest from "./pages/Quest/Quest";
 import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
+import MyPage from "./pages/MyPage/MyPage";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -38,6 +39,7 @@ function App() {
               path="/challenge/my"
               element={<ChallengeDetail></ChallengeDetail>}
             ></Route>
+            <Route path="/mypage" element={<MyPage />}></Route> 
           </Routes>
           <Footer />
         </BrowserRouter>

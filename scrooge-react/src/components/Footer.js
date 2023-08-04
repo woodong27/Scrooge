@@ -42,11 +42,13 @@ const Footer = () => {
         </Link>
       </li>
       <li>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/nav-icons/profile.png`}
-          alt="프로필"
-        />
-        <div>프로필</div>
+        <Link to="/mypage">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/nav-icons/profile.png`}
+            alt="프로필"
+            />
+          <div>프로필</div>
+        </Link>
       </li>
     </ul>
   );
