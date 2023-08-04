@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./ReportTab.module.css";
 import CharList from "./CharList";
+import BadgeList from "./BadgeList";
 
 export default function ItemTab() {
   const [currentTab, setCurrentTab] = useState(1);
@@ -14,7 +15,7 @@ export default function ItemTab() {
     {
       id: 2,
       tabTitle: '뱃지',
-      content:'뱃지 리스트',
+      content: <BadgeList />,
     }
   ]
 
