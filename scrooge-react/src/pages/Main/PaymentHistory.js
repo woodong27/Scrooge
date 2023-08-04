@@ -27,6 +27,32 @@ const PaymentHistory = () => {
     setData([...data, newItem]);
   };
 
+  const onEdit = (targetId, newContent) => {
+    const obj = {
+      amount: newContent,
+    };
+    const postData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+      },
+      body: JSON.stringify(obj),
+    };
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/payment-history/1/${targetId}`,
+      postData
+    )
+      .then((res) => res.text())
+      .then(console.log);
+    setData(
+      data.map((it) =>
+        it.id === targetId ? { ...it, content: newContent } : it
+      )
+    );
+  };
+
   // 오늘 날짜 가져오기
   const getCurrentDate = () => {
     const today = new Date();
@@ -43,7 +69,7 @@ const PaymentHistory = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcmluMTRAbmF2ZXIuY29tIiwibWVtYmVySWQiOjEsImlhdCI6MTY5MTA0NDcyOCwiZXhwIjoxNjkxNjQ5NTI4fQ.JusnJ0lDLqH5nBSHCfFC40iKUbuwAHqCCxtqqrRC3W0",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
       },
       body: JSON.stringify(obj),
     };
@@ -74,7 +100,7 @@ const PaymentHistory = () => {
         <div className={styles.scrollitem}>
           <div className={styles.item}>
             {data.map((it, index) => (
-              <PaymentItem key={index} {...it} />
+              <PaymentItem key={index} {...it} onEdit={onEdit} />
             ))}
             <PaymentAdd onCreate={onCreate} />
             <div className={styles.total}>총합: {}원</div>

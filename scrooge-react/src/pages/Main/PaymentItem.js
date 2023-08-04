@@ -25,15 +25,17 @@ const PaymentItem = (props) => {
       {props.paidAt.split("T")[1].split(".")[0]}
       </p>
       <button className={styles.btn} onClick={handleOpenModal}>
-        수정
+        확인
       </button>
       {modal && (
         <Modal
+          onEdit={props.onEdit}
           onCloseModal={handleCloseModal}
           usedAt={props.usedAt}
           amount={props.amount}
           paidAt={props.paidAt}
           cardName={props.cardName}
+          id={props.id}
         />
       )}
     </div>
