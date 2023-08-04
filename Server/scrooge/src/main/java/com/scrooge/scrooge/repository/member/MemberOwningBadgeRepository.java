@@ -14,4 +14,6 @@ public interface MemberOwningBadgeRepository extends JpaRepository<MemberOwningB
     List<MemberOwningBadge> findMemberOwningBadgesById(Long memberId);
 
     boolean existsByBadgeIdAndMemberId(Long badgeId, Long memberId);
+
+    boolean existsByMemberId(Long memberId);
 }

@@ -54,7 +54,20 @@ public class BadgeService {
         Badge badge = badgeRepository.findById(badgeId).orElse(null);
         Member member = memberRepository.findById(memberId).orElse(null);
 
-        
+        if (!memberOwningBadgeRepository.existsByMemberId(memberId)) {
+            giveBadgeForFirstBadge(member);
+        }
+
+        MemberOwningBadge memberOwningBadge = new MemberOwningBadge();
+        memberOwningBadge.setBadge(badge);
+        memberOwningBadge.setMember(member);
+        memberOwningBadge.setAcquiredAt(LocalDateTime.now());
+
+        memberOwningBadgeRepository.save(memberOwningBadge);
+    }
+
+    public void giveBadgeForFirstBadge(Member member) {
+        Badge badge = badgeRepository.findById(7L).orElse(null);
 
         MemberOwningBadge memberOwningBadge = new MemberOwningBadge();
         memberOwningBadge.setBadge(badge);

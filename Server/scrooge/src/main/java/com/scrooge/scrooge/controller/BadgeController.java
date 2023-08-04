@@ -48,7 +48,7 @@ public class BadgeController {
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
-        if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(badgeId, memberId)) {
+        if (memberOwningBadgeRepository.existsByBadgeIdAndMemberId(badgeId, memberId)) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("해당 뱃지를 소유하고 있지 않습니다.");
         }
 
