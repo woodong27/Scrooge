@@ -35,7 +35,6 @@ const PaymentHistory = () => {
       usedAt,
       cardName,
     };
-    console.log(targetId);
     const postData = {
       method: "PUT",
       headers: {
@@ -53,7 +52,7 @@ const PaymentHistory = () => {
       .then(console.log);
     setData(
       data.map((it) =>
-        it.id === targetId ? { ...it, content: newContent } : it
+        it.id === targetId ? { ...it, amount: newContent } : it
       )
     );
   };
