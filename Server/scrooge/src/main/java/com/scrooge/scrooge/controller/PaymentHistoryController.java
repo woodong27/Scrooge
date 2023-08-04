@@ -109,6 +109,17 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(memberDto);
     }
 
+    // 하루 전체 소비 금액 조회하는 API
+    @Operation(summary = "하루 전체 소비 금액 조회하는 API")
+    @GetMapping("/today-total")
+    public ResponseEntity<Integer> getTodayTotalConsumption(@RequestHeader("Authorization") String tokenHeader) {
+        String token = extractToken(tokenHeader);
+
+        Integer todayTotalConsumption = paymentHistoryService.getTodayTotalConsumption(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(todayTotalConsumption);
+    }
+
+
     private String extractToken(String tokenHeader) {
         if(tokenHeader != null && tokenHeader.startsWith("Bearer")) {
             return tokenHeader.substring(7);
