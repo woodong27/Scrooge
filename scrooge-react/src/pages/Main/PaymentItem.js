@@ -1,10 +1,15 @@
 import { useState } from "react";
 import Modal from "../../components/UI/Modal";
-import styles from "./PayList.module.css";
+import styles from "./PaymentItem.module.css";
 
-const PayList = (props) => {
+// const serverTimezoneOffset = 540;
+
+const PaymentItem = (props) => {
+  // const serverTime = new Date(props.paidAt);
+  // const localTime = new Date(serverTime.getTime() + serverTimezoneOffset * 60 * 1000);
   const [modal, setModal] = useState(false);
 
+  console.log(props);
   const handleOpenModal = () => {
     setModal(true);
   };
@@ -15,23 +20,27 @@ const PayList = (props) => {
 
   return (
     <div className={styles.box}>
-      <p className={styles.name}>{props.name}</p>
+      <p className={styles.usedAt}>{props.usedAt}</p>
       <p className={styles.amount}>{props.amount}</p>
-      <p className={styles.date}>{props.date.split("T")}</p>
+      <p className={styles.paidAt}>
+        {props.paidAt.split("T")[1].split(".")[0]}
+      </p>
       <button className={styles.btn} onClick={handleOpenModal}>
-        상세 보기
+        수정
       </button>
       {modal && (
         <Modal
+          onEdit={props.onEdit}
           onCloseModal={handleCloseModal}
-          name={props.name}
+          usedAt={props.usedAt}
           amount={props.amount}
-          date={props.date}
+          paidAt={props.paidAt}
           cardName={props.cardName}
+          id={props.id}
         />
       )}
     </div>
   );
 };
 
-export default PayList;
+export default PaymentItem;

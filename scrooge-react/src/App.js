@@ -2,16 +2,16 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Main from "./pages/Main/Main";
-import DailyCalcul from "./pages/Main/DailyCalcul";
 import Footer from "./components/Footer";
 import Loading from "./pages/Loading";
+import Quest from "./pages/Quest/Quest";
 import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
 import MyPage from "./pages/MyPage/MyPage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   const loginHandler = () => {
     setIsLogin(true);
@@ -28,7 +28,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Main onLogout={logoutHandler} />}></Route>
-            <Route path="/300" element={<DailyCalcul />}></Route>
+            <Route path="/quest" element={<Quest />}></Route>
+
             <Route path="/challenge" element={<Challenge />}></Route>
             <Route
               path="/challenge/join"

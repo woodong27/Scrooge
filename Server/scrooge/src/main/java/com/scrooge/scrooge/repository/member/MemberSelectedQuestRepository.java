@@ -16,4 +16,8 @@ public interface MemberSelectedQuestRepository extends JpaRepository<MemberSelec
 
     @Query("SELECT msq FROM MemberSelectedQuest msq WHERE msq.member.id = :memberId and msq.quest.id = :questId")
     Optional<MemberSelectedQuest> findSelectedQuestByMemberIdAndQuestId(Long memberId, Long questId);
+
+    boolean existsByMemberIdAndQuestId(Long memberId, Long questId);
+
+    boolean existsByMemberIdAndIsDoneIsFalse(Long memberId);
 }

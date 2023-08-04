@@ -2,6 +2,8 @@ package com.scrooge.scrooge.controller.community;
 
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
+import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
+import com.scrooge.scrooge.service.BadgeService;
 import com.scrooge.scrooge.service.community.CommunityGoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,11 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class CommunityGoodController {
 
     private final CommunityGoodService communityGoodService;
+    private final BadgeService badgeService;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
 
     // 환호 기능 구현
     @Operation(summary = "커뮤니티 글 좋아요 등록")
     @PostMapping("/like")
     public ResponseEntity<?> addCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
+
+        if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(6L, articleGoodDto.getMemberId())) {
+            badgeService.giveBadge(6L, articleGoodDto.getMemberId());
+        }
 
         SuccessResp successResp = new SuccessResp(1);
         communityGoodService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
@@ -54,6 +62,5 @@ public class CommunityGoodController {
         Integer result = communityGoodService.getCommunityGoodCount(articleId);
         return new ResponseEntity<Integer>(result, HttpStatus.OK);
     }
-
 
 }

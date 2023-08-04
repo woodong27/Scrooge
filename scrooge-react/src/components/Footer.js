@@ -33,11 +33,13 @@ const Footer = () => {
         </Link>
       </li>
       <li>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/nav-icons/quest.png`}
-          alt="퀘스트"
-        />
-        <div>퀘스트</div>
+        <Link to="/quest">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/nav-icons/quest.png`}
+            alt="퀘스트"
+          />
+          <div>퀘스트</div>
+        </Link>
       </li>
       <li>
         <Link to="/mypage">

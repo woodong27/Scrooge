@@ -1,0 +1,21 @@
+.card {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 328px;
+  height: 400px;
+  border-radius: 10px;
+  border: 1.5px solid #000;
+
+  background-color: white;
+}
+
+.card_shadow {
+  position: relative;
+  width: 328px;
+  height: 400px;
+  border-radius: 10px;
+  margin-left: 36px;
+  border: 1.5px solid #000;
+  background: var(--green);
+}

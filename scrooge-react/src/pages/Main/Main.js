@@ -1,21 +1,31 @@
 import { useEffect, Fragment, useState } from "react";
+
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
-import Card from "../../components/UI/Card";
-import ButtonWhite from "../../components/UI/ButtonWhite";
-import DailyCalcul from "./DailyCalcul";
+import CharacterCard from "../../components/UI/CharacterCard";
+import TodayCard from "../../components/UI/TodayCard";
+import BackGround from "../../components/BackGround";
+import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
-  const [isConsum, setIsConsum] = useState(false);
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/user/1")
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+      },
+    };
+    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
       .then((resp) => resp.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        setData(data);
+      })
       .catch((error) => console.log(error));
   }, []);
+  const [isConsum, setIsConsum] = useState(false);
 
   const consumTrueHandler = () => {
     setIsConsum(true);
@@ -25,45 +35,91 @@ const Main = (props) => {
   };
 
   return (
-    <Fragment>
-      <Card>
-        {!isConsum && data && data.level && data.mainAvatar && (
-          <div>
-            <div className={styles.header34}>
-              <p>Lv. {data.level.level}</p>
-              <p>{data.name}</p>
-            </div>
-            <div className={styles.box}>
-              <img
-                className={styles.img}
-                src={`${process.env.PUBLIC_URL}/Character/${data.mainAvatar.id}.png`}
-                alt="캐릭터"
-              />
-              <ProgressBar
-                weeklyConsum={data.weeklyConsum}
-                weeklyGoal={data.weeklyGoal}
-              />
-            </div>
-            <button className={styles.btn} onClick={consumTrueHandler}>
-              일일정산
-            </button>
-            <button onClick={props.onLogout}>로그아웃</button>
-          </div>
-        )}
-        {isConsum && (
-          <div>
-            <DailyCalcul />
-            <button onClick={consumFalseHandler}>돌아가기</button>
-          </div>
-        )}
-      </Card>
+    <BackGround>
+      {!isConsum && data && data.levelId && (
+        <div>
+          <div className={styles.empty} />
+          <CharacterCard>
+            <div>
+              <div className={styles.infoheader}>
+                <img
+                  className={styles.badge}
+                  src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
+                  alt="뱃지"
+                />
+                <span>
+                  <p>Lv. {data.levelId}</p>
+                  <p>{data.name}</p>
+                </span>
+              </div>
+              <div className={styles.border} />
 
-      <div className={styles.foot}>
-        <ButtonWhite text="자전거로 출퇴근하기"></ButtonWhite>
-        <ButtonWhite text="집에서 저녁 만들어 먹기"></ButtonWhite>
-        <ButtonWhite text="파 키우기"></ButtonWhite>
-      </div>
-    </Fragment>
+              <span className={styles.charactercoin}>
+                <img
+                  className={styles.character}
+                  src={
+                    data.mainAvatar
+                      ? `${process.env.PUBLIC_URL}/Character/${data.mainAvatar}.png`
+                      : `${process.env.PUBLIC_URL}/Character/1.png`
+                  }
+                  alt="캐릭터"
+                />
+
+                <div className={styles.coin} onClick={consumTrueHandler}>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/coin.png`}
+                    alt="코인"
+                  />
+                  <div className={styles.payBtn}>정산하기</div>
+                </div>
+              </span>
+              <div className={styles.statemessage}>
+                <div>
+                  상태메세지 <br />
+                  에엥
+                  <br />
+                  괜찮나?
+                </div>
+                <img
+                  className={styles.editBtn}
+                  src={`${process.env.PUBLIC_URL}/images/write.svg`}
+                  alt="코인"
+                />
+              </div>
+            </div>
+          </CharacterCard>
+          <div className={styles.rings}>
+            <img
+              className={styles.ring}
+              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
+              alt="고리"
+            />
+            <img
+              className={styles.ring}
+              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
+              alt="고리"
+            />
+            <img
+              className={styles.ring}
+              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
+              alt="고리"
+            />
+          </div>
+          <TodayCard>
+            <div className={styles.todayCard}>
+              <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
+              <div className={styles.amount}>정산이 필요해요!</div>
+            </div>
+            <ProgressBar></ProgressBar>
+          </TodayCard>
+        </div>
+      )}
+      {isConsum && (
+        <div>
+          <PaymentHistory />
+        </div>
+      )}
+    </BackGround>
   );
 };
 

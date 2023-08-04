@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,5 +48,32 @@ public class BadgeService {
         memberRepository.save(member);
 
         return new BadgeDto(badge);
+    }
+
+    public void giveBadge(Long badgeId, Long memberId) {
+        Badge badge = badgeRepository.findById(badgeId).orElse(null);
+        Member member = memberRepository.findById(memberId).orElse(null);
+
+        if (!memberOwningBadgeRepository.existsByMemberId(memberId)) {
+            giveBadgeForFirstBadge(member);
+        }
+
+        MemberOwningBadge memberOwningBadge = new MemberOwningBadge();
+        memberOwningBadge.setBadge(badge);
+        memberOwningBadge.setMember(member);
+        memberOwningBadge.setAcquiredAt(LocalDateTime.now());
+
+        memberOwningBadgeRepository.save(memberOwningBadge);
+    }
+
+    public void giveBadgeForFirstBadge(Member member) {
+        Badge badge = badgeRepository.findById(7L).orElse(null);
+
+        MemberOwningBadge memberOwningBadge = new MemberOwningBadge();
+        memberOwningBadge.setBadge(badge);
+        memberOwningBadge.setMember(member);
+        memberOwningBadge.setAcquiredAt(LocalDateTime.now());
+
+        memberOwningBadgeRepository.save(memberOwningBadge);
     }
 }

@@ -1,4 +1,4 @@
-package com.scrooge.scrooge.dto;
+package com.scrooge.scrooge.dto.paymentHistory;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
 import lombok.*;
