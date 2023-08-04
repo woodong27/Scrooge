@@ -8,15 +8,23 @@ import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("day6scrooge.duckdns.org:8081/member")
-  //  //토큰 인증.. 넣어서 하기..!! 근데 그러려면 로그인/회원가입이 먼저 되야할 것 같은디
-  //     .then((resp) => resp.json())
-  //     .then((data) => setData(data))
-  //     .catch((error) => console.log(error));
-  // }, []);
+  useEffect(() => {
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+      },
+    };
+    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
   const [isConsum, setIsConsum] = useState(false);
 
   const consumTrueHandler = () => {
@@ -28,7 +36,7 @@ const Main = (props) => {
 
   return (
     <BackGround>
-      {!isConsum /* && data && data.level && data.mainAvatar && */ && (
+      {!isConsum && data && data.levelId && (
         <div>
           <div className={styles.empty} />
           <CharacterCard>
@@ -39,11 +47,9 @@ const Main = (props) => {
                   src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
                   alt="뱃지"
                 />
-                {/* <p>Lv. {data.level.level}</p> */}
-                {/* <p>{data.name}</p> */}
                 <span>
-                  <p>Lv. 3 </p>
-                  <p> 돈그만써</p>
+                  <p>Lv. {data.levelId}</p>
+                  <p>{data.name}</p>
                 </span>
               </div>
               <div className={styles.border} />
@@ -51,7 +57,11 @@ const Main = (props) => {
               <span className={styles.charactercoin}>
                 <img
                   className={styles.character}
-                  src={`${process.env.PUBLIC_URL}/Character/1.png`}
+                  src={
+                    data.mainAvatar
+                      ? `${process.env.PUBLIC_URL}/Character/${data.mainAvatar}.png`
+                      : `${process.env.PUBLIC_URL}/Character/1.png`
+                  }
                   alt="캐릭터"
                 />
 
