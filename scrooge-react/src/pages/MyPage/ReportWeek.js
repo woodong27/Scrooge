@@ -42,24 +42,6 @@ const ReportWeek = () => {
         <button onClick={handleNextWeek}>다음 주</button>
       </div>
 
-      {/* 소비 요약 */}
-      <div className={styles.reportContent}>
-        <div className={styles.weekAvg}>
-          <div>평균소비금액</div>
-          <div>
-            <span>79,300</span>
-            <span> 원</span>
-          </div>
-        </div>
-        <div className={styles.weekMax}>
-          <div>최대절약금액</div>
-          <div>
-            <span>7,500</span>
-            <span> 원</span>
-          </div>
-        </div>
-      </div>
-
       {/* 소비 차트 */}
       <div className={styles.chart}>
         <ReportChart />
