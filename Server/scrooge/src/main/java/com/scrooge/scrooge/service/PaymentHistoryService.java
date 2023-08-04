@@ -112,7 +112,6 @@ public class PaymentHistoryService {
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
         paymentHistory.setCategory(paymentHistoryDto.getCategory());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
-        paymentHistory.setPaidAt(paymentHistory.getPaidAt());
 
         return paymentHistoryRepository.save(paymentHistory);
     }
