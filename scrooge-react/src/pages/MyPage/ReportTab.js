@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./ReportTab.module.css";
 import ReportWeek from "./ReportWeek";
+import ReportMonth from "./ReportMonth";
 
 export default function ReportTab() {
   const [currentTab, setCurrentTab] = useState(1);
@@ -14,7 +15,7 @@ export default function ReportTab() {
     {
       id: 2,
       tabTitle: '월간',
-      content:'월간 리포트 입니다.',
+      content:<ReportMonth />,
     }
   ]
 
