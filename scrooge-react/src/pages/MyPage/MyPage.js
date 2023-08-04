@@ -8,7 +8,6 @@ const MyPage = () => {
     <div>
       <MyPageHeader />
       <MyPageProfile />
-      {/* <Report /> */}
     </div>
   );
 };
