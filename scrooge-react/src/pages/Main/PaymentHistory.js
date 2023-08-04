@@ -28,7 +28,24 @@ const PaymentHistory = () => {
   };
 
   const onEdit = (targetId, newContent) => {
-    console.log(`얍 ${targetId} ${newContent}`);
+    const obj = {
+      amount: newContent,
+    };
+    const postData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+      },
+      body: JSON.stringify(obj),
+    };
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/payment-history/1/${targetId}`,
+      postData
+    )
+      .then((res) => res.text())
+      .then(console.log);
     setData(
       data.map((it) =>
         it.id === targetId ? { ...it, content: newContent } : it

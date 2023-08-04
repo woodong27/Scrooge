@@ -6,7 +6,6 @@ const serverTimezoneOffset = 540;
 
 const PaymentItem = (props) => {
   const serverTime = new Date(props.paidAt);
-  console.log(props);
   const localTime = new Date(
     serverTime.getTime() + serverTimezoneOffset * 60 * 1000
   );
