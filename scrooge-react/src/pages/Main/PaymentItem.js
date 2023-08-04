@@ -22,10 +22,10 @@ const PaymentItem = (props) => {
       <p className={styles.usedAt}>{props.usedAt}</p>
       <p className={styles.amount}>{props.amount}</p>
       <p className={styles.paidAt}>
-      {props.paidAt.split("T")[1].split(".")[0]}
+        {props.paidAt.split("T")[1].split(".")[0]}
       </p>
       <button className={styles.btn} onClick={handleOpenModal}>
-        확인
+        수정
       </button>
       {modal && (
         <Modal
