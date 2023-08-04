@@ -136,4 +136,20 @@ public class PaymentHistoryService {
             throw new NotFoundException("해당 Member가 존재하지 않습니다.");
         }
     }
+
+    // 하루 전체 소비 금액 조회하는 API
+    public Integer getTodayTotalConsumption(Long memberId) {
+        LocalDateTime todayStart = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime todayEnd = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, todayStart, todayEnd);
+
+        Integer todayTotalConsumption = 0;
+
+        for(PaymentHistory paymentHistory : paymentHistories) {
+            todayTotalConsumption += paymentHistory.getAmount();
+        }
+
+        return todayTotalConsumption;
+    }
 }
