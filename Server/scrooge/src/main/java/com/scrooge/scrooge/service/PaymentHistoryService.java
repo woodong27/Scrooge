@@ -132,7 +132,7 @@ public class PaymentHistoryService {
                 questService.completeQuest(1L, memberId);
             }
 
-            if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(1L, memberId)) {
+            if (memberOwningBadgeRepository.existsByBadgeIdAndMemberId(1L, memberId)) {
                 badgeService.giveBadge(1L, memberId);
             }
 
