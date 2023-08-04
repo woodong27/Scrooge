@@ -1,5 +1,4 @@
 import { BarChart, Bar, XAxis} from 'recharts';
-import styles from "./ReportChart.module.css";
 
 const data = [
   {

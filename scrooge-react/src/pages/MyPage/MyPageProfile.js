@@ -1,7 +1,16 @@
+import react, { useState } from "react";
 import styles from "./MyPageProfile.module.css";
-import MyPageExpBar
- from "./MyPageExpBar";
+import MyPageExpBar from "./MyPageExpBar";
+import Report from "./Report";
+import ItemList from "./ItemList";
+
 const MyPageProfile = () => {
+  const [showItemList, setShowItemList] = useState(false);
+  const handleEditBtn = () => {
+    setShowItemList((prevState) => !prevState);
+  };
+
+
   return(
     <div className={styles["profile-container"]}>
       <div className={styles["profile-content"]}>
@@ -20,11 +29,13 @@ const MyPageProfile = () => {
             </div>
           </li>
         </ul>
-        <div className={styles["edit-btn"]}>
+        <div className={styles["edit-btn"]} onClick={handleEditBtn}>
           <img src={`${process.env.PUBLIC_URL}/images/edit-btn.png`} alt="편집 버튼"/> 
         </div> 
       </div>
       <MyPageExpBar />
+
+      {showItemList ? <ItemList /> : <Report />}
     </div>
   );
 };

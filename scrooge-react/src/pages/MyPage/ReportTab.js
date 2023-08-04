@@ -3,7 +3,7 @@ import styles from "./ReportTab.module.css";
 import ReportWeek from "./ReportWeek";
 
 export default function ReportTab() {
-  const [currentTab, setCurrentTab] = useState();
+  const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
     {
@@ -14,12 +14,12 @@ export default function ReportTab() {
     {
       id: 2,
       tabTitle: '월간',
-      content: <ReportWeek />,
+      content:'월간 리포트 입니다.',
     }
   ]
 
   const handleTabClick = (e) => {
-    setCurrentTab(e.target.id)
+    setCurrentTab(Number(e.target.id))
   }
   return (
     <div className={styles.tabContainer}>
@@ -29,8 +29,8 @@ export default function ReportTab() {
           <button
             key={i}
             id={tab.id}
-            disabled={currentTab === `${tab.id}`}
-            onClick={(handleTabClick)}
+            disabled={currentTab === tab.id}
+            onClick={handleTabClick}
           >
             {tab.tabTitle}
           </button>
@@ -40,7 +40,7 @@ export default function ReportTab() {
       <div className={styles.content}>
         {tabs.map((tab, i) =>
           <div key={i}>
-            {currentTab === `${tab.id}` &&
+            {currentTab === tab.id &&
               <div>
                 <p>{tab.content}</p>
               </div>
