@@ -4,6 +4,7 @@ import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
@@ -30,6 +31,8 @@ public class PaymentHistoryService {
     private final MemberRepository memberRepository;
     private final QuestService questService;
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final BadgeService badgeService;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
 
     @Transactional
     public PaymentHistoryRespDto addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
@@ -126,14 +129,30 @@ public class PaymentHistoryService {
         if(member.isPresent()) {
             // 경험치 +100 정산해주기
             member.get().setExp(member.get().getExp() + 100);
-            Member updatedMember = memberRepository.save(member.get());
+            // streak 1 증가
+            int newStreak = member.get().getStreak() + 1;
+            member.get().setStreak(newStreak);
 
+            // 정산하기 관련 퀘스트 소지 시 퀘스트 완료 진행
             if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 1L)) {
                 questService.completeQuest(1L, memberId);
             }
 
-            member.get().setStreak(member.get().getStreak()+1);
+            // 정산하기 관련 뱃지 획득
+            // 첫번째 정산하기 완료시 뱃지 부여
+            if (newStreak == 1 || memberOwningBadgeRepository.existsByBadgeIdAndMemberId(1L, memberId)) {
+                badgeService.giveBadge(1L, memberId);
+            }
+            // 7번째 정산하기 완료시 뱃시 증정
+            if (newStreak == 7 || memberOwningBadgeRepository.existsByBadgeIdAndMemberId(2L, memberId)) {
+                badgeService.giveBadge(2L, memberId);
+            }
+            // 30번째 정산하기 완료시 뱃지 증정
+            if (newStreak == 30 || memberOwningBadgeRepository.existsByBadgeIdAndMemberId(3L, memberId)) {
+                badgeService.giveBadge(3L, memberId);
+            }
 
+            Member updatedMember = memberRepository.save(member.get());
             return new MemberDto(updatedMember);
         }
         else {
