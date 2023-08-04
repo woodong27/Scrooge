@@ -22,7 +22,7 @@ const Modal = ({
       localContentInput.current.focus();
       return;
     }
-    onEdit(id, origin);
+    onEdit(id, origin, usedAt, cardName);
     setPrice(origin);
     toggleIsEdit();
   };
@@ -49,7 +49,9 @@ const Modal = ({
                 />
               </>
             ) : (
-              <p>{price}원</p>
+              <>
+                <p>{price}원</p>
+              </>
             )}
             {isEdit ? (
               <>
@@ -65,7 +67,7 @@ const Modal = ({
           <div className={styles.line}>
             <div className={styles.title}>거래 일자</div>
             <div className={styles.content}>
-              {`${paidAt.split("T")[0]} ${paidAt.split("T")[1].split(".")[0]}`}
+              {`${paidAt.slice(0, 19).split("T")[0]} ${paidAt.split("T")[1]}`}
             </div>
           </div>{" "}
           <div className={styles.line}>

@@ -20,12 +20,6 @@ const PaymentAdd = ({ onCreate }) => {
     });
   };
 
-  const getCurrentDate = () => {
-    const now = new Date();
-    const formattedDateTime = now.toISOString().slice(0, 19);
-    return formattedDateTime;
-  };
-
   const submitPaymentItem = () => {
     if (state.usedAt.length < 1) {
       usedAtInput.current.focus();
@@ -56,8 +50,7 @@ const PaymentAdd = ({ onCreate }) => {
     fetch("http://day6scrooge.duckdns.org:8081/payment-history/1", postData)
       .then((res) => res.text())
       .then(console.log);
-    const currentDateTime = getCurrentDate();
-    onCreate(state.usedAt, state.amount, currentDateTime);
+    onCreate(state.usedAt, state.amount, new Date());
     setState({
       usedAt: "",
       amount: "",
