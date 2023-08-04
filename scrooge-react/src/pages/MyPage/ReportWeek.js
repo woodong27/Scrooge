@@ -37,9 +37,19 @@ const ReportWeek = () => {
     <div className={styles.reportContainer}>
       {/* 소비 날짜 */}
       <div className={styles.weekDays}>
-        <button onClick={handleLastsWeek}>지난 주</button>
+        <button onClick={handleLastsWeek}>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/left.svg`}
+            alt="이전"
+          />
+        </button>
         <h3>{getWeekRange(currentDate)}</h3>
-        <button onClick={handleNextWeek}>다음 주</button>
+        <button onClick={handleNextWeek}>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/right.svg`}
+            alt="다음"
+          />
+        </button>
       </div>
 
       {/* 소비 차트 */}
