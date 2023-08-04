@@ -55,6 +55,6 @@
   background-color: var(--green);
 }
 /* scrollbar 안 보이게 */
-/* .card::-webkit-scrollbar {
+.card::-webkit-scrollbar {
   display: none;
-} */
+}

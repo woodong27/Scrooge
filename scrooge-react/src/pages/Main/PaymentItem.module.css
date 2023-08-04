@@ -27,6 +27,12 @@
   right: 10px;
   color: #61646b;
 }
+.cardName {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  color: #61646b;
+}
 
 .btn {
   position: absolute;

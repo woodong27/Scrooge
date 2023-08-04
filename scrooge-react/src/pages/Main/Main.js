@@ -9,6 +9,7 @@ import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
   const [data, setData] = useState([]);
+  const [total, setTotal] = useState();
 
   useEffect(() => {
     const postData = {
@@ -25,11 +26,33 @@ const Main = (props) => {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const getTotal = () => {
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+      },
+    };
+    fetch(
+      "http://day6scrooge.duckdns.org:8081/payment-history/today-total",
+      postData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setTotal(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const [isConsum, setIsConsum] = useState(false);
 
   const consumTrueHandler = () => {
     setIsConsum(true);
   };
+
+  //정산 페이지에 이것도 달아야 하네
   const consumFalseHandler = () => {
     setIsConsum(false);
   };
@@ -108,7 +131,9 @@ const Main = (props) => {
           <TodayCard>
             <div className={styles.todayCard}>
               <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
-              <div className={styles.amount}>정산이 필요해요!</div>
+              <div className={styles.amount}>
+                {total ? total : "정산이 필요해요!"}
+              </div>
             </div>
             <ProgressBar></ProgressBar>
           </TodayCard>
@@ -116,7 +141,7 @@ const Main = (props) => {
       )}
       {isConsum && (
         <div>
-          <PaymentHistory />
+          <PaymentHistory total={total} getTotal={getTotal} />
         </div>
       )}
     </BackGround>
