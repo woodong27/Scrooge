@@ -2,8 +2,9 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.domain.member.Member;
-import com.scrooge.scrooge.dto.PaymentHistoryDto;
+import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
@@ -31,8 +32,9 @@ public class PaymentHistoryService {
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
 
     @Transactional
-    public PaymentHistory addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
+    public PaymentHistoryRespDto addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
         PaymentHistory paymentHistory = new PaymentHistory();
+        PaymentHistoryRespDto paymentHistoryRespDto = new PaymentHistoryRespDto();
 
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
@@ -48,14 +50,16 @@ public class PaymentHistoryService {
             member.get().setWeeklyConsum(member.get().getWeeklyConsum() + paymentHistoryDto.getAmount()); // 주간 소비량에 소비내역 가격 더해주기
             memberRepository.save(member.get());
 
-            return paymentHistoryRepository.save(paymentHistory);
+            paymentHistoryRepository.save(paymentHistory);
+
+            paymentHistoryRespDto.setSuccess(1);
+            paymentHistoryRespDto.setId(paymentHistory.getId());
+
+            return paymentHistoryRespDto;
         }
         else {
             throw new NotFoundException(memberId + "에 해당하는 member를 찾을 수 없습니다.");
         }
-
-
-
     }
 
     // userId에 따른 전체 소비 내역 조회
