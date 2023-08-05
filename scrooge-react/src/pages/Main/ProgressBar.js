@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ProgressBar.module.css";
 
-const ProgressBar = (props) => {
+const ProgressBar = ({ goal, consum }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    setProgress(props.weeklyGoal / props.weeklyConsum);
-  }, []);
+    console.log(goal, consum);
+    setProgress(consum / goal);
+  }, [consum]);
 
   return (
     <div className={styles["progress-bar-container"]}>
       <div className={styles["progress-bar-bg"]}>
-        <div
-          className={styles["progress-bar"]}
-          style={{
-            width: `${(props.weeklyConsum / props.weeklyGoal) * 100}%`,
-          }}
-        >
-          <img
-            src={`${process.env.PUBLIC_URL}/images/happy-icon.png`}
-            alt="^-^"
+        {progress < 1 ? (
+          <div
+            className={styles["progress-bar"]}
+            style={{
+              width: `${progress * 100}%`,
+            }}
           />
-        </div>
+        ) : (
+          <div className={styles["progress-bar-red"]} />
+        )}
       </div>
       <p className={styles["progress-text"]}>
-        이번 달 남은 금액: {props.weeklyGoal - props.weeklyConsum}원
+        이번 달 남은 금액: {goal - consum}원
       </p>
     </div>
   );

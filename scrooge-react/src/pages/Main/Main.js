@@ -11,6 +11,8 @@ const Main = (props) => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
 
+  const [settlement, setSettlement] = useState(false);
+
   useEffect(() => {
     const postData = {
       method: "GET",
@@ -52,7 +54,6 @@ const Main = (props) => {
     setIsConsum(true);
   };
 
-  //정산 페이지에 이것도 달아야 하네
   const consumFalseHandler = () => {
     setIsConsum(false);
   };
@@ -132,16 +133,25 @@ const Main = (props) => {
             <div className={styles.todayCard}>
               <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
               <div className={styles.amount}>
-                {total ? total : "정산이 필요해요!"}
+                {settlement ? `${total}원` : "정산이 필요해요!"}
               </div>
             </div>
-            <ProgressBar></ProgressBar>
+            <ProgressBar
+              goal={data.weeklyGoal}
+              consum={data.weeklyConsum}
+            ></ProgressBar>
           </TodayCard>
         </div>
       )}
       {isConsum && (
         <div>
-          <PaymentHistory total={total} getTotal={getTotal} />
+          <PaymentHistory
+            total={total}
+            getTotal={getTotal}
+            consumFalseHandler={consumFalseHandler}
+            settlement={settlement}
+            setSettlement={setSettlement}
+          />
         </div>
       )}
     </BackGround>
