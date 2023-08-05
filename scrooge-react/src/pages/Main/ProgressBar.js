@@ -6,18 +6,22 @@ const ProgressBar = ({ goal, consum }) => {
 
   useEffect(() => {
     console.log(goal, consum);
-    setProgress(goal / consum);
+    setProgress(consum / goal);
   }, [consum]);
 
   return (
     <div className={styles["progress-bar-container"]}>
       <div className={styles["progress-bar-bg"]}>
-        <div
-          className={styles["progress-bar"]}
-          style={{
-            width: `${progress * 100}%`,
-          }}
-        ></div>
+        {progress < 1 ? (
+          <div
+            className={styles["progress-bar"]}
+            style={{
+              width: `${progress * 100}%`,
+            }}
+          />
+        ) : (
+          <div className={styles["progress-bar-red"]} />
+        )}
       </div>
       <p className={styles["progress-text"]}>
         이번 달 남은 금액: {goal - consum}원
