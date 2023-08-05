@@ -4,7 +4,13 @@ import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import Modal from "../../components/UI/Modal";
 
-const PaymentHistory = ({ total, getTotal }) => {
+const PaymentHistory = ({
+  total,
+  getTotal,
+  consumFalseHandler,
+  settlement,
+  setSettlement,
+}) => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
   const [origin, setOrigin] = useState();
@@ -13,6 +19,11 @@ const PaymentHistory = ({ total, getTotal }) => {
   const currentItem = data[currentIndex];
   const [modal, setModal] = useState(false);
   const handleOpenModal = () => {
+    // 소비가 0건인 경우 예외 처리
+    if (data.length < 1) {
+      getTotal();
+      return;
+    }
     setModal(true);
   };
 
@@ -25,7 +36,10 @@ const PaymentHistory = ({ total, getTotal }) => {
       setCurrentIndex(currentIndex + 1);
     } else {
       console.log("끝");
+      setSettlement(true); //정산되었음을 저장
+      postExp();
       getTotal();
+      handleCloseModal();
     }
   };
 
@@ -53,6 +67,9 @@ const PaymentHistory = ({ total, getTotal }) => {
       cardName,
     };
     setData([...data, newItem]);
+    if (settlement) {
+      getTotal();
+    }
   };
 
   const onEdit = (targetId, newContent, usedAt, cardName, category) => {
@@ -114,7 +131,9 @@ const PaymentHistory = ({ total, getTotal }) => {
 
   return (
     <div>
-      <div className={styles.empty} />
+      <div className={styles.empty}>
+        <button onClick={consumFalseHandler}>홈으로</button>
+      </div>
       <div className={styles.card}>
         <div className={styles.title}>
           <img
@@ -136,10 +155,13 @@ const PaymentHistory = ({ total, getTotal }) => {
             <PaymentAdd onCreate={onCreate} />
             {/* 아 origin이 truthy한 값이라 이상했네...  */}
             <div className={styles.total}>
-              {origin || origin === 0 ? `총합: ${origin}원` : "?"}
+              {origin || origin === 0 ? `총합: ${origin}원` : ""}
             </div>
-            <button className={styles.btn} onClick={handleOpenModal}>
-              정산하기
+            <button
+              onClick={handleOpenModal}
+              className={settlement ? styles.finishBtn : styles.btn}
+            >
+              {settlement ? "정산 완료" : "정산하기"}
             </button>
           </div>
         </div>
