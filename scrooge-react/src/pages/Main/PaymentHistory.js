@@ -109,7 +109,7 @@ const PaymentHistory = ({
     setDate(`${month} ${day}일 소비`);
   };
 
-  // 일일정산 경험치 추가 (나중에 오늘 날짜인지 확인 및 하루 한 번만 가능하게 변경)
+  // 일일정산 경험치 추가
   const postExp = () => {
     const obj = { id: "1" };
     const postData = {
@@ -132,7 +132,7 @@ const PaymentHistory = ({
   return (
     <div>
       <div className={styles.empty}>
-        <button onClick={consumFalseHandler}>홈으로</button>
+        <button onClick={consumFalseHandler}>홈 으로</button>
       </div>
       <div className={styles.card}>
         <div className={styles.title}>

@@ -136,7 +136,10 @@ const Main = (props) => {
                 {settlement ? `${total}원` : "정산이 필요해요!"}
               </div>
             </div>
-            <ProgressBar goal={data.goal} consum={data.consum}></ProgressBar>
+            <ProgressBar
+              goal={data.weeklyGoal}
+              consum={data.weeklyConsum}
+            ></ProgressBar>
           </TodayCard>
         </div>
       )}
