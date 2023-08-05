@@ -43,12 +43,14 @@ export default function ItemTab() {
           <div key={i}>
             {currentTab === tab.id &&
               <div>
-                <p>{tab.content}</p>
+                <div>{tab.content}</div>
               </div>
             }
           </div>
         )}
       </div>
+
+
     </div>
   )
 }
