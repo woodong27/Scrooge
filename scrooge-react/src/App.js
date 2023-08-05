@@ -9,6 +9,7 @@ import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
 import MyPage from "./pages/MyPage/MyPage";
+import Login from "./pages/Login";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -23,9 +24,8 @@ function App() {
 
   return (
     <div className="h-screen w-screen ">
-      {!isLogin && <Loading onLogin={loginHandler} />}
-      {isLogin && (
-        <BrowserRouter>
+      <BrowserRouter>
+        {isLogin ? (
           <Routes>
             <Route path="/" element={<Main onLogout={logoutHandler} />}></Route>
             <Route path="/quest" element={<Quest />}></Route>
@@ -39,11 +39,15 @@ function App() {
               path="/challenge/my"
               element={<ChallengeDetail></ChallengeDetail>}
             ></Route>
-            <Route path="/mypage" element={<MyPage />}></Route> 
+            <Route path="/mypage" element={<MyPage />}></Route>
+            <Route path="/login" element={<Login />}></Route>
           </Routes>
-          <Footer />
-        </BrowserRouter>
-      )}
+        ) : (
+          <Loading isLogin={isLogin} onLogin={loginHandler} />
+        )}
+
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }
