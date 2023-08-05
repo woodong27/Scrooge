@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
             webViewClient= WebViewClient()
             settings.javaScriptEnabled=true
         }
+        webview.settings.javaScriptEnabled = true
+
+        // 안드로이드와 웹 뷰 간의 브리지 설정
+        webview.addJavascriptInterface(AndroidBridge(), "AndroidBridge")
 
         webview.loadUrl("http://day6scrooge.duckdns.org:3000/")
 
@@ -80,4 +85,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+}
+
+// 브릿지를 통해 웹 앱과 상호작용하기 위한 브릿지 클래스
+class AndroidBridge {
+    @JavascriptInterface
+    fun sendJwtTokenToAndroid(jwtToken: String){
+        Log.d("check", jwtToken);
+    }
 }
