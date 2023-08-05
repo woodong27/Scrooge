@@ -1,59 +1,20 @@
 version: "3"
 services:
-    scroogedb:
-        container_name: scroogedb
-        image: mysql:8.0
-        command: --default-authentication-plugin=mysql_native_password
-        environment:
-          MYSQL_DATABASE: scrooge
-          MYSQL_ROOT_PASSWORD: day6s
-          MYSQL_ROOT_HOST: '%'
-          MYSQL_USER: ssafy
-          MYSQL_PASSWORD: ssafy
-        ports:
-          - 3306:3306
-        networks:
-          - scroogenetwork
+  backend:
+    build: ./Server/scrooge
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/scrooge
+      SPRING_DATASOURCE_USERNAME: ssafy
+      SPRING_DATASOURCE_PASSWORD: ssafy
 
-    scroogeback:
-        container_name: scroogeback
-        build: ./Server/scrooge
-        expose:
-          - 8081
-        ports:
-          - 8081:8081
-        environment:
-          SPRING_DATASOURCE_URL: jdbc:mysql://scroogedb:3306/scrooge?autoReconnect=true&useSSL=false
-        depends_on:
-          - scroogedb
-        networks:
-          - scroogenetwork
+  frontend:
+    build: ./scrooge-react
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: http://host.docker.internal:8081
 
-    scroogefront:
-        container_name: scroogefront
-        build: ./scrooge-react
-        expose:
-          - 3000
-        ports:
-          - 3000:3000
-        networks:
-          - scroogenetwork
-
-networks:
-  scroogenetwork:
-    driver: bridge
-
-    # nginx:
-    #     container_name: nginx
-    #     image: nginx
-    #     restart: always
-    #     volumes:
-    #       - ./conf/:/etc/nginx/conf.d
-    #       - /data/certbot/conf:/etc/letsencrypt
-    #       - /data/certbot/www:/var/www/certbot
-    #     ports:
-    #       - 80:80
-    #       - 443:443
-    #     depends_on:
-    #       - web
-    #       - react
+volumes:
+  mysql-data:

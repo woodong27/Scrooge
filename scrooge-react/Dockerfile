@@ -1,20 +1,19 @@
-# nginx 이미지를 사용합니다. 뒤에 tag가 없으면 latest 를 사용.
-FROM nginx
+# Base image with Node.js
+FROM node:18
 
-# root 에 app 폴더를 생성
-RUN mkdir /app
-
-# work dir 고정
+# Set working directory
 WORKDIR /app
 
-# work dir 에 build 폴더 생성 /app/build
-RUN mkdir ./build
+# Copy React application files into the container
+COPY ./package.json ./package-lock.json ./
+RUN npm install
+COPY ./ ./
 
-# host pc의 현재경로의 build 폴더를 workdir 의 build 폴더로 복사
-ADD ./build ./build
+# Build the React application
+RUN npm run build
 
-# 80 포트 오픈
-EXPOSE 80
+# Expose React port
+EXPOSE 3000
 
-# container 실행 시 자동으로 실행할 command. nginx 시작함
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run the React application
+CMD ["npm", "start"]
