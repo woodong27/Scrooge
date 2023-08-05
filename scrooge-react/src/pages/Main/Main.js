@@ -12,6 +12,8 @@ const Main = (props) => {
   const [total, setTotal] = useState();
 
   const [settlement, setSettlement] = useState(false);
+  const [weeklyGoal, setWeeklyGoal] = useState();
+  const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
     const postData = {
@@ -25,9 +27,31 @@ const Main = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        setWeeklyGoal(data.weeklyGoal);
+        setWeeklyConsum(data.weeklyConsum);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  //주간 목표 설정
+  const setGoal = (goal) => {
+    const obj = { weeklyGoal: goal };
+    const postData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+      },
+      body: JSON.stringify(obj),
+    };
+    fetch(`http://day6scrooge.duckdns.org:8081/member/weekly-goal`, postData)
+      .then((res) => res.json())
+      .then((data) => {
+        setWeeklyGoal(data.weeklyGoal);
+      })
+      .then(console.log);
+  };
 
   const getTotal = () => {
     const postData = {
@@ -137,8 +161,9 @@ const Main = (props) => {
               </div>
             </div>
             <ProgressBar
-              goal={data.weeklyGoal}
-              consum={data.weeklyConsum}
+              goal={weeklyGoal}
+              consum={weeklyConsum}
+              setGoal={setGoal}
             ></ProgressBar>
           </TodayCard>
         </div>
