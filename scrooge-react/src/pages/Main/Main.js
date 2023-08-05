@@ -13,6 +13,7 @@ const Main = (props) => {
 
   const [settlement, setSettlement] = useState(false);
   const [weeklyGoal, setWeeklyGoal] = useState();
+  const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
     const postData = {
@@ -27,6 +28,7 @@ const Main = (props) => {
       .then((data) => {
         setData(data);
         setWeeklyGoal(data.weeklyGoal);
+        setWeeklyConsum(data.weeklyConsum);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -160,7 +162,7 @@ const Main = (props) => {
             </div>
             <ProgressBar
               goal={weeklyGoal}
-              consum={data.weeklyConsum}
+              consum={weeklyConsum}
               setGoal={setGoal}
             ></ProgressBar>
           </TodayCard>
