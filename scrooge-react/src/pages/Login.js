@@ -44,11 +44,19 @@ const Login = () => {
       body: JSON.stringify(obj),
     };
     fetch("http://day6scrooge.duckdns.org:8081/member/login", postData)
-      .then((res) => res.json())
+      .then((res) => res.text())
       .then((data) => {
+        const jwtToken = data;
+        sendJwtTokenToAndroid(jwtToken);
         console.log(data);
       });
   };
+
+  function sendJwtTokenToAndroid(jwtToken) {
+    if(window.AndroidBridge) {
+      window.AndroidBridge.sendJwtTokenToAndroid(jwtToken);
+    }
+  }
 
   return (
     <BackGround>
