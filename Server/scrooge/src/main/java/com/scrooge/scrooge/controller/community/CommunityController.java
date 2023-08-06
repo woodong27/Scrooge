@@ -1,6 +1,10 @@
 package com.scrooge.scrooge.controller.community;
 
+import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
+import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.dto.SuccessResp;
+import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
+import com.scrooge.scrooge.dto.communityDto.ArticleContentDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
 import com.scrooge.scrooge.service.community.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -23,20 +28,26 @@ public class CommunityController {
 
 
     private final CommunityService communityService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "커뮤니티 글 등록")
     @PostMapping(consumes="multipart/form-data")
-    public ResponseEntity<?> createArticle(ArticleDto articleDto, @RequestParam MultipartFile img) {
-         communityService.createArticle(articleDto, img);
+    public ResponseEntity<?> createArticle(@RequestHeader("Authorization")String header, ArticleContentDto articleContentDto, @RequestParam MultipartFile img) {
+        System.out.println(articleContentDto.getContent());
+        String token = jwtTokenProvider.extractToken(header);
 
-        SuccessResp successResp = new SuccessResp(1);
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        if(!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        ArticleDto articleDto = communityService.createArticle(articleContentDto.getContent(), img, jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(articleDto);
     }
 
     // 커뮤니티 글 전체 조회
     @Operation(summary = "커뮤니티 글 전체 조회")
     @GetMapping
-    public ResponseEntity<?> getAllCommunityArticles() {
+    public ResponseEntity<List<ArticleDto>> getAllCommunityArticles() {
         List<ArticleDto> articleDtos = communityService.getAllCommunityArticles();
         return ResponseEntity.ok(articleDtos);
     }
@@ -44,17 +55,17 @@ public class CommunityController {
     // 커뮤니티 글 상세 조회
     @Operation(summary = "커뮤니티 글 상세 조회")
     @GetMapping("/{articleId}")
-    public ResponseEntity<?> getCommunityArticle(@PathVariable("articleId")Long articleId) throws IllegalAccessException {
+    public ResponseEntity<?> getCommunityArticle(@PathVariable("articleId") Long articleId) throws NotFoundException {
         ArticleDto articleDto = communityService.getCommunityArticle(articleId);
         return ResponseEntity.ok(articleDto);
     }
 
     // 커뮤니티 글 수정
     @Operation(summary = "커뮤니티 글 수정")
-    @PutMapping()
-    public ResponseEntity<?> updateCommunityArticle(@RequestBody ArticleDto articleDto) {
-        communityService.updateCommunityArticle(articleDto);
-        return ResponseEntity.ok("UPDATE COMMUNITY OK");
+    @PutMapping("/{articleId}")
+    public ResponseEntity<?> updateCommunityArticle(@PathVariable("articleId")Long articleId, @RequestBody ArticleContentDto articleContentDto) {
+        ArticleDto articleDto = communityService.updateCommunityArticle(articleId, articleContentDto.getContent());
+        return ResponseEntity.ok(articleDto);
     }
 
     // 커뮤니티 글 삭제
@@ -62,7 +73,7 @@ public class CommunityController {
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> deleteCommunityArticle(@PathVariable("articleId")Long articleId) {
         communityService.deleteCommunityArticle(articleId);
-        return ResponseEntity.ok("DELETE COMMUNITY OK");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DELETE COMMUNITY OK");
     }
 
 }

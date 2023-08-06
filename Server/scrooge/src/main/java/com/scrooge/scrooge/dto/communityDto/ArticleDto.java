@@ -1,6 +1,8 @@
 package com.scrooge.scrooge.dto.communityDto;
 
 import com.scrooge.scrooge.domain.community.Article;
+import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.dto.member.ArticleMemberDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +19,11 @@ public class ArticleDto {
     private LocalDateTime createdAt;
 
     /*연결*/
-    private Long memberId;
+    private ArticleMemberDto member;
 
-    /* 글 전체 조회를 위한 필드 */
-    private String avatarImgAddress;
-    private String nickname;
+//    /* 글 전체 조회를 위한 필드 */
+//    private String avatarImgAddress;
+//    private String nickname;
 
 
     @Builder
@@ -30,7 +32,7 @@ public class ArticleDto {
         this.content = article.getContent();
         this.imgAdress = article.getImgAdress();
         this.createdAt = article.getCreatedAt();
-        this.memberId = article.getMember().getId();
+        this.member = new ArticleMemberDto(article.getMember());
     }
 
 }

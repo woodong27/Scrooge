@@ -1,6 +1,8 @@
 package com.scrooge.scrooge.service.community;
 
+import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleComment;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
 import com.scrooge.scrooge.repository.community.ArticleCommentRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,44 +32,35 @@ public class CommunityCommentService {
 
 
     @Transactional
-    public void createCommunityComment(ArticleCommentDto articleCommentDto) {
-        ArticleComment articleComment = new ArticleComment();
+    public ArticleCommentDto createCommunityComment(Long memberId, Long articleId, String content) throws NotFoundException {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
 
-        articleComment.setContent(articleCommentDto.getContent());
-
-        // 연결
-        articleComment.setMember(memberRepository.findById(articleCommentDto.getMemberId()).orElse(null));
-        articleComment.setArticle(articleRepository.findById(articleCommentDto.getArticleId()).orElse(null));
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
 
         // 댓글 5개 이상 작성 퀘스트
-        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(articleCommentDto.getMemberId(), 4L)) {
-            questService.completeQuest(3L, articleCommentDto.getMemberId());
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 3L)) {
+            questService.completeQuest(3L, memberId);
         }
 
-
+        ArticleComment articleComment = new ArticleComment();
+        articleComment.setContent(content);
+        articleComment.setMember(member);
+        articleComment.setCreatedAt(LocalDateTime.now());
+        articleComment.setArticle(article);
         articleCommentRepository.save(articleComment);
+
+        return new ArticleCommentDto(articleComment);
     }
 
     // articleId에 해당하는 글의 전체 댓글 조회 API
     public List<ArticleCommentDto> getCommunityComment(Long articleId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         List<ArticleComment> articleComments = articleCommentRepository.findByArticleId(sort, articleId);
+        System.out.println(articleComments);
         return articleComments.stream()
-                .map(articleComment -> {
-                    ArticleCommentDto articleCommentDto = new ArticleCommentDto();
-                    articleCommentDto.setId(articleComment.getId());
-                    articleCommentDto.setContent(articleComment.getContent());
-
-                    // user 관련 정보
-                    articleCommentDto.setMemberId(articleComment.getMember().getId()); // 필요 X?
-                    articleCommentDto.setNickname(articleComment.getMember().getNickname());
-                    articleCommentDto.setAvatarImgAddress(articleComment.getMember().getMainAvatar().getImgAddress());
-
-                    // article 관련 정보
-                    articleCommentDto.setArticleId(articleComment.getArticle().getId());
-
-                    return articleCommentDto;
-                })
+                .map(ArticleCommentDto::new)
                 .collect(Collectors.toList());
     }
 
