@@ -42,6 +42,8 @@ public class PaymentHistoryController {
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping
     public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @RequestHeader("Authorization")String tokenHeader) {
+        System.out.println("실행되었나요?");
+
         String token = extractToken(tokenHeader);
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
@@ -52,29 +54,38 @@ public class PaymentHistoryController {
         return new ResponseEntity<>(paymentHistoryRespDto, HttpStatus.OK);
     }
 
-    // Member별 소비내역 전체를 조회하는 API
+    // Member별 소비내역 전체를 조회하는 API (이거!)
     @Operation(summary = "Member별 소비내역 전체를 조회하는 API", description = "소비내역 조회")
-    @GetMapping("/{memberId}")
-    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@PathVariable("memberId") Long memberId) {
+    @GetMapping
+    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@RequestHeader("Authorization")String tokenHeader) {
+        String token = extractToken(tokenHeader);
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
         List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByMemberId(memberId);
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
-    // 오늘 member의 소비내역 전체를 조회하는 API
+    // 오늘 member의 소비내역 전체를 조회하는 API (이거!)
     @Operation(summary = "오늘 member의 소비내역 전체를 조회하는 API", description = "오늘 소비내역 조회")
-    @GetMapping("/{memberId}/today")
-    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistoryByMemberIdToday(@PathVariable("memberId") Long memberId) {
+    @GetMapping("/today")
+    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistoryByMemberIdToday(@RequestHeader("Authorization")String tokenHeader) {
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
         List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByMemberIdToday(memberId);
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
-    // Member의 소비내역 하나를 조회하는 API
+    // Member의 소비내역 하나를 조회하는 API (이거!)
     @Operation(summary = "member의 소비내역 하나를 조회하는 API", description = "member의 소비내역 하나를 조회하는 API")
-    @GetMapping("/{memberId}/{paymentHistoryId}")
+    @GetMapping("/{paymentHistoryId}")
     public ResponseEntity<PaymentHistoryDto> selectPaymentHistoryEach(
-            @PathVariable("memberId")Long memberId,
+            @RequestHeader("Authorization")String tokenHeader,
             @PathVariable("paymentHistoryId")Long paymentHistoryId
     ) {
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
         PaymentHistoryDto paymentHistoryDto = paymentHistoryService.getPaymentHistoryEach(memberId, paymentHistoryId);
         if(paymentHistoryDto == null){
             return ResponseEntity.notFound().build();
@@ -82,14 +93,17 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(paymentHistoryDto);
     }
 
-    // memberId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다.
+    // memberId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다. (이거!)
     @Operation(summary = "memberId를 가진 사용자의 paymentId를 가진 소비내역을 수정하는 API", description = "소비내역 수정")
-    @PutMapping("/{memberId}/{paymentHistoryId}")
+    @PutMapping("/{paymentHistoryId}")
     public ResponseEntity<?> updatePaymentHistory(
-            @PathVariable("memberId")Long memberId,
+            @RequestHeader("Authorization")String tokenHeader,
             @PathVariable("paymentHistoryId")Long paymentHistoryId,
             @RequestBody PaymentHistoryDto paymentHistoryDto
     ) {
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
         paymentHistoryDto.setId(paymentHistoryId);
         SuccessResp successResp = new SuccessResp(1);
         try{
