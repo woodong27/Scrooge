@@ -9,12 +9,10 @@ const ProgressBar = ({ goal, consum, setGoal }) => {
     setWeeklyGoal(event.target.value);
   };
   const handleSave = () => {
-    console.log(inputValue);
     setGoal(inputValue);
   };
 
   useEffect(() => {
-    console.log(goal, consum);
     setProgress(consum / goal);
   }, [consum, goal]);
 
