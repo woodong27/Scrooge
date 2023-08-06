@@ -3,6 +3,7 @@ package com.scrooge.scrooge.controller;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.PaymentHistory;
+import com.scrooge.scrooge.dto.DateTimeReqDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.member.MemberDto;
@@ -42,8 +43,6 @@ public class PaymentHistoryController {
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping
     public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @RequestHeader("Authorization")String tokenHeader) {
-        System.out.println("실행되었나요?");
-
         String token = extractToken(tokenHeader);
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
@@ -54,14 +53,15 @@ public class PaymentHistoryController {
         return new ResponseEntity<>(paymentHistoryRespDto, HttpStatus.OK);
     }
 
-    // Member별 소비내역 전체를 조회하는 API (이거!)
+    // Member당 해당 날짜의 소비내역 전체를 조회하는 API (이거!)
     @Operation(summary = "Member별 소비내역 전체를 조회하는 API", description = "소비내역 조회")
     @GetMapping
-    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@RequestHeader("Authorization")String tokenHeader) {
+    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@RequestHeader("Authorization")String tokenHeader, @RequestBody DateTimeReqDto dateTimeReqDto) {
         String token = extractToken(tokenHeader);
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
-        List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByMemberId(memberId);
+
+        List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByMemberId(memberId, dateTimeReqDto);
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
