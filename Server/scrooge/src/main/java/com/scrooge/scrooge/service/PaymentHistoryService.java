@@ -21,6 +21,7 @@ import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,7 +74,6 @@ public class PaymentHistoryService {
 
         // 날짜 문자열을 LocalDate로 변환하기
         LocalDate date = LocalDate.parse(dateStr);
-        System.out.println(date);
 
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
 
@@ -82,6 +82,26 @@ public class PaymentHistoryService {
                 .collect(Collectors.toList());
 
         return filteredPaymentHistories.stream()
+                .map(PaymentHistoryDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 사용자 별 월 별 소비 내역 조회
+    public List<PaymentHistoryDto> getPaymentHistoryPerMonth(Long memberId, DateTimeReqDto dateTimeReqDto) {
+        String dateStr = dateTimeReqDto.getDate();
+
+        // 입력받은 날짜 문자열을 LocalDate로 변환
+        LocalDate date = LocalDate.parse(dateStr + "-01");
+
+        // 해당 월의 시작일과 종료일 계산하기
+        LocalDate startDate = YearMonth.of(date.getYear(), date.getMonth()).atDay(1);
+        LocalDate endDate = YearMonth.of(date.getYear(), date.getMonth()).atEndOfMonth();
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, startDateTime, endDateTime);
+        return paymentHistories.stream()
                 .map(PaymentHistoryDto::new)
                 .collect(Collectors.toList());
     }
@@ -103,6 +123,8 @@ public class PaymentHistoryService {
         if(paymentHistory == null) return null;
         return new PaymentHistoryDto(paymentHistory);
     }
+
+
 
     // 소비내역을 수정하는 비즈니스 로직
     public PaymentHistory updatePaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) throws AccessDeniedException {
@@ -188,4 +210,6 @@ public class PaymentHistoryService {
 
         return todayTotalConsumption;
     }
+
+
 }

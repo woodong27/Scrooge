@@ -53,8 +53,8 @@ public class PaymentHistoryController {
         return new ResponseEntity<>(paymentHistoryRespDto, HttpStatus.OK);
     }
 
-    // Member당 해당 날짜의 소비내역 전체를 조회하는 API (이거!)
-    @Operation(summary = "Member별 소비내역 전체를 조회하는 API", description = "소비내역 조회")
+    // Member당 해당 날짜의 소비내역 전체를 조회하는 API
+    @Operation(summary = "Member당 해당 날짜의 소비내역 전체를 조회하는 API", description = "소비내역 조회")
     @GetMapping
     public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@RequestHeader("Authorization")String tokenHeader, @RequestBody DateTimeReqDto dateTimeReqDto) {
         String token = extractToken(tokenHeader);
@@ -65,7 +65,7 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
-    // 오늘 member의 소비내역 전체를 조회하는 API (이거!)
+    // 오늘 member의 소비내역 전체를 조회하는 API
     @Operation(summary = "오늘 member의 소비내역 전체를 조회하는 API", description = "오늘 소비내역 조회")
     @GetMapping("/today")
     public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistoryByMemberIdToday(@RequestHeader("Authorization")String tokenHeader) {
@@ -76,7 +76,7 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
-    // Member의 소비내역 하나를 조회하는 API (이거!)
+    // Member의 소비내역 하나를 조회하는 API
     @Operation(summary = "member의 소비내역 하나를 조회하는 API", description = "member의 소비내역 하나를 조회하는 API")
     @GetMapping("/{paymentHistoryId}")
     public ResponseEntity<PaymentHistoryDto> selectPaymentHistoryEach(
@@ -93,7 +93,19 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(paymentHistoryDto);
     }
 
-    // memberId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다. (이거!)
+    // 월 별 소비 내역을 조회하는 API
+    @Operation(summary = "Member당 해당 yyyy-MM의 소비내역을 모두 조회하는 API")
+    @GetMapping("/month")
+    public ResponseEntity<List<PaymentHistoryDto>> getPaymentHistoryPerMonth(@RequestHeader("Authorization") String tokenHeader, @RequestBody DateTimeReqDto dateTimeReqDto) {
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryPerMonth(memberId, dateTimeReqDto);
+        return ResponseEntity.ok(paymentHistoryDtos);
+    }
+
+
+    // memberId를 가진 사용자의 paymentId를 가진 소비내역을 수정한다.
     @Operation(summary = "memberId를 가진 사용자의 paymentId를 가진 소비내역을 수정하는 API", description = "소비내역 수정")
     @PutMapping("/{paymentHistoryId}")
     public ResponseEntity<?> updatePaymentHistory(
