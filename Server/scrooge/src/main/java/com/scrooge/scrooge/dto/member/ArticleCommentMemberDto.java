@@ -1,7 +1,6 @@
 package com.scrooge.scrooge.dto.member;
 
 import com.scrooge.scrooge.domain.member.Member;
-import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

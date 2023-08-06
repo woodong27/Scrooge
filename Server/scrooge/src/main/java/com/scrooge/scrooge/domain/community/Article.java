@@ -36,6 +36,5 @@ public class Article {
     private Member member;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
-    private List<ArticleComment> comments = new ArrayList<>();
-
+    private List<ArticleComment> articleComments = new ArrayList<>();
 }

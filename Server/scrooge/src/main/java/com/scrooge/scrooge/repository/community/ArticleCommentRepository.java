@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface ArticleCommentRepository extends JpaRepository<ArticleComment, Long> {
     @Query("SELECT ac FROM ArticleComment ac WHERE ac.article.id = :articleId")
-    List<ArticleComment> findByArticleId(Sort sort, @Param("articleId") Long articleId);
+    List<ArticleComment> findByArticleId(Sort sort, Long articleId);
 }

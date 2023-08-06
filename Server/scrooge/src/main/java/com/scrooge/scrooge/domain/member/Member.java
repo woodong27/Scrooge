@@ -1,6 +1,8 @@
 package com.scrooge.scrooge.domain.member;
 
 import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.domain.community.Article;
+import com.scrooge.scrooge.domain.community.ArticleComment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -85,4 +87,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<MemberSelectedQuest> memberSelectedQuests = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<ArticleComment> articleComments = new ArrayList<>();
 }

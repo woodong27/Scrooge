@@ -16,6 +16,7 @@ import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public class CommunityCommentService {
         ArticleComment articleComment = new ArticleComment();
         articleComment.setContent(content);
         articleComment.setMember(member);
-        articleComment.setCreatedAt(LocalDateTime.now());
+//        articleComment.setCreatedAt(LocalDateTime.now());
         articleComment.setArticle(article);
         articleCommentRepository.save(articleComment);
 
@@ -56,12 +57,15 @@ public class CommunityCommentService {
 
     // articleId에 해당하는 글의 전체 댓글 조회 API
     public List<ArticleCommentDto> getCommunityComment(Long articleId) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
-        List<ArticleComment> articleComments = articleCommentRepository.findByArticleId(sort, articleId);
-        System.out.println(articleComments);
-        return articleComments.stream()
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
+
+        List<ArticleCommentDto> articleCommentDtos = article.getArticleComments().stream()
                 .map(ArticleCommentDto::new)
                 .collect(Collectors.toList());
+
+        articleCommentDtos.sort(Comparator.comparing(ArticleCommentDto::getCreatedAt).reversed());
+        return articleCommentDtos;
     }
 
     // 댓글 수정하는 API
