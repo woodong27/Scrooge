@@ -14,13 +14,8 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import com.example.scoorge_android.network.RetrofitService
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,12 +38,23 @@ class MainActivity : AppCompatActivity() {
         }
         webview.settings.javaScriptEnabled = true
 
+        val androidBridge = AndroidBridge()
+        webview.addJavascriptInterface(androidBridge, "AndroidBridge")
+
         // 안드로이드와 웹 뷰 간의 브리지 설정
-        webview.addJavascriptInterface(AndroidBridge(), "AndroidBridge")
+//        webview.addJavascriptInterface(AndroidBridge(), "AndroidBridge")
 
         webview.loadUrl("http://day6scrooge.duckdns.org:3000/")
 
 
+    }
+
+    inner class AndroidBridge {
+        @JavascriptInterface
+        fun sendJwtTokenToAndroid(jwtToken: String) {
+            Log.d("check", jwtToken)
+            RetrofitService.setAuthToken(jwtToken)
+        }
     }
 
     private fun isNotificationPermissionGranted(): Boolean {
@@ -61,14 +67,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-}
-
-// 브릿지를 통해 웹 앱과 상호작용하기 위한 브릿지 클래스
-class AndroidBridge {
-    @JavascriptInterface
-    fun sendJwtTokenToAndroid(jwtToken: String){
-
-        Log.d("check", jwtToken);
-
-    }
 }
