@@ -2,10 +2,11 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleGood;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.repository.MemberRepository;
-import com.scrooge.scrooge.repository.community.ArticleBadRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
+import com.scrooge.scrooge.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class CommunityGoodService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final ArticleGoodRepository articleGoodRepository;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final QuestService questService;
 
     /* 환호/야유 구현*/
 
@@ -28,6 +31,10 @@ public class CommunityGoodService {
 
         articleGood.setMember(memberRepository.findById(memberId).orElse(null));
         articleGood.setArticle(articleRepository.findById(articleId).orElse(null));
+
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 6L)) {
+            questService.completeQuest(6L, memberId);
+        }
 
         return articleGoodRepository.save(articleGood);
     }

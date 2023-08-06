@@ -1,17 +1,15 @@
 package com.scrooge.scrooge.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.scrooge.scrooge.domain.member.Member;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Level {
 
     @Id
@@ -26,4 +24,7 @@ public class Level {
 
     @Column(nullable = false)
     private int gacha;
+
+    @OneToMany(mappedBy = "level")
+    private List<Member> members = new ArrayList<>();
 }

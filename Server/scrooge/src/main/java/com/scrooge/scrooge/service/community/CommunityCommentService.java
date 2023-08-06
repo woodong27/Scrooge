@@ -2,9 +2,11 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.domain.community.ArticleComment;
 import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
-import com.scrooge.scrooge.repository.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleCommentRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
+import com.scrooge.scrooge.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class CommunityCommentService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
+    private final QuestService questService;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
 
 
     @Transactional
@@ -33,6 +37,12 @@ public class CommunityCommentService {
         // 연결
         articleComment.setMember(memberRepository.findById(articleCommentDto.getMemberId()).orElse(null));
         articleComment.setArticle(articleRepository.findById(articleCommentDto.getArticleId()).orElse(null));
+
+        // 댓글 5개 이상 작성 퀘스트
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(articleCommentDto.getMemberId(), 4L)) {
+            questService.completeQuest(3L, articleCommentDto.getMemberId());
+        }
+
 
         articleCommentRepository.save(articleComment);
     }

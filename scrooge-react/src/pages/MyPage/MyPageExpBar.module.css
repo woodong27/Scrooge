@@ -1,0 +1,32 @@
+.exp-container{
+  display: inline-flex;
+}
+.expBar {
+  width: 18.1875rem;
+  height: 0.6875rem;
+  /* flex-shrink: 0; */
+  border-radius: 2rem;
+  background: var(--btn, #EBECF0);
+  position: relative;
+}
+
+.totalExpBar {
+  height: 100%;
+}
+
+.currentExpBar {
+  height: 100%;
+  background: var(--test-3, #FFEC87);
+  border-radius: 2rem;
+  position: absolute;
+  width: 50%;
+}
+
+.progressBar {
+  height: 100%;
+}
+
+
+.exp-container{
+  display: inline-flex;
+}

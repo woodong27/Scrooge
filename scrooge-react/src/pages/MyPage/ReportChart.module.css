@@ -1,0 +1,20 @@
+.reportContent{
+  display: flex;
+  width: 20.5rem;
+  gap: 1rem;
+  margin: 1rem 2rem 0;
+}
+
+.weekAvg, .weekMax {
+  width: 9.22rem;
+  height: 3.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.225rem;
+  flex: 1 0 0;
+}
+
+.chartContainer{
+  display: flex;
+  justify-content:center;
+}

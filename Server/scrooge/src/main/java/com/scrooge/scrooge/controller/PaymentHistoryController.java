@@ -1,10 +1,13 @@
 package com.scrooge.scrooge.controller;
 
-import com.scrooge.scrooge.domain.Member;
+import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.PaymentHistory;
-import com.scrooge.scrooge.dto.PaymentHistoryDto;
+import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
-import com.scrooge.scrooge.repository.MemberRepository;
+import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
+import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.PaymentHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,17 +33,19 @@ import org.springframework.web.bind.annotation.RestController;
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PaymentHistoryController {
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     private final PaymentHistoryService paymentHistoryService;
     private final MemberRepository memberRepository;
+    public boolean isSettlementDone = false;
 
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping("/{memberId}")
-    public ResponseEntity<?> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("memberId") Long memberId) {
+    public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("memberId") Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
 
-        SuccessResp successResp = new SuccessResp(1);
-        PaymentHistory paymentHistory = paymentHistoryService.addPaymentHistory(memberId, paymentHistoryDto);
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        PaymentHistoryRespDto paymentHistoryRespDto = paymentHistoryService.addPaymentHistory(memberId, paymentHistoryDto);
+        return new ResponseEntity<>(paymentHistoryRespDto, HttpStatus.OK);
     }
 
     // Member별 소비내역 전체를 조회하는 API
@@ -91,6 +96,44 @@ public class PaymentHistoryController {
         }
     }
 
+    // 하루에 한 번 정산하면 경험치 +100 해주는 API
+    @Operation(summary = "일일 정산 후 경험치 획득")
+    @PutMapping("/settlement-exp")
+    public ResponseEntity<?> updateExpAfterDailySettlement(@RequestHeader("Authorization") String tokenHeader) {
+
+        if (isSettlementDone) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("오늘은 이미 정산 했습니다.");
+        }
+
+        isSettlementDone = true;
+
+        String token = extractToken(tokenHeader);
+
+        if(!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        MemberDto memberDto = paymentHistoryService.updateExpAfterDailySettlement(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(memberDto);
+    }
+
+    // 하루 전체 소비 금액 조회하는 API
+    @Operation(summary = "하루 전체 소비 금액 조회하는 API")
+    @GetMapping("/today-total")
+    public ResponseEntity<Integer> getTodayTotalConsumption(@RequestHeader("Authorization") String tokenHeader) {
+        String token = extractToken(tokenHeader);
+
+        Integer todayTotalConsumption = paymentHistoryService.getTodayTotalConsumption(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(todayTotalConsumption);
+    }
+
+
+    private String extractToken(String tokenHeader) {
+        if(tokenHeader != null && tokenHeader.startsWith("Bearer")) {
+            return tokenHeader.substring(7);
+        }
+        return null;
+    }
 
 
 }

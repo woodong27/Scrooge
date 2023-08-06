@@ -2,6 +2,8 @@ package com.scrooge.scrooge.controller.community;
 
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
+import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
+import com.scrooge.scrooge.service.BadgeService;
 import com.scrooge.scrooge.service.community.CommunityBadService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,17 @@ import org.springframework.web.bind.annotation.*;
 public class CommunityBadController {
 
     private final CommunityBadService communityBadService;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
+    private final BadgeService badgeService;
 
     // 야유 기능 구현
     @PostMapping("/unlike")
     public ResponseEntity<?> addCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
+
+        // 게시글 첫 평가 뱃지
+        if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(6L, articleBadDto.getMemberId())) {
+            badgeService.giveBadge(6L, articleBadDto.getMemberId());
+        }
 
         SuccessResp successResp = new SuccessResp(1);
         communityBadService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getMemberId());

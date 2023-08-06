@@ -21,23 +21,30 @@ public class BadgeDataInitializer implements CommandLineRunner {
 
     private void insertInitialData() {
         String[] badgeNames = {
-                "badge1", "badge2", "badge3",
-                "badge4", "badge5", "badge6"
+                "출첵1", "출첵2", "출첵3",
+                "챌린지 우승1", "퀘스트 성공1", "게시글 리뷰1",
+                "첫 뱃지"
         };
 
         String[] badgeDescriptions = {
-                "7일 연속 접속 시 부여되는 뱃지", "14일 연속 접속 시 부여되는 뱃지", "21일 연속 접속 시 부여되는 뱃지",
-                "28일 연속 접속 시 부여되는 뱃지", "35일 연속 접속 시 부여되는 뱃지", "42일 연속 접속 시 부여되는 뱃지"
+                "첫번째 일일 정산 완료", "일일 정산 7일 완료", "일일 정산 한달 완료",
+                "첫번째 챌린지 우승", "첫번째모든 퀘스트 완료", "첫번째 게시글 평가",
+                "첫번째 뱃지 획득을 기념하는 뱃지"
+        };
+
+        Integer[] badgeMaxCount = {
+                1, 7, 30, 1, 1, 1, 1
         };
 
         String[] imgAddresses = {
                 "assets/badge/badge1.png", "assets/badge/badge2.png", "assets/badge/badge3.png",
-                "assets/badge/badge4.png", "assets/badge/badge5.png", "assets/badge/badge6.png"
+                "assets/badge/badge4.png", "assets/badge/badge5.png", "assets/badge/badge6.png",
+                "assets/badge/badge7.png"
         };
 
         for (int i = 0; i < badgeNames.length; i++) {
-            String insertQuery = "INSERT INTO badge (badge_name, badge_description, img_address) VALUES " +
-                    "('" + badgeNames[i] + "', '" + badgeDescriptions[i] + "', '" + imgAddresses[i] + "');";
+            String insertQuery = "INSERT INTO badge (badge_name, badge_description, img_address, max_count) VALUES " +
+                    "('" + badgeNames[i] + "', '" + badgeDescriptions[i] + "', '" + imgAddresses[i] + "' , '" + badgeMaxCount[i] + "');";
             entityManager.createNativeQuery(insertQuery).executeUpdate();
         }
     }

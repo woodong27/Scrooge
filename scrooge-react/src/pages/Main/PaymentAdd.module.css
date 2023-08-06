@@ -1,0 +1,53 @@
+.box {
+  position: relative;
+  width: 294px;
+  height: 112px;
+  margin: 10px 0;
+
+  background: var(--input);
+}
+
+.usedAt {
+  position: absolute;
+  margin: 16px 0;
+  width: 180px;
+  top: 0;
+  left: 10px;
+}
+
+.paidAt {
+  position: absolute;
+  margin: 16px 0;
+  top: 0;
+  width: 180px;
+  left: 10px;
+  color: #61646b;
+}
+
+.amount {
+  position: absolute;
+  margin: 16px 0;
+  top: 32px;
+  width: 180px;
+  left: 10px;
+}
+
+.cardName {
+  position: absolute;
+  margin: 16px 0;
+  bottom: 0;
+  width: 180px;
+  left: 10px;
+  color: #61646b;
+}
+
+.btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border: none;
+  background: #fff;
+  border: 1px solid var(--input-text, #8d8e90);
+  border-radius: 10px;
+}

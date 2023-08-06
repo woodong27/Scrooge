@@ -2,15 +2,11 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.community.Article;
-import com.scrooge.scrooge.domain.community.ArticleBad;
-import com.scrooge.scrooge.domain.community.ArticleGood;
-import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
-import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.repository.MemberRepository;
-import com.scrooge.scrooge.repository.community.ArticleBadRepository;
-import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
+import com.scrooge.scrooge.repository.member.MemberRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
+import com.scrooge.scrooge.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -35,8 +31,9 @@ public class CommunityService {
     
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
-
     private final FileUploadProperties fileUploadProperties;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final QuestService questService;
 
     // 커뮤니티 글을 등록하는 메서드
     @Transactional
@@ -47,10 +44,15 @@ public class CommunityService {
         article.setContent(articleDto.getContent());
         article.setMember(memberRepository.findById(articleDto.getMemberId()).orElse(null));
 
+        // 게시글 작성 퀘스트
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(articleDto.getMemberId(), 4L)) {
+            questService.completeQuest(4L, articleDto.getMemberId());
+        }
+
         // 이미지 파일 등록 구현
 
         // 업로드할 위치 설정
-        String uploadLocation = fileUploadProperties.getUploadLocation();
+        String uploadLocation = fileUploadProperties.getUploadLocation() + "/community";
 
         // 업로드된 사진의 파일명을 랜덤 UUID로 생성
         String fileName = UUID.randomUUID().toString() + "_" + img.getOriginalFilename();

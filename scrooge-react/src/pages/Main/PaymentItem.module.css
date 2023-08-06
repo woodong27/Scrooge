@@ -1,0 +1,46 @@
+.header {
+  margin: 20px auto;
+}
+
+.box {
+  position: relative;
+  width: 294px;
+  height: 80px;
+  margin: 10px 0;
+  border-bottom: 1px dashed var(--input-text, #8d8e90);
+}
+
+.usedAt {
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+
+.amount {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}
+.paidAt {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  color: #61646b;
+}
+.cardName {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  color: #61646b;
+}
+
+.btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border: none;
+  background: #fff;
+  border: 1px solid var(--input-text, #8d8e90);
+  border-radius: 10px;
+}

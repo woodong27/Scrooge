@@ -8,4 +8,5 @@ data class PayInfo (
 
 data class ResponseResult (
     val success: Int,
+    val id: Int,
 )
