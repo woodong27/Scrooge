@@ -3,10 +3,10 @@
   bottom: 5px;
   right: 5px;
   width: 330px;
-  height: 65px;
+  height: 60px;
   border-radius: 10px;
   border: 1.5px solid #000;
-  background-color: var(--green);
+  background-color: #fff;
 
   display: flex;
   justify-content: center;
@@ -16,14 +16,14 @@
   margin: 0 auto;
   position: relative;
   width: 330px;
-  height: 64px;
+  height: 60px;
   border-radius: 10px;
   border: 1.5px solid #000;
-  font-size: 24px;
+  font-size: 18px;
   cursor: pointer;
-  background: white;
+  background: #fff2af;
 }
 
 .card {
-  margin: 10px 0 30px 0;
+  margin: 10px 0 20px 0;
 }

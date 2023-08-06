@@ -1,0 +1,18 @@
+.container {
+  width: 100vw;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #fff2af 0%, rgba(169, 217, 244, 0) 100%);
+}
+
+.item {
+  height: 6rem;
+  font-size: 2rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-shadow: 2px 2px 0 #ecd35b;
+}

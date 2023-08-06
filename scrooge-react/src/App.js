@@ -50,6 +50,8 @@ function App() {
               path="/login"
               element={<Login loginHandler={loginHandler} />}
             ></Route>
+
+            <Route path="/quest" element={<Quest />}></Route>
           </Routes>
         )}
 
