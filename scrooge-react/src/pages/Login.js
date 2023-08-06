@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/UI/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
-
 import styles from "./Login.module.css";
 
-const Login = () => {
+const Login = ({ loginHandler }) => {
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -22,6 +22,7 @@ const Login = () => {
   const emailInput = useRef();
   const passwordInput = useRef();
 
+  const navigate = useNavigate();
   const handleLogin = () => {
     if (state.email.length < 5) {
       emailInput.current.focus();
@@ -49,11 +50,13 @@ const Login = () => {
         const jwtToken = data;
         sendJwtTokenToAndroid(jwtToken);
         console.log(data);
+        loginHandler();
+        navigate("/");
       });
   };
 
   function sendJwtTokenToAndroid(jwtToken) {
-    if(window.AndroidBridge) {
+    if (window.AndroidBridge) {
       window.AndroidBridge.sendJwtTokenToAndroid(jwtToken);
     }
   }
@@ -76,6 +79,7 @@ const Login = () => {
           className={styles.input}
           ref={passwordInput}
           name="password"
+          type="password"
           value={state.password}
           placeholder="비밀번호를 입력해주세요"
           onChange={handleChangeState}

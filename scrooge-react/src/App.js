@@ -14,6 +14,9 @@ import MyPage from "./pages/MyPage/MyPage";
 function App() {
   const [isLogin, setIsLogin] = useState(false);
 
+  const loginHandler = () => {
+    setIsLogin(true);
+  };
   const logoutHandler = () => {
     setIsLogin(false);
   };
@@ -39,8 +42,14 @@ function App() {
           </Routes>
         ) : (
           <Routes>
-            <Route path="/" element={<Loading isLogin={isLogin} />}></Route>
-            <Route path="/login" element={<Login isLogin={isLogin} />}></Route>
+            <Route
+              path="/"
+              element={<Loading loginHandler={loginHandler} />}
+            ></Route>
+            <Route
+              path="/login"
+              element={<Login loginHandler={loginHandler} />}
+            ></Route>
           </Routes>
         )}
 
