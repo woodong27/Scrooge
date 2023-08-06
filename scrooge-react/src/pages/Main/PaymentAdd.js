@@ -48,7 +48,7 @@ const PaymentAdd = ({ onCreate }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/payment-history/1", postData)
+    fetch("http://day6scrooge.duckdns.org:8081/payment-history", postData)
       .then((res) => res.json())
       .then((data) => {
         const koreaTime = new Date(
