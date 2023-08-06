@@ -2,6 +2,7 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.dto.DateTimeReqDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
@@ -10,6 +11,7 @@ import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -66,9 +68,20 @@ public class PaymentHistoryService {
     }
 
     // userId에 따른 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId) {
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId, DateTimeReqDto dateTimeReqDto) {
+        String dateStr = dateTimeReqDto.getDate();
+
+        // 날짜 문자열을 LocalDate로 변환하기
+        LocalDate date = LocalDate.parse(dateStr);
+        System.out.println(date);
+
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
-        return paymentHistories.stream()
+
+        List<PaymentHistory> filteredPaymentHistories = paymentHistories.stream()
+                .filter(paymentHistory -> paymentHistory.getPaidAt().toLocalDate().equals(date))
+                .collect(Collectors.toList());
+
+        return filteredPaymentHistories.stream()
                 .map(PaymentHistoryDto::new)
                 .collect(Collectors.toList());
     }
