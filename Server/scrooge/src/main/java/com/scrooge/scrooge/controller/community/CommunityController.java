@@ -32,15 +32,15 @@ public class CommunityController {
 
     @Operation(summary = "커뮤니티 글 등록")
     @PostMapping(consumes="multipart/form-data")
-    public ResponseEntity<?> createArticle(@RequestHeader("Authorization")String header, ArticleContentDto articleContentDto, @RequestParam MultipartFile img) {
-        System.out.println(articleContentDto.getContent());
+    public ResponseEntity<?> createArticle(@RequestHeader("Authorization")String header, String content, @RequestParam MultipartFile img) {
+        System.out.println(content);
         String token = jwtTokenProvider.extractToken(header);
 
         if(!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
-        ArticleDto articleDto = communityService.createArticle(articleContentDto.getContent(), img, jwtTokenProvider.extractMemberId(token));
+        ArticleDto articleDto = communityService.createArticle(content, img, jwtTokenProvider.extractMemberId(token));
         return ResponseEntity.ok(articleDto);
     }
 

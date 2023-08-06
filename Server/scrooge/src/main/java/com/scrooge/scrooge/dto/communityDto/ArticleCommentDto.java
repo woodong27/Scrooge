@@ -17,7 +17,7 @@ public class ArticleCommentDto {
     private LocalDateTime createdAt;
     /* 연결 */
     private ArticleCommentMemberDto articleCommentMember;
-    private Long articleId;
+//    private Long articleId;
 
 //    /* USER 정보 */
 //    private String nickname;
@@ -29,7 +29,7 @@ public class ArticleCommentDto {
         this.content = articleComment.getContent();
         this.createdAt = articleComment.getCreatedAt();
         this.articleCommentMember = new ArticleCommentMemberDto(articleComment.getMember());
-        this.articleId = articleComment.getArticle().getId();
+//        this.articleId = articleComment.getArticle().getId();
     }
 
 }
