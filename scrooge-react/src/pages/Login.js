@@ -49,7 +49,6 @@ const Login = ({ loginHandler }) => {
       .then((data) => {
         const jwtToken = data;
         sendJwtTokenToAndroid(jwtToken);
-        console.log(data);
         loginHandler();
         navigate("/");
       });
