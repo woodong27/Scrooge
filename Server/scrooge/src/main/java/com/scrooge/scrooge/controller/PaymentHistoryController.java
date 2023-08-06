@@ -40,8 +40,12 @@ public class PaymentHistoryController {
     public boolean isSettlementDone = false;
 
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
-    @PostMapping("/{memberId}")
-    public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @PathVariable("memberId") Long memberId) {
+    @PostMapping
+    public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @RequestHeader("Authorization")String tokenHeader) {
+        String token = extractToken(tokenHeader);
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
         Optional<Member> member = memberRepository.findById(memberId);
 
         PaymentHistoryRespDto paymentHistoryRespDto = paymentHistoryService.addPaymentHistory(memberId, paymentHistoryDto);
