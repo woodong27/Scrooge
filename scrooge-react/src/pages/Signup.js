@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/UI/ButtonWhite";
@@ -8,7 +7,11 @@ import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Signup.module.css";
 
 const Signup = ({ loginHandler }) => {
-  const dispatch = useDispatch();
+  //이메일 정규식
+  const emailRegEx =
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*.[A-Za-z]{2,3}$/;
+  //비밀번호 정규식
+  const passwordRegEx = /^[A-Za-z0-9]{8,15}$/;
 
   const [state, setState] = useState({
     nickname: "",
@@ -33,19 +36,39 @@ const Signup = ({ loginHandler }) => {
   const handleSignup = () => {
     if (state.nickname.length < 4) {
       nicknameInput.current.focus();
+      const errorDiv = document.getElementById("nickname");
+      errorDiv.style.display = "block";
       return;
+    } else {
+      const errorDiv = document.getElementById("nickname");
+      errorDiv.style.display = "none";
     }
-    if (state.email.length < 10) {
+    if (!emailRegEx.test(state.email)) {
       emailInput.current.focus();
+      const errorDiv = document.getElementById("email");
+      errorDiv.style.display = "block";
       return;
+    } else {
+      const errorDiv = document.getElementById("email");
+      errorDiv.style.display = "none";
     }
-    if (state.password.length < 8) {
+    if (!passwordRegEx.test(state.password)) {
       passwordInput.current.focus();
+      const errorDiv = document.getElementById("password");
+      errorDiv.style.display = "block";
       return;
+    } else {
+      const errorDiv = document.getElementById("password");
+      errorDiv.style.display = "none";
     }
     if (state.password !== state.passwordcheck) {
       passwordcheckInput.current.focus();
+      const errorDiv = document.getElementById("passwordcheck");
+      errorDiv.style.display = "block";
       return;
+    } else {
+      const errorDiv = document.getElementById("passwordcheck");
+      errorDiv.style.display = "none";
     }
 
     const obj = {
@@ -74,40 +97,58 @@ const Signup = ({ loginHandler }) => {
       <div className={styles.empty} />
       <CharacterCard>
         <div className={styles.title}>회원가입</div>
-        <input
-          className={styles.input}
-          ref={nicknameInput}
-          name="nickname"
-          value={state.nickname}
-          placeholder="닉네임을 입력해주세요"
-          onChange={handleChangeState}
-        />
-        <input
-          className={styles.input}
-          ref={emailInput}
-          name="email"
-          value={state.email}
-          placeholder="이메일을 입력해주세요"
-          onChange={handleChangeState}
-        />
-        <input
-          className={styles.input}
-          ref={passwordInput}
-          name="password"
-          type="password"
-          value={state.password}
-          placeholder="비밀번호를 입력해주세요"
-          onChange={handleChangeState}
-        />
-        <input
-          className={styles.input}
-          ref={passwordcheckInput}
-          name="passwordcheck"
-          type="password"
-          value={state.passwordcheck}
-          placeholder="비밀번호를 확인해주세요"
-          onChange={handleChangeState}
-        />
+
+        <div className={styles.frame}>
+          <input
+            className={styles.input}
+            ref={nicknameInput}
+            name="nickname"
+            value={state.nickname}
+            placeholder="닉네임을 입력해주세요"
+            onChange={handleChangeState}
+          />
+          <div id="nickname" className={styles.error}>
+            닉네임을 4글자 이상 입력해주세요.
+          </div>
+
+          <input
+            className={styles.input}
+            ref={emailInput}
+            name="email"
+            value={state.email}
+            placeholder="이메일을 입력해주세요"
+            onChange={handleChangeState}
+          />
+          <div id="email" className={styles.error}>
+            올바른 이메일을 입력해주세요.
+          </div>
+
+          <input
+            className={styles.input}
+            ref={passwordInput}
+            name="password"
+            type="password"
+            value={state.password}
+            placeholder="비밀번호를 입력해주세요"
+            onChange={handleChangeState}
+          />
+          <div id="password" className={styles.error}>
+            비밀번호를 8글자 이상 입력해주세요.
+          </div>
+
+          <input
+            className={styles.input}
+            ref={passwordcheckInput}
+            name="passwordcheck"
+            type="password"
+            value={state.passwordcheck}
+            placeholder="비밀번호를 확인해주세요"
+            onChange={handleChangeState}
+          />
+          <div id="passwordcheck" className={styles.error}>
+            비밀번호를 다시 확인해주세요.
+          </div>
+        </div>
       </CharacterCard>
 
       <ButtonWhite text="회원가입" onClick={handleSignup}></ButtonWhite>
