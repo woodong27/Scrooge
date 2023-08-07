@@ -15,6 +15,7 @@ class MyNotificationListenerService : NotificationListenerService() {
 
     private val TAG = "MyNotificationListenerService"
 
+
     companion object {
         private const val SAMSUNG_PAY_PACKAGE_NAME = "com.samsung.android.spay"
 //        private const val KAKAO_PACKAGE_NAME = "com.kakao.talk"
@@ -25,28 +26,49 @@ class MyNotificationListenerService : NotificationListenerService() {
 
         val packageName: String = sbn?.packageName ?: ""
         val extras = sbn?.notification?.extras
-        val used_at: String = extras?.get(Notification.EXTRA_TITLE).toString()
+
+        val extraTitle: String = extras?.get(Notification.EXTRA_TITLE).toString()
         val extraText: String = extras?.get(Notification.EXTRA_TEXT).toString()
 
         try {
-            if (used_at != "null") {
+            if (extraTitle != "null") {
                 println(packageName)
+
+
 
                 when (packageName) {
                     SAMSUNG_PAY_PACKAGE_NAME
                     -> {
-                        val userId = 1L; // 나중에 userId를 받아오는 작업이 필요하다.
-                        val test: List<String> = extraText.split("₩")
-                        val card_name = test[0].trim()
-                        val amount = test[1].trim().replace(",", "").toInt()
+                        var used_at:String = ""
+                        var card_name:String = ""
+                        var amount:Int = 0
 
-                        Log.d(
-                            TAG, "onNotificationPosted:\n" +
-                                    "PackageName: $packageName\n" +
-                                    "used_at: ${used_at}\n" +
-                                    "card_name: ${test[0].trim()}\n"
-                                    + "amount: ${test[1].trim().replace(",", "")}\n"
-                        )
+
+                        if("₩" in extraTitle) {
+                            card_name = " "
+                            val test: List<String> = extraTitle.split("₩")
+                            used_at = test[0].trim()
+                            amount = test[1].trim().replace(",", "").toInt()
+                        }
+                        else {
+                            used_at = extraTitle
+                            val test: List<String> = extraText.split("₩")
+                            card_name = test[0].trim()
+                            amount = test[1].trim().replace(",", "").toInt()
+                        }
+
+
+//                        val test: List<String> = extraText.split("₩")
+//                        val card_name = test[0].trim()
+//                        val amount = test[1].trim().replace(",", "").toInt()
+
+//                        Log.d(
+//                            TAG, "onNotificationPosted:\n" +
+//                                    "PackageName: $packageName\n" +
+//                                    "used_at: ${used_at}\n" +
+//                                    "card_name: ${test[0].trim()}\n"
+//                                    + "amount: ${test[1].trim().replace(",", "")}\n"
+//                        )
 
                         /* 레트로핏 테스트 */
                         val requestParams = PayInfo(used_at, card_name, amount)
@@ -68,18 +90,36 @@ class MyNotificationListenerService : NotificationListenerService() {
 
 //                    KAKAO_PACKAGE_NAME
 //                    -> {
+//                        var used_at:String = ""
+//                        var card_name:String = ""
+//                        var amount:Int = 0
 //
-//                        val test: List<String> = extraText.split("₩")
-//                        val card_name = test[0].trim()
-//                        val amount = test[1].trim().replace(",", "").toInt()
 //
-//                        Log.d(
-//                            TAG, "onNotificationPosted:\n" +
-//                                    "PackageName: $packageName\n" +
-//                                    "used_at: ${used_at}\n" +
-//                                    "card_name: ${test[0].trim()}\n"
-//                                    + "amount: ${test[1].trim().replace(",", "")}\n"
-//                        )
+//                        if("₩" in extraTitle) {
+//                            card_name = " "
+//                            val test: List<String> = extraTitle.split("₩")
+//                            used_at = test[0].trim()
+//                            amount = test[1].trim().replace(",", "").toInt()
+//                        }
+//                        else {
+//                            used_at = extraTitle
+//                            val test: List<String> = extraText.split("₩")
+//                            card_name = test[0].trim()
+//                            amount = test[1].trim().replace(",", "").toInt()
+//                        }
+//
+//
+////                        val test: List<String> = extraText.split("₩")
+////                        val card_name = test[0].trim()
+////                        val amount = test[1].trim().replace(",", "").toInt()
+//
+////                        Log.d(
+////                            TAG, "onNotificationPosted:\n" +
+////                                    "PackageName: $packageName\n" +
+////                                    "used_at: ${used_at}\n" +
+////                                    "card_name: ${test[0].trim()}\n"
+////                                    + "amount: ${test[1].trim().replace(",", "")}\n"
+////                        )
 //
 //                        /* 레트로핏 테스트 */
 //                        val requestParams = PayInfo(used_at, card_name, amount)
