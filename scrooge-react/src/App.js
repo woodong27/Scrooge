@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter,Routes, Route } from "react-router-dom";
 
 import Main from "./pages/Main/Main";
 import Footer from "./components/Footer";
