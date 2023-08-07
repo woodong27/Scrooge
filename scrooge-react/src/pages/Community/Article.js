@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import TodayCard from "../../components/UI/TodayCard";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  const history = useHistory();
   const handleDetail = () => {
-    // 게시글 상세 페이지로 이동하면서 상태를 전달
-    const detailArticle = props;
-    history.push(`/community/${props.id}`, detailArticle);
+    //Detail로 가버리자...
   };
 
   const globalToken = useSelector((state) => state.globalToken);
