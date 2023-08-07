@@ -11,16 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.scoorge_android.network.RetrofitService
 
 class MainActivity : AppCompatActivity() {
 
     private val CHANNEL_ID = "testChannel01"   // Channel for notification
     private var notificationManager: NotificationManager? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,40 +36,26 @@ class MainActivity : AppCompatActivity() {
             webViewClient= WebViewClient()
             settings.javaScriptEnabled=true
         }
+        webview.settings.javaScriptEnabled = true
+
+        val androidBridge = AndroidBridge()
+        webview.addJavascriptInterface(androidBridge, "AndroidBridge")
+
+        // 안드로이드와 웹 뷰 간의 브리지 설정
+//        webview.addJavascriptInterface(AndroidBridge(), "AndroidBridge")
 
         webview.loadUrl("http://day6scrooge.duckdns.org:3000/")
 
 
-//        /* 알림 */
-//        createNotificationChannel(CHANNEL_ID, "testChannel", "this is a test Channel")
-//        val button = findViewById<Button>(R.id.noti_btn)
-//        button.setOnClickListener {
-//            displayNotification()
-//        }
     }
 
-//    private fun displayNotification() {
-//        val notificationId = 45
-//
-//        val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.ic_launcher_foreground)
-//            .setContentTitle("Title")
-//            .setContentText("오늘도찾아온카드 ₩7,500")
-//            .build()
-//
-//        notificationManager?.notify(notificationId, notification)
-//    }
-//
-//    private fun createNotificationChannel(channelId: String, name: String, channelDescription: String) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val importance = NotificationManager.IMPORTANCE_DEFAULT
-//            val channel = NotificationChannel(channelId, name, importance).apply {
-//                description = channelDescription
-//            }
-//            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager?.createNotificationChannel(channel)
-//        }
-//    }
+    inner class AndroidBridge {
+        @JavascriptInterface
+        fun sendJwtTokenToAndroid(jwtToken: String) {
+            Log.d("check", jwtToken)
+            RetrofitService.setAuthToken(jwtToken)
+        }
+    }
 
     private fun isNotificationPermissionGranted(): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {

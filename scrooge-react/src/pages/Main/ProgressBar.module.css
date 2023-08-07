@@ -10,6 +10,7 @@
   height: 20px;
   transition: width 0.3s;
   border-radius: 15px;
+  margin-bottom: 10px;
 }
 
 .progress-bar {
@@ -19,10 +20,36 @@
   background: #5db075;
   height: 20px;
   border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.progress-bar-red {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  background: #d86c6c;
+  height: 20px;
+  width: 100%;
+  border-radius: 15px;
 }
 
 .progress-text {
   text-align: right;
   margin: 12px 4px;
   font-size: 14px;
+}
+
+.setting {
+  & input {
+    font-size: 18px;
+    width: 80px;
+    padding: 0 10px;
+    text-align: center;
+    background-color: var(--input);
+    border-radius: 10px;
+  }
+  & button {
+    border-radius: 10px;
+    background-color: var(--green);
+  }
 }

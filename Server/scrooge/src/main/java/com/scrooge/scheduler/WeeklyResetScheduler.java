@@ -19,7 +19,7 @@ public class WeeklyResetScheduler {
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
     private final PaymentHistoryController paymentHistoryController;
 
-    @Scheduled(cron = "0 0 0 * * 2")
+    @Scheduled(cron = "0 0 0 * * 1")
     public void resetWeekly() {
         //Member 테이블의 모든 레코드를 가져와서 weekly_consum 값과 weekly_goal 값을 0으로 업데이트
         List<Member> members = memberRepository.findAll();

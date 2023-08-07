@@ -51,7 +51,7 @@ class MyNotificationListenerService : NotificationListenerService() {
                         /* 레트로핏 테스트 */
                         val requestParams = PayInfo(used_at, card_name, amount)
 
-                        RetrofitService.instance.postPayInfo(userId, requestParams)
+                        RetrofitService.instance.postPayInfo(requestParams)
                             .enqueue(object : retrofit2.Callback<ResponseResult>{
                                 override fun onResponse(
                                     call: Call<ResponseResult>,
@@ -68,20 +68,23 @@ class MyNotificationListenerService : NotificationListenerService() {
 
 //                    KAKAO_PACKAGE_NAME
 //                    -> {
+//
 //                        val test: List<String> = extraText.split("₩")
+//                        val card_name = test[0].trim()
+//                        val amount = test[1].trim().replace(",", "").toInt()
+//
 //                        Log.d(
 //                            TAG, "onNotificationPosted:\n" +
 //                                    "PackageName: $packageName\n" +
-//                                    "Title: $used_at\n" +
-//                                    "Card: ${test[0].trim()}\n"
-//                                    + "Price: ${test[1].trim().replace(",", "")}\n"
+//                                    "used_at: ${used_at}\n" +
+//                                    "card_name: ${test[0].trim()}\n"
+//                                    + "amount: ${test[1].trim().replace(",", "")}\n"
 //                        )
-//                        val userId = 1L; // 나중에 userId를 받아오는 작업이 필요하다.
-//                        /* 레트로핏 테스트 */
-//                        val requestParams = PayInfo(usedAt = used_at, cardName = test[0].trim(),
-//                            amount = test[1].trim().replace(",", "").toInt() )
 //
-//                        RetrofitService.instance.postPayInfo(userId, requestParams)
+//                        /* 레트로핏 테스트 */
+//                        val requestParams = PayInfo(used_at, card_name, amount)
+//
+//                        RetrofitService.instance.postPayInfo(requestParams)
 //                            .enqueue(object : retrofit2.Callback<ResponseResult>{
 //                                override fun onResponse(
 //                                    call: Call<ResponseResult>,

@@ -1,0 +1,20 @@
+version: "3"
+services:
+  backend:
+    build: ./Server/scrooge
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://43.201.53.144:3306/scrooge
+      SPRING_DATASOURCE_USERNAME: ssafy
+      SPRING_DATASOURCE_PASSWORD: ssafy
+
+  frontend:
+    build: ./scrooge-react
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: http://day6scrooge.duckdns.org:8081
+
+volumes:
+  mysql-data:
