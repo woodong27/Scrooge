@@ -68,6 +68,16 @@ const ChallengeJoin = () => {
             src={`${process.env.PUBLIC_URL}/images/dummy.png`}
             alt="더미"
           />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
         </div>
       </div>
       <div className={styles.bottom_container}>

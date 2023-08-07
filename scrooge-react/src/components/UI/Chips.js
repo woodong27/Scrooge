@@ -4,11 +4,9 @@ const Chips = (props) => {
   return (
     <div
       className={
-        props.selectedCategory === props.children
-          ? styles.selected
-          : styles.chip
+        props.selected === props.children ? styles.selected : styles.chip
       }
-      onClick={props.onClick}
+      onClick={() => props.setSelect(props.children)}
     >
       {props.children}
     </div>

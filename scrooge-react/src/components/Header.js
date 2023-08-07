@@ -4,7 +4,7 @@ const Header = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.item}>{props.text}</div>
-      {props.children}
+      <div>{props.children}</div>
     </div>
   );
 };
