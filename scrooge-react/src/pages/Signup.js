@@ -11,7 +11,7 @@ const Signup = () => {
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*.[A-Za-z]{2,3}$/;
   //비밀번호 정규식
-  const passwordRegEx = /^[A-Za-z0-9]{8,15}$/;
+  const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
 
   const [state, setState] = useState({
     nickname: "",
@@ -142,7 +142,8 @@ const Signup = () => {
             onChange={handleChangeState}
           />
           <div id="password" className={styles.error}>
-            비밀번호를 8글자 이상 입력해주세요.
+            알파벳, 숫자, 특수문자를 포함한 <br />
+            8글자 이상 비밀번호를 입력해주세요.
           </div>
 
           <input
