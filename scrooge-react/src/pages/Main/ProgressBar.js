@@ -4,6 +4,7 @@ import styles from "./ProgressBar.module.css";
 const ProgressBar = ({ goal, consum, setGoal }) => {
   const [progress, setProgress] = useState(0);
   const [inputValue, setWeeklyGoal] = useState("");
+  const [minus, setMinus] = useState();
 
   const handleChange = (event) => {
     setWeeklyGoal(event.target.value);
@@ -14,6 +15,7 @@ const ProgressBar = ({ goal, consum, setGoal }) => {
 
   useEffect(() => {
     setProgress(consum / goal);
+    setMinus((goal - consum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   }, [consum, goal]);
 
   return (
@@ -33,7 +35,7 @@ const ProgressBar = ({ goal, consum, setGoal }) => {
       <div>
         {goal ? (
           <p className={styles["progress-text"]}>
-            이번 주 남은 금액: {goal - consum}원
+            이번 주 남은 금액: {minus}원
           </p>
         ) : (
           <div className={styles.setting}>

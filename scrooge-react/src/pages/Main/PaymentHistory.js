@@ -65,7 +65,7 @@ const PaymentHistory = ({
   }, []);
 
   useEffect(() => {
-    setOrigin(total);
+    setOrigin(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
   }, [total]);
 
   const onCreate = (targetId, usedAt, amount, paidAt, cardName) => {
