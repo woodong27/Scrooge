@@ -181,6 +181,7 @@ public class ChallengeService {
                     challengeRespDto.setCurrentParticipants(challenge.getChallengeParticipantList().size());
                     challengeRespDto.setMinParticipants(challenge.getMinParticipants());
                     challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
+                    challengeRespDto.setPeriod(challenge.getPeriod());
 
                     return challengeRespDto;
                 })
