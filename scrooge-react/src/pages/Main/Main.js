@@ -15,6 +15,7 @@ const Main = (props) => {
   const [total, setTotal] = useState();
 
   const [settlement, setSettlement] = useState(false);
+
   const [weeklyGoal, setWeeklyGoal] = useState();
   const [weeklyConsum, setWeeklyConsum] = useState();
 
@@ -81,6 +82,14 @@ const Main = (props) => {
 
   const consumFalseHandler = () => {
     setIsConsum(false);
+  };
+
+  const settlementTrueHandler = () => {
+    setSettlement(true);
+  };
+
+  const settlementFalseHandler = () => {
+    setSettlement(false);
   };
 
   return (
@@ -176,7 +185,8 @@ const Main = (props) => {
             getTotal={getTotal}
             consumFalseHandler={consumFalseHandler}
             settlement={settlement}
-            setSettlement={setSettlement}
+            settlementTrueHandler={settlementTrueHandler}
+            settlementFalseHandler={settlementFalseHandler}
           />
         </div>
       )}

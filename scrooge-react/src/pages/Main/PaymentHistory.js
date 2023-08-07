@@ -11,7 +11,8 @@ const PaymentHistory = ({
   getTotal,
   consumFalseHandler,
   settlement,
-  setSettlement,
+  settlementTrueHandler,
+  settlementFalseHandler,
 }) => {
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
@@ -22,6 +23,7 @@ const PaymentHistory = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentItem = data[currentIndex];
   const [modal, setModal] = useState(false);
+
   const handleOpenModal = () => {
     // 소비가 0건인 경우 예외 처리
     if (data.length < 1) {
@@ -40,9 +42,10 @@ const PaymentHistory = ({
       setCurrentIndex(currentIndex + 1);
     } else {
       console.log("끝");
-      setSettlement(true); //정산되었음을 저장
+      settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
+      setCurrentIndex(currentIndex + 1);
       handleCloseModal();
     }
   };
@@ -65,7 +68,8 @@ const PaymentHistory = ({
   }, []);
 
   useEffect(() => {
-    setOrigin(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    console.log(total);
+    setOrigin(total);
   }, [total]);
 
   const onCreate = (targetId, usedAt, amount, paidAt, cardName) => {
@@ -80,11 +84,12 @@ const PaymentHistory = ({
     if (settlement) {
       getTotal();
     }
+    settlementFalseHandler();
   };
 
-  const onEdit = (targetId, newContent, usedAt, cardName, category) => {
+  const onEdit = (targetId, amount, usedAt, cardName, category) => {
     const obj = {
-      amount: newContent,
+      amount,
       usedAt,
       cardName,
       category,
@@ -105,7 +110,7 @@ const PaymentHistory = ({
       .then(console.log);
     setData(
       data.map((it) =>
-        it.id === targetId ? { ...it, amount: newContent } : it
+        it.id === targetId ? { ...it, cardName, amount, usedAt } : it
       )
     );
   };
@@ -161,7 +166,11 @@ const PaymentHistory = ({
             <PaymentAdd onCreate={onCreate} />
             {/* 아 origin이 truthy한 값이라 이상했네...  */}
             <div className={styles.total}>
-              {origin || origin === 0 ? `총합: ${origin}원` : ""}
+              {origin || origin === 0
+                ? `총합: ${origin
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                : ""}
             </div>
             <button
               onClick={handleOpenModal}
