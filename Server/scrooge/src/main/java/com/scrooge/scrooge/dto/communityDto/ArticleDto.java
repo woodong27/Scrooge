@@ -19,11 +19,9 @@ public class ArticleDto {
     private LocalDateTime createdAt;
 
     /*연결*/
-    private ArticleMemberDto member;
-
-//    /* 글 전체 조회를 위한 필드 */
-//    private String avatarImgAddress;
-//    private String nickname;
+    private Long memberId;
+    private String memberNickname;
+    private String memberAvatarAddress;
 
 
     @Builder
@@ -32,7 +30,9 @@ public class ArticleDto {
         this.content = article.getContent();
         this.imgAdress = article.getImgAdress();
         this.createdAt = article.getCreatedAt();
-        this.member = new ArticleMemberDto(article.getMember());
+        this.memberId = article.getMember().getId();
+        this.memberNickname = article.getMember().getNickname();
+        this.memberAvatarAddress = article.getMember().getMainAvatar().getImgAddress();
     }
 
 }

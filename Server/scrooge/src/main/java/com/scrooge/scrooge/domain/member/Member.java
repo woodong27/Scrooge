@@ -3,6 +3,7 @@ package com.scrooge.scrooge.domain.member;
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleComment;
+import com.scrooge.scrooge.domain.community.ArticleGood;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +35,8 @@ public class Member {
     @JoinColumn(name = "level_id")
     private Level level;
 
-    @Column(length = 20, nullable = false)
-    private String name;
+//    @Column(length = 20, nullable = false)
+//    private String name;
 
     @Column(length = 20, nullable = false)
     private String nickname;

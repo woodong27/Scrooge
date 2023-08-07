@@ -16,7 +16,7 @@ import java.util.List;
 
 @Tag(name="CommunityComment", description = "커뮤니티 댓글 등록 API")
 @RestController
-@RequestMapping("/community/comment")
+@RequestMapping("/community")
 @RequiredArgsConstructor
 public class CommunityCommentController {
 
@@ -24,7 +24,7 @@ public class CommunityCommentController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "커뮤니티 댓글 등록")
-    @PostMapping("/{articleId}")
+    @PostMapping("/{articleId}/comment")
     public ResponseEntity<?> createCommunityComment(@RequestHeader("Authorization")String header, @PathVariable("articleId")Long articleId, @RequestBody CommentContentDto commentContentDto) {
         String token = jwtTokenProvider.extractToken(header);
 
@@ -39,25 +39,23 @@ public class CommunityCommentController {
     }
 
     @Operation(summary = "커뮤니티 댓글 전체 조회")
-    @GetMapping("/{articleId}")
+    @GetMapping("/{articleId}/comment")
     public ResponseEntity<?> getCommunityComment(@PathVariable("articleId") Long articleId) {
         List<ArticleCommentDto> articleCommentDtoList = communityCommentService.getCommunityComment(articleId);
         return ResponseEntity.ok(articleCommentDtoList);
     }
 
     @Operation(summary = "커뮤니티 댓글 수정")
-    @PutMapping()
-    public ResponseEntity<?> updateCommunityComment(@RequestBody ArticleCommentDto articleCommentDto) {
-        ArticleCommentDto articleCommentDto1 = communityCommentService.updateCommunityComment(articleCommentDto);
-        return ResponseEntity.ok(articleCommentDto1);
+    @PutMapping("/comment/{articleCommentId}")
+    public ResponseEntity<?> updateCommunityComment(@PathVariable("articleCommentId")Long articleCommentId, @RequestBody CommentContentDto commentContentDto) {
+        ArticleCommentDto articleCommentDto = communityCommentService.updateCommunityComment(articleCommentId, commentContentDto.getContent());
+        return ResponseEntity.ok(articleCommentDto);
     }
 
     @Operation(summary = "커뮤니티 댓글 삭제")
-    @DeleteMapping("/{articleCommentId}")
-    public ResponseEntity<?> deleteCommunityComment(@PathVariable("articleCommentId")Long articleCommentId) {
+    @DeleteMapping("/comment/{articleCommentId}")
+    public ResponseEntity<?> deleteCommunityComment(@PathVariable("articleCommentId") Long articleCommentId) {
         communityCommentService.deleteCommunityComment(articleCommentId);
-        return ResponseEntity.ok("DELETE COMMENT OK");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("댓글 삭제 완료");
     }
-
-
 }

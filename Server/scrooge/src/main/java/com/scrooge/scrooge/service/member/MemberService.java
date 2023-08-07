@@ -64,7 +64,7 @@ public class MemberService {
         String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
         Member member = new Member();
-        member.setName(signUpRequestDto.getName());
+//        member.setName(signUpRequestDto.getName());
         member.setNickname(signUpRequestDto.getNickname());
         member.setEmail(signUpRequestDto.getEmail());
         member.setPassword(encodedPassword);
@@ -87,7 +87,7 @@ public class MemberService {
         return memberRepository.findWithRelatedEntitiesByEmail(email).map(member -> {
             MemberDto memberDto = new MemberDto();
             memberDto.setId(member.getId());
-            memberDto.setName(member.getName());
+//            memberDto.setName(member.getName());
             memberDto.setNickname(member.getNickname());
             memberDto.setEmail(member.getEmail());
             memberDto.setExp(member.getExp());

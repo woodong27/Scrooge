@@ -69,29 +69,22 @@ public class CommunityCommentService {
     }
 
     // 댓글 수정하는 API
-    public ArticleCommentDto updateCommunityComment(ArticleCommentDto articleCommentDto) {
-        Optional<ArticleComment> articleComment = articleCommentRepository.findById(articleCommentDto.getId());
-        if(!articleComment.isPresent()) {
-            throw new NotFoundException(articleCommentDto.getId() + "의 ID를 가진 댓글을 찾을 수 없습니다.");
-        }
-        // 새로운 정보 업데이트
-        articleComment.get().setContent(articleCommentDto.getContent());
+    public ArticleCommentDto updateCommunityComment(Long articleCommentId, String content) {
+        ArticleComment articleComment = articleCommentRepository.findById(articleCommentId)
+                .orElseThrow(() -> new NotFoundException("해당 댓글을 찾을 수 없습니다."));
 
-        // DB에 새로운 댓글 저장
-        ArticleComment updatedComment = articleCommentRepository.save(articleComment.get());
-        return new ArticleCommentDto(updatedComment);
+        // 새로운 정보 업데이트
+        articleComment.setContent(content);
+        articleCommentRepository.save(articleComment);
+
+        return new ArticleCommentDto(articleComment);
     }
 
     // 댓글 삭제하는 API
     public void deleteCommunityComment(Long articleCommentId) {
-        Optional<ArticleComment> articleComment = articleCommentRepository.findById(articleCommentId);
+        ArticleComment articleComment = articleCommentRepository.findById(articleCommentId)
+                .orElseThrow(() -> new NotFoundException("해당 댓글을 찾을 수 없습니다."));
 
-        if(articleComment.isPresent()) {
-            ArticleComment articleComment1 = articleComment.get();
-            articleCommentRepository.delete(articleComment1);
-        } else {
-            throw new NotFoundException("해당 댓글이 존재하지 않습니다.");
-        }
-
+        articleCommentRepository.delete(articleComment);
     }
 }

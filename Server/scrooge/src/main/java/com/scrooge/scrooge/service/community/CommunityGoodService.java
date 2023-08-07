@@ -1,6 +1,9 @@
 package com.scrooge.scrooge.service.community;
 
+import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleGood;
+import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.dto.communityDto.ArticleGoodCountDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
@@ -9,6 +12,7 @@ import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import com.scrooge.scrooge.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 
@@ -26,37 +30,51 @@ public class CommunityGoodService {
 
     // Article 좋아요를 구현하는 메서드
     @Transactional
-    public ArticleGood addCommunityGood(Long articleId, Long memberId) {
-        ArticleGood articleGood = new ArticleGood();
+    public void addCommunityGood(Long articleId, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
-        articleGood.setMember(memberRepository.findById(memberId).orElse(null));
-        articleGood.setArticle(articleRepository.findById(articleId).orElse(null));
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
+
+        ArticleGood articleGood = new ArticleGood();
+        articleGood.setMember(member);
+        articleGood.setArticle(article);
 
         if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 6L)) {
             questService.completeQuest(6L, memberId);
         }
 
-        return articleGoodRepository.save(articleGood);
+        articleGoodRepository.save(articleGood);
     }
 
     // Article 좋아요 취소를 구현하는 메서드
     @Transactional
     public void cancleCommunityGood(Long articleId, Long memberId) {
-        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndMemberId(articleId, memberId);
-        if(articleGood != null) {
-            articleGoodRepository.delete(articleGood);
-        }
+        articleGoodRepository.deleteByArticleIdAndMemberId(articleId, memberId);
     }
 
     // 사용자가 Article을 좋아요 했는지 검사하는 메서드
-    public Integer getCommunityGoodCheck(ArticleGoodDto articleGoodDto) {
-        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndMemberId(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
-        if (articleGood != null) return 1;
-        else return 0;
+    public ArticleGoodDto getCommunityGoodCheck(Long articleId, Long memberId) {
+        ArticleGood articleGood = articleGoodRepository.findByArticleIdAndMemberId(articleId, memberId).orElse(null);
+
+        ArticleGoodDto articleGoodDto = new ArticleGoodDto();
+
+        if (articleGood == null) {
+            articleGoodDto.setGood(false);
+            articleGoodDto.setMemberId(memberId);
+        } else{
+            articleGoodDto.setGood(true);
+            articleGoodDto.setMemberId(memberId);
+        }
+
+        return articleGoodDto;
     }
 
     // Article의 전체 좋아요 수 조회하는 메서드
-    public Integer getCommunityGoodCount(Long articleId) {
-        return articleGoodRepository.countByArticleId(articleId);
+    public ArticleGoodCountDto getCommunityGoodCount(Long articleId) {
+        ArticleGoodCountDto articleGoodCountDto = new ArticleGoodCountDto();
+        articleGoodCountDto.setGoodCount(articleGoodRepository.countByArticleId(articleId));
+        return articleGoodCountDto;
     }
 }
