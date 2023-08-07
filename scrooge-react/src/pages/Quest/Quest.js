@@ -1,15 +1,13 @@
-// import QuestList from "./QuestList";
 import PlusBtn from "../../components/UI/PlusBtn";
-// http://localhost:8080/
-const Quest = ({ props }) => {
-  fetch("http://day6scrooge.duckdns.org:8081/quest").then((response) =>
-    console.log(response)
-  );
+import QuestHeader from "../../components/QuestHeader";
+import QuestList from "./QuestList";
+
+const Quest = ({}) => {
   return (
     <div>
       <PlusBtn></PlusBtn>
-
-      {/* <QuestList></QuestList> */}
+      <QuestHeader />
+      <QuestList />
     </div>
   );
 };
