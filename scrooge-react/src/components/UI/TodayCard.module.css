@@ -3,7 +3,6 @@
   bottom: 8px;
   right: 8px;
   width: 328px;
-  height: 220px;
   border-radius: 10px;
   border: 1.5px solid #000;
 
@@ -18,7 +17,6 @@
   position: relative;
   top: 40px;
   width: 328px;
-  height: 220px;
   border-radius: 10px;
   border: 1.5px solid #000;
   background: var(--green);

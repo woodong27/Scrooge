@@ -6,7 +6,11 @@ const Quest = ({}) => {
   return (
     <div>
       <PlusBtn></PlusBtn>
-      <QuestHeader />
+      <QuestHeader
+        title={"스크루지 드림"}
+        titleColor={"#ecd35b"}
+        color={"#fff2af"}
+      />
       <QuestList />
     </div>
   );

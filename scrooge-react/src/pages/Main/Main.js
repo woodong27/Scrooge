@@ -172,7 +172,7 @@ const Main = (props) => {
               alt="고리"
             />
           </div>
-          <TodayCard>
+          <TodayCard height={220}>
             <div className={styles.todayCard}>
               <div className={styles.title}>
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
@@ -184,8 +184,7 @@ const Main = (props) => {
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
-              setGoal={setGoal}
-            ></ProgressBar>
+              setGoal={setGoal}></ProgressBar>
           </TodayCard>
         </div>
       )}
