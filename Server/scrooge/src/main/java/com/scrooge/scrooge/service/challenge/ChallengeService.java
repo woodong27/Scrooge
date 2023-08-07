@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class ChallengeService {
         challenge.setCategory(challengeReqDto.getCategory());
         challenge.setMinParticipants(challengeReqDto.getMinParticipants());
         challenge.setMaxParticipants(20);
-        challenge.setStatus(0);
+        challenge.setStatus(1);
         challenge.setAuthMethod(challengeReqDto.getAuthMethod());
         challenge.setDescription(challengeReqDto.getDescription());
 
@@ -268,7 +269,7 @@ public class ChallengeService {
             // 2. startDate를 오늘 날짜로 정하기
             challenge.get().setStartDate(LocalDateTime.now());
             // 3. endDate를 startDate에서 period(totalAuthCount) 만큼 더한 날짜로 저장
-            challenge.get().setEndDate(challenge.get().getStartDate().plusDays(challenge.get().getTotalAuthCount()));
+            challenge.get().setEndDate(challenge.get().getStartDate().plusDays(challenge.get().getTotalAuthCount()).with(LocalTime.of(23, 59, 59)));
             challengeRepository.save(challenge.get());
 
             // 시작 성공 응답 보내주기
