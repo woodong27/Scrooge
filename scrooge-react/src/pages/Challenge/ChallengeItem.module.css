@@ -1,5 +1,5 @@
 .container {
-  width: 320px;
+  width: 20rem;
   height: 156px;
   margin: auto;
   border: 1px solid black;
@@ -16,6 +16,7 @@
     font-size: 12px;
     margin: 0;
     text-align: left;
+    justify-content: flex-start;
   }
 
   & button {
@@ -35,13 +36,21 @@
 
 .img_container {
   width: 50%;
+  height: 5rem;
 }
 
 .text_container {
+  height: 5rem;
   margin-right: 0.4rem;
 }
 
 .title {
-  margin: auto;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-align: left;
+  height: 3rem;
+  font-size: 20px;
+  margin: 0;
+  justify-content: flex-start;
 }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
-import ButtonWhite from "../components/UI/ButtonWhite";
+import ButtonWhite from "../components/Button/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Login.module.css";
 

@@ -14,7 +14,9 @@ const ChallengeItem = (props) => {
           <p>
             참여인원: {props.currentParticipants} / {props.minParticipants}명
           </p>
-          <p>#{props.period}</p>
+          <p>
+            #{props.category} #{props.period}
+          </p>
         </div>
       </div>
       <Link to={`/challenge/${props.id}`}>

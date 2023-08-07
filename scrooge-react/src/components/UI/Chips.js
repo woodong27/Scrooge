@@ -1,13 +1,16 @@
 import styles from "./Chips.module.css";
 
-const Chips = ({ chips }) => {
+const Chips = (props) => {
   return (
-    <div className={`${styles.chipsContainer}`}>
-      {chips.map((chip, index) => (
-        <div key={index} className={`${styles.chip}`}>
-          {chip}
-        </div>
-      ))}
+    <div
+      className={
+        props.selectedCategory === props.children
+          ? styles.selected
+          : styles.chip
+      }
+      onClick={props.onClick}
+    >
+      {props.children}
     </div>
   );
 };

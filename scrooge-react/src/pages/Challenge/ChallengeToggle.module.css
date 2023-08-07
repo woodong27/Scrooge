@@ -11,11 +11,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--input-text);
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
 
 .active_tab {
-  color: #298dc5;
+  color: black;
 }

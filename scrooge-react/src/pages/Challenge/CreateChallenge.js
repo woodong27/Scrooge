@@ -8,6 +8,7 @@ import backImg from "../../assets/back.png";
 
 const CreateChallenge = () => {
   const [title, setTitle] = useState(0);
+  const category = ["식비", "교통비", "쇼핑", "기타"];
 
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
@@ -32,7 +33,9 @@ const CreateChallenge = () => {
       <div className="setup">
         <div>
           챌린지 기간
-          <Chips chips={["식비", "교통비", "쇼핑", "기타"]} />
+          {category.map((e) => (
+            <Chips>e</Chips>
+          ))}
         </div>
         <div>카테고리</div>
         <div>최소 인원</div>
