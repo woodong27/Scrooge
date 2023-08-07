@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 const Header = (props) => {
   return (
     <div className={styles.container}>
-      <div className={styles.item}>스크루지 파이트</div>
+      <div className={styles.item}>{props.text}</div>
       {props.children}
     </div>
   );

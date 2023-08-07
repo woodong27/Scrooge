@@ -2,6 +2,11 @@
   padding-top: 60px;
 }
 
+.frame {
+  overflow-y: scroll;
+  height: 320px;
+}
+
 .title {
   font-size: 24px;
   height: 60px;
