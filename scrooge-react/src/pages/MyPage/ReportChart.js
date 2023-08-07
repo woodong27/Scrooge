@@ -11,7 +11,7 @@ const ReportChart = ({ currentDate }) => {
     const labelDate = new Date(startDate);
     labelDate.setDate(startDate.getDate() + i);
     const month = (labelDate.getMonth() + 1).toString().padStart(1, "0");
-    const day = labelDate.getDate().toString().padStart(2,"0");
+    const day = labelDate.getDate().toString().padStart(1,"0");
     // const weekday=['일','월','화','수','목','금','토'][labelDate.getDay()];
     data.push({
       // name: `${month}/${day}/${weekday}`,
