@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/UI/ButtonWhite";
@@ -7,6 +8,8 @@ import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Login.module.css";
 
 const Login = ({ loginHandler }) => {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -45,12 +48,24 @@ const Login = ({ loginHandler }) => {
       body: JSON.stringify(obj),
     };
     fetch("http://day6scrooge.duckdns.org:8081/member/login", postData)
-      .then((res) => res.text())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Login 실패");
+        }
+        return res.text();
+      })
       .then((data) => {
         const jwtToken = data;
         sendJwtTokenToAndroid(jwtToken);
+
+        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data });
+
         loginHandler();
         navigate("/");
+      })
+      .catch((error) => {
+        const errorDiv = document.getElementById("error");
+        errorDiv.style.display = "block";
       });
   };
 
@@ -83,6 +98,9 @@ const Login = ({ loginHandler }) => {
           placeholder="비밀번호를 입력해주세요"
           onChange={handleChangeState}
         />
+        <div id="error" className={styles.error}>
+          이메일과 비밀번호를 확인해주세요.
+        </div>
         <button className={styles.missPassword}> 비밀번호를 잊으셨나요?</button>
       </CharacterCard>
 

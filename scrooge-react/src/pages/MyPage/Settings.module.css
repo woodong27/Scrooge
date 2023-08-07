@@ -1,0 +1,45 @@
+.settingContainer{
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.settingContent{
+  padding: 2rem 1.3rem;
+  width: 19.3125rem;
+  /* height: 36.9375rem; */
+  height: 100%;
+  background: #FFF;
+  border-radius: 1.875rem;;
+}
+
+
+/* 공통 */
+.infoHeader{
+  display: flex;
+  align-items: flex-start;
+  font-size: 1.25rem;
+  color: var(--test-2-font, #298DC5);
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+
+.infoHeader::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--btn, #EBECF0);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.infoContent{
+  margin-top: 0.625rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}

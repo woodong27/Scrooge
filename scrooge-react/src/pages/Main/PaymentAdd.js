@@ -1,8 +1,11 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 import styles from "./PaymentAdd.module.css";
 
 const PaymentAdd = ({ onCreate }) => {
+  const globalToken = useSelector((state) => state.globalToken);
+
   const usedAtInput = useRef();
   const amountInput = useRef();
   const cardNameInput = useRef();
@@ -29,7 +32,7 @@ const PaymentAdd = ({ onCreate }) => {
       amountInput.current.focus();
       return;
     }
-    if (state.cardName.length < 5) {
+    if (state.cardName.length < 3) {
       cardNameInput.current.focus();
       return;
     }
@@ -43,8 +46,7 @@ const PaymentAdd = ({ onCreate }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
       body: JSON.stringify(obj),
     };
