@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import PaymentItem from "./PaymentItem";
 import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
@@ -11,6 +13,8 @@ const PaymentHistory = ({
   settlement,
   setSettlement,
 }) => {
+  const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
+
   const [data, setData] = useState([]);
   const [date, setDate] = useState([]);
   const [origin, setOrigin] = useState();
@@ -45,8 +49,14 @@ const PaymentHistory = ({
 
   // 오늘 소비 내역 불러오기
   useEffect(() => {
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
     getCurrentDate();
-    fetch("http://day6scrooge.duckdns.org:8081/payment-history/1/today")
+    fetch("http://day6scrooge.duckdns.org:8081/payment-history/today", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -83,13 +93,12 @@ const PaymentHistory = ({
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
       body: JSON.stringify(obj),
     };
     fetch(
-      `http://day6scrooge.duckdns.org:8081/payment-history/1/${targetId}`,
+      `http://day6scrooge.duckdns.org:8081/payment-history/${targetId}`,
       postData
     )
       .then((res) => res.text())
@@ -111,15 +120,12 @@ const PaymentHistory = ({
 
   // 일일정산 경험치 추가
   const postExp = () => {
-    const obj = { id: "1" };
     const postData = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
-      body: JSON.stringify(obj),
     };
     fetch(
       "http://day6scrooge.duckdns.org:8081/payment-history/settlement-exp",

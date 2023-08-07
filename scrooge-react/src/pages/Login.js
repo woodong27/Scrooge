@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/UI/ButtonWhite";
@@ -7,6 +8,8 @@ import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Login.module.css";
 
 const Login = ({ loginHandler }) => {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -49,7 +52,9 @@ const Login = ({ loginHandler }) => {
       .then((data) => {
         const jwtToken = data;
         sendJwtTokenToAndroid(jwtToken);
-        console.log(data);
+
+        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data });
+
         loginHandler();
         navigate("/");
       });
