@@ -11,7 +11,8 @@ const PaymentHistory = ({
   getTotal,
   consumFalseHandler,
   settlement,
-  setSettlement,
+  settlementTrueHandler,
+  settlementFalseHandler,
 }) => {
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
@@ -22,6 +23,7 @@ const PaymentHistory = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentItem = data[currentIndex];
   const [modal, setModal] = useState(false);
+
   const handleOpenModal = () => {
     // 소비가 0건인 경우 예외 처리
     if (data.length < 1) {
@@ -35,14 +37,30 @@ const PaymentHistory = ({
     setModal(false);
   };
 
+  const datebeforeHandler = () => {
+    const [currentMonth, currentDay] = date;
+    const previousDate = new Date();
+    previousDate.setMonth(currentMonth - 1);
+    previousDate.setDate(currentDay - 1);
+    setDate([previousDate.getMonth() + 1, previousDate.getDate()]);
+  };
+  const dateafterHandler = () => {
+    const [currentMonth, currentDay] = date;
+    const nextDate = new Date();
+    nextDate.setMonth(currentMonth - 1);
+    nextDate.setDate(currentDay + 1);
+    setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
+  };
+
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       console.log("끝");
-      setSettlement(true); //정산되었음을 저장
+      settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
+      setCurrentIndex(currentIndex + 1);
       handleCloseModal();
     }
   };
@@ -65,6 +83,7 @@ const PaymentHistory = ({
   }, []);
 
   useEffect(() => {
+    console.log(total);
     setOrigin(total);
   }, [total]);
 
@@ -80,11 +99,12 @@ const PaymentHistory = ({
     if (settlement) {
       getTotal();
     }
+    settlementFalseHandler();
   };
 
-  const onEdit = (targetId, newContent, usedAt, cardName, category) => {
+  const onEdit = (targetId, amount, usedAt, cardName, category) => {
     const obj = {
-      amount: newContent,
+      amount,
       usedAt,
       cardName,
       category,
@@ -105,7 +125,7 @@ const PaymentHistory = ({
       .then(console.log);
     setData(
       data.map((it) =>
-        it.id === targetId ? { ...it, amount: newContent } : it
+        it.id === targetId ? { ...it, cardName, amount, usedAt } : it
       )
     );
   };
@@ -113,9 +133,9 @@ const PaymentHistory = ({
   // 오늘 날짜 가져오기
   const getCurrentDate = () => {
     const today = new Date();
-    const month = today.toLocaleString("default", { month: "long" });
+    const month = today.getMonth() + 1;
     const day = today.getDate();
-    setDate(`${month} ${day}일 소비`);
+    setDate([month, day]);
   };
 
   // 일일정산 경험치 추가
@@ -144,12 +164,16 @@ const PaymentHistory = ({
         <div className={styles.title}>
           <img
             src={`${process.env.PUBLIC_URL}/images/left.svg`}
-            alt="커뮤니티"
+            onClick={datebeforeHandler}
+            alt="왼쪽"
           />
-          <div className={styles.date}>{date}</div>
+          <div className={styles.date}>
+            {date[0]}월 {date[1]}일 소비
+          </div>
           <img
             src={`${process.env.PUBLIC_URL}/images/right.svg`}
-            alt="커뮤니티"
+            onClick={dateafterHandler}
+            alt="오른쪽"
           />
         </div>
 
@@ -159,9 +183,12 @@ const PaymentHistory = ({
               <PaymentItem key={index} {...it} onEdit={onEdit} />
             ))}
             <PaymentAdd onCreate={onCreate} />
-            {/* 아 origin이 truthy한 값이라 이상했네...  */}
             <div className={styles.total}>
-              {origin || origin === 0 ? `총합: ${origin}원` : ""}
+              {origin || origin === 0
+                ? `총합: ${origin
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                : ""}
             </div>
             <button
               onClick={handleOpenModal}

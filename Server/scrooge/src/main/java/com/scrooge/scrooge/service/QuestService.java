@@ -74,31 +74,6 @@ public class QuestService {
         }
     }
 
-//    public List<MemberSelectedQuestDto> updateCompleteCount(Long questId, Long memberId) {
-//        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId)
-//                .orElseThrow(() ->new NotFoundException("그런 퀘스트 없습니다."));
-//
-//        Quest quest = questRepository.findById(questId)
-//                .orElseThrow(() -> new NotFoundException("그런 퀘스트 없다"));
-//
-//        int currentCompleteCount= memberSelectedQuest.getCompleteCount();
-//
-//        if (quest.getMaxCount() == currentCompleteCount+1) {
-//            Member member = memberRepository.findById(memberId)
-//                    .orElseThrow(() -> new NotFoundException(("그런 회원 없다.")));
-//            member.setExp(member.getExp()+200);
-//            memberRepository.save(member);
-//            memberSelectedQuestRepository.delete(memberSelectedQuest);
-//        } else {
-//            memberSelectedQuest.setCompleteCount(currentCompleteCount + 1);
-//            memberSelectedQuestRepository.save(memberSelectedQuest);
-//        }
-//        List<MemberSelectedQuest> memberSelectedQuests = memberSelectedQuestRepository.findMemberSelectedQuestsById(memberId);
-//        return memberSelectedQuests.stream()
-//                .map(MemberSelectedQuestDto::new)
-//                .collect(Collectors.toList());
-//    }
-
     public void completeQuest(Long questId, Long memberId) {
         MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId)
                 .orElseThrow(() -> new NotFoundException("이 퀘스트 안고른거 같은데"));

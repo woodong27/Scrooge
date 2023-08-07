@@ -14,7 +14,7 @@ import java.util.List;
 public class MemberDto {
 
     private Long id;
-    private String name;
+//    private String name;
     private String nickname;
     private String email;
     private int exp;
@@ -29,7 +29,7 @@ public class MemberDto {
     @Builder
     public MemberDto(Member member) {
         this.id = member.getId();
-        this.name = member.getName();
+//        this.name = member.getName();
         this.nickname = member.getNickname();
         this.email = member.getEmail();
         this.exp = member.getExp();

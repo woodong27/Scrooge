@@ -49,6 +49,7 @@ function App() {
               path="/login"
               element={<Login loginHandler={loginHandler} />}
             />
+            <Route path="/signup" element={<Signup />} />
           </>
         )}
       </Routes>

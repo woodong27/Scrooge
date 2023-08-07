@@ -69,11 +69,10 @@ public class PaymentHistoryService {
     }
 
     // userId에 따른 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId, DateTimeReqDto dateTimeReqDto) {
-        String dateStr = dateTimeReqDto.getDate();
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId, String dateTime) {
 
         // 날짜 문자열을 LocalDate로 변환하기
-        LocalDate date = LocalDate.parse(dateStr);
+        LocalDate date = LocalDate.parse(dateTime);
 
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./ReportWeek.module.css";
 
-export default function ReportMonth() {
+const ReportMonth = () => {
   const currentDate = new Date();
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
@@ -47,4 +47,6 @@ export default function ReportMonth() {
       </div>
     </div>
   )
-}
+};
+
+export default ReportMonth;

@@ -55,13 +55,13 @@ public class PaymentHistoryController {
 
     // Member당 해당 날짜의 소비내역 전체를 조회하는 API
     @Operation(summary = "Member당 해당 날짜의 소비내역 전체를 조회하는 API", description = "소비내역 조회")
-    @GetMapping
-    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@RequestHeader("Authorization")String tokenHeader, @RequestBody DateTimeReqDto dateTimeReqDto) {
+    @GetMapping("/date/{dateTime}")
+    public ResponseEntity<List<PaymentHistoryDto>> selectPaymentHistory(@RequestHeader("Authorization")String tokenHeader, @PathVariable("dateTime")String dateTime) {
         String token = extractToken(tokenHeader);
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
-        List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByMemberId(memberId, dateTimeReqDto);
+        List<PaymentHistoryDto> paymentHistoryDtos = paymentHistoryService.getPaymentHistoryByMemberId(memberId, dateTime);
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
