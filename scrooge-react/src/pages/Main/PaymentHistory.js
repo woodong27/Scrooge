@@ -38,10 +38,18 @@ const PaymentHistory = ({
   };
 
   const datebeforeHandler = () => {
-    setDate(false);
+    const [currentMonth, currentDay] = date;
+    const previousDate = new Date();
+    previousDate.setMonth(currentMonth - 1);
+    previousDate.setDate(currentDay - 1);
+    setDate([previousDate.getMonth() + 1, previousDate.getDate()]);
   };
   const dateafterHandler = () => {
-    setDate(false);
+    const [currentMonth, currentDay] = date;
+    const nextDate = new Date();
+    nextDate.setMonth(currentMonth - 1);
+    nextDate.setDate(currentDay + 1);
+    setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
   };
 
   const goNext = () => {
