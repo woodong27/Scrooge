@@ -12,6 +12,7 @@ import com.scrooge.scrooge.repository.challenge.ChallengeAuthRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,4 +141,23 @@ public class StartChallengeService {
 
         return myChallengeMyAuthDto;
     }
+
+    // endDate의 시간이 지나면 자동으로 status 3으로 변경, 즉 상태가 종료됨으로 변경된다.
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
+    public void checkEndDateAndUpdateChallengeStatus() {
+        // 모든 진행 중인 Challenge를 challenges 리스트에 저장한다.
+        List<Challenge> challenges = challengeRepository.findAllByStatus2();
+
+        // 현재 시간을 받아온다.
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // 진행중인 리스트의 challenge를 하나씩 접근하여 현재 시간이 endDate를 지났을 경우 status를 3, 즉 종료로 변경해준다.
+        for(Challenge challenge : challenges) {
+            if(currentDateTime.isAfter(challenge.getEndDate())) {
+                challenge.setStatus(3);
+                challengeRepository.save(challenge);
+            }
+        }
+    }
+
 }
