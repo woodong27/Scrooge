@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter,Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Main from "./pages/Main/Main";
 import Footer from "./components/Footer";
@@ -26,42 +26,45 @@ function App() {
 
   return (
     <div className="h-screen w-screen ">
-      <BrowserRouter>
+      <Routes>
         {isLogin ? (
-          <Routes>
-            <Route path="/" element={<Main onLogout={logoutHandler} />}></Route>
-            <Route path="/quest" element={<Quest />}></Route>
-            <Route path="/challenge" element={<Challenge />}></Route>
+          <>
+            <Route path="/" element={<Main onLogout={logoutHandler} />} />
+            <Route path="/quest" element={<Quest />} />
+            <Route path="/challenge" element={<Challenge />} />
             <Route
               path="/challenge/join"
-              element={<ChallengeJoin></ChallengeJoin>}
-            ></Route>
+              element={<ChallengeJoin />}
+            />
             <Route
               path="/challenge/create"
-              element={<CreateChallenge></CreateChallenge>}
-            ></Route>
+              element={<CreateChallenge />}
+            />
             <Route
               path="/challenge/my"
-              element={<ChallengeDetail></ChallengeDetail>}
-            ></Route>
+              element={<ChallengeDetail />}
+            />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/mypage/settings" element={<Settings onLogout={logoutHandler}/>} /> 
-          </Routes>
+            <Route
+              path="/mypage/settings"
+              element={<Settings onLogout={logoutHandler} />}
+            />
+          </>
         ) : (
-          <Routes>
+          <>
             <Route
               path="/"
               element={<Loading loginHandler={loginHandler} />}
-            ></Route>
+            />
             <Route
               path="/login"
               element={<Login loginHandler={loginHandler} />}
-            ></Route>
-            <Route path="/signup" element={<Signup />}></Route>
-          </Routes>
+            />
+            <Route path="/signup" element={<Signup />} />
+          </>
         )}
-        <Footer />
-      </BrowserRouter>
+      </Routes>
+      <Footer />
     </div>
   );
 }
