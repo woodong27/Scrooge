@@ -50,6 +50,12 @@ function App() {
               element={<Login loginHandler={loginHandler} />}
             />
             <Route path="/signup" element={<Signup />} />
+
+            {/* 로그인 안되서 테스트용 */}
+            <Route path="/challenge" element={<Challenge />} />
+            <Route path="/challenge/:id" element={<ChallengeJoin />} />
+            <Route path="/challenge/create" element={<CreateChallenge />} />
+            <Route path="/challenge/my" element={<ChallengeDetail />} />
           </>
         )}
       </Routes>
