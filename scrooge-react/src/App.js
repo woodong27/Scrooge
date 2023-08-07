@@ -39,8 +39,8 @@ function App() {
               path="/challenge/my"
               element={<ChallengeDetail></ChallengeDetail>}
             ></Route>
-            <Route path="/mypage" element={<MyPage />}></Route>
-            <Route path="/mypage/settings" element={<Settings />}></Route> 
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/settings" element={<Settings onLogout={logoutHandler}/>} /> 
           </Routes>
         ) : (
           <Routes>

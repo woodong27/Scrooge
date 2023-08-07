@@ -1,7 +1,24 @@
 import styles from "./Settings.module.css";
 import BackGround from "../../components/BackGround";
 
-const Settings = () => {
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+
+const Settings = ({ onLogout }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    onLogout();
+
+    // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기 
+    dispatch({type: "SET_TOKEN_STRING", payload:""});
+
+    // 로그아웃 후 리디렉션: "/Loading"
+    navigate("/")
+  };
+
   return(
     <BackGround>
       <div>설정페이지 헤더</div>
@@ -29,7 +46,7 @@ const Settings = () => {
 
           <div className={styles.infoHeader}>ETC</div>
             <div className={styles.infoContent}>
-              <div>로그아웃</div>
+              <div onClick={handleLogout}>로그아웃</div>
               <div>회원탈퇴</div>
             </div>
 
