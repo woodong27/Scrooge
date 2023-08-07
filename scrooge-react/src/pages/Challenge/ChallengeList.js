@@ -1,12 +1,36 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
+
 import ChallengeItem from "./ChallengeItem";
 import styles from "./ChallengeList.module.css";
 
 const ChallengeList = () => {
-  const dummy = ["[식비] 배달 일주일에 한번만 시키기", "커피", "핏자", "라면"];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://day6scrooge.duckdns.org:8081/challenge")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
   return (
     <div className={styles.list}>
-      {dummy.map((e) => {
-        return <ChallengeItem title={e}></ChallengeItem>;
+      {data.map((e) => {
+        return (
+          <ChallengeItem
+            key={e.id}
+            id={e.id}
+            title={e.title}
+            currentParticipants={e.currentParticipants}
+            minParticipants={e.minParticipants}
+            period={e.period}
+          ></ChallengeItem>
+        );
       })}
     </div>
   );
