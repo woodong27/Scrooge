@@ -41,15 +41,17 @@ public class QuestService {
     }
 
     public List<MemberSelectedQuestDto> giveRandomQuests(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+        if (!memberSelectedQuestRepository.existsByMemberId(memberId)) {
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
-        List<Quest> quests = questRepository.findRandomQuests();
-        for (Quest quest : quests) {
-            MemberSelectedQuest memberSelectedQuest = new MemberSelectedQuest();
-            memberSelectedQuest.setQuest(quest);
-            memberSelectedQuest.setMember(member);
-            memberSelectedQuestRepository.save(memberSelectedQuest);
+            List<Quest> quests = questRepository.findRandomQuests();
+            for (Quest quest : quests) {
+                MemberSelectedQuest memberSelectedQuest = new MemberSelectedQuest();
+                memberSelectedQuest.setQuest(quest);
+                memberSelectedQuest.setMember(member);
+                memberSelectedQuestRepository.save(memberSelectedQuest);
+            }
         }
 
         return memberSelectedQuestRepository.findByMemberId(memberId).stream()

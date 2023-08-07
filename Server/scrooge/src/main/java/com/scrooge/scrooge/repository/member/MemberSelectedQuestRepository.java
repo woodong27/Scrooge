@@ -20,4 +20,6 @@ public interface MemberSelectedQuestRepository extends JpaRepository<MemberSelec
     Integer countByMemberIdAndIsSelected(Long memberId, boolean isSelected);
 
     List<MemberSelectedQuest> findByMemberIdAndIsSelected(Long memberId, boolean isSelected);
+
+    boolean existsByMemberId(Long memberId);
 }

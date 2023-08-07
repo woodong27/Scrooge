@@ -31,7 +31,7 @@ public class QuestController {
     }
 
     @Operation(summary = "Distribute random quests", description = "전체 퀘스트 목록 중 랜덤 6개 가져와서 MemberSelectedQuest에 저장")
-    @PostMapping()
+    @GetMapping()
     public ResponseEntity<?> getRandomQuests(@RequestHeader("Authorization")String header) {
         String token = jwtTokenProvider.extractToken(header);
         if (!jwtTokenProvider.validateToken(token)) {
