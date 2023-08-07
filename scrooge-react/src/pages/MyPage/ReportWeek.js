@@ -15,8 +15,6 @@ const getWeekRange = (date) => {
   return `${startDateStr} ~ ${endDateStr}`;
 };
 
-
-
 const ReportWeek = () => {
   // 날짜
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -54,7 +52,7 @@ const ReportWeek = () => {
 
       {/* 소비 차트 */}
       <div className={styles.chart}>
-        <ReportChart />
+        <ReportChart currentDate={currentDate}/>
       </div>
     </div>
 

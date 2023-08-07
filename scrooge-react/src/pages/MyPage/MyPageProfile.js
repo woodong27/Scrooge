@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./MyPageProfile.module.css";
 import ProgressBar from "../Challenge/ProgressBar"; //Exp 바로 
 import Report from "./Report";
 import Item from "./Item";
 
 const MyPageProfile = () => {
-  // const globalToken = useSelector((state) => state.globalToken);
+  const globalToken = useSelector((state) => state.globalToken);
 
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
   
   const [showItemList, setShowItemList] = useState(false);
   
@@ -16,21 +16,21 @@ const MyPageProfile = () => {
     setShowItemList((prevState) => !prevState);
   };
 
-  // useEffect(() => {
-  //   const postData = {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: globalToken,
-  //     },
-  //   };
-  //   fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
-  //     .then((resp) => resp.json())
-  //     .then((data) => {
-  //       setData(data);
-  //     })
-  //     .catch((error) => console.log(error));
+  useEffect(() => {
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
+    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
 
-  // },  [globalToken]);
+  },  [globalToken]);
 
 
   return(
@@ -40,10 +40,8 @@ const MyPageProfile = () => {
           <img src={`${process.env.PUBLIC_URL}/Character/20.png`} alt="프로필 사진"/>
         </div>
         <ul className={styles["profile-info"]}>
-          {/* <li>Lv.{data.levelId}</li>
-          <li>{data.name}</li> */}
-          <li>Lv.3</li>
-          <li>정신차려이각박한세상속에서서서서서서서서</li>
+          <li>Lv.{data.levelId}</li>
+          <li>{data.nickname}</li>
           <li className={styles["items-info"]}>
             <div>
               <img src ={`${process.env.PUBLIC_URL}/images/profile-icon.png`} alt="캐릭터 아이콘"/>

@@ -3,39 +3,25 @@ import styles from "./ReportChart.module.css";
 
 // name을 이번주 해당 날짜로 불러와야 함
 // 금액 또한 해당 날짜에 정산된 금액으로 불러와져야 함 
-const data = [
-  {
-    name: '월',
-    amount: 24000,
-  },
-  {
-    name: '화',
-    amount: 137000,
-  },
-  {
-    name: '수',
-    amount: 0,
-  },
-  {
-    name: '목',
-    amount: 5700,
-  },
-  {
-    name: '금',
-    amount: 24000,
-  },
-  {
-    name: '토',
-    amount: 3600,
-  },
-  {
-    name: '일',
-    amount: 15500,
-  },
-];
+
+const ReportChart = ({ currentDate }) => {
+  const data = [];
+  const startDate = new Date(currentDate);
+  for (let i = 0; i<7; i++) {
+    const labelDate = new Date(startDate);
+    labelDate.setDate(startDate.getDate() + i);
+    const month = (labelDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = labelDate.getDate().toString().padStart(2,"0");
+    // const weekday=['일','월','화','수','목','금','토'][labelDate.getDay()];
+    data.push({
+      // name: `${month}/${day}/${weekday}`,
+      name: `${month}/${day}`,
+      amount: 5000,
+    });
+  }
 
 
-export default function ReportChart() {
+
   const avgAmt = data.reduce((acc, cur) => acc + cur.amount, 0) / data.length;
   const minAmt = data.reduce((min, cur) => (cur.amount < min ? cur.amount : min ), data[0].amount);
   return (
@@ -66,3 +52,6 @@ export default function ReportChart() {
     </div>
   );
 }
+
+
+export default ReportChart;
