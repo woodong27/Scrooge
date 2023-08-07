@@ -26,40 +26,42 @@ function App() {
 
   return (
     <div className="h-screen w-screen ">
-      {isLogin ? (
-        <Routes>
-          <Route path="/" element={<Main onLogout={logoutHandler} />}></Route>
-          <Route path="/quest" element={<Quest />}></Route>
-          <Route path="/challenge" element={<Challenge />}></Route>
-          <Route
-            path="/challenge/join"
-            element={<ChallengeJoin></ChallengeJoin>}
-          ></Route>
-          <Route
-            path="/challenge/create"
-            element={<CreateChallenge></CreateChallenge>}
-          ></Route>
-          <Route
-            path="/challenge/my"
-            element={<ChallengeDetail></ChallengeDetail>}
-          ></Route>
-          <Route path="/mypage" element={<MyPage />}></Route>
-          <Route path="/mypage/settings" element={<Settings />}></Route>
-        </Routes>
-      ) : (
-        <Routes>
-          <Route
-            path="/"
-            element={<Loading loginHandler={loginHandler} />}
-          ></Route>
-          <Route
-            path="/login"
-            element={<Login loginHandler={loginHandler} />}
-          ></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-        </Routes>
-      )}
-      <Footer />
+      <BrowserRouter>
+        {isLogin ? (
+          <Routes>
+            <Route path="/" element={<Main onLogout={logoutHandler} />}></Route>
+            <Route path="/quest" element={<Quest />}></Route>
+            <Route path="/challenge" element={<Challenge />}></Route>
+            <Route
+              path="/challenge/join"
+              element={<ChallengeJoin></ChallengeJoin>}
+            ></Route>
+            <Route
+              path="/challenge/create"
+              element={<CreateChallenge></CreateChallenge>}
+            ></Route>
+            <Route
+              path="/challenge/my"
+              element={<ChallengeDetail></ChallengeDetail>}
+            ></Route>
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/settings" element={<Settings onLogout={logoutHandler}/>} /> 
+          </Routes>
+        ) : (
+          <Routes>
+            <Route
+              path="/"
+              element={<Loading loginHandler={loginHandler} />}
+            ></Route>
+            <Route
+              path="/login"
+              element={<Login loginHandler={loginHandler} />}
+            ></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+          </Routes>
+        )}
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }
