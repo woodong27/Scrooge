@@ -47,9 +47,12 @@ const PaymentHistory = ({
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
     const nextDate = new Date();
+    const today = new Date();
     nextDate.setMonth(currentMonth - 1);
     nextDate.setDate(currentDay + 1);
-    setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
+    if (nextDate <= today) {
+      setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
+    }
   };
 
   const goNext = () => {
@@ -192,8 +195,7 @@ const PaymentHistory = ({
             </div>
             <button
               onClick={handleOpenModal}
-              className={settlement ? styles.finishBtn : styles.btn}
-            >
+              className={settlement ? styles.finishBtn : styles.btn}>
               {settlement ? "정산 완료" : "정산하기"}
             </button>
           </div>
