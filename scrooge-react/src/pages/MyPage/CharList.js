@@ -14,35 +14,18 @@ const CharList = () => {
   const imagePath = `${process.env.PUBLIC_URL}/Character`;
   const [randomImages, setRandomImages] = useState([]);
 
-  // 1부터 80까지의 고유한 랜덤한 숫자 배열을 생성하는 함수
-  const generateRandomNumbers = (count) => {
-    const numbers = [];
-    while (numbers.length < count) {
-      const randomNumber = Math.floor(Math.random() * count) + 1;
-      if (!numbers.includes(randomNumber)) {
-        numbers.push(randomNumber);
-      }
-    }
-    return numbers;
-  };
-
   useEffect(() => {
-    // 랜덤한 숫자 배열을 생성합니다.
-    const randomImageNumbers = generateRandomNumbers(imageCount);
-
-    // 랜덤한 숫자에 해당하는 이미지 엘리먼트를 생성합니다.
-    const images = randomImageNumbers.map((number) => (
+    const initialImages = Array.from({ length: imageCount }, (_, index) => (
       <img
-        key={number}
+        key={index}
         className={styles["profile-image"]}
-        src={`${imagePath}/${number}.png`}
-        alt={`프로필 사진 ${number}`}
+        src={`${imagePath}/gacha.png`}
+        alt={`프로필 사진 ${index + 1}`}
       />
     ));
 
-    // 랜덤 이미지 배열을 상태(State)로 업데이트합니다.
-    setRandomImages(images);
-  }, []); // 빈 의존성 배열은 컴포넌트가 처음 마운트될 때 한 번만 실행됨을 보장합니다.
+    setRandomImages(initialImages);
+  }, []); // 컴포넌트가 처음 마운트될 때 한 번만 실행
 
   return (
     <div>
@@ -60,3 +43,5 @@ const CharList = () => {
 };
 
 export default CharList;
+
+

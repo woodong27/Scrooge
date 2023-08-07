@@ -9,6 +9,7 @@ import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
 import MyPage from "./pages/MyPage/MyPage";
+import Settings from "./pages/MyPage/Settings";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -40,6 +41,7 @@ function App() {
               element={<ChallengeDetail></ChallengeDetail>}
             ></Route>
             <Route path="/mypage" element={<MyPage />}></Route> 
+            <Route path="/mypage/settings" element={<Settings />}></Route> 
           </Routes>
           <Footer />
         </BrowserRouter>
