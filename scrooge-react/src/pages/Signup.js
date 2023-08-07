@@ -6,7 +6,7 @@ import ButtonWhite from "../components/UI/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Signup.module.css";
 
-const Signup = ({ loginHandler }) => {
+const Signup = () => {
   //이메일 정규식
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*.[A-Za-z]{2,3}$/;
@@ -86,9 +86,18 @@ const Signup = ({ loginHandler }) => {
       body: JSON.stringify(obj),
     };
     fetch("http://day6scrooge.duckdns.org:8081/member/signup", postData)
-      .then((res) => res.text())
-      .then((data) => {
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("회원가입 실패");
+        }
+        return res.text();
+      })
+      .then(() => {
         navigate("/");
+      })
+      .catch((error) => {
+        const errorDiv = document.getElementById("error");
+        errorDiv.style.display = "block";
       });
   };
 
@@ -147,6 +156,9 @@ const Signup = ({ loginHandler }) => {
           />
           <div id="passwordcheck" className={styles.error}>
             비밀번호를 다시 확인해주세요.
+          </div>
+          <div id="error" className={styles.error}>
+            회원가입에 실패했습니다.
           </div>
         </div>
       </CharacterCard>
