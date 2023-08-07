@@ -52,6 +52,17 @@ const PaymentHistory = ({
     setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
   };
 
+  // // 오늘 날짜 가져오기
+  // const getCurrentDate = () => {
+  // };
+
+  useEffect(() => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
+  }, []);
+
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -65,22 +76,41 @@ const PaymentHistory = ({
     }
   };
 
-  // 오늘 소비 내역 불러오기
   useEffect(() => {
-    const postData = {
-      method: "GET",
-      headers: {
-        Authorization: globalToken,
-      },
-    };
-    getCurrentDate();
-    fetch("http://day6scrooge.duckdns.org:8081/payment-history/today", postData)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    getPaymentHistory();
+  }, [date]);
+
+  // 오늘 소비 내역 불러오기
+  const getPaymentHistory = () => {
+    if (date.length === 2) {
+      console.log(date[0], date[1]);
+      const formattedDate = `2023-${date[0]
+        .toString()
+        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
+
+      const obj = {
+        date: formattedDate,
+      };
+
+      const postData = {
+        method: "GET",
+        headers: {
+          Authorization: globalToken,
+        },
+      };
+
+      fetch(
+        `http://day6scrooge.duckdns.org:8081/payment-history/${formattedDate}`,
+        postData
+      )
+        .then((resp) => resp.json())
+        .then((data) => {
+          //데이터가 없는 경우도 처리해야겠지?
+          setData(data);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
 
   useEffect(() => {
     console.log(total);
@@ -130,14 +160,6 @@ const PaymentHistory = ({
     );
   };
 
-  // 오늘 날짜 가져오기
-  const getCurrentDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
-  };
-
   // 일일정산 경험치 추가
   const postExp = () => {
     const postData = {
@@ -179,9 +201,13 @@ const PaymentHistory = ({
 
         <div className={styles.scrollitem}>
           <div className={styles.item}>
-            {data.map((it, index) => (
-              <PaymentItem key={index} {...it} onEdit={onEdit} />
-            ))}
+            {data.length > 0 ? (
+              data.map((it, index) => (
+                <PaymentItem key={index} {...it} onEdit={onEdit} />
+              ))
+            ) : (
+              <p>!!소비 내역이 없습니다!!</p>
+            )}
             <PaymentAdd onCreate={onCreate} />
             <div className={styles.total}>
               {origin || origin === 0
