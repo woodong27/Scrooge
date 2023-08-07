@@ -5,6 +5,7 @@ import Main from "./pages/Main/Main";
 import Footer from "./components/Footer";
 import Loading from "./pages/Loading";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Quest from "./pages/Quest/Quest";
 import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
@@ -50,6 +51,7 @@ function App() {
               path="/login"
               element={<Login loginHandler={loginHandler} />}
             ></Route>
+            <Route path="/signup" element={<Signup />}></Route>
           </Routes>
         )}
 
