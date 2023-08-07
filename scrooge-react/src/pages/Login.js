@@ -8,6 +8,10 @@ import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Login.module.css";
 
 const Login = ({ loginHandler }) => {
+  //이메일 정규식
+  const emailRegEx =
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*.[A-Za-z]{2,3}$/;
+
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
@@ -27,11 +31,11 @@ const Login = ({ loginHandler }) => {
 
   const navigate = useNavigate();
   const handleLogin = () => {
-    if (state.email.length < 5) {
+    if (!emailRegEx.test(state.email)) {
       emailInput.current.focus();
       return;
     }
-    if (state.password.length < 2) {
+    if (state.password.length < 8) {
       passwordInput.current.focus();
       return;
     }
