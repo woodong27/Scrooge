@@ -1,6 +1,8 @@
 import { BarChart, Bar, XAxis} from 'recharts';
 import styles from "./ReportChart.module.css";
 
+// name을 이번주 해당 날짜로 불러와야 함
+// 금액 또한 해당 날짜에 정산된 금액으로 불러와져야 함 
 const data = [
   {
     name: '월',

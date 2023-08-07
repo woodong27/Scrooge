@@ -11,6 +11,6 @@ interface ApiService {
     private val Base_URL: String
         get() = "http://day6scrooge.duckdns.org:8081/"
 
-    @POST("payment-history/{userId}")
-    fun postPayInfo(@Path("userId")userId: Long, @Body userInfo: PayInfo) : Call<ResponseResult>
+    @POST("payment-history")
+    fun postPayInfo(@Body userInfo: PayInfo) : Call<ResponseResult>
 }

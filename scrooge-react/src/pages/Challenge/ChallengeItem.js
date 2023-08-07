@@ -11,11 +11,13 @@ const ChallengeItem = (props) => {
         </div>
         <div className={styles.text_container}>
           <p className={styles.title}>{props.title}</p>
-          <p>참여인원: 6 / 10명</p>
-          <p>#일주일</p>
+          <p>
+            참여인원: {props.currentParticipants} / {props.minParticipants}명
+          </p>
+          <p>#{props.period}</p>
         </div>
       </div>
-      <Link to="/challenge/join">
+      <Link to={`/challenge/${props.id}`}>
         <button>참여하기</button>
       </Link>
     </div>

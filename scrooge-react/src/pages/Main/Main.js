@@ -1,4 +1,5 @@
-import { useEffect, Fragment, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
@@ -8,19 +9,23 @@ import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
+  const globalToken = useSelector((state) => state.globalToken);
+
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
+  const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
+
   const [weeklyGoal, setWeeklyGoal] = useState();
   const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
+    getCurrentDate();
     const postData = {
       method: "GET",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
     };
     fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
@@ -32,6 +37,13 @@ const Main = (props) => {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
+  };
 
   //주간 목표 설정
   const setGoal = (goal) => {
@@ -57,8 +69,7 @@ const Main = (props) => {
     const postData = {
       method: "GET",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
     };
     fetch(
@@ -82,6 +93,14 @@ const Main = (props) => {
     setIsConsum(false);
   };
 
+  const settlementTrueHandler = () => {
+    setSettlement(true);
+  };
+
+  const settlementFalseHandler = () => {
+    setSettlement(false);
+  };
+
   return (
     <BackGround>
       {!isConsum && data && data.levelId && (
@@ -97,7 +116,7 @@ const Main = (props) => {
                 />
                 <span>
                   <p>Lv. {data.levelId}</p>
-                  <p>{data.name}</p>
+                  <p>{data.nickname}</p>
                 </span>
               </div>
               <div className={styles.border} />
@@ -155,7 +174,9 @@ const Main = (props) => {
           </div>
           <TodayCard>
             <div className={styles.todayCard}>
-              <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
+              <div className={styles.title}>
+                {date[0]}월 {date[1]}일, 오늘의 소비💸
+              </div>
               <div className={styles.amount}>
                 {settlement ? `${total}원` : "정산이 필요해요!"}
               </div>
@@ -175,7 +196,8 @@ const Main = (props) => {
             getTotal={getTotal}
             consumFalseHandler={consumFalseHandler}
             settlement={settlement}
-            setSettlement={setSettlement}
+            settlementTrueHandler={settlementTrueHandler}
+            settlementFalseHandler={settlementFalseHandler}
           />
         </div>
       )}

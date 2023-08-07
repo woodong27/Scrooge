@@ -4,13 +4,16 @@ import styles from "./Modal.module.css";
 const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
   const [origin, setOrigin] = useState(item.amount);
   const [place, setPlace] = useState(item.usedAt);
+  const [card, setCard] = useState(item.cardName);
   const [category, setCategory] = useState(" ");
   const localContentInput = useRef();
   const localPlaceInput = useRef();
+  const localCardInput = useRef();
 
   useEffect(() => {
     setOrigin(item.amount);
     setPlace(item.usedAt);
+    setCard(item.cardName);
     setCategory(" ");
   }, [item]);
 
@@ -35,11 +38,15 @@ const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
       localContentInput.current.focus();
       return;
     }
+    if (card.length < 2) {
+      localCardInput.current.focus();
+      return;
+    }
     if (category.length < 2) {
       localContentInput.current.focus();
       return;
     }
-    onEdit(item.id, origin, place, item.cardName, category);
+    onEdit(item.id, origin, place, card, category);
     goNext();
   };
 
@@ -47,6 +54,7 @@ const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
   const handleQuitEdit = () => {
     setOrigin(item.amount);
     setPlace(item.usedAt);
+    setCard(item.cardName);
     setCategory("");
   };
 
@@ -74,9 +82,14 @@ const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
               onChange={(e) => setOrigin(e.target.value)}
             />
           </div>
-          <div className={styles.line}>
-            <div className={styles.title}>결제 카드</div>
-            <div className={styles.content}>{item.cardName}</div>
+          <div className={styles.head}>
+            <span>결제 카드 </span>
+            <input
+              className={styles.input}
+              ref={localCardInput}
+              value={card}
+              onChange={(e) => setCard(e.target.value)}
+            />
           </div>
           <div className={styles.line}>
             <div className={styles.title}>결제 일자</div>

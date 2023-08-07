@@ -31,6 +31,7 @@
 .tag {
   color: var(--input-text);
   font-size: 16px;
+  justify-content: flex-start;
 }
 
 .content {
