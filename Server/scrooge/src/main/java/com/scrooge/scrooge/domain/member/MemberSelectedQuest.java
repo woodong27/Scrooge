@@ -28,6 +28,9 @@ public class MemberSelectedQuest {
     @Column(name = "complete_count")
     private int completeCount = 0;
 
+    @Column(name = "is_selected")
+    private boolean isSelected = false;
+
     @Column(name = "is_done")
     private boolean isDone = false;
 }
