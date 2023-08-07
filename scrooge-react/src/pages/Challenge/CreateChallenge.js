@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./CreateChallenge.module.css";
 import Header from "../../components/Header";
 import Chips from "../../components/UI/Chips";
+import backImg from "../../assets/back.png";
 
 const CreateChallenge = () => {
   const [title, setTitle] = useState(0);
@@ -13,7 +15,11 @@ const CreateChallenge = () => {
 
   return (
     <div>
-      <Header text="챌린지 만들기"></Header>
+      <Header text="챌린지 만들기">
+        <Link className={styles.back} to="/challenge">
+          <img src={backImg} alt="뒤로가기"></img>
+        </Link>
+      </Header>
       <div className={styles.title}>
         챌린지 제목
         <input
