@@ -37,6 +37,13 @@ const PaymentHistory = ({
     setModal(false);
   };
 
+  const datebeforeHandler = () => {
+    setDate(false);
+  };
+  const dateafterHandler = () => {
+    setDate(false);
+  };
+
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
@@ -118,9 +125,9 @@ const PaymentHistory = ({
   // 오늘 날짜 가져오기
   const getCurrentDate = () => {
     const today = new Date();
-    const month = today.toLocaleString("default", { month: "long" });
+    const month = today.getMonth() + 1;
     const day = today.getDate();
-    setDate(`${month} ${day}일 소비`);
+    setDate([month, day]);
   };
 
   // 일일정산 경험치 추가
@@ -149,12 +156,16 @@ const PaymentHistory = ({
         <div className={styles.title}>
           <img
             src={`${process.env.PUBLIC_URL}/images/left.svg`}
-            alt="커뮤니티"
+            onClick={datebeforeHandler}
+            alt="왼쪽"
           />
-          <div className={styles.date}>{date}</div>
+          <div className={styles.date}>
+            {date[0]}월 {date[1]}일 소비
+          </div>
           <img
             src={`${process.env.PUBLIC_URL}/images/right.svg`}
-            alt="커뮤니티"
+            onClick={dateafterHandler}
+            alt="오른쪽"
           />
         </div>
 
@@ -164,7 +175,6 @@ const PaymentHistory = ({
               <PaymentItem key={index} {...it} onEdit={onEdit} />
             ))}
             <PaymentAdd onCreate={onCreate} />
-            {/* 아 origin이 truthy한 값이라 이상했네...  */}
             <div className={styles.total}>
               {origin || origin === 0
                 ? `총합: ${origin

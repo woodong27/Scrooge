@@ -13,6 +13,7 @@ const Main = (props) => {
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
+  const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
 
@@ -20,6 +21,7 @@ const Main = (props) => {
   const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
+    getCurrentDate();
     const postData = {
       method: "GET",
       headers: {
@@ -35,6 +37,13 @@ const Main = (props) => {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
+  };
 
   //주간 목표 설정
   const setGoal = (goal) => {
@@ -107,7 +116,7 @@ const Main = (props) => {
                 />
                 <span>
                   <p>Lv. {data.levelId}</p>
-                  <p>{data.name}</p>
+                  <p>{data.nickname}</p>
                 </span>
               </div>
               <div className={styles.border} />
@@ -165,7 +174,9 @@ const Main = (props) => {
           </div>
           <TodayCard>
             <div className={styles.todayCard}>
-              <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
+              <div className={styles.title}>
+                {date[0]}월 {date[1]}일, 오늘의 소비💸
+              </div>
               <div className={styles.amount}>
                 {settlement ? `${total}원` : "정산이 필요해요!"}
               </div>
