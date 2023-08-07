@@ -31,6 +31,9 @@ const Loading = () => {
           <Link to="/login">
             <ButtonGreen className={styles.btns} text="로그인"></ButtonGreen>
           </Link>
+          <Link to="/signup">
+            <ButtonGreen className={styles.btns} text="회원가입"></ButtonGreen>
+          </Link>
         </div>
       </div>
     </BackGround>

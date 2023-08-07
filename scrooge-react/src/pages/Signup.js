@@ -5,14 +5,16 @@ import { useDispatch } from "react-redux";
 import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/UI/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
-import styles from "./Login.module.css";
+import styles from "./Signup.module.css";
 
-const Login = ({ loginHandler }) => {
+const Signup = ({ loginHandler }) => {
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
+    nickname: "",
     email: "",
     password: "",
+    passwordcheck: "",
   });
 
   const handleChangeState = (e) => {
@@ -22,24 +24,37 @@ const Login = ({ loginHandler }) => {
     });
   };
 
+  const nicknameInput = useRef();
   const emailInput = useRef();
   const passwordInput = useRef();
+  const passwordcheckInput = useRef();
 
   const navigate = useNavigate();
-  const handleLogin = () => {
-    if (state.email.length < 5) {
+  const handleSignup = () => {
+    if (state.nickname.length < 4) {
+      nicknameInput.current.focus();
+      return;
+    }
+    if (state.email.length < 10) {
       emailInput.current.focus();
       return;
     }
-    if (state.password.length < 2) {
+    if (state.password.length < 8) {
       passwordInput.current.focus();
+      return;
+    }
+    if (state.password !== state.passwordcheck) {
+      passwordcheckInput.current.focus();
       return;
     }
 
     const obj = {
+      nickname: state.nickname,
       email: state.email,
-      password: state.password,
+      password1: state.password,
+      password2: state.passwordcheck,
     };
+
     const postData = {
       method: "POST",
       headers: {
@@ -47,40 +62,26 @@ const Login = ({ loginHandler }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/login", postData)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Login 실패");
-        }
-        return res.text();
-      })
+    fetch("http://day6scrooge.duckdns.org:8081/member/signup", postData)
+      .then((res) => res.text())
       .then((data) => {
-        const jwtToken = data;
-        sendJwtTokenToAndroid(jwtToken);
-
-        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data });
-
-        loginHandler();
         navigate("/");
-      })
-      .catch((error) => {
-        const errorDiv = document.getElementById("error");
-        errorDiv.style.display = "block";
       });
   };
-
-  function sendJwtTokenToAndroid(jwtToken) {
-    if (window.AndroidBridge) {
-      window.AndroidBridge.sendJwtTokenToAndroid(jwtToken);
-    }
-  }
 
   return (
     <BackGround>
       <div className={styles.empty} />
       <CharacterCard>
-        <div className={styles.title}>로그인</div>
-
+        <div className={styles.title}>회원가입</div>
+        <input
+          className={styles.input}
+          ref={nicknameInput}
+          name="nickname"
+          value={state.nickname}
+          placeholder="닉네임을 입력해주세요"
+          onChange={handleChangeState}
+        />
         <input
           className={styles.input}
           ref={emailInput}
@@ -98,15 +99,20 @@ const Login = ({ loginHandler }) => {
           placeholder="비밀번호를 입력해주세요"
           onChange={handleChangeState}
         />
-        <div id="error" className={styles.error}>
-          이메일과 비밀번호를 확인해주세요.
-        </div>
-        <button className={styles.missPassword}> 비밀번호를 잊으셨나요?</button>
+        <input
+          className={styles.input}
+          ref={passwordcheckInput}
+          name="passwordcheck"
+          type="password"
+          value={state.passwordcheck}
+          placeholder="비밀번호를 확인해주세요"
+          onChange={handleChangeState}
+        />
       </CharacterCard>
 
-      <ButtonWhite text="로그인" onClick={handleLogin}></ButtonWhite>
+      <ButtonWhite text="회원가입" onClick={handleSignup}></ButtonWhite>
     </BackGround>
   );
 };
 
-export default Login;
+export default Signup;
