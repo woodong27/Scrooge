@@ -15,24 +15,6 @@
   }
 }
 
-.auth_method {
-  position: relative;
-  width: 20rem;
-  text-align: left;
-  margin: 1.5rem auto 0;
-
-  & textarea {
-    background-color: var(--input);
-    resize: none;
-    padding: 1rem;
-    margin-top: 0.5rem;
-    display: block;
-    width: 18rem;
-    height: 6rem;
-    border-radius: 1rem;
-  }
-}
-
 .length {
   color: var(--input-text);
   position: absolute;
@@ -67,24 +49,51 @@
   }
 }
 
+.auth_method {
+  position: relative;
+  width: 20rem;
+  text-align: left;
+  margin: 1.5rem auto 0;
+
+  & textarea {
+    background-color: var(--input);
+    resize: none;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    display: block;
+    width: 18rem;
+    height: 7rem;
+    border-radius: 1rem;
+  }
+}
+
 .auth_img {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   margin-top: 1rem;
+  height: 10.5rem;
+  width: 22.2rem;
   white-space: nowrap;
   overflow-x: scroll;
   margin-bottom: 10rem;
 
-  & div {
-    white-space: nowrap;
-    width: 12rem;
-    height: 4rem;
+  & span {
+    color: var(--input-text);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: normal;
+    flex-flow: column;
+    text-align: center;
+    gap: 0.25rem;
+    width: 9rem;
     border-radius: 0.5rem;
     background-color: var(--input);
   }
 
   & img {
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 }

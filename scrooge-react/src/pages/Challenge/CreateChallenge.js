@@ -100,41 +100,40 @@ const CreateChallenge = () => {
       <div className={styles.auth_method}>
         <div>인증샷 예시등록(5장이 필요해요)</div>
         <div className={styles.auth_img}>
-          <div>
+          <span>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/image.png`}
+              alt="더미"
+            />
+          </span>
+          <span>
             인증 성공 예시를 추가해주세요
             <img
               src={`${process.env.PUBLIC_URL}/images/image.png`}
               alt="더미"
             />
-          </div>
-          <div>
+          </span>
+          <span>
             인증 성공 예시를 추가해주세요
             <img
               src={`${process.env.PUBLIC_URL}/images/image.png`}
               alt="더미"
             />
-          </div>
-          <div>
+          </span>
+          <span>
             인증 성공 예시를 추가해주세요
             <img
               src={`${process.env.PUBLIC_URL}/images/image.png`}
               alt="더미"
             />
-          </div>
-          <div>
+          </span>
+          <span>
             인증 성공 예시를 추가해주세요
             <img
               src={`${process.env.PUBLIC_URL}/images/image.png`}
               alt="더미"
             />
-          </div>
-          <div>
-            인증 성공 예시를 추가해주세요
-            <img
-              src={`${process.env.PUBLIC_URL}/images/image.png`}
-              alt="더미"
-            />
-          </div>
+          </span>
         </div>
       </div>
     </Fragment>
