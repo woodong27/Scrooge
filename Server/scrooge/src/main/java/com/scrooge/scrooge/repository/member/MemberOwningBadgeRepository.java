@@ -10,8 +10,7 @@ import java.util.List;
 @Repository
 public interface MemberOwningBadgeRepository extends JpaRepository<MemberOwningBadge, Long> {
 
-    @Query("SELECT mob FROM MemberOwningBadge mob WHERE mob.member.id = ?1")
-    List<MemberOwningBadge> findMemberOwningBadgesById(Long memberId);
+    List<MemberOwningBadge> findByMemberId(Long memberId);
 
     boolean existsByBadgeIdAndMemberId(Long badgeId, Long memberId);
 
