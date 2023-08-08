@@ -54,6 +54,7 @@ const PaymentAdd = ({ onCreate, date }) => {
     const minutes = String(inputDate.getMinutes()).padStart(2, "0");
     const currentDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000`;
 
+    console.log(currentDate, "얍");
     const obj = {
       usedAt: state.usedAt,
       amount: state.amount,
@@ -68,10 +69,7 @@ const PaymentAdd = ({ onCreate, date }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch(
-      `http://day6scrooge.duckdns.org:8081/payment-history${currentDate}`,
-      postData
-    )
+    fetch(`http://day6scrooge.duckdns.org:8081/payment-history`, postData)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
