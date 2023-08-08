@@ -8,7 +8,8 @@ const ArticleList = ({ props }) => {
     fetch("http://day6scrooge.duckdns.org:8081/community")
       .then((resp) => resp.json())
       .then((data) => {
-        setData(data);
+        console.log(data);
+        // setData(data);
         setData([
           {
             id: 1,
