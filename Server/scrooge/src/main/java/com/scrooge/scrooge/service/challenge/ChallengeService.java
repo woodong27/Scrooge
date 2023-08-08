@@ -180,7 +180,7 @@ public class ChallengeService {
                     challengeRespDto.setTitle(challenge.getTitle());
                     challengeRespDto.setCurrentParticipants(challenge.getChallengeParticipantList().size());
                     challengeRespDto.setMinParticipants(challenge.getMinParticipants());
-                    challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
+                    // challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
                     challengeRespDto.setPeriod(challenge.getPeriod());
 
                     return challengeRespDto;
@@ -195,7 +195,7 @@ public class ChallengeService {
         if(challenge.isPresent()) {
             ChallengeRespDto challengeRespDto = new ChallengeRespDto();
             challengeRespDto.setId(challenge.get().getId());
-            challengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
+            // challengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
             challengeRespDto.setCategory(challenge.get().getCategory());
             challengeRespDto.setTitle(challenge.get().getTitle());
             challengeRespDto.setPeriod(challenge.get().getPeriod());
