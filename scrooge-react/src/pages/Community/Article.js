@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Card from "../../components/UI/Card";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  const handleDetail = () => {};
+  const navigate = useNavigate();
+  const handleDetail = () => {
+    navigate(`/community/${props.id}`);
+  };
 
   const globalToken = useSelector((state) => state.globalToken);
 
@@ -24,13 +28,14 @@ const Article = (props) => {
       setContent(showContent.slice(0, 37) + "...");
     }
 
-    //좋아요 개수
+    //좋아요 싫어요 개수
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good-count`
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/review-count`
     )
       .then((resp) => resp.json())
       .then((data) => {
         setGoodCnt(data.goodCount);
+        setBadCnt(data.badCount);
       })
       .catch((error) => console.log(error));
     //좋아요 여부
@@ -49,14 +54,6 @@ const Article = (props) => {
       .then((data) => {
         setGood(data.good);
       });
-
-    //싫어요 개수
-    fetch(`http://day6scrooge.duckdns.org:8081/community/${props.id}/bad-count`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setBadCnt(data.badCount);
-      })
-      .catch((error) => console.log(error));
 
     const BadCntData = {
       method: "GET",
@@ -170,14 +167,16 @@ const Article = (props) => {
           />
           <div className={styles.author}>{props.memberNickname}</div>
         </div>
-        <div className={styles.detail} onClick={handleDetail()}>
+        <div className={styles.detail} onClick={handleDetail}>
           <img
             className={styles.picture}
             // imgAddress
             src={`${process.env.PUBLIC_URL}/images/dummy.png`}
             alt="사진"
           />
-          <div className={styles.content}>{showContent}</div>
+          <div className={styles.content}>
+            {showContent} <button></button>
+          </div>
         </div>
         <div className={styles.line}>
           <div className={styles.reaction}>
