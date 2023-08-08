@@ -1,7 +1,6 @@
 package com.scrooge.scrooge.controller.community;
 
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.dto.communityDto.ArticleGoodCountDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.service.community.CommunityGoodService;
@@ -75,13 +74,4 @@ public class CommunityGoodController {
         ArticleGoodDto articleGoodDto = communityGoodService.getCommunityGoodCheck(articleId, jwtTokenProvider.extractMemberId(token));
         return ResponseEntity.ok(articleGoodDto);
     }
-//
-//    // 글 전체 환호 수 조회
-    @Operation(summary = "커뮤니티 글 좋아요 전체 수 조회")
-    @GetMapping("/{articleId}/good-count")
-    public ResponseEntity<?> getCommunityGoodCount(@PathVariable("articleId")Long articleId) {
-        ArticleGoodCountDto articleGoodCountDto = communityGoodService.getCommunityGoodCount(articleId);
-        return ResponseEntity.ok(articleGoodCountDto);
-    }
-
 }
