@@ -46,7 +46,7 @@ public class StartChallengeService {
         if(challenge.isPresent()) {
             MyChallengeRespDto myChallengeRespDto = new MyChallengeRespDto();
             myChallengeRespDto.setId(challenge.get().getId());
-            myChallengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
+            // myChallengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
             myChallengeRespDto.setStartDate(challenge.get().getStartDate());
             myChallengeRespDto.setEndDate(challenge.get().getEndDate());
             myChallengeRespDto.setPeriod(challenge.get().getPeriod());
