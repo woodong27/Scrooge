@@ -27,7 +27,7 @@ public class StartChallengeController {
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     @Operation(summary = "사용자가 참여한 시작된 챌린지에 대한 정보 조회 API")
-    @GetMapping("/{challengeId}/my-challenge")
+    @GetMapping("/{challengeId}/start/my-challenge")
     public ResponseEntity<MyChallengeRespDto> getMyStartedChallenge(@PathVariable("challengeId") Long challengeId) throws IllegalAccessException {
         MyChallengeRespDto myChallengeRespDto = startChallengeService.getMyStartedChallenge(challengeId);
         return ResponseEntity.ok(myChallengeRespDto);
