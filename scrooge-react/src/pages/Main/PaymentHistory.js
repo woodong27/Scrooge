@@ -91,10 +91,6 @@ const PaymentHistory = ({
         .toString()
         .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
 
-      const obj = {
-        date: formattedDate,
-      };
-
       const postData = {
         method: "GET",
         headers: {
@@ -221,7 +217,8 @@ const PaymentHistory = ({
             </div>
             <button
               onClick={handleOpenModal}
-              className={settlement ? styles.finishBtn : styles.btn}>
+              className={settlement ? styles.finishBtn : styles.btn}
+            >
               {settlement ? "정산 완료" : "정산하기"}
             </button>
           </div>
