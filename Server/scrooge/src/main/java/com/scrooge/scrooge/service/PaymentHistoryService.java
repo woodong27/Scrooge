@@ -12,6 +12,7 @@ import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,6 +47,13 @@ public class PaymentHistoryService {
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
+
+        if(paymentHistoryDto.getPaidAt() == null) {
+            paymentHistory.setPaidAt(LocalDateTime.now());
+        }
+        else {
+            paymentHistory.setPaidAt(paymentHistoryDto.getPaidAt());
+        }
 
         /* 연결 */
 
@@ -208,6 +217,7 @@ public class PaymentHistoryService {
 
         return todayTotalConsumption;
     }
+
 
 
 }
