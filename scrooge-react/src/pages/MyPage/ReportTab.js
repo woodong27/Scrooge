@@ -1,9 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styles from "./ReportTab.module.css";
 import ReportWeek from "./ReportWeek";
 import ReportMonth from "./ReportMonth";
 
-export default function ReportTab() {
+const ReportTab = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+  const [monthlyData, setMonthlyData] = useState([]);
+
+  useEffect(() => {
+    fetchMonthlyData("2023-08");
+  },[]);
+
+  const fetchMonthlyData = (dateTime) => {
+    const postData = {
+      method: "GET",
+      headers:{
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(`http://day6scrooge.duckdns.org:8081/payment-history/month/${dateTime}`, postData)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("데이터:",data)
+        console.log(data.paitAt)
+        setMonthlyData(data);
+      })
+      .catch((error) => console.log(error));
+  }
+
+
+
+
+
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
@@ -51,4 +81,6 @@ export default function ReportTab() {
       </div>
     </div>
   )
-}
+};
+
+export default ReportTab;
