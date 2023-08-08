@@ -38,9 +38,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     private List<ArticleComment> articleComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ArticleGood> articleGoods = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ArticleBad> articleBads = new ArrayList<>();
 }
