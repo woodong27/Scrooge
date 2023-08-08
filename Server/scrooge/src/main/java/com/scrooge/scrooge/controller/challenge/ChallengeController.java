@@ -27,7 +27,7 @@ public class ChallengeController {
 
     // 챌린지를 생성하는 API
     @Operation(summary = "챌린지 생성")
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping/*(consumes = "multipart/form-data")*/
     public ResponseEntity<ChallengeReqDto> createChallenge(
             @RequestHeader("Authorization") String tokenHeader,
             ChallengeReqDto challengeReqDto
