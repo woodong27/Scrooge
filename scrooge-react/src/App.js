@@ -13,6 +13,8 @@ import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
 import MyPage from "./pages/MyPage/MyPage";
 import Settings from "./pages/MyPage/Settings";
 import CreateChallenge from "./pages/Challenge/CreateChallenge";
+import Community from "./pages/Community/Community";
+import Detail from "./pages/Community/Detail";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -31,6 +33,8 @@ function App() {
           <>
             <Route path="/" element={<Main onLogout={logoutHandler} />} />
             <Route path="/quest" element={<Quest />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/:id" element={<Detail />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
@@ -56,6 +60,8 @@ function App() {
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
             <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/quest" element={<Quest />} />
+            <Route path="/community" element={<Community />} />
           </>
         )}
       </Routes>
