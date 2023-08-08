@@ -20,7 +20,7 @@ const ChallengeItem = (props) => {
         </div>
       </div>
       <Link to={`/challenge/${props.id}`}>
-        <button>참여하기</button>
+        <button>{props.text}</button>
       </Link>
     </div>
   );

@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 import styles from "./CreateChallenge.module.css";
 import Header from "../../components/Header";
 import Chips from "../../components/UI/Chips";
 import backImg from "../../assets/back.png";
-import ButtonBlue from "../../components/Button/ButtonBlue";
 
 const CreateChallenge = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+
   const period = ["1주", "2주", "3주", "한달"];
   const category = ["식비", "교통", "쇼핑", "기타"];
   const peoples = ["4명", "6명", "8명", "10명"];
-  const [selectPeriod, setSelectPeriod] = useState();
+
+  const [selectPeriod, setSelectPeriod] = useState("1주");
   const [selectCategory, setSelectCategory] = useState();
   const [selectPeoples, setSelectPeoples] = useState();
 
@@ -27,6 +31,33 @@ const CreateChallenge = () => {
   };
   const introduceChangeHandler = (event) => {
     setIntroduce(event.target.value);
+  };
+
+  const CreateChallengeHandler = () => {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: globalToken,
+    };
+
+    axios
+      .post(
+        "http://day6scrooge.duckdns.org:8081/challenge",
+        JSON.stringify({
+          title: title,
+          category: selectCategory,
+          minParticipants: selectPeoples,
+          authMethod: authMethod,
+          period: selectPeriod,
+          description: introduce,
+        }),
+        headers
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
   return (
@@ -48,7 +79,7 @@ const CreateChallenge = () => {
       <div className={styles.setup}>
         <div className={styles.item}>
           챌린지 기간
-          <div>
+          <div id="period">
             {period.map((e, i) => (
               <Chips
                 key={i}
@@ -155,7 +186,10 @@ const CreateChallenge = () => {
         <div className={styles.length}>{introduce.length}/100</div>
       </div>
 
-      <ButtonBlue>챌린지 만들기</ButtonBlue>
+      <div className={styles.primary} onClick={CreateChallengeHandler}>
+        챌린지 만들기
+        <div className={styles.shadow}></div>
+      </div>
     </div>
   );
 };
