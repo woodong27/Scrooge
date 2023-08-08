@@ -3,9 +3,44 @@ import styles from "./ReportTab.module.css";
 import ReportWeek from "./ReportWeek";
 import ReportMonth from "./ReportMonth";
 
-
+// 추가
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ReportTab = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+  const [monthlyData, setMonthlyData] = useState([]);
+
+  useEffect(() => {
+    fetchMonthlyData("2023-08");
+  },[]);
+
+  const fetchMonthlyData = (dateTime) => {
+    const postData = {
+      method: "GET",
+      headers:{
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(`http://day6scrooge.duckdns.org:8081/payment-history/month/${dateTime}`, postData)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("데이터:",data)
+        setMonthlyData(data);
+      })
+      .catch((error) => console.log(error));
+  }
+
+
+
+
+
+
+
+
+
+
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
