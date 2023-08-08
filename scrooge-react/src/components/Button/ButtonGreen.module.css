@@ -1,0 +1,29 @@
+.primary {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 330px;
+  height: 65px;
+  border-radius: 10px;
+  border: 1.5px solid #000;
+  background-color: var(--green);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shadow {
+  margin: 0 auto;
+  position: relative;
+  width: 330px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1.5px solid #000;
+  font-size: 24px;
+  cursor: pointer;
+  background: white;
+}
+
+.card {
+  margin: 10px 0 20px 0;
+}

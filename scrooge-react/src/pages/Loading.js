@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 import styles from "./Loading.module.css";
-import ButtonGreen from "../components/UI/ButtonGreen";
+import ButtonGreen from "../components/Button/ButtonGreen";
 import BackGround from "../components/BackGround";
 
-const Loading = (props) => {
+const Loading = () => {
   return (
     <BackGround>
       <div className={styles.body}>
@@ -25,10 +27,13 @@ const Loading = (props) => {
             src={`${process.env.PUBLIC_URL}/images/loading-cats.png`}
             alt="고양이들"
           />
-          <ButtonGreen
-            text="지금 시작하기"
-            onClick={props.onLogin}
-          ></ButtonGreen>
+
+          <Link to="/login">
+            <ButtonGreen className={styles.btns} text="로그인"></ButtonGreen>
+          </Link>
+          <Link to="/signup">
+            <ButtonGreen className={styles.btns} text="회원가입"></ButtonGreen>
+          </Link>
         </div>
       </div>
     </BackGround>

@@ -5,11 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ArticleGoodRepository extends JpaRepository<ArticleGood, Long> {
-    @Query("select ag from ArticleGood ag where ag.article.id = :articleId and ag.member.id = :memberId")
-    ArticleGood findByArticleIdAndMemberId(Long articleId, Long memberId);
+    Optional<ArticleGood> findByArticleIdAndMemberId(Long articleId, Long memberId);
 
-    @Query("SELECT COUNT(ag) FROM ArticleGood ag WHERE ag.article.id = :articleId")
+
+    void deleteByArticleIdAndMemberId(Long articleId, Long memberId);
+
+    boolean existsByArticleIdAndMemberId(Long articleId, Long memberId);
+
     Integer countByArticleId(Long articleId);
 }

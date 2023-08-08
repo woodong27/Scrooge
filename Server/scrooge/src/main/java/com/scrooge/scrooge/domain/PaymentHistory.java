@@ -18,7 +18,6 @@ public class PaymentHistory {
     private Long id;
 
     @Column(name = "paid_at")
-    @CreationTimestamp
     private LocalDateTime paidAt;
 
     @Column(length = 20)

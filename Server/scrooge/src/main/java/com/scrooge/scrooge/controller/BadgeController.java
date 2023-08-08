@@ -48,11 +48,22 @@ public class BadgeController {
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
-        if (memberOwningBadgeRepository.existsByBadgeIdAndMemberId(badgeId, memberId)) {
+        if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(badgeId, memberId)) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("해당 뱃지를 소유하고 있지 않습니다.");
         }
 
         return ResponseEntity.ok(badgeService.selectMainBadge(badgeId, memberId));
     }
 
+    @Operation(summary = "멤버가 소유하고 있는 뱃지 목록")
+    @GetMapping("/member")
+    public ResponseEntity<?> getMemberOwningBadges(@RequestHeader("Authorization")String header) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        List<BadgeDto> badgeDtos = badgeService.getMemberOwningBadges(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(badgeDtos);
+    }
 }

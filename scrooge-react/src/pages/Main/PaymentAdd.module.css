@@ -1,7 +1,7 @@
 .box {
   position: relative;
   width: 294px;
-  height: 80px;
+  height: 112px;
   margin: 10px 0;
 
   background: var(--input);
@@ -15,20 +15,29 @@
   left: 10px;
 }
 
-.amount {
-  position: absolute;
-  margin: 16px 0;
-  width: 180px;
-  bottom: 0;
-  left: 10px;
-}
 .paidAt {
   position: absolute;
   margin: 16px 0;
   top: 0;
-  width: 72px;
-  right: 10px;
+  width: 180px;
+  left: 10px;
   color: #61646b;
+}
+
+.amount {
+  position: absolute;
+  margin: 16px 0;
+  top: 32px;
+  width: 180px;
+  left: 10px;
+}
+
+.cardName {
+  position: absolute;
+  margin: 16px 0;
+  bottom: 0;
+  width: 180px;
+  left: 10px;
 }
 
 .btn {

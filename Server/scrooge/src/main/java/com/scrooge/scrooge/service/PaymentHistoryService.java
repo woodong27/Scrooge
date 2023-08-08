@@ -2,6 +2,7 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.PaymentHistory;
 import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.dto.DateTimeReqDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
@@ -10,6 +11,8 @@ import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -19,6 +22,8 @@ import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,6 +48,13 @@ public class PaymentHistoryService {
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
 
+        if(paymentHistoryDto.getPaidAt() == null) {
+            paymentHistory.setPaidAt(LocalDateTime.now());
+        }
+        else {
+            paymentHistory.setPaidAt(paymentHistoryDto.getPaidAt());
+        }
+
         /* 연결 */
 
         // memberId에 맞는 member 가져오기
@@ -66,8 +78,36 @@ public class PaymentHistoryService {
     }
 
     // userId에 따른 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId) {
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId, String dateTime) {
+
+        // 날짜 문자열을 LocalDate로 변환하기
+        LocalDate date = LocalDate.parse(dateTime);
+
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
+
+        List<PaymentHistory> filteredPaymentHistories = paymentHistories.stream()
+                .filter(paymentHistory -> paymentHistory.getPaidAt().toLocalDate().equals(date))
+                .collect(Collectors.toList());
+
+        return filteredPaymentHistories.stream()
+                .map(PaymentHistoryDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 사용자 별 월 별 소비 내역 조회
+    public List<PaymentHistoryDto> getPaymentHistoryPerMonth(Long memberId, String dateStr) {
+
+        // 입력받은 날짜 문자열을 LocalDate로 변환
+        LocalDate date = LocalDate.parse(dateStr + "-01");
+
+        // 해당 월의 시작일과 종료일 계산하기
+        LocalDate startDate = YearMonth.of(date.getYear(), date.getMonth()).atDay(1);
+        LocalDate endDate = YearMonth.of(date.getYear(), date.getMonth()).atEndOfMonth();
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, startDateTime, endDateTime);
         return paymentHistories.stream()
                 .map(PaymentHistoryDto::new)
                 .collect(Collectors.toList());
@@ -90,6 +130,8 @@ public class PaymentHistoryService {
         if(paymentHistory == null) return null;
         return new PaymentHistoryDto(paymentHistory);
     }
+
+
 
     // 소비내역을 수정하는 비즈니스 로직
     public PaymentHistory updatePaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) throws AccessDeniedException {
@@ -175,4 +217,7 @@ public class PaymentHistoryService {
 
         return todayTotalConsumption;
     }
+
+
+
 }

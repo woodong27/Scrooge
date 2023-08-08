@@ -1,44 +1,19 @@
-import { useState } from "react";
-import Modal from "../../components/UI/Modal";
+import React, { useState, useEffect } from "react";
 import styles from "./PaymentItem.module.css";
 
-// const serverTimezoneOffset = 540;
-
 const PaymentItem = (props) => {
-  // const serverTime = new Date(props.paidAt);
-  // const localTime = new Date(serverTime.getTime() + serverTimezoneOffset * 60 * 1000);
-  const [modal, setModal] = useState(false);
-
-  console.log(props);
-  const handleOpenModal = () => {
-    setModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setModal(false);
-  };
-
+  const [amount, setAmount] = useState();
+  useEffect(() => {
+    setAmount(props.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  }, [props]);
   return (
     <div className={styles.box}>
       <p className={styles.usedAt}>{props.usedAt}</p>
-      <p className={styles.amount}>{props.amount}</p>
+      <p className={styles.amount}>{amount}</p>
       <p className={styles.paidAt}>
         {props.paidAt.split("T")[1].split(".")[0]}
       </p>
-      <button className={styles.btn} onClick={handleOpenModal}>
-        수정
-      </button>
-      {modal && (
-        <Modal
-          onEdit={props.onEdit}
-          onCloseModal={handleCloseModal}
-          usedAt={props.usedAt}
-          amount={props.amount}
-          paidAt={props.paidAt}
-          cardName={props.cardName}
-          id={props.id}
-        />
-      )}
+      <p className={styles.cardName}>{props.cardName}</p>
     </div>
   );
 };

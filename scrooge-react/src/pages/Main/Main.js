@@ -1,37 +1,103 @@
-import { useEffect, Fragment, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import CharacterCard from "../../components/UI/CharacterCard";
-import TodayCard from "../../components/UI/TodayCard";
+import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
+  const globalToken = useSelector((state) => state.globalToken);
+
   const [data, setData] = useState([]);
+  const [total, setTotal] = useState();
+  const [date, setDate] = useState([]);
+
+  const [settlement, setSettlement] = useState(false);
+
+  const [weeklyGoal, setWeeklyGoal] = useState();
+  const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
+    getCurrentDate();
     const postData = {
       method: "GET",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
     };
     fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        setWeeklyGoal(data.weeklyGoal);
+        setWeeklyConsum(data.weeklyConsum);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
+  };
+
+  //주간 목표 설정
+  const setGoal = (goal) => {
+    const obj = { weeklyGoal: goal };
+    const postData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+      body: JSON.stringify(obj),
+    };
+    fetch(`http://day6scrooge.duckdns.org:8081/member/weekly-goal`, postData)
+      .then((res) => res.json())
+      .then((data) => {
+        setWeeklyGoal(data.weeklyGoal);
+      })
+      .then(console.log);
+  };
+
+  const getTotal = () => {
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
+    fetch(
+      "http://day6scrooge.duckdns.org:8081/payment-history/today-total",
+      postData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setTotal(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
   const [isConsum, setIsConsum] = useState(false);
 
   const consumTrueHandler = () => {
     setIsConsum(true);
   };
+
   const consumFalseHandler = () => {
     setIsConsum(false);
+  };
+
+  const settlementTrueHandler = () => {
+    setSettlement(true);
+  };
+
+  const settlementFalseHandler = () => {
+    setSettlement(false);
   };
 
   return (
@@ -49,7 +115,7 @@ const Main = (props) => {
                 />
                 <span>
                   <p>Lv. {data.levelId}</p>
-                  <p>{data.name}</p>
+                  <p>{data.nickname}</p>
                 </span>
               </div>
               <div className={styles.border} />
@@ -105,18 +171,33 @@ const Main = (props) => {
               alt="고리"
             />
           </div>
-          <TodayCard>
+          <Card height={220}>
             <div className={styles.todayCard}>
-              <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
-              <div className={styles.amount}>정산이 필요해요!</div>
+              <div className={styles.title}>
+                {date[0]}월 {date[1]}일, 오늘의 소비💸
+              </div>
+              <div className={styles.amount}>
+                {settlement ? `${total}원` : "정산이 필요해요!"}
+              </div>
             </div>
-            <ProgressBar></ProgressBar>
-          </TodayCard>
+            <ProgressBar
+              goal={weeklyGoal}
+              consum={weeklyConsum}
+              setGoal={setGoal}
+            ></ProgressBar>
+          </Card>
         </div>
       )}
       {isConsum && (
         <div>
-          <PaymentHistory />
+          <PaymentHistory
+            total={total}
+            getTotal={getTotal}
+            consumFalseHandler={consumFalseHandler}
+            settlement={settlement}
+            settlementTrueHandler={settlementTrueHandler}
+            settlementFalseHandler={settlementFalseHandler}
+          />
         </div>
       )}
     </BackGround>

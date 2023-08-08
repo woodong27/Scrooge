@@ -2,7 +2,13 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.community.Article;
+import com.scrooge.scrooge.domain.community.ArticleBad;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
+import com.scrooge.scrooge.dto.communityDto.ArticleReviewCountDto;
+import com.scrooge.scrooge.dto.member.ArticleMemberDto;
+import com.scrooge.scrooge.repository.community.ArticleBadRepository;
+import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
@@ -19,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,19 +41,25 @@ public class CommunityService {
     private final FileUploadProperties fileUploadProperties;
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
     private final QuestService questService;
+    private final ArticleGoodRepository articleGoodRepository;
+    private final ArticleBadRepository articleBadRepository;
+
 
     // 커뮤니티 글을 등록하는 메서드
     @Transactional
-    public void createArticle(ArticleDto articleDto, MultipartFile img) {
+    public ArticleDto createArticle(String content, MultipartFile img, Long memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
 
         Article article = new Article();
-
-        article.setContent(articleDto.getContent());
-        article.setMember(memberRepository.findById(articleDto.getMemberId()).orElse(null));
+        article.setContent(content);
+        article.setMember(member);
+        article.setCreatedAt(LocalDateTime.now());
 
         // 게시글 작성 퀘스트
-        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(articleDto.getMemberId(), 4L)) {
-            questService.completeQuest(4L, articleDto.getMemberId());
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 4L)) {
+            questService.completeQuest(4L, memberId);
         }
 
         // 이미지 파일 등록 구현
@@ -69,9 +82,9 @@ public class CommunityService {
         }
 
         article.setImgAdress(filePath.toString());
-
         articleRepository.save(article); // DB에 article 저장
 
+        return new ArticleDto(article);
     }
 
     // 커뮤니티 전체 글을 조회하는 API
@@ -79,72 +92,42 @@ public class CommunityService {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         List<Article> articles = articleRepository.findAll(sort);
         return articles.stream()
-                .map(article -> {
-                    ArticleDto articleDto = new ArticleDto();
-                    articleDto.setId(article.getId());
-                    articleDto.setContent(article.getContent());
-                    articleDto.setImgAdress(article.getImgAdress());
-                    articleDto.setCreatedAt(article.getCreatedAt()); //필요X?
-
-                    // user 관련 정보
-                    articleDto.setMemberId(article.getMember().getId()); //필요X?
-                    articleDto.setNickname(article.getMember().getNickname());
-                    articleDto.setAvatarImgAddress(article.getMember().getMainAvatar().getImgAddress());
-
-                    return articleDto;
-                })
+                .map(ArticleDto::new)
                 .collect(Collectors.toList());
     }
 
     // 커뮤니티 글을 상세 조회하는 API
-    public ArticleDto getCommunityArticle(Long articleId) throws IllegalAccessException {
-        Optional<Article> article = articleRepository.findById(articleId);
+    public ArticleDto getCommunityArticle(Long articleId) throws NotFoundException {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
-        if(article.isPresent()) {
-            ArticleDto articleDto = new ArticleDto();
-            articleDto.setId(article.get().getId());
-            articleDto.setContent(article.get().getContent());
-            articleDto.setImgAdress(article.get().getImgAdress());
-            articleDto.setCreatedAt(article.get().getCreatedAt());
-
-            // user 관련 정보
-            articleDto.setMemberId(article.get().getMember().getId()); // 필요X?
-            articleDto.setNickname(article.get().getMember().getNickname());
-            articleDto.setAvatarImgAddress(article.get().getMember().getMainAvatar().getImgAddress());
-
-            return articleDto;
-        }
-        else {
-            throw new IllegalAccessException("Article not found with ID: " + articleId);
-        }
-
+        return new ArticleDto(article);
     }
 
     // 커뮤니티 글을 수정하는 API
-    public void updateCommunityArticle(ArticleDto articleDto) {
-        Optional<Article> article = articleRepository.findById(articleDto.getId());
+    public ArticleDto updateCommunityArticle(Long articleId, String content) throws NotFoundException {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
 
-        // 변경사항 반영 => 내용만 수정 가능
-        if(article.isPresent()){
-            article.get().setContent(articleDto.getContent());
-            articleRepository.save(article.get());
-        } else {
-            throw new NotFoundException("해당 글이 존재하지 않습니다.");
-        }
+        article.setContent(content);
+        articleRepository.save(article);
 
+        return new ArticleDto(article);
     }
 
     // 커뮤니티 글을 삭제하는 API
-    public void deleteCommunityArticle(Long articleId) {
-        Optional<Article> article = articleRepository.findById(articleId);
+    public void deleteCommunityArticle(Long articleId) throws NotFoundException {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
 
-        if(article.isPresent()) {
-            Article article1 = article.get();
-            articleRepository.delete(article1);
-        } else {
-            throw new NotFoundException("해당 글이 존재하지 않습니다.");
-        }
+        articleRepository.delete(article);
     }
 
+    public ArticleReviewCountDto countArticleReview(Long articleId) {
+        Integer goodCount = articleGoodRepository.countByArticleId(articleId);
+        Integer badCount = articleBadRepository.countByArticleId(articleId);
+
+        return new ArticleReviewCountDto(goodCount, badCount);
+    }
 
 }
