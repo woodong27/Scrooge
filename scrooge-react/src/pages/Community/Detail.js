@@ -17,6 +17,7 @@ const Detail = () => {
   //유저가 게시글에 좋아요 싫어요 눌렀는지
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     console.log(params.id);
@@ -72,6 +73,10 @@ const Detail = () => {
         setBad(data.bad);
       });
   }, []);
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
 
   const handleGood = () => {
     const goodData = {
@@ -155,6 +160,32 @@ const Detail = () => {
       });
   };
 
+  const obj = {
+    id: params.id,
+    content: comment,
+  };
+  const handleSend = () => {
+    console.log(comment);
+    const postData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+      body: JSON.stringify(obj),
+    };
+
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/community/${params.id}/comment`,
+      postData
+    )
+      .then((res) => res.text())
+      .then((data) => {
+        setBadCnt((prev) => prev - 1);
+        setBad(false);
+      });
+  };
+
   return (
     <div className={styles.box}>
       <QuestHeader
@@ -163,7 +194,7 @@ const Detail = () => {
         color={"#A2D660"}
       ></QuestHeader>
       {data ? (
-        <div>
+        <div className={styles.frame}>
           <div className={styles.authorInfo}>
             <img
               className={styles.character}
@@ -228,6 +259,18 @@ const Detail = () => {
       ) : (
         <p>Loading...</p>
       )}
+      <div className={styles.addFrame}>
+        <input
+          className={styles.add}
+          type="text"
+          value={comment}
+          onChange={handleCommentChange}
+          placeholder="새로운 댓글을 작성해주세요."
+        />
+        <button className={styles.sendBtn} onClick={handleSend}>
+          전송
+        </button>
+      </div>
     </div>
   );
 };
