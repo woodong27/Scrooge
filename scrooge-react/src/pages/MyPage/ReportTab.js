@@ -3,7 +3,9 @@ import styles from "./ReportTab.module.css";
 import ReportWeek from "./ReportWeek";
 import ReportMonth from "./ReportMonth";
 
-export default function ReportTab() {
+
+
+const ReportTab = () => {
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
@@ -51,4 +53,6 @@ export default function ReportTab() {
       </div>
     </div>
   )
-}
+};
+
+export default ReportTab;

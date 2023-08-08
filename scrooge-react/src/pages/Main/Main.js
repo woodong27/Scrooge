@@ -200,7 +200,7 @@ const Main = (props) => {
             settlementFalseHandler={settlementFalseHandler}
           />
         </div>
-      )}
+      )}   
     </BackGround>
   );
 };

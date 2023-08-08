@@ -1,7 +1,8 @@
 import { BarChart, Bar, XAxis} from 'recharts';
 import styles from "./ReportChart.module.css";
 
-// name을 이번주 해당 날짜로 불러와야 함
+
+
 // 금액 또한 해당 날짜에 정산된 금액으로 불러와져야 함 
 
 const ReportChart = ({ currentDate }) => {
@@ -12,18 +13,15 @@ const ReportChart = ({ currentDate }) => {
     labelDate.setDate(startDate.getDate() + i);
     const month = (labelDate.getMonth() + 1).toString().padStart(1, "0");
     const day = labelDate.getDate().toString().padStart(1,"0");
-    // const weekday=['일','월','화','수','목','금','토'][labelDate.getDay()];
     data.push({
-      // name: `${month}/${day}/${weekday}`,
       name: `${month}/${day}`,
       amount: 5000,
     });
   }
 
-
-
   const avgAmt = data.reduce((acc, cur) => acc + cur.amount, 0) / data.length;
   const minAmt = data.reduce((min, cur) => (cur.amount < min ? cur.amount : min ), data[0].amount);
+  
   return (
     <div>
       <div className={styles.reportContent}>
@@ -48,6 +46,11 @@ const ReportChart = ({ currentDate }) => {
           <Bar dataKey="amount" fill="#A2D660" />
           <XAxis dataKey="name" />
         </BarChart>
+      </div>
+
+      <div className={styles.cardContainer}>
+        <div>카테고리 카드1</div>
+        <div>카테고리 카드2</div>
       </div>
     </div>
   );
