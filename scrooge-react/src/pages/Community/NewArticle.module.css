@@ -1,0 +1,59 @@
+.box {
+  width: 94vw;
+  display: flex;
+  margin: 0 auto;
+}
+
+.character {
+  width: 80px;
+  position: absolute;
+  top: 120px;
+  left: 16px;
+}
+
+.title {
+  width: 200px;
+  position: absolute;
+  top: 156px;
+  left: 108px;
+  text-align: left;
+}
+
+.content {
+  position: absolute;
+  top: 200px;
+  left: 28px;
+  width: 296px;
+  height: 260px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+.photo {
+  position: absolute;
+  top: 502px;
+  left: 52px;
+  display: flex;
+  align-items: center;
+  background-color: #dff4ff;
+  padding: 5px 20px;
+  border-radius: 10px;
+  & .text {
+    margin-left: 10px;
+    color: #19a3f0;
+  }
+}
+
+.upload {
+  position: absolute;
+  top: 502px;
+  left: 220px;
+  display: flex;
+  align-items: center;
+  color: #3cbd51;
+
+  background-color: #dbffe1;
+  padding: 5px 20px;
+  border-radius: 10px;
+}
