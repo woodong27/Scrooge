@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styles from "./ReportTab.module.css";
 import ReportWeek from "./ReportWeek";
 import ReportMonth from "./ReportMonth";
-
-// 추가
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 
 const ReportTab = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -27,15 +24,11 @@ const ReportTab = () => {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("데이터:",data)
+        console.log(data.paitAt)
         setMonthlyData(data);
       })
       .catch((error) => console.log(error));
   }
-
-
-
-
-
 
 
 

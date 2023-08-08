@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BarChart, Bar, XAxis} from 'recharts';
 import styles from "./ReportWeek.module.css";
 
-// 금액 또한 해당 날짜에 정산된 금액으로 불러와져야 함 
 const ReportWeek = () => {
   const [startDate, setStartDate] = useState(new Date());
 
@@ -41,17 +40,15 @@ const ReportWeek = () => {
   
   return (
     <div>
+      {/* 날짜 이동 */}
       <div className={styles.weekDays}>
         <button onClick={handleLastWeek}>
-        {/* <button> */}
           <img
             src={`${process.env.PUBLIC_URL}/images/left.svg`}
             alt="이전"/>
         </button>
-        {/* 소비 범위 */}
         <h3>{`${startPoint.getMonth() + 1}월 ${startPoint.getDate()}일 ~ ${endPoint.getMonth() + 1}월 ${endPoint.getDate()}일`}</h3>
         <button onClick={handleNextWeek}>
-        {/* <button> */}
           <img
               src={`${process.env.PUBLIC_URL}/images/right.svg`}
               alt="다음"
@@ -59,25 +56,15 @@ const ReportWeek = () => {
         </button>
       </div>
 
-
-
-
-
       {/* 소비 요약 */}
       <div className={styles.reportContent}>
         <div className={styles.weekAvg}>
           <div>평균소비금액</div>
-          <div>
-            <span><b>{Math.floor(avgAmt).toLocaleString()}</b></span>
-            <span> 원</span>
-          </div>
+          <div><b>{Math.floor(avgAmt).toLocaleString()}</b> 원</div>
         </div>
         <div className={styles.weekMax}>
           <div>최대절약금액</div>
-          <div>
-            <span><b>{minAmt.toLocaleString()}</b></span>
-            <span> 원</span>
-          </div>
+          <div><b>{minAmt.toLocaleString()}</b> 원</div>
         </div>
       </div>
 
