@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Card from "../../components/UI/Card";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  const handleDetail = () => {};
+  // const navigate = useNavigate();
+  // const handleDetail = () => {
+  //   console.log(props.id);
+  //   navigate(`/community/${props.id}`);
+  // };
 
   const globalToken = useSelector((state) => state.globalToken);
 
@@ -24,57 +29,51 @@ const Article = (props) => {
       setContent(showContent.slice(0, 37) + "...");
     }
 
-    //좋아요 개수
+    //좋아요 싫어요 개수
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good-count`
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/review-count`
     )
       .then((resp) => resp.json())
       .then((data) => {
         setGoodCnt(data.goodCount);
-      })
-      .catch((error) => console.log(error));
-    //좋아요 여부
-    const goodCntData = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-    };
-    fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
-      goodCntData
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setGood(data.good);
-      });
-
-    //싫어요 개수
-    fetch(`http://day6scrooge.duckdns.org:8081/community/${props.id}/bad-count`)
-      .then((resp) => resp.json())
-      .then((data) => {
         setBadCnt(data.badCount);
       })
       .catch((error) => console.log(error));
-
-    const BadCntData = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-    };
-    //싫어요 조회
-    fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
-      BadCntData
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setBad(data.bad);
-      });
   }, []);
+
+  //좋아요 여부
+  const goodCntData = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: globalToken,
+    },
+  };
+  fetch(
+    `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+    goodCntData
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      setGood(data.good);
+    });
+
+  const BadCntData = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: globalToken,
+    },
+  };
+  //싫어요 조회
+  fetch(
+    `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+    BadCntData
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      setBad(data.bad);
+    });
 
   const handleGood = () => {
     const goodData = {
@@ -170,15 +169,19 @@ const Article = (props) => {
           />
           <div className={styles.author}>{props.memberNickname}</div>
         </div>
-        <div className={styles.detail} onClick={handleDetail()}>
-          <img
-            className={styles.picture}
-            // imgAddress
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="사진"
-          />
-          <div className={styles.content}>{showContent}</div>
-        </div>
+        <Link to={`/community/${props.id}`}>
+          <div className={styles.detail}>
+            <img
+              className={styles.picture}
+              // imgAddress
+              src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+              alt="사진"
+            />
+            <div className={styles.content}>
+              {showContent} <button></button>
+            </div>
+          </div>
+        </Link>
         <div className={styles.line}>
           <div className={styles.reaction}>
             {good ? (
@@ -219,7 +222,6 @@ const Article = (props) => {
             className={styles.comment}
             src={`${process.env.PUBLIC_URL}/images/comment.svg`}
             alt="댓글"
-            onClick={handleDetail}
           />
         </div>
       </Card>

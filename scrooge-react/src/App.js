@@ -35,6 +35,7 @@ function App() {
             <Route path="/quest" element={<Quest />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/:id" element={<Detail />} />
+            <Route path="/community/detail" element={<Detail />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
@@ -62,6 +63,7 @@ function App() {
             <Route path="/challenge/my" element={<ChallengeDetail />} />
             <Route path="/quest" element={<Quest />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/community/:id" element={<Detail />} />
           </>
         )}
       </Routes>
