@@ -99,7 +99,7 @@ const PaymentHistory = ({
       };
 
       fetch(
-        `http://day6scrooge.duckdns.org:8081/payment-history/${formattedDate}`,
+        `http://day6scrooge.duckdns.org:8081/payment-history/date/${formattedDate}`,
         postData
       )
         .then((resp) => resp.json())
@@ -207,7 +207,7 @@ const PaymentHistory = ({
             ) : (
               <p>!!소비 내역이 없습니다!!</p>
             )}
-            <PaymentAdd onCreate={onCreate} />
+            <PaymentAdd onCreate={onCreate} date={date} />
             <div className={styles.total}>
               {origin || origin === 0
                 ? `총합: ${origin
