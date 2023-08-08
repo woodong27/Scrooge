@@ -76,4 +76,11 @@ public class BadgeService {
 
         memberOwningBadgeRepository.save(memberOwningBadge);
     }
+
+    public List<BadgeDto> getMemberOwningBadges(Long memberId) {
+        return memberOwningBadgeRepository.findByMemberId(memberId).stream()
+                .map(MemberOwningBadge::getBadge)
+                .map(BadgeDto::new)
+                .collect(Collectors.toList());
+    }
 }

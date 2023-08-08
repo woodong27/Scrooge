@@ -55,4 +55,15 @@ public class BadgeController {
         return ResponseEntity.ok(badgeService.selectMainBadge(badgeId, memberId));
     }
 
+    @Operation(summary = "멤버가 소유하고 있는 뱃지 목록")
+    @GetMapping("/member")
+    public ResponseEntity<?> getMemberOwningBadges(@RequestHeader("Authorization")String header) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        List<BadgeDto> badgeDtos = badgeService.getMemberOwningBadges(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(badgeDtos);
+    }
 }
