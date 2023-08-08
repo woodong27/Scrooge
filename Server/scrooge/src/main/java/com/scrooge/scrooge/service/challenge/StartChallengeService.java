@@ -70,11 +70,8 @@ public class StartChallengeService {
     public ChallengeStartRespDto createMyChallengeAuth(Long challengeId, Long memberId, MultipartFile img) {
         ChallengeAuth challengeAuth = new ChallengeAuth();
 
-        // 일단 성공으로 가정 (추후에 AI로 검증 필요)
-        challengeAuth.setIsSuccess(true);
         //오늘 날짜로 정하기
         challengeAuth.setCreatedAt(LocalDateTime.now());
-
 
         // challengeParticipantId 찾기
         ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
@@ -106,6 +103,13 @@ public class StartChallengeService {
             e.printStackTrace();
         }
 
+        // 인증 검사
+        //실패
+        // setisSuccess = false;
+        // 저장 안하고
+
+        // 검사 성공
+        challengeAuth.setIsSuccess(true);
         challengeAuthRepository.save(challengeAuth);
 
         ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
@@ -158,6 +162,10 @@ public class StartChallengeService {
                 challengeRepository.save(challenge);
             }
         }
+    }
+
+    public double imageAnalysis(Long challengeId, Long authImageId) {
+        return 0.1;
     }
 
 }
