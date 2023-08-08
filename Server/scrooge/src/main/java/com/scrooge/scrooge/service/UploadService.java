@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,5 +35,10 @@ public class UploadService {
         Upload upload = new Upload();
         upload.setImgAddress(imgAddress);
         uploadRepository.save(upload);
+    }
+
+    public String getImageAddress(Long id) {
+        Optional<Upload> uploadOptional = uploadRepository.findById(id);
+        return uploadOptional.map(Upload::getImgAddress).orElse(null);
     }
 }
