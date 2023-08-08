@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import styles from "./Article.module.css";
+import styles from "./Detail.module.css";
+import CommentList from "./CommentList";
+import QuestHeader from "../../components/QuestHeader";
 
 const Detail = () => {
   const params = useParams();
@@ -155,6 +157,11 @@ const Detail = () => {
 
   return (
     <div className={styles.box}>
+      <QuestHeader
+        title={"스크루지 빌리지"}
+        titleColor={"#5B911F"}
+        color={"#A2D660"}
+      ></QuestHeader>
       {data ? (
         <div>
           <div className={styles.authorInfo}>
@@ -163,7 +170,10 @@ const Detail = () => {
               src={`http://day6scrooge.duckdns.org:8081/${data.memberAvatarAddress}`}
               alt="캐릭터"
             />
-            <div className={styles.author}>{data.memberNickname}</div>
+            <div>
+              <div className={styles.author}>{data.memberNickname}</div>
+              <div className={styles.createdAt}>{data.createdAt}</div>
+            </div>
           </div>
           <div className={styles.detail}>
             <img
@@ -172,12 +182,10 @@ const Detail = () => {
               src={`${process.env.PUBLIC_URL}/images/dummy.png`}
               alt="사진"
             />
-            <div className={styles.content}>
-              {data.content} <button></button>
-            </div>
+            <div className={styles.content}>{data.content}</div>
           </div>
-          <div className={styles.line}>
-            <div className={styles.reaction}>
+          <div className={styles.reaction}>
+            <div className={styles.left}>
               {good ? (
                 <button onClick={handleGoodCancle} className={styles.emoji}>
                   <img
@@ -194,6 +202,8 @@ const Detail = () => {
                 </button>
               )}
               <div className={styles.cnt}>{goodCnt}</div>
+            </div>
+            <div className={styles.right}>
               {bad ? (
                 <button onClick={handleBadCancle} className={styles.emoji}>
                   <img
@@ -213,6 +223,7 @@ const Detail = () => {
               <div className={styles.cnt}>{badCnt}</div>
             </div>
           </div>
+          <CommentList id={data.id} />
         </div>
       ) : (
         <p>Loading...</p>
