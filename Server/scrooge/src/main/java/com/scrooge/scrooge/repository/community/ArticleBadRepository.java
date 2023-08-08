@@ -14,6 +14,5 @@ public interface ArticleBadRepository extends JpaRepository<ArticleBad, Long> {
 
     void deleteByArticleIdAndMemberId(Long articleId, Long memberId);
 
-    @Query("SELECT COUNT(ab) from ArticleBad ab where ab.article.id = ?1")
     Integer countByArticleId(Long articleId);
 }

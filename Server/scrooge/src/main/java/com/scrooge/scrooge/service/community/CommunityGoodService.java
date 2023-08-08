@@ -3,7 +3,6 @@ package com.scrooge.scrooge.service.community;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleGood;
 import com.scrooge.scrooge.domain.member.Member;
-import com.scrooge.scrooge.dto.communityDto.ArticleGoodCountDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
@@ -69,12 +68,5 @@ public class CommunityGoodService {
         }
 
         return articleGoodDto;
-    }
-
-    // Article의 전체 좋아요 수 조회하는 메서드
-    public ArticleGoodCountDto getCommunityGoodCount(Long articleId) {
-        ArticleGoodCountDto articleGoodCountDto = new ArticleGoodCountDto();
-        articleGoodCountDto.setGoodCount(articleGoodRepository.countByArticleId(articleId));
-        return articleGoodCountDto;
     }
 }
