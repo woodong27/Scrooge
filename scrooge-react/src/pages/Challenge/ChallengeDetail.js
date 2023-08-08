@@ -1,17 +1,23 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import backImg from "../../assets/back.png";
 import styles from "./ChallengeDetail.module.css";
 import ProgressBar from "./ProgressBar";
 
 const ChallengeDetail = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+  const headers = { Authorization: globalToken };
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://day6scrooge.duckdns.org:8081/challenge/1")
+      .get(
+        `http://day6scrooge.duckdns.org:8081/challenge/6/start-my-challenge`,
+        { headers }
+      )
       .then((response) => {
         setData(response.data);
       })

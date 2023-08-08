@@ -7,6 +7,7 @@ import styles from "./CreateChallenge.module.css";
 import Header from "../../components/Header";
 import Chips from "../../components/UI/Chips";
 import backImg from "../../assets/back.png";
+import Toast from "../../components/UI/Toast";
 
 const CreateChallenge = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -16,12 +17,14 @@ const CreateChallenge = () => {
   const peoples = ["4명", "6명", "8명", "10명"];
 
   const [selectPeriod, setSelectPeriod] = useState("1주");
-  const [selectCategory, setSelectCategory] = useState();
-  const [selectPeoples, setSelectPeoples] = useState();
+  const [selectCategory, setSelectCategory] = useState("식비");
+  const [selectPeoples, setSelectPeoples] = useState("4명");
 
   const [title, setTitle] = useState("");
   const [authMethod, setAuthMethod] = useState("");
   const [introduce, setIntroduce] = useState("");
+
+  const [toast, setToast] = useState(false);
 
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
@@ -34,6 +37,24 @@ const CreateChallenge = () => {
   };
 
   const CreateChallengeHandler = () => {
+    if (
+      title.length === 0 ||
+      authMethod.length === 0 ||
+      introduce.length === 0
+    ) {
+      setToast(true);
+      return;
+    }
+
+    const postData = {
+      title: title,
+      category: selectCategory,
+      minParticipants: parseInt(selectPeoples),
+      authMethod: authMethod,
+      period: selectPeriod,
+      description: introduce,
+    };
+
     const headers = {
       "Content-Type": "application/json",
       Authorization: globalToken,
@@ -42,15 +63,10 @@ const CreateChallenge = () => {
     axios
       .post(
         "http://day6scrooge.duckdns.org:8081/challenge",
-        JSON.stringify({
-          title: title,
-          category: selectCategory,
-          minParticipants: selectPeoples,
-          authMethod: authMethod,
-          period: selectPeriod,
-          description: introduce,
-        }),
-        headers
+        JSON.stringify(postData),
+        {
+          headers,
+        }
       )
       .then((response) => {
         console.log(response);
@@ -190,6 +206,8 @@ const CreateChallenge = () => {
         챌린지 만들기
         <div className={styles.shadow}></div>
       </div>
+
+      {toast && <Toast setToast={setToast} text="빠진 부분이 있어요!" />}
     </div>
   );
 };

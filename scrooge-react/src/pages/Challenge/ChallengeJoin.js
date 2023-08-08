@@ -1,14 +1,18 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-import ButtonBlue from "../../components/Button/ButtonBlue";
 import styles from "./ChallengeJoin.module.css";
 import backImg from "../../assets/back.png";
 
 const ChallengeJoin = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+  const headers = { Authorization: globalToken };
   const [data, setData] = useState([]);
   const params = useParams();
+
+  const joinChallengeHandler = () => {};
 
   useEffect(() => {
     axios
@@ -84,7 +88,11 @@ const ChallengeJoin = () => {
         <h2>이런 분들께 추천해요</h2>
         <div>{data.description}</div>
       </div>
-      <ButtonBlue>챌린지에 도전할래요!</ButtonBlue>
+
+      <div className={styles.primary} onClick={joinChallengeHandler}>
+        챌린지에 도전할래요!
+        <div className={styles.shadow}></div>
+      </div>
     </div>
   );
 };

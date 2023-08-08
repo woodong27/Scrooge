@@ -1,25 +1,39 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import Chips from "../../components/UI/Chips";
 import ChallengeItem from "./ChallengeItem";
 import styles from "./MyChallenge.module.css";
 
 const MyChallenge = () => {
-  const category = ["전체", "식비", "교통", "쇼핑", "기타"];
+  const globalToken = useSelector((state) => state.globalToken);
+  const headers = { Authorization: globalToken };
+
+  const category = ["시작전", "진행중", "종료된"];
   const [data, setData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [selectedCategory, setSelectedCategory] = useState("시작전");
+  let idx = 1;
 
   useEffect(() => {
+    if (selectedCategory === "시작전") idx = 1;
+    if (selectedCategory === "진행중") idx = 2;
+    if (selectedCategory === "종료된") idx = 3;
+
     axios
-      .get("http://day6scrooge.duckdns.org:8081/challenge")
+      .get(
+        `http://day6scrooge.duckdns.org:8081/challenge/${idx}/my-challenge`,
+        {
+          headers,
+        }
+      )
       .then((response) => {
         setData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [selectedCategory]);
 
   return (
     <div>
@@ -35,20 +49,18 @@ const MyChallenge = () => {
 
       <div className={styles.list}>
         {data.map((e) => {
-          if (selectedCategory === "전체" || selectedCategory === e.category) {
-            return (
-              <ChallengeItem
-                key={e.id}
-                id={e.id}
-                title={e.title}
-                currentParticipants={e.currentParticipants}
-                minParticipants={e.minParticipants}
-                period={e.period}
-                category={e.category}
-                text="인증하기"
-              ></ChallengeItem>
-            );
-          }
+          return (
+            <ChallengeItem
+              key={e.id}
+              id={e.id}
+              title={e.title}
+              currentParticipants={e.currentParticipants}
+              minParticipants={e.minParticipants}
+              period={e.period}
+              category={e.category}
+              text="인증하기"
+            ></ChallengeItem>
+          );
         })}
       </div>
     </div>
