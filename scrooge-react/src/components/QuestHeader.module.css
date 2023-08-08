@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #fff2af 0%, rgba(169, 217, 244, 0) 100%);
 }
 
 .item {
@@ -14,5 +13,4 @@
   color: #fff;
   display: flex;
   align-items: center;
-  text-shadow: 2px 2px 0 #ecd35b;
 }
