@@ -1,13 +1,12 @@
 import { BarChart, Bar, XAxis} from 'recharts';
 import styles from "./ReportChart.module.css";
 
-
-
 // 금액 또한 해당 날짜에 정산된 금액으로 불러와져야 함 
-
 const ReportChart = ({ currentDate }) => {
   const data = [];
   const startDate = new Date(currentDate);
+  const dayOfWeek = startDate.getDay();
+  startDate.setDate(startDate.getDate() - dayOfWeek + (dayOfWeek === 0? -6 : 1)) //추가
   for (let i = 0; i<7; i++) {
     const labelDate = new Date(startDate);
     labelDate.setDate(startDate.getDate() + i);
@@ -24,6 +23,7 @@ const ReportChart = ({ currentDate }) => {
   
   return (
     <div>
+      {/* 소비 요약 */}
       <div className={styles.reportContent}>
         <div className={styles.weekAvg}>
           <div>평균소비금액</div>
@@ -40,7 +40,7 @@ const ReportChart = ({ currentDate }) => {
           </div>
         </div>
       </div>
-
+      {/* 소비 그래프 */}
       <div className={styles.chartContainer}>
         <BarChart width={350} height={200} data={data}>
           <Bar dataKey="amount" fill="#A2D660" />
@@ -48,10 +48,6 @@ const ReportChart = ({ currentDate }) => {
         </BarChart>
       </div>
 
-      <div className={styles.cardContainer}>
-        <div>카테고리 카드1</div>
-        <div>카테고리 카드2</div>
-      </div>
     </div>
   );
 }

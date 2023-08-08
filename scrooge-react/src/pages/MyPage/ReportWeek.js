@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styles from "./ReportWeek.module.css";
 import ReportChart from "./ReportChart"
 
-// 날짜 계산
+// 날짜 계산 -> 날짜 이동 탭에 활용 
 const getWeekRange = (date) => {
   const startOfWeek = new Date(date);
-  startOfWeek.setDate(date.getDate() - date.getDay() +1); //월요일  
+  const dayOfWeek = date.getDay();
+  startOfWeek.setDate(date.getDate() - dayOfWeek + (dayOfWeek === 0? -6 : 1)); // 월요일
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 6); // 일요일
 
@@ -53,6 +54,11 @@ const ReportWeek = () => {
       {/* 소비 차트 */}
       <div className={styles.chart}>
         <ReportChart currentDate={currentDate}/>
+      </div>
+
+      <div className={styles.cardContainer}>
+        <div>카테고리 카드1</div>
+        <div>카테고리 카드2</div>
       </div>
     </div>
 
