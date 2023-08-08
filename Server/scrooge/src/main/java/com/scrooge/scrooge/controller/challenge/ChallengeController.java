@@ -30,7 +30,7 @@ public class ChallengeController {
     @PostMapping/*(consumes = "multipart/form-data")*/
     public ResponseEntity<ChallengeReqDto> createChallenge(
             @RequestHeader("Authorization") String tokenHeader,
-            ChallengeReqDto challengeReqDto
+            @RequestBody ChallengeReqDto challengeReqDto
             /*@RequestParam List<MultipartFile> images*/) {
 
         String token = extractToken(tokenHeader);
