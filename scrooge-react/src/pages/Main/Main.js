@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import CharacterCard from "../../components/UI/CharacterCard";
-import TodayCard from "../../components/UI/TodayCard";
+import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
@@ -171,7 +171,7 @@ const Main = (props) => {
               alt="고리"
             />
           </div>
-          <TodayCard height={220}>
+          <Card height={220}>
             <div className={styles.todayCard}>
               <div className={styles.title}>
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
@@ -183,8 +183,9 @@ const Main = (props) => {
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
-              setGoal={setGoal}></ProgressBar>
-          </TodayCard>
+              setGoal={setGoal}
+            ></ProgressBar>
+          </Card>
         </div>
       )}
       {isConsum && (

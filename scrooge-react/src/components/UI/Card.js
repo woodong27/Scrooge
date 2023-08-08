@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./TodayCard.module.css";
+import styles from "./Card.module.css";
 
-const TodayCard = (props) => {
+const Card = (props) => {
   const heightStyle = {
     height: `${props.height}px`,
   };
@@ -14,4 +14,4 @@ const TodayCard = (props) => {
   );
 };
 
-export default TodayCard;
+export default Card;

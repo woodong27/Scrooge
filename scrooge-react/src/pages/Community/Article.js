@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import TodayCard from "../../components/UI/TodayCard";
+import Card from "../../components/UI/Card";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  const handleDetail = () => {
-    //Detail로 가버리자...
-  };
+  const handleDetail = () => {};
 
   const globalToken = useSelector((state) => state.globalToken);
 
@@ -162,7 +160,7 @@ const Article = (props) => {
 
   return (
     <div className={styles.box}>
-      <TodayCard height={330}>
+      <Card height={330}>
         <div className={styles.authorInfo}>
           <img
             className={styles.character}
@@ -224,7 +222,7 @@ const Article = (props) => {
             onClick={handleDetail}
           />
         </div>
-      </TodayCard>
+      </Card>
     </div>
   );
 };
