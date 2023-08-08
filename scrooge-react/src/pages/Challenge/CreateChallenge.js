@@ -1,14 +1,15 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./CreateChallenge.module.css";
 import Header from "../../components/Header";
 import Chips from "../../components/UI/Chips";
 import backImg from "../../assets/back.png";
+import ButtonBlue from "../../components/Button/ButtonBlue";
 
 const CreateChallenge = () => {
   const period = ["1주", "2주", "3주", "한달"];
-  const category = ["식비", "교통비", "쇼핑", "기타"];
+  const category = ["식비", "교통", "쇼핑", "기타"];
   const peoples = ["4명", "6명", "8명", "10명"];
   const [selectPeriod, setSelectPeriod] = useState();
   const [selectCategory, setSelectCategory] = useState();
@@ -16,6 +17,7 @@ const CreateChallenge = () => {
 
   const [title, setTitle] = useState("");
   const [authMethod, setAuthMethod] = useState("");
+  const [introduce, setIntroduce] = useState("");
 
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
@@ -23,9 +25,12 @@ const CreateChallenge = () => {
   const authMethodChangeHandler = (event) => {
     setAuthMethod(event.target.value);
   };
+  const introduceChangeHandler = (event) => {
+    setIntroduce(event.target.value);
+  };
 
   return (
-    <Fragment>
+    <div className={styles.layout}>
       <Header text="챌린지 만들기">
         <Link className={styles.back} to="/challenge">
           <img src={backImg} alt="뒤로가기"></img>
@@ -101,6 +106,7 @@ const CreateChallenge = () => {
         <div>인증샷 예시등록(5장이 필요해요)</div>
         <div className={styles.auth_img}>
           <span>
+            인증 성공 예시를 추가해주세요
             <img
               src={`${process.env.PUBLIC_URL}/images/image.png`}
               alt="더미"
@@ -136,7 +142,21 @@ const CreateChallenge = () => {
           </span>
         </div>
       </div>
-    </Fragment>
+
+      <div className={styles.auth_method}>
+        <div>챌린지 소개 🙌</div>
+        <p>바른 소비 습관을 만들 수 있는 챌린지를 소개해보세요.</p>
+
+        <textarea
+          placeholder="예) 매일 출퇴근 인증해서 건강도 챙기고 지갑도 챙겨봐요! :)"
+          value={introduce}
+          onChange={introduceChangeHandler}
+        ></textarea>
+        <div className={styles.length}>{introduce.length}/100</div>
+      </div>
+
+      <ButtonBlue>챌린지 만들기</ButtonBlue>
+    </div>
   );
 };
 

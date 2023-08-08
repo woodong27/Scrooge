@@ -10,14 +10,12 @@ import ChallengeItem from "./ChallengeItem";
 import styles from "./Challenge.module.css";
 
 const Challenge = () => {
-  const category = ["전체", "식비", "교통", "쇼핑", "기타"];
   const [isMyChallenge, setIsMyChallnge] = useState(false);
+  const category = ["전체", "식비", "교통", "쇼핑", "기타"];
   const [data, setData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState("전체");
 
   useEffect(() => {
-    setSelectedCategory("전체");
-
     axios
       .get("http://day6scrooge.duckdns.org:8081/challenge")
       .then((response) => {
