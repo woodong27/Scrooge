@@ -17,7 +17,7 @@ const CharList = () => {
   useEffect(() => {
     const initialImages = Array.from({ length: imageCount }, (_, index) => (
       <img
-        key={index}
+        key={index} // 08-08 얘가 중요해요..
         className={styles["profile-image"]}
         src={`${imagePath}/gacha.png`}
         alt={`프로필 사진 ${index + 1}`}
