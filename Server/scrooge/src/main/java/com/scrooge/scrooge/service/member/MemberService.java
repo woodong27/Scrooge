@@ -2,9 +2,6 @@ package com.scrooge.scrooge.service.member;
 
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
-import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
-import com.scrooge.scrooge.domain.member.MemberOwningBadge;
-import com.scrooge.scrooge.domain.member.MemberSelectedQuest;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
@@ -19,9 +16,7 @@ import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -83,7 +78,6 @@ public class MemberService {
     }
 
     public Optional<MemberDto> getInfo(String email) {
-
         return memberRepository.findWithRelatedEntitiesByEmail(email).map(member -> {
             MemberDto memberDto = new MemberDto();
             memberDto.setId(member.getId());

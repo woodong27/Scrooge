@@ -86,8 +86,7 @@ public class PaymentHistoryService {
     }
 
     // 사용자 별 월 별 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryPerMonth(Long memberId, DateTimeReqDto dateTimeReqDto) {
-        String dateStr = dateTimeReqDto.getDate();
+    public List<PaymentHistoryDto> getPaymentHistoryPerMonth(Long memberId, String dateStr) {
 
         // 입력받은 날짜 문자열을 LocalDate로 변환
         LocalDate date = LocalDate.parse(dateStr + "-01");

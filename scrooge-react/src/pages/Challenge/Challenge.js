@@ -10,6 +10,7 @@ import ChallengeItem from "./ChallengeItem";
 import styles from "./Challenge.module.css";
 
 const Challenge = () => {
+  const category = ["전체", "식비", "교통", "쇼핑", "기타"];
   const [isMyChallenge, setIsMyChallnge] = useState(false);
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
@@ -67,43 +68,18 @@ const Challenge = () => {
         />
       </Header>
 
-      <Chips selectedCategory={selectedCategory} onClick={selectCategoryAll}>
-        전체
-      </Chips>
-      <Chips selectedCategory={selectedCategory} onClick={selectCategoryEat}>
-        식비
-      </Chips>
-      <Chips
-        selectedCategory={selectedCategory}
-        onClick={selectCategoryTraffic}
-      >
-        교통
-      </Chips>
-      <Chips
-        selectedCategory={selectedCategory}
-        onClick={selectCategoryShopping}
-      >
-        쇼핑
-      </Chips>
-      <Chips selectedCategory={selectedCategory} onClick={selectCategoryOther}>
-        기타
-      </Chips>
+      {category.map((e, i) => (
+        <Chips
+          selected={selectedCategory}
+          setSelect={setSelectedCategory}
+          key={i}
+        >
+          {e}
+        </Chips>
+      ))}
 
       <div className={styles.list}>
         {data.map((e) => {
-          // if (selectedCategory === "전체") {
-          //   return (
-          //     <ChallengeItem
-          //       key={e.id}
-          //       id={e.id}
-          //       title={e.title}
-          //       currentParticipants={e.currentParticipants}
-          //       minParticipants={e.minParticipants}
-          //       period={e.period}
-          //       category={e.category}
-          //     ></ChallengeItem>
-          //   );
-          // } else {
           if (selectedCategory === "전체" || selectedCategory === e.category) {
             return (
               <ChallengeItem
@@ -116,7 +92,6 @@ const Challenge = () => {
                 category={e.category}
               ></ChallengeItem>
             );
-            // }
           }
         })}
       </div>
