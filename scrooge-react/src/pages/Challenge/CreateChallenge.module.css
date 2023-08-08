@@ -19,6 +19,7 @@
   color: var(--input-text);
   position: absolute;
   right: 0;
+  font-size: 14px;
 }
 
 .back {
@@ -53,7 +54,8 @@
   position: relative;
   width: 20rem;
   text-align: left;
-  margin: 1.5rem auto 0;
+  margin: 1.5rem auto;
+  font-size: 20px;
 
   & textarea {
     background-color: var(--input);
@@ -64,6 +66,17 @@
     width: 18rem;
     height: 7rem;
     border-radius: 1rem;
+    font-size: 16px;
+  }
+
+  & p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--input-text);
+  }
+
+  &:last-of-type {
+    margin-bottom: 16px;
   }
 }
 
@@ -75,9 +88,9 @@
   width: 22.2rem;
   white-space: nowrap;
   overflow-x: scroll;
-  margin-bottom: 10rem;
 
   & span {
+    font-size: 16px;
     color: var(--input-text);
     flex-shrink: 0;
     display: flex;
@@ -96,4 +109,35 @@
     width: 1.5rem;
     height: 1.5rem;
   }
+}
+
+.layout {
+  margin-bottom: 8rem;
+}
+
+.primary {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.shadow {
+  z-index: -1;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: var(--blue);
 }

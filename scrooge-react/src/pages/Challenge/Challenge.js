@@ -1,32 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 import Header from "../../components/Header";
-import Chips from "../../components/UI/Chips";
 import ChallengeToggle from "./ChallengeToggle";
 import PlusBtn from "../../components/UI/PlusBtn";
-import ChallengeItem from "./ChallengeItem";
-import styles from "./Challenge.module.css";
+import AllChallenge from "./AllChallenge";
+import MyChallenge from "./MyChallenge";
 
 const Challenge = () => {
-  const category = ["전체", "식비", "교통", "쇼핑", "기타"];
   const [isMyChallenge, setIsMyChallnge] = useState(false);
-  const [data, setData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState();
-
-  useEffect(() => {
-    setSelectedCategory("전체");
-
-    axios
-      .get("http://day6scrooge.duckdns.org:8081/challenge")
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
 
   const myChallengeHandler = () => {
     setIsMyChallnge(true);
@@ -35,31 +17,12 @@ const Challenge = () => {
     setIsMyChallnge(false);
   };
 
-  const selectCategoryAll = () => {
-    setSelectedCategory("전체");
-  };
-
-  const selectCategoryEat = () => {
-    setSelectedCategory("식비");
-  };
-
-  const selectCategoryTraffic = () => {
-    setSelectedCategory("교통");
-  };
-
-  const selectCategoryShopping = () => {
-    setSelectedCategory("쇼핑");
-  };
-
-  const selectCategoryOther = () => {
-    setSelectedCategory("기타");
-  };
-
   return (
     <div>
       <Link to="/challenge/create">
         <PlusBtn />
       </Link>
+
       <Header text="스크루지 파이트">
         <ChallengeToggle
           isMyChallenge={isMyChallenge}
@@ -68,33 +31,7 @@ const Challenge = () => {
         />
       </Header>
 
-      {category.map((e, i) => (
-        <Chips
-          selected={selectedCategory}
-          setSelect={setSelectedCategory}
-          key={i}
-        >
-          {e}
-        </Chips>
-      ))}
-
-      <div className={styles.list}>
-        {data.map((e) => {
-          if (selectedCategory === "전체" || selectedCategory === e.category) {
-            return (
-              <ChallengeItem
-                key={e.id}
-                id={e.id}
-                title={e.title}
-                currentParticipants={e.currentParticipants}
-                minParticipants={e.minParticipants}
-                period={e.period}
-                category={e.category}
-              ></ChallengeItem>
-            );
-          }
-        })}
-      </div>
+      {isMyChallenge ? <MyChallenge /> : <AllChallenge />}
     </div>
   );
 };
