@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,6 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "level_id")
     private Level level;
-
-//    @Column(length = 20, nullable = false)
-//    private String name;
 
     @Column(length = 20, nullable = false)
     private String nickname;
@@ -73,24 +71,19 @@ public class Member {
     private LocalDateTime joinedAt;
 
     /* 연결 */
-
-    // 사용자가 소유한 아바타 목록
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberOwningAvatar> memberOwningAvatars = new ArrayList<>();
-
     // 소비 내역
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<PaymentHistory> paymentHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<MemberOwningAvatar> memberOwningAvatars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<MemberOwningBadge> memberOwningBadgesOwningBadges = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<MemberSelectedQuest> memberSelectedQuests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Article> articles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ArticleComment> articleComments = new ArrayList<>();
 }
