@@ -50,6 +50,7 @@ public class StartChallengeService {
             myChallengeRespDto.setStartDate(challenge.get().getStartDate());
             myChallengeRespDto.setEndDate(challenge.get().getEndDate());
             myChallengeRespDto.setPeriod(challenge.get().getPeriod());
+            myChallengeRespDto.setTitle(challenge.get().getTitle());
 
             /* 대전 현황 구현 위해 각 팀의 성공 횟수 가져오기 */
             Integer teamZeroSuccessCount, teamOneSuccessCount;
