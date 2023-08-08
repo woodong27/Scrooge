@@ -55,10 +55,6 @@ const PaymentHistory = ({
     }
   };
 
-  // // 오늘 날짜 가져오기
-  // const getCurrentDate = () => {
-  // };
-
   useEffect(() => {
     const today = new Date();
     const month = today.getMonth() + 1;
@@ -70,7 +66,6 @@ const PaymentHistory = ({
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      console.log("끝");
       settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
@@ -111,7 +106,6 @@ const PaymentHistory = ({
   };
 
   useEffect(() => {
-    console.log(total);
     setOrigin(total);
   }, [total]);
 
@@ -214,12 +208,14 @@ const PaymentHistory = ({
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
                 : ""}
             </div>
-            <button
-              onClick={handleOpenModal}
-              className={settlement ? styles.finishBtn : styles.btn}
-            >
-              {settlement ? "정산 완료" : "정산하기"}
-            </button>
+
+            {settlement ? (
+              <button className={styles.finishBtn}>정산완료</button>
+            ) : (
+              <button onClick={handleOpenModal} className={styles.btn}>
+                정산하기
+              </button>
+            )}
           </div>
         </div>
       </div>
