@@ -43,7 +43,7 @@ public class ChallengeService {
 
     // 챌린지 생성 API
     @Transactional
-    public void createChallenge(ChallengeReqDto challengeReqDto, List<MultipartFile> images) {
+    public void createChallenge(ChallengeReqDto challengeReqDto/*, List<MultipartFile> images*/) {
         Challenge challenge = new Challenge();
 
         // 챌린지 정보 저장하기
@@ -86,7 +86,7 @@ public class ChallengeService {
         challengeParticipantRepository.save(challengeParticipant);
 
         // ChallengeExampleImage에 이미지 5장 저장
-        saveChallengeExampleImages(challenge, images);
+//        saveChallengeExampleImages(challenge, images);
     }
 
     // 챌린지에 해당하는 성공 예시 이미지 ChallengeExampleImage에 저장하기

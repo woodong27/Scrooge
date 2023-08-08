@@ -30,14 +30,15 @@ public class ChallengeController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ChallengeReqDto> createChallenge(
             @RequestHeader("Authorization") String tokenHeader,
-            ChallengeReqDto challengeReqDto,
-            @RequestParam List<MultipartFile> images) {
+            ChallengeReqDto challengeReqDto
+            /*@RequestParam List<MultipartFile> images*/) {
 
         String token = extractToken(tokenHeader);
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
         challengeReqDto.setChallengeMasterId(memberId);
-        challengeService.createChallenge(challengeReqDto, images);
+        challengeService.createChallenge(challengeReqDto);
+//        challengeService.createChallenge(challengeReqDto, images);
 
         return ResponseEntity.ok(challengeReqDto);
     }
