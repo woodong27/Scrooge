@@ -28,7 +28,15 @@ public class ChallengeController {
     // 챌린지를 생성하는 API
     @Operation(summary = "챌린지 생성")
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<ChallengeReqDto> createChallenge(ChallengeReqDto challengeReqDto, @RequestParam List<MultipartFile> images) {
+    public ResponseEntity<ChallengeReqDto> createChallenge(
+            @RequestHeader("Authorization") String tokenHeader,
+            ChallengeReqDto challengeReqDto,
+            @RequestParam List<MultipartFile> images) {
+
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        challengeReqDto.setChallengeMasterId(memberId);
         challengeService.createChallenge(challengeReqDto, images);
 
         return ResponseEntity.ok(challengeReqDto);
