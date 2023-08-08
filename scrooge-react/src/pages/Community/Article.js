@@ -37,31 +37,31 @@ const Article = (props) => {
       .catch((error) => console.log(error));
     //좋아요 여부
     const goodCntData = {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: globalToken,
       },
     };
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good-count`,
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
       goodCntData
     )
       .then((res) => res.json())
       .then((data) => {
-        setGood(data.isGood);
+        setGood(data.good);
       });
 
     //싫어요 개수
     fetch(`http://day6scrooge.duckdns.org:8081/community/${props.id}/bad-count`)
       .then((resp) => resp.json())
       .then((data) => {
-        setBadCnt(data.goodCount);
+        setBadCnt(data.badCount);
       })
       .catch((error) => console.log(error));
 
     const BadCntData = {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: globalToken,
@@ -69,26 +69,95 @@ const Article = (props) => {
     };
     //싫어요 조회
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad-count`,
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
       BadCntData
     )
       .then((res) => res.json())
       .then((data) => {
-        setBad(data.isGood);
+        setBad(data.bad);
       });
   }, []);
 
   const handleGood = () => {
-    setGoodCnt((prev) => prev + 1);
+    const goodData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+      goodData
+    )
+      .then((res) => res.text())
+      .then((data) => {
+        console.log(data);
+        if (data === "좋아요 완료") {
+          setGoodCnt((prev) => prev + 1);
+          setGood(true);
+        }
+      });
   };
   const handleGoodCancle = () => {
-    setGoodCnt((prev) => prev - 1);
+    const goodData = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+      goodData
+    )
+      .then((res) => res.text())
+      .then((data) => {
+        setGoodCnt((prev) => prev - 1);
+        setGood(false);
+      });
   };
   const handleBad = () => {
-    setBadCnt((prev) => prev + 1);
+    const badData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+      badData
+    )
+      .then((res) => res.text())
+      .then((data) => {
+        if (data === "싫어요 성공") {
+          setBadCnt((prev) => prev + 1);
+          setBad(true);
+        }
+      });
   };
   const handleBadCancle = () => {
-    setBadCnt((prev) => prev - 1);
+    const badData = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+      badData
+    )
+      .then((res) => res.text())
+      .then((data) => {
+        setBadCnt((prev) => prev - 1);
+        setBad(false);
+      });
   };
 
   return (
@@ -129,7 +198,7 @@ const Article = (props) => {
                 />
               </button>
             )}
-            <div className={styles.cnt}>{13}</div>
+            <div className={styles.cnt}>{goodCnt}</div>
             {bad ? (
               <button onClick={handleBadCancle} className={styles.emoji}>
                 <img
@@ -146,7 +215,7 @@ const Article = (props) => {
               </button>
             )}
 
-            <div className={styles.cnt}>{4}</div>
+            <div className={styles.cnt}>{badCnt}</div>
           </div>
           <img
             className={styles.comment}
