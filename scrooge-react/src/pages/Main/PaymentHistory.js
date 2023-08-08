@@ -86,7 +86,6 @@ const PaymentHistory = ({
   // 오늘 소비 내역 불러오기
   const getPaymentHistory = () => {
     if (date.length === 2) {
-      console.log(date[0], date[1]);
       const formattedDate = `2023-${date[0]
         .toString()
         .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;

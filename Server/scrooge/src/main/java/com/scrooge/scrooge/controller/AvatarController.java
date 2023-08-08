@@ -2,6 +2,7 @@ package com.scrooge.scrooge.controller;
 
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.AvatarDto;
+import com.scrooge.scrooge.repository.member.MemberOwningAvatarRepository;
 import com.scrooge.scrooge.service.AvatarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,6 +21,7 @@ public class AvatarController {
 
     private final AvatarService avatarService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberOwningAvatarRepository memberOwningAvatarRepository;
 
     @Operation(summary = "Get avatars", description = "Get all avatars")
     @GetMapping("")
@@ -44,7 +46,12 @@ public class AvatarController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("그런 유저 없습니다.");
         }
 
-        AvatarDto avatarDto = avatarService.selectMainAvatar(avatarId, jwtTokenProvider.extractMemberId(token));
-        return ResponseEntity.ok(avatarDto);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        if (!memberOwningAvatarRepository.existsByMemberIdAndAvatarId(memberId, avatarId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 뱃지를 소유하고 있지 않습니다.");
+        }
+
+        return ResponseEntity.ok(avatarService.selectMainAvatar(avatarId, memberId));
     }
 }
