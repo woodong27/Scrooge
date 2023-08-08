@@ -2,6 +2,7 @@ package com.scrooge.scrooge.service.member;
 
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
@@ -26,10 +27,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
     private final MemberOwningAvatarRepository memberOwningAvatarRepository;
-    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
-    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final AvatarRepository avatarRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+
 
     public String login(LoginRequestDto loginRequestDto) {
 
@@ -56,6 +57,8 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+        Avatar avatar = avatarRepository.findById(1L).orElse(null);
+
         String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
         Member member = new Member();
@@ -69,12 +72,19 @@ public class MemberService {
         member.setStreak(0);
         member.setWeeklyConsum(0);
         member.setWeeklyGoal(0);
+        member.setMainAvatar(avatar);
         member.setJoinedAt(LocalDateTime.now());
 
         Level defaultLevel = levelRepository.findById(1L).orElse(null);
         member.setLevel(defaultLevel);
 
         memberRepository.save(member);
+
+        MemberOwningAvatar memberOwningAvatar = new MemberOwningAvatar();
+        memberOwningAvatar.setMember(member);
+        memberOwningAvatar.setAvatar(avatar);
+        memberOwningAvatar.setAcquiredAt(LocalDateTime.now());
+        memberOwningAvatarRepository.save(memberOwningAvatar);
     }
 
     public Optional<MemberDto> getInfo(String email) {
@@ -123,6 +133,10 @@ public class MemberService {
 
         member.setPassword(bCryptPasswordEncoder.encode(updatePasswordDto.getNewPassword()));
         return new MemberDto(member);
+    }
+
+    public void deleteMember(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 }
 
