@@ -15,15 +15,13 @@ import com.scrooge.scrooge.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -112,53 +110,15 @@ public class ChallengeService {
         challengeExampleImageRepository.save(challengeExampleImage);
     }
 
-
-    // 챌린지에 해당하는 성공 예시 이미지 ChallengeExampleImage에 저장하기
-//    private void saveChallengeExampleImages(Challenge challenge, List<MultipartFile> images) {
-//
-//        // 업로드할 위치 설정
-//        String uploadLocation = fileUploadProperties.getUploadLocation() + "/challenge/examples/" + challenge.getId();
-//
-//        System.out.println(images.size());
-//
-//        for(MultipartFile image : images) {
-//            // 업로드된 사진의 파일명을 랜덤 UUID로 생성
-//            String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-//            Path filePath = null;
-//
-//            try {
-//                // 업로드할 위치에 폴더가 없으면 생성
-//                File uploadDir = new File(uploadLocation);
-//                if(!uploadDir.exists()) {
-//                    uploadDir.mkdir();
-//                }
-//
-//                // 업로드할 위치에 파일 저장
-//                byte[] bytes = image.getBytes();
-//                filePath = Paths.get(uploadLocation + File.separator + fileName);
-//                Files.write(filePath, bytes);
-//
-//                // ChallengeExampleImage에 이미지를 저장한다.
-//                ChallengeExampleImage challengeExampleImage = new ChallengeExampleImage();
-//                challengeExampleImage.setChallenge(challenge);
-//                challengeExampleImage.setImgAddress(filePath.toString());
-//
-//                challengeExampleImageRepository.save(challengeExampleImage); //DB에 이미지 저장
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//    }
-
     // 챌린지 전체를 조회하는 API
-    public List<ChallengeRespDto> getAllChallenges() {
-        List<Challenge> challenges = challengeRepository.findAll();
-        return getChallengeRespDtos(challenges);
+    public List<ChallengeResDto> getAllChallenges() {
+        return challengeRepository.findAll().stream()
+                .map(ChallengeResDto::new)
+                .collect(Collectors.toList());
     }
 
     // 카테고리 별 챌린지 전체를 조회하는 API
-    public List<ChallengeRespDto> getChallengesbyCategory(Integer categoryId) {
+    public List<ChallengeResDto> getChallengesbyCategory(Integer categoryId) {
         String category = "";
         switch (categoryId){
             case 1:
@@ -175,23 +135,24 @@ public class ChallengeService {
                 break;
         }
 
-        List<Challenge> challenges = challengeRepository.findAllByCategory(category);
-        return getChallengeRespDtos(challenges);
+        return challengeRepository.findAllByCategory(category).stream()
+                .map(ChallengeResDto::new)
+                .collect(Collectors.toList());
     }
 
     // 마이 챌린지 조회하는 API
-    public List<ChallengeRespDto> getMyChallenges(Long memberId, Integer statusId) {
+    public List<ChallengeResDto> getMyChallenges(Long memberId, Integer statusId) {
         List<Challenge> challenges = new ArrayList<>();
         List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findAllByMemberId(memberId);
 
         // status가 같은 애만 추가해주기
         for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
-            if(statusId == challengeParticipant.getChallenge().getStatus()) {
+            if(Objects.equals(statusId, challengeParticipant.getChallenge().getStatus())) {
                 challenges.add(challengeParticipant.getChallenge());
             }
         }
 
-        return getChallengeRespDtos(challenges);
+        return challenges.stream().map(ChallengeResDto::new).collect(Collectors.toList());
     }
 
 
@@ -214,30 +175,11 @@ public class ChallengeService {
     }
 
     // 챌린지 상세 조회 API
-    public ChallengeRespDto getChallenge(Long challengeId) throws IllegalAccessException {
-        Optional<Challenge> challenge = challengeRepository.findById(challengeId);
+    public ChallengeDetailDto getChallenge(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다."));
 
-        if(challenge.isPresent()) {
-            ChallengeRespDto challengeRespDto = new ChallengeRespDto();
-            challengeRespDto.setId(challenge.get().getId());
-            // challengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
-            challengeRespDto.setCategory(challenge.get().getCategory());
-            challengeRespDto.setTitle(challenge.get().getTitle());
-            challengeRespDto.setPeriod(challenge.get().getPeriod());
-            challengeRespDto.setCurrentParticipants(challenge.get().getChallengeParticipantList().size());
-            challengeRespDto.setMinParticipants(challenge.get().getMinParticipants());
-            challengeRespDto.setAuthMethod(challenge.get().getAuthMethod());
-            challengeRespDto.setDescription(challenge.get().getDescription());
-
-            List<ChallengeExampleImage> challengeExampleImageList = challengeExampleImageRepository.findByChallengeId(challengeId);
-            challengeRespDto.setChallengeExampleImageList(challengeExampleImageList.stream()
-                    .map(ChallengeExampleImageDto::new)
-                    .collect(Collectors.toList()));
-
-            return challengeRespDto;
-        } else {
-            throw new IllegalAccessException("Challenge not found with ID: " + challengeId);
-        }
+        return new ChallengeDetailDto(challenge, challenge.getChallengeExampleImageList());
     }
 
     // 챌린지 참여 API
