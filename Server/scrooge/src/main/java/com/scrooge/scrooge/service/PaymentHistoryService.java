@@ -5,6 +5,7 @@ import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.DateTimeReqDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.repository.LevelRepository;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
@@ -38,6 +39,8 @@ public class PaymentHistoryService {
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
     private final BadgeService badgeService;
     private final MemberOwningBadgeRepository memberOwningBadgeRepository;
+
+    private final LevelService levelService;
 
     @Transactional
     public PaymentHistoryRespDto addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
@@ -169,10 +172,13 @@ public class PaymentHistoryService {
 
 
     public MemberDto updateExpAfterDailySettlement(Long memberId) {
-        Optional<Member> member =  memberRepository.findById(memberId);
+        Optional<Member> member =  memberRepository.findWithRelatedEntitiesById(memberId);
         if(member.isPresent()) {
             // 경험치 +100 정산해주기
             member.get().setExp(member.get().getExp() + 100);
+
+            levelService.levelUp(member.get());
+
             // streak 1 증가
             int newStreak = member.get().getStreak() + 1;
             member.get().setStreak(newStreak);
@@ -219,7 +225,6 @@ public class PaymentHistoryService {
 
         return todayTotalConsumption;
     }
-
 
     // 날짜를 입력 받아서 소비 금액 조회하는 API
     public Integer getDateTotalConsumption(Long memberId, String dateTime) {
