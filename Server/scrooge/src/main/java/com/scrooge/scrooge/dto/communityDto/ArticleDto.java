@@ -32,7 +32,7 @@ public class ArticleDto {
         this.createdAt = article.getCreatedAt();
         this.memberId = article.getMember().getId();
         this.memberNickname = article.getMember().getNickname();
-        this.memberAvatarAddress = article.getMember().getMainAvatar().getImgAddress();
+        this.memberAvatarAddress = article.getMember().getMainAvatar().getId().toString();
     }
 
 }
