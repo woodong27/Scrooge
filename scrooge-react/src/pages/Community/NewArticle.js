@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 
@@ -6,7 +7,27 @@ import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
 
 const NewArticle = ({}) => {
+  const globalToken = useSelector((state) => state.globalToken);
   const [content, setContent] = useState("");
+  const obj = {
+    content: content,
+  };
+  const handleSend = () => {
+    const postData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+      body: JSON.stringify(obj),
+    };
+
+    fetch(`https://day6scrooge.duckdns.org/api/community`, postData)
+      .then((res) => res.text())
+      .then((data) => {
+        setContent("");
+      });
+  };
 
   return (
     <div>
@@ -44,7 +65,9 @@ const NewArticle = ({}) => {
           <div className={styles.text}>사진</div>
         </div>
 
-        <div className={styles.upload}>게시하기</div>
+        <div className={styles.upload} onClick={handleSend}>
+          게시하기
+        </div>
       </div>
     </div>
   );
