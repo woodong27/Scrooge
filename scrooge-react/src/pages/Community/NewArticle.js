@@ -7,26 +7,39 @@ import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
 
 const NewArticle = ({}) => {
+  const formData = new FormData();
   const globalToken = useSelector((state) => state.globalToken);
   const [content, setContent] = useState("");
-  const obj = {
-    content: content,
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageChange = (event) => {
+    const selimg = event.target.files[0];
+    setSelectedImage(selimg);
   };
+
   const handleSend = () => {
+    formData.append("content", content);
+    formData.append("img", selectedImage);
+
     const postData = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "multipart/form-data",
         Authorization: globalToken,
       },
-      body: JSON.stringify(obj),
+      body: formData,
     };
 
     fetch(`https://day6scrooge.duckdns.org/api/community`, postData)
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setContent("");
-      });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   };
 
   return (
@@ -58,11 +71,20 @@ const NewArticle = ({}) => {
           onChange={(e) => setContent(e.target.value)}
         />
         <div className={styles.photo}>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/camera.svg`}
-            alt="더보기"
-          />
-          <div className={styles.text}>사진</div>
+          <label htmlFor="fileInput">
+            <img
+              src={`${process.env.PUBLIC_URL}/images/camera.svg`}
+              alt="더보기"
+            />
+            <div className={styles.text}>사진</div>
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            style={{display: "none"}}
+            onChange={handleImageChange}>
+          </input>
         </div>
 
         <div className={styles.upload} onClick={handleSend}>
