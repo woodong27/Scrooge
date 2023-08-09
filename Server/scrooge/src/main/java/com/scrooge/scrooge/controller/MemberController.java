@@ -124,15 +124,6 @@ public class MemberController {
         return ResponseEntity.ok(gachaResponseDto);
     }
 
-    // Member가 보유한 아바타 목록 출력
-    @Operation(summary = "Member가 보유한 아바타 목록 조회 API")
-    @GetMapping("/avatars")
-    public ResponseEntity<List<MemberOwningAvatarRespDto>> getMemberOwningAvatarList(@RequestHeader("Authorization") String tokenHeader) {
-        String token = jwtTokenProvider.extractToken(tokenHeader);
-        Long memberId = jwtTokenProvider.extractMemberId(token);
 
-        List<MemberOwningAvatarRespDto> memberOwningAvatarDtoList = memberService.getMemberOwningAvatarList(memberId);
-        return ResponseEntity.ok(memberOwningAvatarDtoList);
-    }
 
 }
