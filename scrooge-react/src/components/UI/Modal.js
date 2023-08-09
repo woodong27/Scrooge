@@ -30,7 +30,7 @@ const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
   };
 
   const handleEdit = () => {
-    if (place.length < 2) {
+    if (place.length < 1) {
       localPlaceInput.current.focus();
       return;
     }
