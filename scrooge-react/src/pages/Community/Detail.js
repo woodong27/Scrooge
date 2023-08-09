@@ -25,6 +25,7 @@ const Detail = () => {
     fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}/comment`)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setComments(data);
       })
       .catch((error) => console.log(error));
