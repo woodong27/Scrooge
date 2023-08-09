@@ -57,9 +57,9 @@ public class Challenge {
     @JoinColumn(name = "challenge_master")
     private Member challengeMaster;
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeExampleImage> challengeExampleImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeParticipant> challengeParticipantList = new ArrayList<>();
 }

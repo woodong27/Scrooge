@@ -13,9 +13,10 @@ const MyChallenge = () => {
   const category = ["시작전", "진행중", "종료된"];
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("시작전");
-  let idx = 1;
 
   useEffect(() => {
+    console.log(globalToken);
+    let idx;
     if (selectedCategory === "시작전") idx = 1;
     if (selectedCategory === "진행중") idx = 2;
     if (selectedCategory === "종료된") idx = 3;
@@ -49,7 +50,7 @@ const MyChallenge = () => {
 
       <div className={styles.list}>
         {data.map((e) => {
-          return (
+          return category === "진행중" ? (
             <ChallengeItem
               key={e.id}
               id={e.id}
@@ -59,6 +60,17 @@ const MyChallenge = () => {
               period={e.period}
               category={e.category}
               text="인증하기"
+            ></ChallengeItem>
+          ) : (
+            <ChallengeItem
+              key={e.id}
+              id={e.id}
+              title={e.title}
+              currentParticipants={e.currentParticipants}
+              minParticipants={e.minParticipants}
+              period={e.period}
+              category={e.category}
+              text="살펴보기"
             ></ChallengeItem>
           );
         })}

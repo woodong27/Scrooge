@@ -3,6 +3,7 @@ package com.scrooge.scrooge.service.member;
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
+import com.scrooge.scrooge.dto.AvatarDto;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
@@ -17,7 +18,9 @@ import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +63,7 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        Avatar avatar = avatarRepository.findById(1L).orElse(null);
+        Avatar avatar = avatarRepository.findById(66L).orElse(null);
 
         String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
@@ -136,6 +139,59 @@ public class MemberService {
         memberRepository.save(member);
         return new MemberDto(member);
     }
+
+    // 아바타 가챠를 구현하는 API
+    public GachaResponseDto startAvatarGacha(Long memberId) throws Exception {
+        // 0. GachaResponseDto 객체 생성
+        GachaResponseDto gachaResponseDto = new GachaResponseDto();
+
+        // 1. memberId에 해당하는 member를 가져온다.
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(!member.isPresent()) {
+            throw new NotFoundException(memberId + "에 해당하는 member는 없습니다.");
+        }
+
+        // 2. member의 remainGacha 수가  0보다 작으면 Exception 발생 ,,,
+        int remainGacha = member.get().getRemainGacha() - 1;
+        if(remainGacha < 0) {
+            throw new Exception("가챠를 할 수 없습니다!");
+        }
+
+        // 2-1. gacha 횟수 감소
+        member.get().setRemainGacha(remainGacha);
+        memberRepository.save(member.get());
+
+        // 3. AvatarRepository에서 랜덤으로 한 가지를 가져온다.
+        Avatar gachaAvatar = avatarRepository.findRandomAvatar();
+
+        // 4-1. memberOwningAvatar에서 memberId와 avatarId에 맞는 데이터가 있는 지 확인하기
+        MemberOwningAvatar memberOwningAvatar = memberOwningAvatarRepository.findByMemberIdAndAvatarId(memberId, gachaAvatar.getId());
+
+        // 4-2. null이 라면 새로운 아바타를 획득한거고 null이 아니라면 중복된 애를 겟한거임 ,,,
+        if(memberOwningAvatar == null) {
+            MemberOwningAvatar newMemberOwningAvatar = new MemberOwningAvatar();
+
+            newMemberOwningAvatar.setMember(member.get());
+            newMemberOwningAvatar.setAvatar(gachaAvatar);
+            newMemberOwningAvatar.setAcquiredAt(LocalDateTime.now());
+            memberOwningAvatarRepository.save(newMemberOwningAvatar);
+
+            /* 응답 처리 */
+            gachaResponseDto.setAvatarId(gachaAvatar.getId().toString());
+            gachaResponseDto.setIsDuplicated(false);
+        }
+        else {
+            /* 응답 처리 */
+            gachaResponseDto.setAvatarId(gachaAvatar.getId().toString());
+            gachaResponseDto.setIsDuplicated(true);
+        }
+
+
+
+        return gachaResponseDto;
+    }
+
+
 }
 
 
