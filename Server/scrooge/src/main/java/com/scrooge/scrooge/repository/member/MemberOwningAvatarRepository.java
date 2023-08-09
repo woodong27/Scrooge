@@ -13,4 +13,7 @@ public interface MemberOwningAvatarRepository extends JpaRepository<MemberOwning
     List<MemberOwningAvatar> findByMemberId(Long memberId);
 
     boolean existsByMemberIdAndAvatarId(Long memberId, Long avatarId);
+
+    @Query("SELECT moa FROM MemberOwningAvatar moa WHERE moa.member.id = :memberId AND moa.avatar.id = :avatarId")
+    MemberOwningAvatar findByMemberIdAndAvatarId(Long memberId, Long avatarId);
 }
