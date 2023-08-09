@@ -27,6 +27,7 @@ public class LevelService {
         // 2. 만약 현재 경험치가 레벨 조건보다 크거나 같으면 레벨업을 진행한다.
         if (curMemberExp >= memberLevelLimit) {
             Long newLevelId = member.getLevel().getId() + 1;
+
             Optional<Level> newLevel = levelRepository.findById(newLevelId);
             member.setLevel(newLevel.orElse(null));
 
@@ -34,8 +35,11 @@ public class LevelService {
             Integer remainExp = curMemberExp - memberLevelLimit;
             member.setExp(remainExp);
 
-            memberRepository.save(member);
+            // 2-2. 가챠 횟수도 추가해주기
+            Integer addGacha = newLevel.get().getGacha();
+            member.setRemainGacha(member.getRemainGacha() + addGacha);
 
+            memberRepository.save(member);
         }
 
     }

@@ -172,7 +172,7 @@ public class PaymentHistoryService {
 
 
     public MemberDto updateExpAfterDailySettlement(Long memberId) {
-        Optional<Member> member =  memberRepository.findById(memberId);
+        Optional<Member> member =  memberRepository.findWithRelatedEntitiesById(memberId);
         if(member.isPresent()) {
             // 경험치 +100 정산해주기
             member.get().setExp(member.get().getExp() + 100);

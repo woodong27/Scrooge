@@ -28,7 +28,7 @@ public class LevelDataInitializer implements CommandLineRunner {
     }
 
     private void insertInitialData() {
-        // 50개의 초기 데이터를 삽입하는 쿼리문
+        // 30개의 초기 데이터를 삽입하는 쿼리문
         String insertQuery =
                 "INSERT INTO level (level, required_exp, gacha) VALUES " +
                         "(1, 500, 2), (2, 500, 2), (3, 500, 2), (4, 500, 2), (5, 500, 2), " +
