@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import QuestItem from "./QuestItem";
 import styles from "./QuestList.module.css";
 
 const QuestList = ({ props }) => {
+  const globalToken = useSelector((state) => state.globalToken);
   const [data, setData] = useState([]);
+
   useEffect(() => {
-    fetch("https://day6scrooge.duckdns.org/api/quest/")
+    const postData = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+    fetch("https://day6scrooge.duckdns.org/api/quest", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
         console.log(data);
       })
       .catch((error) => console.log(error));
+    console.log(data);
   }, []);
   return (
     <div>
