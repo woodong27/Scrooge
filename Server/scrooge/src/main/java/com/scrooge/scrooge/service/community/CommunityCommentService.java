@@ -48,7 +48,6 @@ public class CommunityCommentService {
         ArticleComment articleComment = new ArticleComment();
         articleComment.setContent(content);
         articleComment.setMember(member);
-//        articleComment.setCreatedAt(LocalDateTime.now());
         articleComment.setArticle(article);
         articleCommentRepository.save(articleComment);
 
@@ -64,7 +63,7 @@ public class CommunityCommentService {
                 .map(ArticleCommentDto::new)
                 .collect(Collectors.toList());
 
-        articleCommentDtos.sort(Comparator.comparing(ArticleCommentDto::getCreatedAt).reversed());
+        articleCommentDtos.sort(Comparator.comparing(ArticleCommentDto::getId).reversed());
         return articleCommentDtos;
     }
 
