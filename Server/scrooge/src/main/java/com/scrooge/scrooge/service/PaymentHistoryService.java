@@ -175,7 +175,7 @@ public class PaymentHistoryService {
             // 경험치 +100 정산해주기
             member.get().setExp(member.get().getExp() + 100);
 
-
+            levelService.levelUp(member.get());
 
             // streak 1 증가
             int newStreak = member.get().getStreak() + 1;
@@ -223,7 +223,4 @@ public class PaymentHistoryService {
 
         return todayTotalConsumption;
     }
-
-
-
 }
