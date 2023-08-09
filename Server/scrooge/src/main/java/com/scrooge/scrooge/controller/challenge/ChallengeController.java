@@ -30,7 +30,7 @@ public class ChallengeController {
     @PostMapping/*(consumes = "multipart/form-data")*/
     public ResponseEntity<ChallengeReqDto> createChallenge(
             @RequestHeader("Authorization") String tokenHeader,
-            @RequestBody ChallengeReqDto challengeReqDto
+            ChallengeReqDto challengeReqDto
             /*@RequestParam List<MultipartFile> images*/) {
 
         String token = extractToken(tokenHeader);
@@ -48,6 +48,7 @@ public class ChallengeController {
     @GetMapping
     public ResponseEntity<List<ChallengeRespDto>> getAllChallenges() {
         List<ChallengeRespDto> challengeDtos = challengeService.getAllChallenges();
+        System.out.println(challengeDtos);
         return ResponseEntity.ok(challengeDtos);
     }
 
