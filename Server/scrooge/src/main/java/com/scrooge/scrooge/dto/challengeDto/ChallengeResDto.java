@@ -11,6 +11,7 @@ public class ChallengeResDto {
     private Long id;
     private String category;
     private String title;
+    private Integer status;
     private Integer currentParticipants;
     private Integer minParticipants;
     private String mainImageAddress;
@@ -20,6 +21,7 @@ public class ChallengeResDto {
         this.id = challenge.getId();
         this.category = challenge.getCategory();
         this.title = challenge.getTitle();
+        this.status = challenge.getStatus();
         this.currentParticipants = challenge.getChallengeParticipantList().size();
         this.minParticipants = challenge.getMinParticipants();
         this.mainImageAddress = challenge.getChallengeExampleImageList().get(0).getImgAddress();
