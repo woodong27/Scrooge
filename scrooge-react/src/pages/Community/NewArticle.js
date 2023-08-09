@@ -40,13 +40,13 @@ const NewArticle = ({}) => {
       <div className={styles.box}>
         <img
           className={styles.file}
-          src={`${process.env.PUBLIC_URL}/images/fileFrame.png`}
-          alt="퀘스트"
+          src={`${process.env.PUBLIC_URL}/images/fileframe.png`}
+          alt="파일"
         />
         <img
           className={styles.character}
-          src={`${process.env.PUBLIC_URL}/Character/0.png`}
-          alt="퀘스트"
+          src={`https://storage.googleapis.com/scroogestorage/avatars/73-1.png`}
+          alt="캐릭터"
         />
         <div className={styles.title}>
           오늘 하루 당신의 <br /> 짠내나는 소비는?!
