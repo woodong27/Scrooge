@@ -23,8 +23,11 @@ const Challenge = () => {
   };
 
   useEffect(() => {
-    console.log(state);
-  }, []);
+    if (state === "성공") {
+      console.log("hi");
+      setMakeToast(true);
+    }
+  }, [state]);
 
   return (
     <div>

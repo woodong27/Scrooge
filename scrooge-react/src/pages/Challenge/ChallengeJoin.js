@@ -7,8 +7,6 @@ import styles from "./ChallengeJoin.module.css";
 import backImg from "../../assets/back.png";
 
 const ChallengeJoin = () => {
-  const globalToken = useSelector((state) => state.globalToken);
-  const headers = { Authorization: globalToken };
   const [data, setData] = useState([]);
   const params = useParams();
 

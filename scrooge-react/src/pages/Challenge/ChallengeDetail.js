@@ -30,7 +30,7 @@ const ChallengeDetail = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.layout}>
       <div className={styles.img}>
         <Link className={styles.back} to="/challenge">
           <img src={backImg} alt="뒤로가기"></img>
@@ -59,7 +59,95 @@ const ChallengeDetail = () => {
       </div>
 
       {selectChip === "나의 인증 현황" ? (
-        <AuthProgress per={60}></AuthProgress>
+        <div>
+          <AuthProgress per={60}></AuthProgress>
+          <div className={styles.my_auth_container}>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>1</div>
+              <div>8/3</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>2</div>
+              <div>8/4</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>3</div>
+              <div>8/5</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>4</div>
+              <div>8/6</div>
+              <div className={styles.fail}>실패</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+            <div className={styles.my_auth_middle}>
+              <div className={styles.idx}>5</div>
+              <div>8/7</div>
+              <div className={styles.succes}>성공</div>
+              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            </div>
+          </div>
+        </div>
       ) : (
         <div>
           <AuthProgress per={60}></AuthProgress>
@@ -72,6 +160,13 @@ const ChallengeDetail = () => {
           </div>
         </div>
       )}
+
+      <div className={styles.foot}>
+        <div className={styles.primary}>
+          인증하기
+          <div className={styles.shadow}></div>
+        </div>
+      </div>
     </div>
   );
 };
