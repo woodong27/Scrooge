@@ -59,7 +59,6 @@ const Login = ({ loginHandler }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         const jwtToken = data.token;
         sendJwtTokenToAndroid(jwtToken);
 
