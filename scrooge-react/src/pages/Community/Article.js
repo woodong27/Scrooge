@@ -157,8 +157,7 @@ const Article = (props) => {
         <div className={styles.authorInfo}>
           <img
             className={styles.character}
-            // memberAvatarAddress
-            src={`${process.env.PUBLIC_URL}/Character/0.png`}
+            src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
             alt="캐릭터"
           />
           <div className={styles.author}>{props.memberNickname}</div>

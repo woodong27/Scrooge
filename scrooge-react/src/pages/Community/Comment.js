@@ -26,7 +26,7 @@ const Comment = (props) => {
     <div className={styles.box}>
       <img
         className={styles.character}
-        src={`https://day6scrooge.duckdns.org/api/${props.memberAvatarAddress}`}
+        src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
         alt="캐릭터"
       />
       <div className={styles.up}>
