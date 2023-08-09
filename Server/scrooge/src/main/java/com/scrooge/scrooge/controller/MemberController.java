@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 

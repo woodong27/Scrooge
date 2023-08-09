@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "ChallengeStart", description = "시작된 챌린지에 관련된 API")
 @RestController
-@RequestMapping("/challenge")
+@RequestMapping("/api/challenge")
 @RequiredArgsConstructor
 public class StartChallengeController {
 

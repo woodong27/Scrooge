@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="PaymentHistory", description = "소비내역 API")
 @RestController
-@RequestMapping("/payment-history")
+@RequestMapping("/api/payment-history")
 @RequiredArgsConstructor
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PaymentHistoryController {

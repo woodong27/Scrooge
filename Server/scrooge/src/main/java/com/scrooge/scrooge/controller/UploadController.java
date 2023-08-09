@@ -2,7 +2,6 @@ package com.scrooge.scrooge.controller;
 
 import com.scrooge.scrooge.dto.UploadDto;
 import com.scrooge.scrooge.service.UploadService;
-import jdk.internal.loader.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
