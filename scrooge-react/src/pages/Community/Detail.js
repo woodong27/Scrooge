@@ -227,7 +227,7 @@ const Detail = () => {
             <img
               className={styles.picture}
               // imgAddress
-              src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+              src={`${data.imgAdress}`}
               alt="사진"
             />
             <div className={styles.content}>{data.content}</div>
