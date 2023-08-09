@@ -47,6 +47,7 @@ public class PaymentHistoryService {
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
+        paymentHistory.setIsSettled(false);
 
         if(paymentHistoryDto.getPaidAt() == null) {
             paymentHistory.setPaidAt(LocalDateTime.now());
@@ -161,6 +162,7 @@ public class PaymentHistoryService {
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
         paymentHistory.setCategory(paymentHistoryDto.getCategory());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
+        paymentHistory.setIsSettled(true);
 
         return paymentHistoryRepository.save(paymentHistory);
     }
@@ -242,6 +244,4 @@ public class PaymentHistoryService {
 
         return total;
     }
-
-
 }
