@@ -32,9 +32,9 @@ public class MemberController {
 
     @Operation(summary = "로그인 API", description = "로그인 POST")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
-        String token = memberService.login(loginRequestDto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto);
+        return ResponseEntity.ok(loginResponseDto);
     }
     
     // 유저 토큰을 받아서 해당 유저 정보를 반환
