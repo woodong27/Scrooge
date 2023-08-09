@@ -69,7 +69,7 @@ const PaymentAdd = ({ onCreate, date }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch(`http://day6scrooge.duckdns.org:8081/payment-history`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history`, postData)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
