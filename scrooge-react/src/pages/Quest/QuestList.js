@@ -5,7 +5,7 @@ import styles from "./QuestList.module.css";
 const QuestList = ({ props }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch("http://day6scrooge.duckdns.org:8081/quest/")
+    fetch("https://day6scrooge.duckdns.org/api/quest/")
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
