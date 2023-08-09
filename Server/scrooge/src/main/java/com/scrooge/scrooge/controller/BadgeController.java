@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name = "Badge", description = "APIs about Badge")
 @RestController
-@RequestMapping("/badge")
+@RequestMapping("/api/badge")
 @RequiredArgsConstructor
 public class BadgeController {
 

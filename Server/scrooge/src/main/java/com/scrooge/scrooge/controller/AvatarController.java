@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name = "Avatar APIs", description = "APIs about Badge")
 @RestController
-@RequestMapping("/avatar")
+@RequestMapping("/api/avatar")
 @RequiredArgsConstructor
 public class AvatarController {
 
