@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // 안드로이드와 웹 뷰 간의 브리지 설정
 //        webview.addJavascriptInterface(AndroidBridge(), "AndroidBridge")
 
-        webview.loadUrl("http://day6scrooge.duckdns.org:3000/")
+        webview.loadUrl("https://day6scrooge.duckdns.org/")
 
 //        val textView = findViewById<TextView>(R.id.textView)
 //        textView.setText(MyNotificationListenerService.Test)
