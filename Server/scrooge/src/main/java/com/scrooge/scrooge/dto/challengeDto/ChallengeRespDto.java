@@ -19,6 +19,7 @@ public class ChallengeRespDto {
     private String title;
     private Integer currentParticipants;
     private Integer minParticipants;
+    private Integer status;
 
     private String mainImgAddress; // 대표 이미지 주소
 
@@ -35,7 +36,9 @@ public class ChallengeRespDto {
         this.title = challenge.getTitle();
         this.currentParticipants = challenge.getChallengeParticipantList().size();
         this.minParticipants = challenge.getMinParticipants();
-        this.mainImgAddress = challenge.getChallengeExampleImageList().get(0).getImgAddress();
+        this.status = challenge.getStatus();
+
+//        this.mainImgAddress = challenge.getChallengeExampleImageList().get(0).getImgAddress();
 
         this.authMethod = challenge.getAuthMethod();
         this.challengeExampleImageList = challenge.getChallengeExampleImageList()
