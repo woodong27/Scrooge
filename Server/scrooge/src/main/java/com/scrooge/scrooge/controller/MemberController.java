@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
@@ -121,6 +122,17 @@ public class MemberController {
 
         GachaResponseDto gachaResponseDto = memberService.startAvatarGacha(memberId);
         return ResponseEntity.ok(gachaResponseDto);
+    }
+
+    // Member가 보유한 아바타 목록 출력
+    @Operation(summary = "Member가 보유한 아바타 목록 조회 API")
+    @GetMapping("/avatars")
+    public ResponseEntity<List<MemberOwningAvatarDto>> getMemberOwningAvatarList(@RequestHeader("Authorization") String tokenHeader) {
+        String token = jwtTokenProvider.extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        List<MemberOwningAvatarDto> memberOwningAvatarDtoList = memberService.getMemberOwningAvatarList(memberId);
+        return ResponseEntity.ok(memberOwningAvatarDtoList);
     }
 
 }

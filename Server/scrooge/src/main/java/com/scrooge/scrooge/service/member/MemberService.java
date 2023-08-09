@@ -3,6 +3,7 @@ package com.scrooge.scrooge.service.member;
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
+import com.scrooge.scrooge.dto.AvatarDto;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
@@ -17,7 +18,9 @@ import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -186,6 +189,17 @@ public class MemberService {
 
 
         return gachaResponseDto;
+    }
+
+    // 아바타 획득 목록을 조회하는 API
+    public List<MemberOwningAvatarDto> getMemberOwningAvatarList(Long memberId) {
+
+        // member가 memberId에 해당하는 목록 가져오기
+        List<MemberOwningAvatar> memberOwningAvatarList = memberOwningAvatarRepository.findByMemberId(memberId);
+
+        return memberOwningAvatarList.stream()
+                .map(MemberOwningAvatarDto::new)
+                .collect(Collectors.toList());
     }
 }
 
