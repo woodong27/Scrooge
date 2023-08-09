@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -10,21 +10,22 @@ import backImg from "../../assets/back.png";
 import Toast from "../../components/UI/Toast";
 
 const CreateChallenge = () => {
+  const formData = new FormData();
   const globalToken = useSelector((state) => state.globalToken);
+  const navigate = useNavigate();
 
   const period = ["1주", "2주", "3주", "한달"];
   const category = ["식비", "교통", "쇼핑", "기타"];
   const peoples = ["4명", "6명", "8명", "10명"];
-
   const [selectPeriod, setSelectPeriod] = useState("1주");
   const [selectCategory, setSelectCategory] = useState("식비");
   const [selectPeoples, setSelectPeoples] = useState("4명");
-
   const [title, setTitle] = useState("");
   const [authMethod, setAuthMethod] = useState("");
   const [introduce, setIntroduce] = useState("");
 
-  const [toast, setToast] = useState(false);
+  const [missToast, setMissToast] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
@@ -36,13 +37,18 @@ const CreateChallenge = () => {
     setIntroduce(event.target.value);
   };
 
+  const handleImageChange = (event) => {
+    const selectedimg = event.target.files[0];
+    setSelectedImage(selectedimg);
+  };
+
   const CreateChallengeHandler = () => {
     if (
       title.length === 0 ||
       authMethod.length === 0 ||
       introduce.length === 0
     ) {
-      setToast(true);
+      setMissToast(true);
       return;
     }
 
@@ -55,21 +61,18 @@ const CreateChallenge = () => {
       description: introduce,
     };
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: globalToken,
-    };
+    formData.append("json", JSON.stringify(postData));
+    formData.append("images", selectedImage);
 
     axios
-      .post(
-        "https://day6scrooge.duckdns.org/api/challenge",
-        JSON.stringify(postData),
-        {
-          headers,
-        }
-      )
-      .then((response) => {
-        console.log(response);
+      .post("https://day6scrooge.duckdns.org/api/challenge", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: globalToken,
+        },
+      })
+      .then((resp) => {
+        navigate("/challenge", { state: "성공" });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -202,12 +205,18 @@ const CreateChallenge = () => {
         <div className={styles.length}>{introduce.length}/100</div>
       </div>
 
-      <div className={styles.primary} onClick={CreateChallengeHandler}>
-        챌린지 만들기
-        <div className={styles.shadow}></div>
-      </div>
+      <input type="file" accept="image/*" onChange={handleImageChange} />
 
-      {toast && <Toast setToast={setToast} text="빠진 부분이 있어요!" />}
+      <div className={styles.foot}>
+        <div className={styles.primary} onClick={CreateChallengeHandler}>
+          챌린지 만들기
+          <div className={styles.shadow}></div>
+        </div>
+
+        {missToast && (
+          <Toast setToast={setMissToast} text="빠진 부분이 있어요!" />
+        )}
+      </div>
     </div>
   );
 };
