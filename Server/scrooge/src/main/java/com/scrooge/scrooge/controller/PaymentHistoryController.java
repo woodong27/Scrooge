@@ -65,6 +65,20 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(paymentHistoryDtos);
     }
 
+    // 입력받은 날짜의 소비 금액을 조회하는 API
+    @Operation(summary = "입력 받은 날짜의 소비 금액을 조회하는 API")
+    @GetMapping("/date-total/{dateTime}")
+    public ResponseEntity<Integer> getDateTotalConsumption(
+            @RequestHeader("Authorization") String tokenHeader,
+            @PathVariable("dateTime") String dateTime) {
+        String token = extractToken(tokenHeader);
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        Integer dateTotalConsumption = paymentHistoryService.getDateTotalConsumption(memberId, dateTime);
+        return ResponseEntity.ok(dateTotalConsumption);
+    }
+
     // 오늘 member의 소비내역 전체를 조회하는 API
     @Operation(summary = "오늘 member의 소비내역 전체를 조회하는 API", description = "오늘 소비내역 조회")
     @GetMapping("/today")
@@ -158,6 +172,8 @@ public class PaymentHistoryController {
         Integer todayTotalConsumption = paymentHistoryService.getTodayTotalConsumption(jwtTokenProvider.extractMemberId(token));
         return ResponseEntity.ok(todayTotalConsumption);
     }
+
+
 
 
     private String extractToken(String tokenHeader) {
