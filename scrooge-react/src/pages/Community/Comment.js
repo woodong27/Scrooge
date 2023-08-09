@@ -4,6 +4,7 @@ import styles from "./Comment.module.css";
 
 const Comment = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
+  const memberId = useSelector((state) => state.memberId);
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -12,8 +13,9 @@ const Comment = (props) => {
   }, []);
 
   const handleOpen = () => {
-    //여기서 member id가 같은지 확인해야 함
-    setIsEdit(true);
+    if (memberId === props.memberId) {
+      setIsEdit(true);
+    }
   };
 
   const handleDelete = () => {
