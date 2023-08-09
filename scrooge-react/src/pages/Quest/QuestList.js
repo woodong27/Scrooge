@@ -1,24 +1,47 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import QuestItem from "./QuestItem";
 import styles from "./QuestList.module.css";
 
 const QuestList = ({ props }) => {
-  const [data, setData] = useState([]);
+  const globalToken = useSelector((state) => state.globalToken);
+  const [ing, setIng] = useState([]);
+  const [list, setList] = useState([]);
+  const [finish, setFinish] = useState([]);
+
   useEffect(() => {
-    fetch("https://day6scrooge.duckdns.org/api/quest/")
+    const postData = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+    fetch("https://day6scrooge.duckdns.org/api/quest", postData)
       .then((resp) => resp.json())
       .then((data) => {
-        setData(data);
         console.log(data);
+        setIng(data.filter((it) => it.selected && !it.done));
+        setList(data.filter((it) => !it.selected));
+        setFinish(data.filter((it) => it.done));
       })
       .catch((error) => console.log(error));
   }, []);
+
   return (
     <div>
-      <div className={styles.title}> 진행 중 퀘스트 </div>
+      {ing.length > 0 && <div className={styles.title}> 진행 중 퀘스트 </div>}
+
+      {ing.map((it, index) => (
+        <QuestItem key={index} {...it} />
+      ))}
       <div className={styles.title}> 퀘스트 목록 </div>
-      <div className={styles.title}> 완료 퀘스트 </div>
-      {data.map((it, index) => (
+      {list.map((it, index) => (
+        <QuestItem className={styles.item} key={index} {...it} />
+      ))}
+      {finish.length > 0 && <div className={styles.title}> 완료 퀘스트 </div>}
+      {finish.map((it, index) => (
         <QuestItem key={index} {...it} />
       ))}
     </div>
