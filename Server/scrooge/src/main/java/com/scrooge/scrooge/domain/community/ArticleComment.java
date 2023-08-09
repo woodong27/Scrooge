@@ -21,10 +21,6 @@ public class ArticleComment {
     @Column(length = 255, nullable = false)
     private String content;
 
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
     /* 연결 */
     @ManyToOne
     @JoinColumn(name = "member_id")
