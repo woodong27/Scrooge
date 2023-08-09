@@ -1,5 +1,7 @@
 package com.scrooge.scrooge.service.community;
 
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleBad;
@@ -44,10 +46,17 @@ public class CommunityService {
     private final ArticleGoodRepository articleGoodRepository;
     private final ArticleBadRepository articleBadRepository;
 
+    private final Storage storage;
+    private final String bucketName = "scroogestorage";
+    private final String GCP_ADDRESS = "https://storage.googleapis.com/";
+
 
     // 커뮤니티 글을 등록하는 메서드
     @Transactional
-    public ArticleDto createArticle(String content, MultipartFile img, Long memberId) {
+    public ArticleDto createArticle(String content, MultipartFile img, Long memberId) throws IOException {
+
+        System.out.println(content);
+        System.out.println(memberId);
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
@@ -64,24 +73,18 @@ public class CommunityService {
 
         // 이미지 파일 등록 구현
 
-        // 업로드할 위치 설정
-        String uploadLocation = fileUploadProperties.getUploadLocation() + "/community";
+        String uuid = UUID.randomUUID().toString();
+        String ext = img.getContentType();
 
-        // 업로드된 사진의 파일명을 랜덤 UUID로 생성
-        String fileName = UUID.randomUUID().toString() + "_" + img.getOriginalFilename();
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, uuid)
+                        .setContentType(ext)
+                        .build();
 
-        Path filePath = null;
+        storage.create(blobInfo, img.getInputStream());
 
-        try {
-            // 업로드할 위치에 파일 저장
-            byte[] bytes = img.getBytes();
-            filePath = Paths.get(uploadLocation + File.separator + fileName);
-            Files.write(filePath, bytes);
-        } catch (IOException e) { // 파일 저장 중 예외 처리
-            e.printStackTrace();
-        }
+        String imgAddress = GCP_ADDRESS + bucketName + "/" + uuid;
+        article.setImgAdress(imgAddress);
 
-        article.setImgAdress(filePath.toString());
         articleRepository.save(article); // DB에 article 저장
 
         return new ArticleDto(article);
