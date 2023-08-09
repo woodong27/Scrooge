@@ -38,8 +38,8 @@ const CreateChallenge = () => {
   };
 
   const handleImageChange = (event) => {
-    const selectedimg = event.target.files[0];
-    setSelectedImage(selectedimg);
+    const selimg = event.target.files[0];
+    setSelectedImage(selimg);
   };
 
   const CreateChallengeHandler = () => {
@@ -61,7 +61,7 @@ const CreateChallenge = () => {
       description: introduce,
     };
 
-    formData.append("json", JSON.stringify(postData));
+    formData.append("info", JSON.stringify(postData));
     formData.append("images", selectedImage);
 
     axios
@@ -72,7 +72,8 @@ const CreateChallenge = () => {
         },
       })
       .then((resp) => {
-        navigate("/challenge", { state: "성공" });
+        // navigate("/challenge", { state: "성공" });
+        console.log(resp);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 import styles from "./ChallengeJoin.module.css";
 import backImg from "../../assets/back.png";
@@ -16,6 +15,7 @@ const ChallengeJoin = () => {
     axios
       .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
       .then((response) => {
+        console.log(response.data);
         setData(response.data);
       })
       .catch((error) => {
