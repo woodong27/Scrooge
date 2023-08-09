@@ -19,9 +19,16 @@ const ChallengeItem = (props) => {
           </p>
         </div>
       </div>
-      <Link to={`/challenge/${props.id}`}>
-        <button>참여하기</button>
-      </Link>
+      {props.text === "참여하기" && (
+        <Link to={`/challenge/${props.id}`}>
+          <button>{props.text}</button>
+        </Link>
+      )}
+      {props.text === "인증하기" && (
+        <Link to={`/challenge/my`}>
+          <button>{props.text}</button>
+        </Link>
+      )}
     </div>
   );
 };

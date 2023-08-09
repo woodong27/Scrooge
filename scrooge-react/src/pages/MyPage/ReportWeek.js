@@ -25,7 +25,7 @@ const ReportWeek = () => {
       },
     };
 
-    fetch(`http://day6scrooge.duckdns.org:8081/payment-history/date/${days}`,
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history/date/${days}`,
     postData
     )
       .then((resp) => resp.json())

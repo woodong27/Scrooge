@@ -98,7 +98,7 @@ const PaymentHistory = ({
       };
 
       fetch(
-        `http://day6scrooge.duckdns.org:8081/payment-history/date/${formattedDate}`,
+        `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
         postData
       )
         .then((resp) => resp.json())
@@ -146,7 +146,7 @@ const PaymentHistory = ({
       body: JSON.stringify(obj),
     };
     fetch(
-      `http://day6scrooge.duckdns.org:8081/payment-history/${targetId}`,
+      `https://day6scrooge.duckdns.org/api/payment-history/${targetId}`,
       postData
     )
       .then((res) => res.text())
@@ -168,7 +168,7 @@ const PaymentHistory = ({
       },
     };
     fetch(
-      "http://day6scrooge.duckdns.org:8081/payment-history/settlement-exp",
+      "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
       postData
     )
       .then((res) => res.text())

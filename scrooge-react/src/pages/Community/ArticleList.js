@@ -5,12 +5,11 @@ import styles from "./ArticleList.module.css";
 const ArticleList = ({ props }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch("http://day6scrooge.duckdns.org:8081/community")
+    fetch("https://day6scrooge.duckdns.org/api/community")
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
         setData(data);
-        console.log(data);
       })
       .catch((error) => console.log(error));
   }, []);

@@ -21,7 +21,7 @@ const ReportTab = () => {
       },
     };
 
-    fetch(`http://day6scrooge.duckdns.org:8081/payment-history/month/${dateTime}`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history/month/${dateTime}`, postData)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("데이터:",data)
