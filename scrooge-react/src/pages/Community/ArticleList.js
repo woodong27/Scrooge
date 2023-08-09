@@ -10,7 +10,6 @@ const ArticleList = ({ props }) => {
       .then((data) => {
         console.log(data);
         setData(data);
-        console.log(data);
       })
       .catch((error) => console.log(error));
   }, []);

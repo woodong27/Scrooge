@@ -20,12 +20,10 @@ const Detail = () => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    console.log(params.id);
     fetch(`http://day6scrooge.duckdns.org:8081/community/${params.id}`)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
-        console.log(data);
       })
       .catch((error) => console.log(error));
 
