@@ -18,7 +18,6 @@ public class PaymentHistory {
     private Long id;
 
     @Column(name = "paid_at")
-    @CreationTimestamp
     private LocalDateTime paidAt;
 
     @Column(length = 20)
@@ -32,6 +31,10 @@ public class PaymentHistory {
 
     @Column(length = 255, name = "card_name")
     private String cardName;
+
+
+    @Column(name = "is_settled", columnDefinition = "boolean default false")
+    private Boolean isSettled;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,7 +1,7 @@
 .chipsContainer {
   display: flex;
-  flex-wrap: wrap;
-  margin: 0 20px 0 20px;
+  flex-wrap: nowrap;
+  margin: 0 1rem;
   justify-content: space-between;
 }
 
@@ -9,10 +9,22 @@
   display: inline-flex;
   align-items: center;
   background-color: #e5e7eb;
-  border-radius: 9999px;
+  border-radius: 2rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--input-text);
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.selected {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--blue);
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--input-text);
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
 }

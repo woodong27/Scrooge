@@ -2,9 +2,13 @@ package com.scrooge.scrooge.service.community;
 
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.community.Article;
+import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
+import com.scrooge.scrooge.dto.communityDto.ArticleReviewCountDto;
 import com.scrooge.scrooge.dto.member.ArticleMemberDto;
+import com.scrooge.scrooge.repository.community.ArticleBadRepository;
+import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.repository.community.ArticleRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
@@ -37,6 +41,8 @@ public class CommunityService {
     private final FileUploadProperties fileUploadProperties;
     private final MemberSelectedQuestRepository memberSelectedQuestRepository;
     private final QuestService questService;
+    private final ArticleGoodRepository articleGoodRepository;
+    private final ArticleBadRepository articleBadRepository;
 
 
     // 커뮤니티 글을 등록하는 메서드
@@ -117,5 +123,11 @@ public class CommunityService {
         articleRepository.delete(article);
     }
 
+    public ArticleReviewCountDto countArticleReview(Long articleId) {
+        Integer goodCount = articleGoodRepository.countByArticleId(articleId);
+        Integer badCount = articleBadRepository.countByArticleId(articleId);
+
+        return new ArticleReviewCountDto(goodCount, badCount);
+    }
 
 }

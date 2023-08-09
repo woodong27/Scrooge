@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "forward-lead-392307",
+  "private_key_id": "4a37b2b70cad9dd12bf19ed25aea2024c23a155a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtqyBKVvZ1koaX\naDDSwBDImz8yynVOu7cMCoL0Zsc7x3rPMJLYR8T/GWwMam73qtcsDBjY1ucsryqi\nDaXV98f3c5vUNNmDTSbqw0LttpyBiOkzQVAQya53kruxbJg+9S1SBvegfnVbm9kN\nl7W3krk5JPnD+JdcVVYAWiCgbGmvznCWspjOTIdSVDXMdssIsELSBQWcFmjFqIVG\niPJtedGHVIeyrxvaEWN9IR6XKdhLdq/fyetRnMwmImFURf36kM7KiZPhtTgU9lhX\nJQLyyrLY2ZpNIAag4cgg8uOe7r+OJ3TPmZlFyw/9NG//yzMx3ElNbFMblGhbKj1S\nJ43Q/DOTAgMBAAECggEACTMA3V844+Z0ka2XtHovCWlL0jVuPFLuMcmWwTp2gECj\nTTlN9f3rPfYLRqcWpLDcf/1ODaJokXHf6MCfUbOz2HQ7w2RfRzi9gH8CWxQquyPU\n8n2Zr6H3R2cy4QWXFPKoyWkMEejQ757UQwePvR8dB51hS5Ot9NqiWRdtFgJYINNQ\nliGwQYU11UJqlnSi25olQCjIe8GEZcW74y8sJ+Nzh+r4L4f0Qhi75keglLc7ABwR\nl1vEZiFRgrzHPigAb/v7Xh4tJIUQVd6osjQ+UBxYiea4J4LgS4uNah0T9tdqVxcy\nxwXIfxGAHFQmG1kmFFcwVnS3arW1hTYgKdh9MbXQmQKBgQDv6tBU9vk3ETRyaf4G\neZAx94wtv1P6i9gTfOUl2d/4N/jXjamsCjxq8OPMwftZrorlnCtuDLPxE2BIaMgs\nT8ZLBO/4uJe2dxmrBY8bD/BPnmBVqkV4pD6Yll0EHmnZfwR8WJmjuqMNCzFW4CFL\nBEGdR23N3ofyvBIdbV3CS8eFOwKBgQC5T20hywy3DgnV+jgSYKqtY1ZSIDwPE1ju\nfmFeQIVtizNqpDfbGsrnu7pvfTg/5/MmTRsF2XMTxxzzWjxm2dhjr6h7qGGLk6+T\n/3oRAkGLJGfJbk8xqn+k9yLdVSFLfh4TjJonszL8boIzFODZ32qdcsxr1t40lfB1\nu6pETBdFiQKBgQCF4PeOYh8hnoUwz3rEbDON3oCnypt3NXBHN6u7WoBDyCAhUNj8\nut2KI5BK43h6TA8QH/yQNaB4B4L0BRymtYGGvWOX3JI0bPOy3rBDvrowA8XoJ9MK\nhkSz6zxOnxYcG2gKZ3qcxfpUvgkzXHDXprFirchVWDduuYo2R6BJWvYknwKBgDPf\n4iL1nmeYDHTUCOJMITtMdZuj3mwx9FE/G66wzSkvMIOH2QMC6w4X5UbUfOyW1+A+\n8XOfvbEpqhcNiZ8ZGJQ/ViDXsAbMnvgFKnycbxCubkdbE9xJaFYbwKzI6fsiIPVE\nBNtcNMepf9Ug4RjcjBHrUwJVMfryhk/O6wkXa+RRAoGBALUWzbgkFNkaIgD9pFz4\nv16NYj9awVVFljGRRdNtiCeAQ8NHUvjCqqiA8ObAUqEifAxfqS7HCgeK1qZvUj8o\nMEkJTwWdC637IAIZ2SUmhkfcZcC70uDvt0YqfP+jl7ql8vIKS0VmwTIH84OqxsTo\nXWs3iZM8Sn7ZZ2twFQSqKQWU\n-----END PRIVATE KEY-----\n",
+  "client_email": "scroogestorage-access@forward-lead-392307.iam.gserviceaccount.com",
+  "client_id": "103103011414417076426",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/scroogestorage-access%40forward-lead-392307.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

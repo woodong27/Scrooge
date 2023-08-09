@@ -1,6 +1,6 @@
 import styles from "./ButtonWhite.module.css";
 
-const ButtonGreen = (props) => {
+const ButtonWhite = (props) => {
   return (
     <div className={styles.shadow}>
       <div className={styles.primary} onClick={props.onClick}>
@@ -10,4 +10,4 @@ const ButtonGreen = (props) => {
   );
 };
 
-export default ButtonGreen;
+export default ButtonWhite;

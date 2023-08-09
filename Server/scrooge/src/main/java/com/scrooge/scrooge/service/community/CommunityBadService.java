@@ -3,7 +3,6 @@ package com.scrooge.scrooge.service.community;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleBad;
 import com.scrooge.scrooge.domain.member.Member;
-import com.scrooge.scrooge.dto.communityDto.ArticleBadCountDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
@@ -66,12 +65,5 @@ public class CommunityBadService {
         }
 
         return articleBadDto;
-    }
-
-    // Article의 전체 싫어요 수 조회하는 메서드
-    public ArticleBadCountDto getCommunityBadCount(Long articleId) {
-        ArticleBadCountDto articleBadCountDto = new ArticleBadCountDto();
-        articleBadCountDto.setBadCount(articleBadRepository.countByArticleId(articleId));
-        return articleBadCountDto;
     }
 }

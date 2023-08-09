@@ -1,5 +1,5 @@
 .progress-bar-container {
-  width: 300px;
+  width: 20rem;
   margin: 15px auto;
 }
 
@@ -9,7 +9,6 @@
   width: 100%;
   height: 30px;
   transition: width 0.3s;
-  border-radius: 15px;
 }
 
 .progress-bar {
@@ -19,7 +18,6 @@
   position: absolute;
   background: var(--blue);
   height: 30px;
-  border-radius: 15px;
 }
 
 .progress-text {
@@ -27,7 +25,7 @@
   position: absolute;
   margin: 0 auto;
   color: var(--input-text);
-  bottom: 4px;
+  bottom: 0;
   left: 50%;
   transform: translate(-164px, 0);
   z-index: 1;

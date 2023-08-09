@@ -1,14 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import Header from "../../components/Header";
-import Chips from "../../components/UI/Chips";
 import ChallengeToggle from "./ChallengeToggle";
-import ChallengeList from "./ChallengeList";
 import PlusBtn from "../../components/UI/PlusBtn";
+import AllChallenge from "./AllChallenge";
+import MyChallenge from "./MyChallenge";
+import Toast from "../../components/UI/Toast";
 
 const Challenge = () => {
+  const location = useLocation();
+  const state = location.state;
+
   const [isMyChallenge, setIsMyChallnge] = useState(false);
+  const [makeToast, setMakeToast] = useState(false);
+
   const myChallengeHandler = () => {
     setIsMyChallnge(true);
   };
@@ -16,11 +22,19 @@ const Challenge = () => {
     setIsMyChallnge(false);
   };
 
+  useEffect(() => {
+    if (state === "성공") {
+      console.log("hi");
+      setMakeToast(true);
+    }
+  }, [state]);
+
   return (
     <div>
       <Link to="/challenge/create">
         <PlusBtn />
       </Link>
+
       <Header text="스크루지 파이트">
         <ChallengeToggle
           isMyChallenge={isMyChallenge}
@@ -29,8 +43,11 @@ const Challenge = () => {
         />
       </Header>
 
-      <Chips chips={["식비", "교통비", "쇼핑", "기타"]} />
-      <ChallengeList></ChallengeList>
+      {isMyChallenge ? <MyChallenge /> : <AllChallenge />}
+
+      {makeToast && (
+        <Toast setToast={setMakeToast} text="챌린지가 생성 되었어요!" />
+      )}
     </div>
   );
 };

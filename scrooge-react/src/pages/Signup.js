@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BackGround from "../components/BackGround";
-import ButtonWhite from "../components/UI/ButtonWhite";
+import ButtonWhite from "../components/Button/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Signup.module.css";
 
@@ -85,7 +85,7 @@ const Signup = () => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/signup", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/signup", postData)
       .then((res) => {
         if (!res.ok) {
           throw new Error("회원가입 실패");

@@ -1,7 +1,6 @@
 package com.scrooge.scrooge.controller.community;
 
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.dto.communityDto.ArticleBadCountDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
 import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="CommunityUnlike", description = "커뮤니티 싫어요 관련 API")
 @RestController
-@RequestMapping("/community")
+@RequestMapping("/api/community")
 @RequiredArgsConstructor
 public class CommunityBadController {
 
@@ -76,12 +75,5 @@ public class CommunityBadController {
 
         ArticleBadDto articleBadDto = communityBadService.getCommunityBadCheck(articleId, jwtTokenProvider.extractMemberId(token));
         return ResponseEntity.ok(articleBadDto);
-    }
-
-    // 글 전체 싫어요 수 조회
-    @GetMapping("/{articleId}/bad-count")
-    public ResponseEntity<ArticleBadCountDto> getCommunityBadCount(@PathVariable("articleId")Long articleId) {
-        ArticleBadCountDto articleBadCountDto = communityBadService.getCommunityBadCount(articleId);
-        return ResponseEntity.ok(articleBadCountDto);
     }
 }

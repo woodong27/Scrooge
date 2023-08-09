@@ -17,7 +17,7 @@ public class ArticleMemberDto {
     public ArticleMemberDto(Member member) {
         this.id = member.getId();
         this.nickname = member.getNickname();
-        this.mainAvatarAddress = member.getMainAvatar().getImgAddress();
+        this.mainAvatarAddress = member.getMainAvatar().getId().toString();
         this.mainBadgeAddress = member.getMainBadge().getImgAddress();
     }
 }

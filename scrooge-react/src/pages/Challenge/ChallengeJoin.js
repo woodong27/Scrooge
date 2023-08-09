@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import ButtonBlue from "../../components/Button/ButtonBlue";
 import styles from "./ChallengeJoin.module.css";
 import backImg from "../../assets/back.png";
 
@@ -10,9 +9,11 @@ const ChallengeJoin = () => {
   const [data, setData] = useState([]);
   const params = useParams();
 
+  const joinChallengeHandler = () => {};
+
   useEffect(() => {
     axios
-      .get(`http://day6scrooge.duckdns.org:8081/challenge/${params.id}`)
+      .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
       .then((response) => {
         console.log(response.data);
         setData(response.data);
@@ -44,18 +45,52 @@ const ChallengeJoin = () => {
           <span>경험치 500+</span>
         </div>
       </div>
-      <div className={styles.container}>
+      <div className={styles.mid_container}>
         <h2>이렇게 인증해주세요</h2>
         <div>- 매일 전날의 소비 내역을 불러와주세요.</div>
         <div>- 사진이 잘 보이도록 촬영해주세요.</div>
-        <div>{/* 인증 예시 이미지 */}</div>
+        <div className={styles.auth_img}>
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+            alt="더미"
+          />
+        </div>
       </div>
-      <div className={styles.container}>
+      <div className={styles.bottom_container}>
         <h2>이런 분들께 추천해요</h2>
         <div>{data.description}</div>
       </div>
-      <div className={styles.day}></div>
-      <ButtonBlue>챌린지에 도전할래요!</ButtonBlue>
+
+      <div className={styles.primary} onClick={joinChallengeHandler}>
+        챌린지에 도전할래요!
+        <div className={styles.shadow}></div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,63 @@
+.box {
+  width: 360px;
+  height: fit-content;
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  position: relative;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.content {
+  width: 288px;
+  height: fit-content;
+  padding: 10px 10px 10px 30px;
+  margin: 0 0 20px 44px;
+  text-align: left;
+  border: 1.5px solid #000;
+  border-radius: 10px;
+}
+
+.character {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  left: 10px;
+  bottom: 24px;
+}
+
+.up {
+  width: 280px;
+  height: 20px;
+  position: absolute;
+  top: -20px;
+  left: 76px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.nickname {
+  font-size: 16px;
+}
+
+.option {
+  width: 40px;
+  position: absolute;
+  right: -10px;
+  top: 0px;
+}
+
+.delete {
+  width: 32px;
+  font-size: 14px;
+  position: absolute;
+  right: 0px;
+  top: -2px;
+  padding: 2px 4px;
+  color: #fff;
+  background-color: #f57272;
+  border-radius: 10px;
+}

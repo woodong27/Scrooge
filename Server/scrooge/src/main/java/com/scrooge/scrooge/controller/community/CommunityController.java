@@ -6,6 +6,7 @@ import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.communityDto.ArticleCommentDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleContentDto;
 import com.scrooge.scrooge.dto.communityDto.ArticleDto;
+import com.scrooge.scrooge.dto.communityDto.ArticleReviewCountDto;
 import com.scrooge.scrooge.service.community.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +23,7 @@ import java.util.List;
 
 @Tag(name="Community", description = "커뮤니티 API")
 @RestController
-@RequestMapping("/community")
+@RequestMapping("/api/community")
 @RequiredArgsConstructor
 public class CommunityController {
 
@@ -74,6 +75,12 @@ public class CommunityController {
     public ResponseEntity<?> deleteCommunityArticle(@PathVariable("articleId")Long articleId) {
         communityService.deleteCommunityArticle(articleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DELETE COMMUNITY OK");
+    }
+
+    @Operation(summary = "게시글의 전체 평가 수 반환")
+    @GetMapping("/{articleId}/review-count")
+    public ResponseEntity<ArticleReviewCountDto> countArticleReview(@PathVariable("articleId")Long articleId) {
+        return ResponseEntity.ok(communityService.countArticleReview(articleId));
     }
 
 }

@@ -43,8 +43,8 @@ public class Challenge {
     @Column(name = "total_auth_count")
     private Integer totalAuthCount; // 총 인증해야 하는 횟수
 
-    @Column(columnDefinition = "INTEGER default 0")
-    private Integer status; //상태 (0: 시작 전, 1: 진행 중, 2: 종료)
+    @Column(columnDefinition = "INTEGER default 1")
+    private Integer status; //상태 1: 시작전 2: 진행 중 3: 종료)
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -57,9 +57,9 @@ public class Challenge {
     @JoinColumn(name = "challenge_master")
     private Member challengeMaster;
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeExampleImage> challengeExampleImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeParticipant> challengeParticipantList = new ArrayList<>();
 }

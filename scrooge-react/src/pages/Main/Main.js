@@ -4,12 +4,13 @@ import { useSelector } from "react-redux";
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import CharacterCard from "../../components/UI/CharacterCard";
-import TodayCard from "../../components/UI/TodayCard";
+import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
+  console.log(globalToken);
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
@@ -22,13 +23,14 @@ const Main = (props) => {
 
   useEffect(() => {
     getCurrentDate();
+    console.log(globalToken);
     const postData = {
       method: "GET",
       headers: {
         Authorization: globalToken,
       },
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -52,12 +54,11 @@ const Main = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
       body: JSON.stringify(obj),
     };
-    fetch(`http://day6scrooge.duckdns.org:8081/member/weekly-goal`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/member/weekly-goal`, postData)
       .then((res) => res.json())
       .then((data) => {
         setWeeklyGoal(data.weeklyGoal);
@@ -73,7 +74,7 @@ const Main = (props) => {
       },
     };
     fetch(
-      "http://day6scrooge.duckdns.org:8081/payment-history/today-total",
+      "https://day6scrooge.duckdns.org/api/payment-history/today-total",
       postData
     )
       .then((resp) => resp.json())
@@ -168,7 +169,7 @@ const Main = (props) => {
               alt="고리"
             />
           </div>
-          <TodayCard>
+          <Card height={220}>
             <div className={styles.todayCard}>
               <div className={styles.title}>
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
@@ -180,8 +181,14 @@ const Main = (props) => {
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
+<<<<<<< HEAD
               setGoal={setGoal}></ProgressBar>
           </TodayCard>
+=======
+              setGoal={setGoal}
+            ></ProgressBar>
+          </Card>
+>>>>>>> 5194ed0fd769892c09a375c88d7274dc79d21d21
         </div>
       )}
       {isConsum && (

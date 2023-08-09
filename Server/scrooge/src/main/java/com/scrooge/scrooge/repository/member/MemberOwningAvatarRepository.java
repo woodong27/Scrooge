@@ -10,6 +10,10 @@ import java.util.List;
 @Repository
 public interface MemberOwningAvatarRepository extends JpaRepository<MemberOwningAvatar, Long> {
 
-    @Query("SELECT moa FROM MemberOwningAvatar moa WHERE moa.member.id = ?1")
-    List<MemberOwningAvatar> findMemberOwningAvatarsById(Long memberId);
+    List<MemberOwningAvatar> findByMemberId(Long memberId);
+
+    boolean existsByMemberIdAndAvatarId(Long memberId, Long avatarId);
+
+    @Query("SELECT moa FROM MemberOwningAvatar moa WHERE moa.member.id = :memberId AND moa.avatar.id = :avatarId")
+    MemberOwningAvatar findByMemberIdAndAvatarId(Long memberId, Long avatarId);
 }

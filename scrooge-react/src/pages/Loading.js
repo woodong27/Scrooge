@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import styles from "./Loading.module.css";
-import ButtonGreen from "../components/UI/ButtonGreen";
+import ButtonGreen from "../components/Button/ButtonGreen";
 import BackGround from "../components/BackGround";
 
 const Loading = () => {

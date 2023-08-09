@@ -15,7 +15,7 @@ const Footer = () => {
         </Link>
       </li>
       <li>
-        <Link to="/300">
+        <Link to="/community">
           <img
             src={`${process.env.PUBLIC_URL}/images/nav-icons/peoples.png`}
             alt="커뮤니티"
@@ -46,7 +46,7 @@ const Footer = () => {
           <img
             src={`${process.env.PUBLIC_URL}/images/nav-icons/profile.png`}
             alt="프로필"
-            />
+          />
           <div>프로필</div>
         </Link>
       </li>

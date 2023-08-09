@@ -55,11 +55,17 @@ const PaymentHistory = ({
     }
   };
 
+  useEffect(() => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
+  }, []);
+
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      console.log("끝");
       settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
@@ -68,25 +74,38 @@ const PaymentHistory = ({
     }
   };
 
-  // 오늘 소비 내역 불러오기
   useEffect(() => {
-    const postData = {
-      method: "GET",
-      headers: {
-        Authorization: globalToken,
-      },
-    };
-    getCurrentDate();
-    fetch("http://day6scrooge.duckdns.org:8081/payment-history/today", postData)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    getPaymentHistory();
+  }, [date]);
+
+  // 오늘 소비 내역 불러오기
+  const getPaymentHistory = () => {
+    if (date.length === 2) {
+      const formattedDate = `2023-${date[0]
+        .toString()
+        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
+
+      const postData = {
+        method: "GET",
+        headers: {
+          Authorization: globalToken,
+        },
+      };
+
+      fetch(
+        `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
+        postData
+      )
+        .then((resp) => resp.json())
+        .then((data) => {
+          //데이터가 없는 경우도 처리해야겠지?
+          setData(data);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
 
   useEffect(() => {
-    console.log(total);
     setOrigin(total);
   }, [total]);
 
@@ -121,7 +140,7 @@ const PaymentHistory = ({
       body: JSON.stringify(obj),
     };
     fetch(
-      `http://day6scrooge.duckdns.org:8081/payment-history/${targetId}`,
+      `https://day6scrooge.duckdns.org/api/payment-history/${targetId}`,
       postData
     )
       .then((res) => res.text())
@@ -131,14 +150,6 @@ const PaymentHistory = ({
         it.id === targetId ? { ...it, cardName, amount, usedAt } : it
       )
     );
-  };
-
-  // 오늘 날짜 가져오기
-  const getCurrentDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
   };
 
   // 일일정산 경험치 추가
@@ -151,10 +162,10 @@ const PaymentHistory = ({
       },
     };
     fetch(
-      "http://day6scrooge.duckdns.org:8081/payment-history/settlement-exp",
+      "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
       postData
     )
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then(console.log);
   };
 
@@ -182,10 +193,14 @@ const PaymentHistory = ({
 
         <div className={styles.scrollitem}>
           <div className={styles.item}>
-            {data.map((it, index) => (
-              <PaymentItem key={index} {...it} onEdit={onEdit} />
-            ))}
-            <PaymentAdd onCreate={onCreate} />
+            {data.length > 0 ? (
+              data.map((it, index) => (
+                <PaymentItem key={index} {...it} onEdit={onEdit} />
+              ))
+            ) : (
+              <p>!!소비 내역이 없습니다!!</p>
+            )}
+            <PaymentAdd onCreate={onCreate} date={date} />
             <div className={styles.total}>
               {origin || origin === 0
                 ? `총합: ${origin
@@ -193,11 +208,14 @@ const PaymentHistory = ({
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
                 : ""}
             </div>
-            <button
-              onClick={handleOpenModal}
-              className={settlement ? styles.finishBtn : styles.btn}>
-              {settlement ? "정산 완료" : "정산하기"}
-            </button>
+
+            {settlement ? (
+              <button className={styles.finishBtn}>정산완료</button>
+            ) : (
+              <button onClick={handleOpenModal} className={styles.btn}>
+                정산하기
+              </button>
+            )}
           </div>
         </div>
       </div>

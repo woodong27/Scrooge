@@ -11,11 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -32,9 +33,9 @@ public class MemberController {
 
     @Operation(summary = "로그인 API", description = "로그인 POST")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
-        String token = memberService.login(loginRequestDto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto);
+        return ResponseEntity.ok(loginResponseDto);
     }
     
     // 유저 토큰을 받아서 해당 유저 정보를 반환
@@ -80,11 +81,49 @@ public class MemberController {
         String token = extractToken(header);
 
         if (!jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RuntimeException("유효하지 않은 토큰입니다."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
         MemberDto memberDto = memberService.updatePassword(updatePasswordDto, memberId);
         return ResponseEntity.ok(memberDto);
     }
+
+    @Operation(summary = "회원 탈퇴", description = "회원탈퇴 API")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteMember(@RequestHeader("Authorization")String header) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        memberService.deleteMember(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("회원탈퇴 완료");
+    }
+
+    @Operation(summary = "상태메시지 수정 api")
+    @PutMapping("/message")
+    public ResponseEntity<?> updateMessage(@RequestHeader("Authorization")String header, @RequestBody UpdateMessageDto updateMessageDto) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        return ResponseEntity.ok(memberService.updateMessage(jwtTokenProvider.extractMemberId(token), updateMessageDto.getMessage()));
+    }
+
+    // 가챠 API 구현
+    @Operation(summary = "아바타 가챠 구현 API")
+    @PutMapping("/gacha")
+    public ResponseEntity<GachaResponseDto> startAvatarGacha(@RequestHeader("Authorization") String tokenHeader) throws Exception {
+        String token = jwtTokenProvider.extractToken(tokenHeader);
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        GachaResponseDto gachaResponseDto = memberService.startAvatarGacha(memberId);
+        return ResponseEntity.ok(gachaResponseDto);
+    }
+
+
+
 }
