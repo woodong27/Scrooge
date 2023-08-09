@@ -6,6 +6,7 @@ import ReportMonth from "./ReportMonth";
 
 const ReportTab = () => {
   const globalToken = useSelector((state) => state.globalToken);
+
   const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
@@ -24,11 +25,14 @@ const ReportTab = () => {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("데이터:",data)
-        console.log(data.paitAt)
-        setMonthlyData(data);
+        setMonthlyData(data.map(item => item.paidAt));
       })
       .catch((error) => console.log(error));
-  }
+  };
+
+  useEffect(() => {
+    console.log("업뎃",monthlyData)
+  },[monthlyData])
 
 
 
