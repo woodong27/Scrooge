@@ -2,8 +2,6 @@ package com.scrooge.scrooge.controller.challenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.domain.challenge.Challenge;
-import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
 import com.scrooge.scrooge.dto.challengeDto.*;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import com.scrooge.scrooge.service.challenge.ChallengeService;
@@ -31,16 +29,6 @@ public class ChallengeController {
     private final JwtTokenProvider jwtTokenProvider;
     private final ChallengeRepository challengeRepository;
 
-    @GetMapping("/test/{challengeId}")
-    public ResponseEntity<List<ChallengeExampleImageDto>> challengeTest(@PathVariable("challengeId")Long challengeId) {
-        Challenge challenge = challengeRepository.findById(challengeId).orElse(null);
-
-
-        return ResponseEntity.ok(challenge.getChallengeExampleImageList().stream()
-                .map(ChallengeExampleImageDto::new)
-                .collect(Collectors.toList()));
-    }
-
     // 챌린지를 생성하는 API
     @Operation(summary = "챌린지 생성")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -62,41 +50,38 @@ public class ChallengeController {
     // 전체 챌린지를 조회하는 API
     @Operation(summary = "전체 챌린지를 조회하는 API")
     @GetMapping
-    public ResponseEntity<List<ChallengeRespDto>> getAllChallenges() {
-        List<ChallengeRespDto> challengeDtos = challengeService.getAllChallenges();
-        System.out.println(challengeDtos);
-        return ResponseEntity.ok(challengeDtos);
+    public ResponseEntity<List<ChallengeResDto>> getAllChallenges() {
+        return ResponseEntity.ok(challengeService.getAllChallenges());
     }
 
     // 카테고리 별 챌린지를 조회하는 API
     @Operation(summary = "카테고리 별 챌린지를 조회하는 API", description = "categoryId => 1: 식비, 2: 교통비, 3: 쇼핑, 4: 기타")
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<ChallengeRespDto>> getChallengesbyCategory(@PathVariable("categoryId") Integer categoryId) {
-        List<ChallengeRespDto> challengeDtos = challengeService.getChallengesbyCategory(categoryId);
-        return ResponseEntity.ok(challengeDtos);
+    public ResponseEntity<List<ChallengeResDto>> getChallengesbyCategory(@PathVariable("categoryId") Integer categoryId) {
+        return ResponseEntity.ok(challengeService.getChallengesbyCategory(categoryId));
     }
 
     // 마이 챌린지를 조회하는 API
-    @Operation(summary = "마이 챌린지를 조회하는 API", description = "statusId => 1: 시작 전, 2: 진행 중, 3: 종료")
-    @GetMapping("/{statusId}/my-challenge")
-    public ResponseEntity<List<ChallengeRespDto>> getMyChallenges(
+    @Operation(summary = "마이 챌린지 중에서 시작 전 챌린지를 조회하는 API", description = "statusId => 1: 시작 전, 2: 진행 중, 3: 종료")
+    @GetMapping("/{statusId}/member")
+    public ResponseEntity<?> getMyChallenges(
             @RequestHeader("Authorization")String tokenHeader,
             @PathVariable("statusId")Integer statusId) {
 
         String token = extractToken(tokenHeader);
-        Long memberId = jwtTokenProvider.extractMemberId(token);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
 
-        List<ChallengeRespDto> myChallengeDtos = challengeService.getMyChallenges(memberId, statusId);
-        return ResponseEntity.ok(myChallengeDtos);
+        return ResponseEntity.ok(challengeService.getMyChallenges(jwtTokenProvider.extractMemberId(token), statusId));
     }
 
     // 챌린지 상세 조회 API
     // 여기만 예시이미지 목록 필요
     @Operation(summary = "챌린지를 상세 조회하는 API")
     @GetMapping("/{challengeId}")
-    public ResponseEntity<ChallengeRespDto> getChallenge(@PathVariable("challengeId") Long challengeId) throws IllegalAccessException {
-        ChallengeRespDto challengeDto = challengeService.getChallenge(challengeId);
-        return ResponseEntity.ok(challengeDto);
+    public ResponseEntity<ChallengeDetailDto> getChallenge(@PathVariable("challengeId") Long challengeId) {
+        return ResponseEntity.ok(challengeService.getChallenge(challengeId));
     }
 
     // 사용자가 챌린지를 참여하는 API

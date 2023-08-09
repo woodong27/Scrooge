@@ -154,7 +154,7 @@ public class StartChallengeService {
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
     public void checkEndDateAndUpdateChallengeStatus() {
         // 모든 진행 중인 Challenge를 challenges 리스트에 저장한다.
-        List<Challenge> challenges = challengeRepository.findAllByStatus2();
+        List<Challenge> challenges = challengeRepository.findAllByStatus(2);
 
         // 현재 시간을 받아온다.
         LocalDateTime currentDateTime = LocalDateTime.now();
