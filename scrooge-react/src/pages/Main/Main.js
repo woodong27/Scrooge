@@ -56,7 +56,7 @@ const Main = (props) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch(`https://day6scrooge.duckdns.org/api/member/weekly-goal`, postData)
+    fetch(`httpss://day6scrooge.duckdns.org/api/member/weekly-goal`, postData)
       .then((res) => res.json())
       .then((data) => {
         setWeeklyGoal(data.weeklyGoal);

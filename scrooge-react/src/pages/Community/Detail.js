@@ -20,7 +20,7 @@ const Detail = () => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    fetch(`http://day6scrooge.duckdns.org:8081/community/${params.id}`)
+    fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}`)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -29,7 +29,7 @@ const Detail = () => {
 
     //좋아요 싫어요 개수
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/review-count`
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/review-count`
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -46,7 +46,7 @@ const Detail = () => {
       },
     };
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/good`,
       goodCntData
     )
       .then((res) => res.json())
@@ -63,7 +63,7 @@ const Detail = () => {
     };
     //싫어요 조회
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/bad`,
       BadCntData
     )
       .then((res) => res.json())
@@ -86,7 +86,7 @@ const Detail = () => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/good`,
       goodData
     )
       .then((res) => res.text())
@@ -108,7 +108,7 @@ const Detail = () => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/good`,
       goodData
     )
       .then((res) => res.text())
@@ -127,7 +127,7 @@ const Detail = () => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/bad`,
       badData
     )
       .then((res) => res.text())
@@ -148,7 +148,7 @@ const Detail = () => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/bad`,
       badData
     )
       .then((res) => res.text())
@@ -174,7 +174,7 @@ const Detail = () => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${params.id}/comment`,
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/comment`,
       postData
     )
       .then((res) => res.text())
@@ -196,7 +196,7 @@ const Detail = () => {
           <div className={styles.authorInfo}>
             <img
               className={styles.character}
-              src={`http://day6scrooge.duckdns.org:8081/${data.memberAvatarAddress}`}
+              src={`https://day6scrooge.duckdns.org/api/${data.memberAvatarAddress}`}
               alt="캐릭터"
             />
             <div>
