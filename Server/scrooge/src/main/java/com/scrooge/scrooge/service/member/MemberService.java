@@ -63,7 +63,7 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        Avatar avatar = avatarRepository.findById(1L).orElse(null);
+        Avatar avatar = avatarRepository.findById(66L).orElse(null);
 
         String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
