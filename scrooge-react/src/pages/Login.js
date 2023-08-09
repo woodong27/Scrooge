@@ -56,7 +56,7 @@ const Login = ({ loginHandler }) => {
         if (!res.ok) {
           throw new Error("Login 실패");
         }
-        return res.text();
+        return res.json();
       })
       .then((data) => {
         console.log(data);
