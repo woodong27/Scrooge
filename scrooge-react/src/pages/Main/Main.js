@@ -10,6 +10,7 @@ import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
+  console.log(globalToken);
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
@@ -22,13 +23,14 @@ const Main = (props) => {
 
   useEffect(() => {
     getCurrentDate();
+    console.log(globalToken);
     const postData = {
       method: "GET",
       headers: {
         Authorization: globalToken,
       },
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -56,7 +58,7 @@ const Main = (props) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch(`http://day6scrooge.duckdns.org:8081/member/weekly-goal`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/member/weekly-goal`, postData)
       .then((res) => res.json())
       .then((data) => {
         setWeeklyGoal(data.weeklyGoal);
@@ -72,7 +74,7 @@ const Main = (props) => {
       },
     };
     fetch(
-      "http://day6scrooge.duckdns.org:8081/payment-history/today-total",
+      "https://day6scrooge.duckdns.org/api/payment-history/today-total",
       postData
     )
       .then((resp) => resp.json())
@@ -199,7 +201,7 @@ const Main = (props) => {
             settlementFalseHandler={settlementFalseHandler}
           />
         </div>
-      )}   
+      )}
     </BackGround>
   );
 };

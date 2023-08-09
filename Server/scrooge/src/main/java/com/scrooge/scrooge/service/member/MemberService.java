@@ -32,7 +32,7 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public String login(LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -41,7 +41,10 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundException("해당 이메일을 찾을 수 없습니다."));
 
         if (bCryptPasswordEncoder.matches(password, member.getPassword())) {
-            return jwtTokenProvider.createToken(email, member.getId());
+            LoginResponseDto loginResponseDto = new LoginResponseDto();
+            loginResponseDto.setToken(jwtTokenProvider.createToken(email, member.getId()));
+            loginResponseDto.setMemberId(member.getId());
+            return loginResponseDto;
         } else {
             throw new NotFoundException("비밀번호가 일치하지 않습니다.");
         }
@@ -68,11 +71,13 @@ public class MemberService {
         member.setPassword(encodedPassword);
 
         // 기본 값
+        member.setMessage("상태메시지를 설정해주세요.");
         member.setExp(0);
         member.setStreak(0);
         member.setWeeklyConsum(0);
         member.setWeeklyGoal(0);
         member.setMainAvatar(avatar);
+        member.setRemainGacha(2);
         member.setJoinedAt(LocalDateTime.now());
 
         Level defaultLevel = levelRepository.findById(1L).orElse(null);
@@ -88,23 +93,7 @@ public class MemberService {
     }
 
     public Optional<MemberDto> getInfo(String email) {
-        return memberRepository.findWithRelatedEntitiesByEmail(email).map(member -> {
-            MemberDto memberDto = new MemberDto();
-            memberDto.setId(member.getId());
-//            memberDto.setName(member.getName());
-            memberDto.setNickname(member.getNickname());
-            memberDto.setEmail(member.getEmail());
-            memberDto.setExp(member.getExp());
-            memberDto.setStreak(member.getStreak());
-            memberDto.setWeeklyGoal(member.getWeeklyGoal());
-            memberDto.setWeeklyConsum(member.getWeeklyConsum());
-            memberDto.setJoinedAt(member.getJoinedAt());
-            memberDto.setLevelId(member.getLevel().getId());
-            memberDto.setMainBadge(member.getMainBadge());
-            memberDto.setMainAvatar(member.getMainAvatar());
-
-            return memberDto;
-        });
+        return memberRepository.findWithRelatedEntitiesByEmail(email).map(MemberDto::new);
     }
 
     public MemberDto updateWeeklyGoal(UpdateWeeklyGoalDto updateWeeklyGoalDto, Long memberId) {
@@ -137,6 +126,15 @@ public class MemberService {
 
     public void deleteMember(Long memberId) {
         memberRepository.deleteById(memberId);
+    }
+
+    public MemberDto updateMessage(Long memberId, String message) {
+        Member member = memberRepository.findWithRelatedEntitiesById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+
+        member.setMessage(message);
+        memberRepository.save(member);
+        return new MemberDto(member);
     }
 }
 

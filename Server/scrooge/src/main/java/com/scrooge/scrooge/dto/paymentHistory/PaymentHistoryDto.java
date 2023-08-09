@@ -14,6 +14,7 @@ public class PaymentHistoryDto {
     private Integer amount;
     private String usedAt;
     private String cardName;
+    private Boolean isSettled; // 정산 완료 여부
 
     /*연결*/
     private Long memberId;
@@ -26,6 +27,9 @@ public class PaymentHistoryDto {
         this.amount = paymentHistory.getAmount();
         this.usedAt = paymentHistory.getUsedAt();
         this.cardName = paymentHistory.getCardName();
+
+        this.isSettled = paymentHistory.getIsSettled();
+
         this.memberId = paymentHistory.getMember().getId();
     }
 }

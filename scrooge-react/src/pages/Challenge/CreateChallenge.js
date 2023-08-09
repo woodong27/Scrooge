@@ -62,7 +62,7 @@ const CreateChallenge = () => {
 
     axios
       .post(
-        "http://day6scrooge.duckdns.org:8081/challenge",
+        "https://day6scrooge.duckdns.org/api/challenge",
         JSON.stringify(postData),
         {
           headers,

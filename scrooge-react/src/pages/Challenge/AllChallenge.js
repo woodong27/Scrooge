@@ -12,7 +12,7 @@ const AllChallenge = () => {
 
   useEffect(() => {
     axios
-      .get("http://day6scrooge.duckdns.org:8081/challenge")
+      .get("https://day6scrooge.duckdns.org/api/challenge")
       .then((response) => {
         setData(response.data);
       })

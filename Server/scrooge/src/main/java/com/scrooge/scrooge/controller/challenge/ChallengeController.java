@@ -17,7 +17,7 @@ import java.util.List;
 
 @Tag(name="Challenge", description = "챌린지 API")
 @RestController
-@RequestMapping("/challenge")
+@RequestMapping("/api/challenge")
 @RequiredArgsConstructor
 public class ChallengeController {
 
@@ -48,6 +48,7 @@ public class ChallengeController {
     @GetMapping
     public ResponseEntity<List<ChallengeRespDto>> getAllChallenges() {
         List<ChallengeRespDto> challengeDtos = challengeService.getAllChallenges();
+        System.out.println(challengeDtos);
         return ResponseEntity.ok(challengeDtos);
     }
 

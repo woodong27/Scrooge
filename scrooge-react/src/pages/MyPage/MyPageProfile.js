@@ -23,7 +23,7 @@ const MyPageProfile = () => {
         Authorization: globalToken,
       },
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);

@@ -45,6 +45,9 @@ public class Member {
     @Column(length = 255, nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String message = "상태메시지를 설정해주세요.";
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_avatar_id")
     private Avatar mainAvatar;
@@ -65,6 +68,9 @@ public class Member {
     @Column(name = "weekly_consum", columnDefinition = "int default 0")
     private Integer weeklyConsum;
     // int -> Integer 로 변경하는게 좋을 것 같다.
+
+    @Column(name = "remain_gacha")
+    private Integer remainGacha;
 
     @CreatedDate
     @Column(name = "joined_at")
