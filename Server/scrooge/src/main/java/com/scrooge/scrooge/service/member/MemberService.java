@@ -192,13 +192,13 @@ public class MemberService {
     }
 
     // 아바타 획득 목록을 조회하는 API
-    public List<MemberOwningAvatarDto> getMemberOwningAvatarList(Long memberId) {
+    public List<MemberOwningAvatarRespDto> getMemberOwningAvatarList(Long memberId) {
 
         // member가 memberId에 해당하는 목록 가져오기
         List<MemberOwningAvatar> memberOwningAvatarList = memberOwningAvatarRepository.findByMemberId(memberId);
 
         return memberOwningAvatarList.stream()
-                .map(MemberOwningAvatarDto::new)
+                .map(MemberOwningAvatarRespDto::new)
                 .collect(Collectors.toList());
     }
 }
