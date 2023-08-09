@@ -181,14 +181,8 @@ const Main = (props) => {
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
-<<<<<<< HEAD
               setGoal={setGoal}></ProgressBar>
-          </TodayCard>
-=======
-              setGoal={setGoal}
-            ></ProgressBar>
           </Card>
->>>>>>> 5194ed0fd769892c09a375c88d7274dc79d21d21
         </div>
       )}
       {isConsum && (
