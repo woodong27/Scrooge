@@ -219,5 +219,29 @@ public class PaymentHistoryService {
     }
 
 
+    // 날짜를 입력 받아서 소비 금액 조회하는 API
+    public Integer getDateTotalConsumption(Long memberId, String dateTime) {
+
+        LocalDate date = LocalDate.parse(dateTime);
+
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
+
+        System.out.println(paymentHistories);
+
+        List<PaymentHistory> filterPaymentHistories = paymentHistories.stream()
+                .filter(paymentHistory -> paymentHistory.getPaidAt().toLocalDate().equals(date))
+                .collect(Collectors.toList());
+
+        System.out.println(filterPaymentHistories);
+
+        Integer total = 0;
+
+        for(PaymentHistory paymentHistory : filterPaymentHistories) {
+            total += paymentHistory.getAmount();
+        }
+
+        return total;
+    }
+
 
 }
