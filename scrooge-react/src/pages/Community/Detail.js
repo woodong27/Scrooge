@@ -25,8 +25,8 @@ const Detail = () => {
     fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}/comment`)
       .then((resp) => resp.json())
       .then((data) => {
-        setComments(data);
         console.log(data);
+        setComments(data);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -49,9 +49,17 @@ const Detail = () => {
       `https://day6scrooge.duckdns.org/api/community/${params.id}/comment`,
       postData
     )
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        const newComment = {
+          id: data.id,
+          content: data.content,
+          memberId: data.memberId,
+          memberNickname: data.memberNickname,
+          memberAvatarAddress: data.memberAvatarAddress,
+        };
+        setComments([newComment, ...comments]);
+        console.log(comments);
       });
   };
 
