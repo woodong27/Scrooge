@@ -1,21 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comment from "./Comment";
-import styles from "./CommentList.module.css";
 
-const CommentList = ({ id }) => {
+const CommentList = ({ id, comments }) => {
   const globalToken = useSelector((state) => state.globalToken);
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch(`https://day6scrooge.duckdns.org/api/community/${id}/comment`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setData(data);
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const [data, setData] = useState(comments);
 
   useEffect(() => {}, []);
   const commentDelete = (targetId) => {
