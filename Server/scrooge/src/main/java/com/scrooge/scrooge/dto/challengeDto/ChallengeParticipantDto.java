@@ -9,19 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChallengeParticipantDto {
 
-    private Long id;
-    private Integer team;
-
-    // 연결
     private Long memberId;
     private Long challengeId;
+    private Integer team;
+    private Integer currentParticipants;
 
     @Builder
     public ChallengeParticipantDto(ChallengeParticipant challengeParticipant) {
-        this.id = challengeParticipant.getId();
+
         this.team = challengeParticipant.getTeam();
         this.memberId = challengeParticipant.getMember().getId();
         this.challengeId = challengeParticipant.getChallenge().getId();
+        this.currentParticipants = challengeParticipant.getChallenge().getChallengeParticipantList().size();
     }
 
 

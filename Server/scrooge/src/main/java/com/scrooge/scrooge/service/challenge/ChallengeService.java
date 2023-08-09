@@ -183,7 +183,7 @@ public class ChallengeService {
     }
 
     // 챌린지 참여 API
-    public void participateInChallenge(Long challengeId, Long memberId) {
+    public ChallengeParticipantDto participateInChallenge(Long challengeId, Long memberId) {
         ChallengeParticipant challengeParticipant = new ChallengeParticipant();
 
         // 해당 challengeId의 challenge의 팀0 인원과 팀1의 인원 비교
@@ -196,11 +196,14 @@ public class ChallengeService {
         }
 
         challengeParticipant.setTeam(team);
-        challengeParticipant.setChallenge(challengeRepository.findById(challengeId).orElse(null));
-        challengeParticipant.setMember(memberRepository.findById(memberId).orElse(null));
+        challengeParticipant.setChallenge(challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다.")));
+        challengeParticipant.setMember(memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다.")));
 
         // challengeParticipant에 참여자 정보 추가하기
         challengeParticipantRepository.save(challengeParticipant);
+        return new ChallengeParticipantDto(challengeParticipant);
     }
 
     // 챌린지 시작 API
