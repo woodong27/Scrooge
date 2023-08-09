@@ -10,6 +10,7 @@ import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
+  console.log(globalToken);
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
