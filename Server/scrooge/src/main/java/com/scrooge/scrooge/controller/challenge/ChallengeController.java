@@ -87,15 +87,13 @@ public class ChallengeController {
     // 사용자가 챌린지를 참여하는 API
     @Operation(summary = "사용자가 챌린지에 참여하는 API")
     @PostMapping("/{challengeId}/participate")
-    public ResponseEntity<String> participateInChallenge(@RequestHeader("Authorization") String tokenHeader, @PathVariable("challengeId") Long challengeId) {
+    public ResponseEntity<?> participateInChallenge(@RequestHeader("Authorization") String tokenHeader, @PathVariable("challengeId") Long challengeId) {
         String token = extractToken(tokenHeader);
-
         if(!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
-        challengeService.participateInChallenge(challengeId, jwtTokenProvider.extractMemberId(token));
-        return ResponseEntity.ok("챌린지 참여 완료");
+        return ResponseEntity.ok(challengeService.participateInChallenge(challengeId, jwtTokenProvider.extractMemberId(token)));
     }
 
     // 챌린지 마스터가 챌린지를 시작하는 API
