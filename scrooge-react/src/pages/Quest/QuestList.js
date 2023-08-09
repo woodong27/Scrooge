@@ -38,7 +38,7 @@ const QuestList = ({ props }) => {
       ))}
       <div className={styles.title}> 퀘스트 목록 </div>
       {list.map((it, index) => (
-        <QuestItem key={index} {...it} />
+        <QuestItem className={styles.item} key={index} {...it} />
       ))}
       {finish.length > 0 && <div className={styles.title}> 완료 퀘스트 </div>}
       {finish.map((it, index) => (

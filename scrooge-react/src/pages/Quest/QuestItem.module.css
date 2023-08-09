@@ -4,4 +4,9 @@
 
 .box {
   justify-items: center;
+  touch-action: pan-x;
+}
+
+.swiped {
+  transform: translateX(-50%); /* 예: 왼쪽으로 이동하는 효과 */
 }
