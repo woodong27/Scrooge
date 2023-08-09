@@ -85,7 +85,7 @@ const Signup = () => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/signup", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/signup", postData)
       .then((res) => {
         if (!res.ok) {
           throw new Error("회원가입 실패");

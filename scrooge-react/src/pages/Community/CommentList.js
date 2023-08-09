@@ -4,7 +4,17 @@ import Comment from "./Comment";
 
 const CommentList = ({ id, comments }) => {
   const globalToken = useSelector((state) => state.globalToken);
-  const [data, setData] = useState(comments);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://day6scrooge.duckdns.org/api/community/${id}/comment`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   useEffect(() => {}, []);
   const commentDelete = (targetId) => {

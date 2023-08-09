@@ -48,6 +48,7 @@ public class ChallengeController {
     @GetMapping
     public ResponseEntity<List<ChallengeRespDto>> getAllChallenges() {
         List<ChallengeRespDto> challengeDtos = challengeService.getAllChallenges();
+        System.out.println(challengeDtos);
         return ResponseEntity.ok(challengeDtos);
     }
 

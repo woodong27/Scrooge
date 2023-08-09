@@ -53,9 +53,9 @@ public class ChallengeService {
         challenge.setCategory(challengeReqDto.getCategory());
         challenge.setMinParticipants(challengeReqDto.getMinParticipants());
         challenge.setMaxParticipants(20);
-        challenge.setStatus(1);
         challenge.setAuthMethod(challengeReqDto.getAuthMethod());
         challenge.setDescription(challengeReqDto.getDescription());
+        challenge.setStatus(1);
 
         // Period에 따라 총 인증 횟수 정하기
         Integer totalAuthCount = 0;
@@ -182,6 +182,7 @@ public class ChallengeService {
                     challengeRespDto.setMinParticipants(challenge.getMinParticipants());
                     // challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
                     challengeRespDto.setPeriod(challenge.getPeriod());
+                    challengeRespDto.setStatus(challenge.getStatus());
 
                     return challengeRespDto;
                 })

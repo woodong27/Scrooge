@@ -101,7 +101,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `https://day6scrooge.duckdns.org//api/community/${props.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
       goodData
     )
       .then((res) => res.text())

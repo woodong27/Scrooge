@@ -16,7 +16,7 @@ const ChallengeJoin = () => {
 
   useEffect(() => {
     axios
-      .get(`http://day6scrooge.duckdns.org:8081/challenge/${params.id}`)
+      .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
       .then((response) => {
         setData(response.data);
       })
