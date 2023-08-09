@@ -147,11 +147,11 @@ public class PaymentHistoryController {
     @PutMapping("/settlement-exp")
     public ResponseEntity<?> updateExpAfterDailySettlement(@RequestHeader("Authorization") String tokenHeader) {
 
-//        if (isSettlementDone) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("오늘은 이미 정산 했습니다.");
-//        }
-//
-//        isSettlementDone = true;
+        if (isSettlementDone) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("오늘은 이미 정산 했습니다.");
+        }
+
+        isSettlementDone = true;
 
         String token = extractToken(tokenHeader);
 
