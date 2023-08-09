@@ -1,11 +1,11 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comment from "./Comment";
 
-const CommentList = ({ id, comments }) => {
+const CommentList = React.memo(({ id, comments }) => {
   const globalToken = useSelector((state) => state.globalToken);
   const [data, setData] = useState([]);
-  console.log("얍", data);
 
   useEffect(() => {
     setData(comments);
@@ -38,6 +38,6 @@ const CommentList = ({ id, comments }) => {
       ))}
     </div>
   );
-};
+});
 
 export default CommentList;
