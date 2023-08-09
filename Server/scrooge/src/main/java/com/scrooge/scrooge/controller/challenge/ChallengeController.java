@@ -1,19 +1,24 @@
 package com.scrooge.scrooge.controller.challenge;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeReqDto;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeRespDto;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
+import com.scrooge.scrooge.domain.challenge.Challenge;
+import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
+import com.scrooge.scrooge.dto.challengeDto.*;
+import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import com.scrooge.scrooge.service.challenge.ChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name="Challenge", description = "챌린지 API")
 @RestController
@@ -24,23 +29,34 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final ChallengeRepository challengeRepository;
+
+    @GetMapping("/test/{challengeId}")
+    public ResponseEntity<List<ChallengeExampleImageDto>> challengeTest(@PathVariable("challengeId")Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId).orElse(null);
+
+
+        return ResponseEntity.ok(challenge.getChallengeExampleImageList().stream()
+                .map(ChallengeExampleImageDto::new)
+                .collect(Collectors.toList()));
+    }
 
     // 챌린지를 생성하는 API
     @Operation(summary = "챌린지 생성")
-    @PostMapping/*(consumes = "multipart/form-data")*/
-    public ResponseEntity<ChallengeReqDto> createChallenge(
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ChallengeDetailDto> createChallenge(
             @RequestHeader("Authorization") String tokenHeader,
-            @RequestBody ChallengeReqDto challengeReqDto
-            /*@RequestParam List<MultipartFile> images*/) {
+            @RequestPart("info") String info,
+            @RequestParam("images") List<MultipartFile> images) throws IOException {
 
         String token = extractToken(tokenHeader);
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        ChallengeReqDto challengeReqDto = objectMapper.readValue(info, ChallengeReqDto.class);
         challengeReqDto.setChallengeMasterId(memberId);
-        challengeService.createChallenge(challengeReqDto);
-//        challengeService.createChallenge(challengeReqDto, images);
 
-        return ResponseEntity.ok(challengeReqDto);
+        return ResponseEntity.ok(challengeService.createChallenge(challengeReqDto, images));
     }
 
     // 전체 챌린지를 조회하는 API
@@ -75,6 +91,7 @@ public class ChallengeController {
     }
 
     // 챌린지 상세 조회 API
+    // 여기만 예시이미지 목록 필요
     @Operation(summary = "챌린지를 상세 조회하는 API")
     @GetMapping("/{challengeId}")
     public ResponseEntity<ChallengeRespDto> getChallenge(@PathVariable("challengeId") Long challengeId) throws IllegalAccessException {
