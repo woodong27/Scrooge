@@ -1,14 +1,19 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import Header from "../../components/Header";
 import ChallengeToggle from "./ChallengeToggle";
 import PlusBtn from "../../components/UI/PlusBtn";
 import AllChallenge from "./AllChallenge";
 import MyChallenge from "./MyChallenge";
+import Toast from "../../components/UI/Toast";
 
 const Challenge = () => {
+  const location = useLocation();
+  const state = location.state;
+
   const [isMyChallenge, setIsMyChallnge] = useState(false);
+  const [makeToast, setMakeToast] = useState(false);
 
   const myChallengeHandler = () => {
     setIsMyChallnge(true);
@@ -16,6 +21,10 @@ const Challenge = () => {
   const allChallengeeHandler = () => {
     setIsMyChallnge(false);
   };
+
+  useEffect(() => {
+    console.log(state);
+  }, []);
 
   return (
     <div>
@@ -32,6 +41,10 @@ const Challenge = () => {
       </Header>
 
       {isMyChallenge ? <MyChallenge /> : <AllChallenge />}
+
+      {makeToast && (
+        <Toast setToast={setMakeToast} text="챌린지가 생성 되었어요!" />
+      )}
     </div>
   );
 };

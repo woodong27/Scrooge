@@ -6,11 +6,14 @@ import { useSelector } from "react-redux";
 import backImg from "../../assets/back.png";
 import styles from "./ChallengeDetail.module.css";
 import ProgressBar from "./ProgressBar";
+import Chips from "../../components/UI/Chips";
+import AuthProgress from "./AuthProgress";
 
 const ChallengeDetail = () => {
   const globalToken = useSelector((state) => state.globalToken);
   const headers = { Authorization: globalToken };
   const [data, setData] = useState([]);
+  const [selectChip, setSelectChip] = useState("나의 인증 현황");
 
   useEffect(() => {
     axios
@@ -25,8 +28,6 @@ const ChallengeDetail = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
-  console.log(data);
 
   return (
     <div>
@@ -48,6 +49,29 @@ const ChallengeDetail = () => {
         <ProgressBar ally={60} enemy={40}></ProgressBar>
       </div>
       <hr></hr>
+      <div className={styles.auth_condition}>
+        <Chips selected={selectChip} setSelect={setSelectChip}>
+          나의 인증 현황
+        </Chips>
+        <Chips selected={selectChip} setSelect={setSelectChip}>
+          우리팀 인증 현황
+        </Chips>
+      </div>
+
+      {selectChip === "나의 인증 현황" ? (
+        <AuthProgress per={60}></AuthProgress>
+      ) : (
+        <div>
+          <AuthProgress per={60}></AuthProgress>
+          <div className={styles.img_container}>
+            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

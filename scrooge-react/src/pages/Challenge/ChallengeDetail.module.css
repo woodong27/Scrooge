@@ -1,6 +1,6 @@
 .img {
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 274px;
 
   & div {
@@ -40,4 +40,19 @@
 
 .title {
   text-align: left;
+}
+
+.auth_condition {
+  margin: 1.5rem 0 1rem;
+}
+
+.img_container {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+
+  & img {
+    width: 32.5%;
+  }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -11,6 +11,7 @@ import Toast from "../../components/UI/Toast";
 
 const CreateChallenge = () => {
   const globalToken = useSelector((state) => state.globalToken);
+  const navigate = useNavigate();
 
   const period = ["1주", "2주", "3주", "한달"];
   const category = ["식비", "교통", "쇼핑", "기타"];
@@ -24,7 +25,7 @@ const CreateChallenge = () => {
   const [authMethod, setAuthMethod] = useState("");
   const [introduce, setIntroduce] = useState("");
 
-  const [toast, setToast] = useState(false);
+  const [missToast, setMissToast] = useState(false);
 
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
@@ -42,7 +43,7 @@ const CreateChallenge = () => {
       authMethod.length === 0 ||
       introduce.length === 0
     ) {
-      setToast(true);
+      setMissToast(true);
       return;
     }
 
@@ -68,8 +69,8 @@ const CreateChallenge = () => {
           headers,
         }
       )
-      .then((response) => {
-        console.log(response);
+      .then((resp) => {
+        navigate("/challenge", { state: { data: "example" } });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -207,7 +208,9 @@ const CreateChallenge = () => {
         <div className={styles.shadow}></div>
       </div>
 
-      {toast && <Toast setToast={setToast} text="빠진 부분이 있어요!" />}
+      {missToast && (
+        <Toast setToast={setMissToast} text="빠진 부분이 있어요!" />
+      )}
     </div>
   );
 };
