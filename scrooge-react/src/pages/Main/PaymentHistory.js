@@ -55,10 +55,6 @@ const PaymentHistory = ({
     }
   };
 
-  // // 오늘 날짜 가져오기
-  // const getCurrentDate = () => {
-  // };
-
   useEffect(() => {
     const today = new Date();
     const month = today.getMonth() + 1;
@@ -70,7 +66,6 @@ const PaymentHistory = ({
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      console.log("끝");
       settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
@@ -98,7 +93,7 @@ const PaymentHistory = ({
       };
 
       fetch(
-        `http://day6scrooge.duckdns.org:8081/payment-history/date/${formattedDate}`,
+        `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
         postData
       )
         .then((resp) => resp.json())
@@ -111,7 +106,6 @@ const PaymentHistory = ({
   };
 
   useEffect(() => {
-    console.log(total);
     setOrigin(total);
   }, [total]);
 
@@ -146,7 +140,7 @@ const PaymentHistory = ({
       body: JSON.stringify(obj),
     };
     fetch(
-      `http://day6scrooge.duckdns.org:8081/payment-history/${targetId}`,
+      `https://day6scrooge.duckdns.org/api/payment-history/${targetId}`,
       postData
     )
       .then((res) => res.text())
@@ -168,10 +162,10 @@ const PaymentHistory = ({
       },
     };
     fetch(
-      "http://day6scrooge.duckdns.org:8081/payment-history/settlement-exp",
+      "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
       postData
     )
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then(console.log);
   };
 
@@ -214,12 +208,14 @@ const PaymentHistory = ({
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
                 : ""}
             </div>
-            <button
-              onClick={handleOpenModal}
-              className={settlement ? styles.finishBtn : styles.btn}
-            >
-              {settlement ? "정산 완료" : "정산하기"}
-            </button>
+
+            {settlement ? (
+              <button className={styles.finishBtn}>정산완료</button>
+            ) : (
+              <button onClick={handleOpenModal} className={styles.btn}>
+                정산하기
+              </button>
+            )}
           </div>
         </div>
       </div>
