@@ -33,82 +33,53 @@ public class QuestService {
     private final MemberOwningBadgeRepository memberOwningBadgeRepository;
     private final BadgeService badgeService;
 
-    public Optional<QuestDto> getQuest(Long questId) {
-        return questRepository.findById(questId).map(quest -> {
-            QuestDto questDto = new QuestDto();
-            questDto.setId(quest.getId());
-            questDto.setTitle(quest.getTitle());
-            questDto.setDescription(quest.getDescription());
-            questDto.setMaxCount(quest.getMaxCount());
+    public QuestDto getQuest(Long questId) {
+        Quest quest = questRepository.findById(questId)
+                .orElseThrow(() -> new NotFoundException("해당 퀘스트를 찾을 수 업습니다."));
 
-            return questDto;
-        });
+        return new QuestDto(quest);
     }
 
-    public List<QuestDto> getRandomQuests() {
-        List<Quest> quests = questRepository.findRandomQuests();
-        return quests.stream()
-                .map(QuestDto::new)
+    public List<MemberSelectedQuestDto> giveRandomQuests(Long memberId) {
+        if (!memberSelectedQuestRepository.existsByMemberId(memberId)) {
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+
+            List<Quest> quests = questRepository.findRandomQuests();
+            for (Quest quest : quests) {
+                MemberSelectedQuest memberSelectedQuest = new MemberSelectedQuest();
+                memberSelectedQuest.setQuest(quest);
+                memberSelectedQuest.setMember(member);
+                memberSelectedQuestRepository.save(memberSelectedQuest);
+            }
+        }
+
+        return memberSelectedQuestRepository.findByMemberId(memberId).stream()
+                .map(MemberSelectedQuestDto::new)
                 .collect(Collectors.toList());
     }
 
-    public void selectQuest(Long questId, String email) {
+    public void selectQuest(Long questId, Long memberId) {
 
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
-        Member member = optionalMember.orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findByMemberIdAndQuestId(memberId, questId);
 
-        Optional<Quest> optionalQuest = questRepository.findById(questId);
-        Quest quest = optionalQuest.orElseThrow(() -> new NotFoundException("해당 퀘스트를 찾을 수 없습니다."));
-
-        if (member.getMemberSelectedQuests().size() < 3) {
-            MemberSelectedQuest memberSelectedQuest = new MemberSelectedQuest();
-            memberSelectedQuest.setMember(member);
-            memberSelectedQuest.setQuest(quest);
-            memberSelectedQuest.setCompleteCount(0);
-            memberSelectedQuest.setDone(false);
-
+        if (memberSelectedQuestRepository.countByMemberIdAndIsSelected(memberId, true) < 3) {
+            memberSelectedQuest.setSelected(true);
             memberSelectedQuestRepository.save(memberSelectedQuest);
-
         } else {
-            throw new RuntimeException("3개 이상의 퀘스트틀 선택할 수 없습니다.");
+            throw new RuntimeException("3개 이상의 퀘스트를 선택할 수 없습니다.");
         }
     }
 
-//    public List<MemberSelectedQuestDto> updateCompleteCount(Long questId, Long memberId) {
-//        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId)
-//                .orElseThrow(() ->new NotFoundException("그런 퀘스트 없습니다."));
-//
-//        Quest quest = questRepository.findById(questId)
-//                .orElseThrow(() -> new NotFoundException("그런 퀘스트 없다"));
-//
-//        int currentCompleteCount= memberSelectedQuest.getCompleteCount();
-//
-//        if (quest.getMaxCount() == currentCompleteCount+1) {
-//            Member member = memberRepository.findById(memberId)
-//                    .orElseThrow(() -> new NotFoundException(("그런 회원 없다.")));
-//            member.setExp(member.getExp()+200);
-//            memberRepository.save(member);
-//            memberSelectedQuestRepository.delete(memberSelectedQuest);
-//        } else {
-//            memberSelectedQuest.setCompleteCount(currentCompleteCount + 1);
-//            memberSelectedQuestRepository.save(memberSelectedQuest);
-//        }
-//        List<MemberSelectedQuest> memberSelectedQuests = memberSelectedQuestRepository.findMemberSelectedQuestsById(memberId);
-//        return memberSelectedQuests.stream()
-//                .map(MemberSelectedQuestDto::new)
-//                .collect(Collectors.toList());
-//    }
-
     public void completeQuest(Long questId, Long memberId) {
-        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findSelectedQuestByMemberIdAndQuestId(memberId, questId)
-                .orElseThrow(() -> new NotFoundException("이 퀘스트 안고른거 같은데"));
-        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFoundException("그런 퀘스트 없다."));
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("그런 사람 없다."));
+        MemberSelectedQuest memberSelectedQuest = memberSelectedQuestRepository.findByMemberIdAndQuestId(memberId, questId);
 
         if (memberSelectedQuest.isDone()) {
             return ;
         }
 
+        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFoundException("그런 퀘스트 없다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException("그런 사람 없다."));
         int currentCompleteCount = memberSelectedQuest.getCompleteCount();
 
         if (quest.getMaxCount() == currentCompleteCount + 1) {
@@ -129,7 +100,7 @@ public class QuestService {
     }
 
     public List<MemberSelectedQuestDto> getMemberSelectedQuests(Long memberId) {
-        List<MemberSelectedQuest> memberSelectedQuests = memberSelectedQuestRepository.findMemberSelectedQuestsById(memberId);
+        List<MemberSelectedQuest> memberSelectedQuests = memberSelectedQuestRepository.findByMemberIdAndIsSelected(memberId, true);
         return memberSelectedQuests.stream()
                 .map(MemberSelectedQuestDto::new)
                 .collect(Collectors.toList());

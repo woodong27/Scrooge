@@ -12,6 +12,7 @@ import com.scrooge.scrooge.repository.challenge.ChallengeAuthRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,27 +39,35 @@ public class StartChallengeService {
     private final FileUploadProperties fileUploadProperties;
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
-    public MyChallengeRespDto getMyStartedChallenge(Long challengeId) throws IllegalAccessException {
+    public MyChallengeRespDto getMyStartedChallenge(Long challengeId) throws Exception {
 
         Optional<Challenge> challenge = challengeRepository.findById(challengeId);
 
         if(challenge.isPresent()) {
-            MyChallengeRespDto myChallengeRespDto = new MyChallengeRespDto();
-            myChallengeRespDto.setId(challenge.get().getId());
-            myChallengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
-            myChallengeRespDto.setStartDate(challenge.get().getStartDate());
-            myChallengeRespDto.setEndDate(challenge.get().getEndDate());
-            myChallengeRespDto.setPeriod(challenge.get().getPeriod());
+            if(challenge.get().getStatus() == 2) {
+                MyChallengeRespDto myChallengeRespDto = new MyChallengeRespDto();
+                myChallengeRespDto.setId(challenge.get().getId());
+                // myChallengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
+                myChallengeRespDto.setStartDate(challenge.get().getStartDate());
+                myChallengeRespDto.setEndDate(challenge.get().getEndDate());
+                myChallengeRespDto.setPeriod(challenge.get().getPeriod());
+                myChallengeRespDto.setTitle(challenge.get().getTitle());
 
-            /* 대전 현황 구현 위해 각 팀의 성공 횟수 가져오기 */
-            Integer teamZeroSuccessCount, teamOneSuccessCount;
-            teamZeroSuccessCount = challengeAuthRepository.countZeroSuccessCount(challengeId);
-            teamOneSuccessCount = challengeAuthRepository.countOneSuccessCount(challengeId);
+                /* 대전 현황 구현 위해 각 팀의 성공 횟수 가져오기 */
+                Integer teamZeroSuccessCount, teamOneSuccessCount;
+                teamZeroSuccessCount = challengeAuthRepository.countZeroSuccessCount(challengeId);
+                teamOneSuccessCount = challengeAuthRepository.countOneSuccessCount(challengeId);
 
-            myChallengeRespDto.setTeamZeroSuccessCount(teamZeroSuccessCount);
-            myChallengeRespDto.setTeamOneSuccessCount(teamOneSuccessCount);
+                myChallengeRespDto.setTeamZeroSuccessCount(teamZeroSuccessCount);
+                myChallengeRespDto.setTeamOneSuccessCount(teamOneSuccessCount);
 
-            return myChallengeRespDto;
+                return myChallengeRespDto;
+            }
+            else{
+                throw new Exception("해당 챌린지는 진행 중인 챌린지가 아닙니다.");
+            }
+
+
         }else {
             throw new IllegalAccessException("Challenge not found with Id : " + challengeId);
         }
@@ -140,4 +149,23 @@ public class StartChallengeService {
 
         return myChallengeMyAuthDto;
     }
+
+    // endDate의 시간이 지나면 자동으로 status 3으로 변경, 즉 상태가 종료됨으로 변경된다.
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
+    public void checkEndDateAndUpdateChallengeStatus() {
+        // 모든 진행 중인 Challenge를 challenges 리스트에 저장한다.
+        List<Challenge> challenges = challengeRepository.findAllByStatus2();
+
+        // 현재 시간을 받아온다.
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // 진행중인 리스트의 challenge를 하나씩 접근하여 현재 시간이 endDate를 지났을 경우 status를 3, 즉 종료로 변경해준다.
+        for(Challenge challenge : challenges) {
+            if(currentDateTime.isAfter(challenge.getEndDate())) {
+                challenge.setStatus(3);
+                challengeRepository.save(challenge);
+            }
+        }
+    }
+
 }

@@ -3,8 +3,6 @@ package com.scrooge.scrooge.service.member;
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
-import com.scrooge.scrooge.domain.member.MemberOwningBadge;
-import com.scrooge.scrooge.domain.member.MemberSelectedQuest;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
@@ -19,9 +17,7 @@ import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,23 +27,26 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
     private final MemberOwningAvatarRepository memberOwningAvatarRepository;
-    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
-    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final AvatarRepository avatarRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public String login(LoginRequestDto loginRequestDto) {
+
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("중복된 이메일 입니다."));
+                .orElseThrow(() -> new NotFoundException("해당 이메일을 찾을 수 없습니다."));
 
         if (bCryptPasswordEncoder.matches(password, member.getPassword())) {
-            return jwtTokenProvider.createToken(email, member.getId());
+            LoginResponseDto loginResponseDto = new LoginResponseDto();
+            loginResponseDto.setToken(jwtTokenProvider.createToken(email, member.getId()));
+            loginResponseDto.setMemberId(member.getId());
+            return loginResponseDto;
         } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new NotFoundException("비밀번호가 일치하지 않습니다.");
         }
 
     }
@@ -61,10 +60,12 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+        Avatar avatar = avatarRepository.findById(1L).orElse(null);
+
         String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
         Member member = new Member();
-        member.setName(signUpRequestDto.getName());
+//        member.setName(signUpRequestDto.getName());
         member.setNickname(signUpRequestDto.getNickname());
         member.setEmail(signUpRequestDto.getEmail());
         member.setPassword(encodedPassword);
@@ -74,20 +75,26 @@ public class MemberService {
         member.setStreak(0);
         member.setWeeklyConsum(0);
         member.setWeeklyGoal(0);
+        member.setMainAvatar(avatar);
         member.setJoinedAt(LocalDateTime.now());
 
         Level defaultLevel = levelRepository.findById(1L).orElse(null);
         member.setLevel(defaultLevel);
 
         memberRepository.save(member);
+
+        MemberOwningAvatar memberOwningAvatar = new MemberOwningAvatar();
+        memberOwningAvatar.setMember(member);
+        memberOwningAvatar.setAvatar(avatar);
+        memberOwningAvatar.setAcquiredAt(LocalDateTime.now());
+        memberOwningAvatarRepository.save(memberOwningAvatar);
     }
 
     public Optional<MemberDto> getInfo(String email) {
-
         return memberRepository.findWithRelatedEntitiesByEmail(email).map(member -> {
             MemberDto memberDto = new MemberDto();
             memberDto.setId(member.getId());
-            memberDto.setName(member.getName());
+//            memberDto.setName(member.getName());
             memberDto.setNickname(member.getNickname());
             memberDto.setEmail(member.getEmail());
             memberDto.setExp(member.getExp());
@@ -121,7 +128,7 @@ public class MemberService {
 
     public MemberDto updatePassword(UpdatePasswordDto updatePasswordDto, Long memberId) {
         Member member = memberRepository.findWithRelatedEntitiesById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
 
         if (!bCryptPasswordEncoder.matches(updatePasswordDto.getCurrentPassword(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호를 다시 입력해주세요.");
@@ -129,6 +136,10 @@ public class MemberService {
 
         member.setPassword(bCryptPasswordEncoder.encode(updatePasswordDto.getNewPassword()));
         return new MemberDto(member);
+    }
+
+    public void deleteMember(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 }
 

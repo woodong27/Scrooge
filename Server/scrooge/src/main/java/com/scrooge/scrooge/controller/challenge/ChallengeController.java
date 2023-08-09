@@ -17,7 +17,7 @@ import java.util.List;
 
 @Tag(name="Challenge", description = "챌린지 API")
 @RestController
-@RequestMapping("/challenge")
+@RequestMapping("/api/challenge")
 @RequiredArgsConstructor
 public class ChallengeController {
 
@@ -27,9 +27,18 @@ public class ChallengeController {
 
     // 챌린지를 생성하는 API
     @Operation(summary = "챌린지 생성")
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<ChallengeReqDto> createChallenge(ChallengeReqDto challengeReqDto, @RequestParam List<MultipartFile> images) {
-        challengeService.createChallenge(challengeReqDto, images);
+    @PostMapping/*(consumes = "multipart/form-data")*/
+    public ResponseEntity<ChallengeReqDto> createChallenge(
+            @RequestHeader("Authorization") String tokenHeader,
+            ChallengeReqDto challengeReqDto
+            /*@RequestParam List<MultipartFile> images*/) {
+
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        challengeReqDto.setChallengeMasterId(memberId);
+        challengeService.createChallenge(challengeReqDto);
+//        challengeService.createChallenge(challengeReqDto, images);
 
         return ResponseEntity.ok(challengeReqDto);
     }
@@ -39,12 +48,13 @@ public class ChallengeController {
     @GetMapping
     public ResponseEntity<List<ChallengeRespDto>> getAllChallenges() {
         List<ChallengeRespDto> challengeDtos = challengeService.getAllChallenges();
+        System.out.println(challengeDtos);
         return ResponseEntity.ok(challengeDtos);
     }
 
     // 카테고리 별 챌린지를 조회하는 API
     @Operation(summary = "카테고리 별 챌린지를 조회하는 API", description = "categoryId => 1: 식비, 2: 교통비, 3: 쇼핑, 4: 기타")
-    @GetMapping("category/{categoryId}")
+    @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ChallengeRespDto>> getChallengesbyCategory(@PathVariable("categoryId") Integer categoryId) {
         List<ChallengeRespDto> challengeDtos = challengeService.getChallengesbyCategory(categoryId);
         return ResponseEntity.ok(challengeDtos);
@@ -52,8 +62,14 @@ public class ChallengeController {
 
     // 마이 챌린지를 조회하는 API
     @Operation(summary = "마이 챌린지를 조회하는 API", description = "statusId => 1: 시작 전, 2: 진행 중, 3: 종료")
-    @GetMapping("{memberId}/{statusId}/my-challenge")
-    public ResponseEntity<List<ChallengeRespDto>> getMyChallenges(@PathVariable("memberId")Long memberId, @PathVariable("statusId")Integer statusId) {
+    @GetMapping("/{statusId}/my-challenge")
+    public ResponseEntity<List<ChallengeRespDto>> getMyChallenges(
+            @RequestHeader("Authorization")String tokenHeader,
+            @PathVariable("statusId")Integer statusId) {
+
+        String token = extractToken(tokenHeader);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
         List<ChallengeRespDto> myChallengeDtos = challengeService.getMyChallenges(memberId, statusId);
         return ResponseEntity.ok(myChallengeDtos);
     }

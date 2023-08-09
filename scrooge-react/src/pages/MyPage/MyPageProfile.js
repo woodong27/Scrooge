@@ -1,24 +1,47 @@
-import react, { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styles from "./MyPageProfile.module.css";
-import MyPageExpBar from "./MyPageExpBar";
+import ProgressBar from "../Challenge/ProgressBar"; //Exp 바로 
 import Report from "./Report";
 import Item from "./Item";
 
 const MyPageProfile = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+
+  const [data, setData] = useState([]);
+  
   const [showItemList, setShowItemList] = useState(false);
   
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
   };
 
+  useEffect(() => {
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
+    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+
+  },  [globalToken]);
+
 
   return(
     <div className={styles["profile-container"]}>
       <div className={styles["profile-content"]}>
-        <img className={styles["profile-image"]} src={`${process.env.PUBLIC_URL}/Character/20.png`} alt="프로필 사진"/>
+        <div className={styles.profileImage}>
+          <img src={`${process.env.PUBLIC_URL}/Character/20.png`} alt="프로필 사진"/>
+        </div>
         <ul className={styles["profile-info"]}>
-          <li>Lv.3</li>
-          <li>돈그만써</li>
+          <li>Lv.{data.levelId}</li>
+          <li>{data.nickname}</li>
           <li className={styles["items-info"]}>
             <div>
               <img src ={`${process.env.PUBLIC_URL}/images/profile-icon.png`} alt="캐릭터 아이콘"/>
@@ -30,11 +53,14 @@ const MyPageProfile = () => {
             </div>
           </li>
         </ul>
-        <div className={styles["edit-btn"]} onClick={handleEditBtn}>
-          <img src={`${process.env.PUBLIC_URL}/images/edit-btn.png`} alt="편집 버튼"/> 
-        </div> 
       </div>
-      <MyPageExpBar />
+      <ProgressBar />
+      <div
+        className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}
+        onClick={handleEditBtn}
+      >
+        {showItemList ? "소비 리포트 보러 가기" : "캐릭터 뽑으러 가기"}
+      </div>
 
       {showItemList ? <Item /> : <Report />}
     </div>

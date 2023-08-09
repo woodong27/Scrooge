@@ -14,6 +14,7 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
 import com.example.scoorge_android.network.RetrofitService
 
@@ -45,6 +46,9 @@ class MainActivity : AppCompatActivity() {
 //        webview.addJavascriptInterface(AndroidBridge(), "AndroidBridge")
 
         webview.loadUrl("http://day6scrooge.duckdns.org:3000/")
+
+//        val textView = findViewById<TextView>(R.id.textView)
+//        textView.setText(MyNotificationListenerService.Test)
 
 
     }

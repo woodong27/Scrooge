@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import styles from "./PaymentAdd.module.css";
 
-const PaymentAdd = ({ onCreate }) => {
+const PaymentAdd = ({ onCreate, date }) => {
   const globalToken = useSelector((state) => state.globalToken);
 
   const usedAtInput = useRef();
@@ -37,10 +37,29 @@ const PaymentAdd = ({ onCreate }) => {
       return;
     }
 
+    const input = `2023-${date[0].toString().padStart(2, "0")}-${date[1]
+      .toString()
+      .padStart(2, "0")}`;
+    const inputDate = new Date(input);
+    const currentDateTime = new Date();
+    const currentHours = currentDateTime.getHours();
+    const currentMinutes = currentDateTime.getMinutes();
+    inputDate.setDate(inputDate.getDate());
+    inputDate.setHours(currentHours);
+    inputDate.setMinutes(currentMinutes);
+    const year = inputDate.getFullYear();
+    const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+    const day = String(inputDate.getDate()).padStart(2, "0");
+    const hours = String(inputDate.getHours()).padStart(2, "0");
+    const minutes = String(inputDate.getMinutes()).padStart(2, "0");
+    const currentDate = `${year}-${month}-${day}T${hours}:${minutes}:00.000`;
+
+    console.log(currentDate, "얍");
     const obj = {
       usedAt: state.usedAt,
       amount: state.amount,
       cardName: state.cardName,
+      paidAt: currentDate,
     };
     const postData = {
       method: "POST",
@@ -50,9 +69,10 @@ const PaymentAdd = ({ onCreate }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/payment-history", postData)
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history`, postData)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         const koreaTime = new Date(
           new Date().getTime() + 9 * 60 * 60 * 1000
         ).toISOString();

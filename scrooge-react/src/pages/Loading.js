@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import styles from "./Loading.module.css";
-import ButtonGreen from "../components/UI/ButtonGreen";
+import ButtonGreen from "../components/Button/ButtonGreen";
 import BackGround from "../components/BackGround";
 
 const Loading = () => {
@@ -30,6 +30,9 @@ const Loading = () => {
 
           <Link to="/login">
             <ButtonGreen className={styles.btns} text="로그인"></ButtonGreen>
+          </Link>
+          <Link to="/signup">
+            <ButtonGreen className={styles.btns} text="회원가입"></ButtonGreen>
           </Link>
         </div>
       </div>

@@ -28,3 +28,9 @@
   padding-right: 32px;
   color: var(--green);
 }
+
+.error {
+  display: none;
+  margin-top: 20px;
+  color: rgb(218, 76, 76);
+}

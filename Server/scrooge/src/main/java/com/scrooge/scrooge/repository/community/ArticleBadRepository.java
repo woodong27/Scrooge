@@ -4,10 +4,15 @@ import com.scrooge.scrooge.domain.community.ArticleBad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ArticleBadRepository extends JpaRepository<ArticleBad, Long> {
-    @Query("select ab from ArticleBad ab where ab.article.id = :articleId and ab.member.id = :memberId")
-    ArticleBad findByArticleIdAndMemberId(Long articleId, Long memberId);
+import java.util.Optional;
 
-    @Query("SELECT COUNT(ab) from ArticleBad ab where ab.article.id = :articleId")
+public interface ArticleBadRepository extends JpaRepository<ArticleBad, Long> {
+
+    Optional<ArticleBad> findByArticleIdAndMemberId(Long articleId, Long memberId);
+
+    boolean existsByArticleIdAndMemberId(Long articleId, Long memberId);
+
+    void deleteByArticleIdAndMemberId(Long articleId, Long memberId);
+
     Integer countByArticleId(Long articleId);
 }

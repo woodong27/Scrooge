@@ -12,6 +12,7 @@ import com.scrooge.scrooge.repository.PaymentHistoryRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,6 +48,13 @@ public class PaymentHistoryService {
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
 
+        if(paymentHistoryDto.getPaidAt() == null) {
+            paymentHistory.setPaidAt(LocalDateTime.now());
+        }
+        else {
+            paymentHistory.setPaidAt(paymentHistoryDto.getPaidAt());
+        }
+
         /* 연결 */
 
         // memberId에 맞는 member 가져오기
@@ -69,11 +78,10 @@ public class PaymentHistoryService {
     }
 
     // userId에 따른 전체 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId, DateTimeReqDto dateTimeReqDto) {
-        String dateStr = dateTimeReqDto.getDate();
+    public List<PaymentHistoryDto> getPaymentHistoryByMemberId(Long memberId, String dateTime) {
 
         // 날짜 문자열을 LocalDate로 변환하기
-        LocalDate date = LocalDate.parse(dateStr);
+        LocalDate date = LocalDate.parse(dateTime);
 
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
 
@@ -87,8 +95,7 @@ public class PaymentHistoryService {
     }
 
     // 사용자 별 월 별 소비 내역 조회
-    public List<PaymentHistoryDto> getPaymentHistoryPerMonth(Long memberId, DateTimeReqDto dateTimeReqDto) {
-        String dateStr = dateTimeReqDto.getDate();
+    public List<PaymentHistoryDto> getPaymentHistoryPerMonth(Long memberId, String dateStr) {
 
         // 입력받은 날짜 문자열을 LocalDate로 변환
         LocalDate date = LocalDate.parse(dateStr + "-01");
@@ -210,6 +217,7 @@ public class PaymentHistoryService {
 
         return todayTotalConsumption;
     }
+
 
 
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -32,9 +32,9 @@ public class MemberController {
 
     @Operation(summary = "로그인 API", description = "로그인 POST")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
-        String token = memberService.login(loginRequestDto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto);
+        return ResponseEntity.ok(loginResponseDto);
     }
     
     // 유저 토큰을 받아서 해당 유저 정보를 반환
@@ -80,11 +80,23 @@ public class MemberController {
         String token = extractToken(header);
 
         if (!jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RuntimeException("유효하지 않은 토큰입니다."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
         Long memberId = jwtTokenProvider.extractMemberId(token);
         MemberDto memberDto = memberService.updatePassword(updatePasswordDto, memberId);
         return ResponseEntity.ok(memberDto);
+    }
+
+    @Operation(summary = "회원 탈퇴", description = "회원탈퇴 API")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteMember(@RequestHeader("Authorization")String header) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        memberService.deleteMember(jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("회원탈퇴 완료");
     }
 }

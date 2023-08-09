@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class ChallengeService {
 
     // 챌린지 생성 API
     @Transactional
-    public void createChallenge(ChallengeReqDto challengeReqDto, List<MultipartFile> images) {
+    public void createChallenge(ChallengeReqDto challengeReqDto/*, List<MultipartFile> images*/) {
         Challenge challenge = new Challenge();
 
         // 챌린지 정보 저장하기
@@ -52,9 +53,9 @@ public class ChallengeService {
         challenge.setCategory(challengeReqDto.getCategory());
         challenge.setMinParticipants(challengeReqDto.getMinParticipants());
         challenge.setMaxParticipants(20);
-        challenge.setStatus(0);
         challenge.setAuthMethod(challengeReqDto.getAuthMethod());
         challenge.setDescription(challengeReqDto.getDescription());
+        challenge.setStatus(1);
 
         // Period에 따라 총 인증 횟수 정하기
         Integer totalAuthCount = 0;
@@ -85,7 +86,7 @@ public class ChallengeService {
         challengeParticipantRepository.save(challengeParticipant);
 
         // ChallengeExampleImage에 이미지 5장 저장
-        saveChallengeExampleImages(challenge, images);
+//        saveChallengeExampleImages(challenge, images);
     }
 
     // 챌린지에 해당하는 성공 예시 이미지 ChallengeExampleImage에 저장하기
@@ -179,7 +180,9 @@ public class ChallengeService {
                     challengeRespDto.setTitle(challenge.getTitle());
                     challengeRespDto.setCurrentParticipants(challenge.getChallengeParticipantList().size());
                     challengeRespDto.setMinParticipants(challenge.getMinParticipants());
-                    challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
+                    // challengeRespDto.setMainImgAddress(challenge.getChallengeExampleImageList().get(0).getImgAddress());
+                    challengeRespDto.setPeriod(challenge.getPeriod());
+                    challengeRespDto.setStatus(challenge.getStatus());
 
                     return challengeRespDto;
                 })
@@ -193,7 +196,7 @@ public class ChallengeService {
         if(challenge.isPresent()) {
             ChallengeRespDto challengeRespDto = new ChallengeRespDto();
             challengeRespDto.setId(challenge.get().getId());
-            challengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
+            // challengeRespDto.setMainImgAddress(challenge.get().getChallengeExampleImageList().get(0).getImgAddress());
             challengeRespDto.setCategory(challenge.get().getCategory());
             challengeRespDto.setTitle(challenge.get().getTitle());
             challengeRespDto.setPeriod(challenge.get().getPeriod());
@@ -268,7 +271,7 @@ public class ChallengeService {
             // 2. startDate를 오늘 날짜로 정하기
             challenge.get().setStartDate(LocalDateTime.now());
             // 3. endDate를 startDate에서 period(totalAuthCount) 만큼 더한 날짜로 저장
-            challenge.get().setEndDate(challenge.get().getStartDate().plusDays(challenge.get().getTotalAuthCount()));
+            challenge.get().setEndDate(challenge.get().getStartDate().plusDays(challenge.get().getTotalAuthCount()).with(LocalTime.of(23, 59, 59)));
             challengeRepository.save(challenge.get());
 
             // 시작 성공 응답 보내주기

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
 import CharacterCard from "../../components/UI/CharacterCard";
-import TodayCard from "../../components/UI/TodayCard";
+import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
@@ -13,19 +13,22 @@ const Main = (props) => {
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
+  const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
+
   const [weeklyGoal, setWeeklyGoal] = useState();
   const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
+    getCurrentDate();
     const postData = {
       method: "GET",
       headers: {
         Authorization: globalToken,
       },
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/info", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -35,6 +38,13 @@ const Main = (props) => {
       .catch((error) => console.log(error));
   }, []);
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
+  };
+
   //주간 목표 설정
   const setGoal = (goal) => {
     const obj = { weeklyGoal: goal };
@@ -42,12 +52,11 @@ const Main = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhhcHB5QGdtYWlsLmNvbSIsIm1lbWJlcklkIjoyLCJpYXQiOjE2OTEwNTUzOTIsImV4cCI6MTY5MTY2MDE5Mn0.GSDDPI26jaeE7zZzhHGIlImyCWcZi3GbE6K8rIZhi30",
+        Authorization: globalToken,
       },
       body: JSON.stringify(obj),
     };
-    fetch(`http://day6scrooge.duckdns.org:8081/member/weekly-goal`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/member/weekly-goal`, postData)
       .then((res) => res.json())
       .then((data) => {
         setWeeklyGoal(data.weeklyGoal);
@@ -63,7 +72,7 @@ const Main = (props) => {
       },
     };
     fetch(
-      "http://day6scrooge.duckdns.org:8081/payment-history/today-total",
+      "https://day6scrooge.duckdns.org/api/payment-history/today-total",
       postData
     )
       .then((resp) => resp.json())
@@ -83,6 +92,14 @@ const Main = (props) => {
     setIsConsum(false);
   };
 
+  const settlementTrueHandler = () => {
+    setSettlement(true);
+  };
+
+  const settlementFalseHandler = () => {
+    setSettlement(false);
+  };
+
   return (
     <BackGround>
       {!isConsum && data && data.levelId && (
@@ -98,7 +115,7 @@ const Main = (props) => {
                 />
                 <span>
                   <p>Lv. {data.levelId}</p>
-                  <p>{data.name}</p>
+                  <p>{data.nickname}</p>
                 </span>
               </div>
               <div className={styles.border} />
@@ -154,9 +171,11 @@ const Main = (props) => {
               alt="고리"
             />
           </div>
-          <TodayCard>
+          <Card height={220}>
             <div className={styles.todayCard}>
-              <div className={styles.title}>8월 2일, 오늘의 소비💸</div>
+              <div className={styles.title}>
+                {date[0]}월 {date[1]}일, 오늘의 소비💸
+              </div>
               <div className={styles.amount}>
                 {settlement ? `${total}원` : "정산이 필요해요!"}
               </div>
@@ -166,7 +185,7 @@ const Main = (props) => {
               consum={weeklyConsum}
               setGoal={setGoal}
             ></ProgressBar>
-          </TodayCard>
+          </Card>
         </div>
       )}
       {isConsum && (
@@ -176,7 +195,8 @@ const Main = (props) => {
             getTotal={getTotal}
             consumFalseHandler={consumFalseHandler}
             settlement={settlement}
-            setSettlement={setSettlement}
+            settlementTrueHandler={settlementTrueHandler}
+            settlementFalseHandler={settlementFalseHandler}
           />
         </div>
       )}

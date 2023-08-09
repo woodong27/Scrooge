@@ -13,22 +13,18 @@ public class ArticleCommentDto {
 
     private Long id;
     private String content;
-    private LocalDateTime createdAt;
-    /* 연결 */
     private Long memberId;
-    private Long articleId;
+    private String memberNickname;
+    private String memberAvatarAddress;
 
-    /* USER 정보 */
-    private String nickname;
-    private String avatarImgAddress;
 
     @Builder
     public ArticleCommentDto(ArticleComment articleComment) {
         this.id = articleComment.getId();
         this.content = articleComment.getContent();
-        this.createdAt = articleComment.getCreatedAt();
         this.memberId = articleComment.getMember().getId();
-        this.articleId = articleComment.getArticle().getId();
+        this.memberNickname = articleComment.getMember().getNickname();
+        this.memberAvatarAddress = articleComment.getMember().getMainAvatar().getImgAddress();
     }
 
 }

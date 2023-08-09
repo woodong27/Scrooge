@@ -1,17 +1,15 @@
 .layout {
-  width: 100vw;
-  height: 100vh;
   position: relative;
-  z-index: 2;
+  height: 100vh;
   background-color: white;
+  z-index: 2;
 }
 
 .container {
-  width: 328px;
+  width: 20rem;
   margin: auto;
   text-align: left;
-  padding-bottom: 2.5rem;
-  margin-top: 1rem;
+  padding-bottom: 3rem;
   border-bottom: 2px solid #ebecf0;
 
   & p {
@@ -19,8 +17,39 @@
   }
 
   & h1 {
-    font-size: 22px;
+    font-size: 24px;
     margin-bottom: 4px;
+  }
+
+  & h2 {
+    font-size: 16px;
+  }
+}
+
+.mid_container {
+  width: 20rem;
+  margin: auto;
+  text-align: left;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ebecf0;
+
+  & p {
+    margin: 0;
+  }
+
+  & h2 {
+    font-size: 20px;
+  }
+}
+
+.bottom_container {
+  width: 20rem;
+  margin: auto;
+  text-align: left;
+  padding-bottom: 1.5rem;
+
+  & p {
+    margin: 0;
   }
 
   & h2 {
@@ -30,30 +59,73 @@
 
 .tag {
   color: var(--input-text);
-  font-size: 16px;
+  font-size: 14px;
+  justify-content: flex-start;
 }
 
 .content {
   position: absolute;
-  width: 328px;
-  margin-top: 10px;
+  width: 20rem;
+  margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
 }
 
 .img {
   width: 100%;
-  height: 274px;
+  height: 14rem;
 }
 
 .day {
-  margin: 20px 0;
+  margin: 1.25rem 0;
   font-weight: bold;
 }
 
 .back {
   position: absolute;
-  top: 24px;
-  left: 24px;
-  padding: 4px;
+  top: 1.5rem;
+  left: 1.5rem;
+  padding: 0.5rem;
+}
+
+.auth_img {
+  display: flex;
+  gap: 1rem;
+  width: 22.2rem;
+  margin-top: 1rem;
+  height: 11rem;
+  white-space: nowrap;
+  overflow-x: scroll;
+
+  & img {
+    width: 8rem;
+    height: 10rem;
+  }
+}
+
+.primary {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.shadow {
+  z-index: -1;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: var(--blue);
 }

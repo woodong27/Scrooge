@@ -3,11 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
-import ButtonWhite from "../components/UI/ButtonWhite";
+import ButtonWhite from "../components/Button/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Login.module.css";
 
 const Login = ({ loginHandler }) => {
+  //이메일 정규식
+  const emailRegEx =
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*.[A-Za-z]{2,3}$/;
+
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
@@ -27,11 +31,11 @@ const Login = ({ loginHandler }) => {
 
   const navigate = useNavigate();
   const handleLogin = () => {
-    if (state.email.length < 5) {
+    if (!emailRegEx.test(state.email)) {
       emailInput.current.focus();
       return;
     }
-    if (state.password.length < 2) {
+    if (state.password.length < 8) {
       passwordInput.current.focus();
       return;
     }
@@ -47,16 +51,27 @@ const Login = ({ loginHandler }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/login", postData)
-      .then((res) => res.text())
+    fetch("https://day6scrooge.duckdns.org/api/member/login", postData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Login 실패");
+        }
+        return res.text();
+      })
       .then((data) => {
-        const jwtToken = data;
+        console.log(data);
+        const jwtToken = data.token;
         sendJwtTokenToAndroid(jwtToken);
 
-        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data });
+        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
+        dispatch({ type: "SET_ID_STRING", payload: data.memberId });
 
         loginHandler();
         navigate("/");
+      })
+      .catch((error) => {
+        const errorDiv = document.getElementById("error");
+        errorDiv.style.display = "block";
       });
   };
 
@@ -89,6 +104,9 @@ const Login = ({ loginHandler }) => {
           placeholder="비밀번호를 입력해주세요"
           onChange={handleChangeState}
         />
+        <div id="error" className={styles.error}>
+          이메일과 비밀번호를 확인해주세요.
+        </div>
         <button className={styles.missPassword}> 비밀번호를 잊으셨나요?</button>
       </CharacterCard>
 

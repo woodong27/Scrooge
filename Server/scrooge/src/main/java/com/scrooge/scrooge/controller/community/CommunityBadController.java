@@ -1,7 +1,8 @@
 package com.scrooge.scrooge.controller.community;
 
-import com.scrooge.scrooge.dto.SuccessResp;
+import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.communityDto.ArticleBadDto;
+import com.scrooge.scrooge.repository.community.ArticleBadRepository;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.service.BadgeService;
 import com.scrooge.scrooge.service.community.CommunityBadService;
@@ -13,51 +14,66 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="CommunityUnlike", description = "커뮤니티 싫어요 관련 API")
 @RestController
-@RequestMapping("/community")
+@RequestMapping("/api/community")
 @RequiredArgsConstructor
 public class CommunityBadController {
 
     private final CommunityBadService communityBadService;
     private final MemberOwningBadgeRepository memberOwningBadgeRepository;
     private final BadgeService badgeService;
+    private final ArticleBadRepository articleBadRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 야유 기능 구현
-    @PostMapping("/unlike")
-    public ResponseEntity<?> addCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
+    @PostMapping("/{articleId}/bad")
+    public ResponseEntity<?> addCommunityBad(@RequestHeader("Authorization")String header, @PathVariable("articleId")Long articleId) {
+        String token = jwtTokenProvider.extractToken(header);
 
-        // 게시글 첫 평가 뱃지
-        if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(6L, articleBadDto.getMemberId())) {
-            badgeService.giveBadge(6L, articleBadDto.getMemberId());
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
-        SuccessResp successResp = new SuccessResp(1);
-        communityBadService.addCommunityBad(articleBadDto.getArticleId(), articleBadDto.getMemberId());
+        Long memberId = jwtTokenProvider.extractMemberId(token);
 
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        if (articleBadRepository.existsByArticleIdAndMemberId(articleId, memberId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 싫어요 표시한 게시글입니다.");
+        }
+
+        communityBadService.addCommunityBad(articleId, memberId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("싫어요 성공");
     }
 
     // 아유 기능 취소 구현
-    @DeleteMapping("/unlike")
-    public ResponseEntity<?> cancelCommunityBad(@RequestBody ArticleBadDto articleBadDto) {
+    @DeleteMapping("/{articleId}/bad")
+    public ResponseEntity<?> cancelCommunityBad(@RequestHeader("Authorization")String header, @PathVariable Long articleId) {
+        String token = jwtTokenProvider.extractToken(header);
 
-        SuccessResp successResp = new SuccessResp(1);
-        communityBadService.cancelCommunityBad(articleBadDto.getArticleId(), articleBadDto.getMemberId());
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
 
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        if (!articleBadRepository.existsByArticleIdAndMemberId(articleId, memberId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("싫어요 먼저 하고 취소하세요.");
+        }
+
+        communityBadService.cancelCommunityBad(articleId, memberId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("싫어요 취소 성공");
     }
 
     // 사용자가 아유를 했는지 체크하기
-    @GetMapping("/unlike-check")
-    public ResponseEntity<?> getCommunityBadCheck(@RequestBody ArticleBadDto articleBadDto) throws Exception{
-        Integer result = communityBadService.getCommunityBadCheck(articleBadDto);
-        if(result >= 0) return new ResponseEntity<Integer>(result, HttpStatus.OK);
-        else throw new Exception();
-    }
+    @GetMapping("/{articleId}/bad")
+    public ResponseEntity<?> getCommunityBadCheck(@RequestHeader("Authorization")String header, @PathVariable("articleId")Long articleId) {
+        String token = jwtTokenProvider.extractToken(header);
 
-    // 글 전체 싫어요 수 조회
-    @GetMapping("/unlike-count/{articleId}")
-    public ResponseEntity<?> getCommunityBadCount(@PathVariable("articleId")Long articleId) {
-        Integer result = communityBadService.getCommunityBadCount(articleId);
-        return new ResponseEntity<Integer>(result, HttpStatus.OK);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        ArticleBadDto articleBadDto = communityBadService.getCommunityBadCheck(articleId, jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(articleBadDto);
     }
 }

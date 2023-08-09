@@ -1,9 +1,8 @@
 package com.scrooge.scrooge.controller.community;
 
-import com.scrooge.scrooge.dto.SuccessResp;
+import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.communityDto.ArticleGoodDto;
-import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
-import com.scrooge.scrooge.service.BadgeService;
+import com.scrooge.scrooge.repository.community.ArticleGoodRepository;
 import com.scrooge.scrooge.service.community.CommunityGoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,53 +13,65 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="CommunityLike", description = "커뮤니티 좋아요 관련 API")
 @RestController
-@RequestMapping("/community")
+@RequestMapping("/api/community")
 @RequiredArgsConstructor
 public class CommunityGoodController {
 
     private final CommunityGoodService communityGoodService;
-    private final BadgeService badgeService;
-    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final ArticleGoodRepository articleGoodRepository;
 
     // 환호 기능 구현
     @Operation(summary = "커뮤니티 글 좋아요 등록")
-    @PostMapping("/like")
-    public ResponseEntity<?> addCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
+    @PostMapping("/{articleId}/good")
+    public ResponseEntity<?> addCommunityGood(@RequestHeader("Authorization")String header, @PathVariable("articleId")Long articleId) {
+        String token = jwtTokenProvider.extractToken(header);
 
-        if (!memberOwningBadgeRepository.existsByBadgeIdAndMemberId(6L, articleGoodDto.getMemberId())) {
-            badgeService.giveBadge(6L, articleGoodDto.getMemberId());
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
-        SuccessResp successResp = new SuccessResp(1);
-        communityGoodService.addCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        if (articleGoodRepository.existsByArticleIdAndMemberId(articleId, memberId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 좋아요 표시한 게시글입니다.");
+        }
+
+        communityGoodService.addCommunityGood(articleId, jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.status(HttpStatus.CREATED).body("좋아요 완료");
     }
 
     // 환호 취소 구현
     @Operation(summary = "커뮤니티 글 좋아요 취소")
-    @DeleteMapping("/like")
-    public ResponseEntity<?> cancleCommunityGood(@RequestBody ArticleGoodDto articleGoodDto) {
+    @DeleteMapping("/{articleId}/good")
+    public ResponseEntity<?> cancleCommunityGood(@RequestHeader("Authorization")String header, @PathVariable("articleId")Long articleId) {
+        String token = jwtTokenProvider.extractToken(header);
 
-        SuccessResp successResp = new SuccessResp(1);
-        communityGoodService.cancleCommunityGood(articleGoodDto.getArticleId(), articleGoodDto.getMemberId());
-        return new ResponseEntity<>(successResp, HttpStatus.OK);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        if (!articleGoodRepository.existsByArticleIdAndMemberId(articleId, memberId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("좋아요 먼저 하고 취소하세요");
+        }
+
+        communityGoodService.cancleCommunityGood(articleId, jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("좋아요 취소 완료");
     }
 
     // 사용자가 환호를 했는지 체크하기
     @Operation(summary = "사용자가 커뮤니티 글을 좋아요 했는지 체크")
-    @GetMapping("/like-check")
-    public ResponseEntity<?> getCommunityGoodCheck(@RequestBody ArticleGoodDto articleGoodDto) throws Exception {
-        Integer result = communityGoodService.getCommunityGoodCheck(articleGoodDto);
-        if (result >= 0) return new ResponseEntity<Integer>(result, HttpStatus.OK);
-        else throw new Exception();
-    }
+    @GetMapping("/{articleId}/good")
+    public ResponseEntity<?> getCommunityGoodCheck(@RequestHeader("Authorization")String header, @PathVariable("articleId")Long articleId) {
+        String token = jwtTokenProvider.extractToken(header);
 
-    // 글 전체 환호 수 조회
-    @Operation(summary = "커뮤니티 글 좋아요 전체 수 조회")
-    @GetMapping("/like-count/{articleId}")
-    public ResponseEntity<?> getCommunityGoodCount(@PathVariable("articleId")Long articleId) {
-        Integer result = communityGoodService.getCommunityGoodCount(articleId);
-        return new ResponseEntity<Integer>(result, HttpStatus.OK);
-    }
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰 입니다.");
+        }
 
+        ArticleGoodDto articleGoodDto = communityGoodService.getCommunityGoodCheck(articleId, jwtTokenProvider.extractMemberId(token));
+        return ResponseEntity.ok(articleGoodDto);
+    }
 }

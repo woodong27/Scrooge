@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "article_comment")
 @Data
 @NoArgsConstructor
 public class ArticleComment {
@@ -20,10 +20,6 @@ public class ArticleComment {
 
     @Column(length = 255, nullable = false)
     private String content;
-
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     /* 연결 */
     @ManyToOne
