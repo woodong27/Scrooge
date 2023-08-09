@@ -25,7 +25,7 @@ const Article = (props) => {
 
     //좋아요 싫어요 개수
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/review-count`
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/review-count`
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -44,7 +44,7 @@ const Article = (props) => {
     },
   };
   fetch(
-    `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+    `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
     goodCntData
   )
     .then((res) => res.json())
@@ -61,7 +61,7 @@ const Article = (props) => {
   };
   //싫어요 조회
   fetch(
-    `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+    `https://day6scrooge.duckdns.org/api/community/${props.id}/bad`,
     BadCntData
   )
     .then((res) => res.json())
@@ -79,7 +79,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
       goodData
     )
       .then((res) => res.text())
@@ -101,7 +101,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
       goodData
     )
       .then((res) => res.text())
@@ -120,7 +120,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/bad`,
       badData
     )
       .then((res) => res.text())
@@ -141,7 +141,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/bad`,
       badData
     )
       .then((res) => res.text())

@@ -6,6 +6,7 @@ import ReportMonth from "./ReportMonth";
 
 const ReportTab = () => {
   const globalToken = useSelector((state) => state.globalToken);
+
   const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
@@ -20,15 +21,18 @@ const ReportTab = () => {
       },
     };
 
-    fetch(`http://day6scrooge.duckdns.org:8081/payment-history/month/${dateTime}`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history/month/${dateTime}`, postData)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("데이터:",data)
-        console.log(data.paitAt)
-        setMonthlyData(data);
+        setMonthlyData(data.map(item => item.paidAt));
       })
       .catch((error) => console.log(error));
-  }
+  };
+
+  useEffect(() => {
+    console.log("업뎃",monthlyData)
+  },[monthlyData])
 
 
 

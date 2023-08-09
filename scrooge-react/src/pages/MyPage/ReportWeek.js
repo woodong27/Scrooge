@@ -1,16 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { BarChart, Bar, XAxis} from 'recharts';
 import styles from "./ReportWeek.module.css";
 
 const ReportWeek = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+
   const [startDate, setStartDate] = useState(new Date());
+  const [dailyTot, setDailyTot] = useState([]);
+  
+  useEffect(() => {
+    dailyData(`${startDate.getFullYear()}-${(startDate.getMonth()+1).toString().padStart(2,"0")}-${startDate.getDate().toString().padStart(2,"0")}`);
+  },[]);
+
+  // useEffect(()=>{
+  //   dailyData("2023-08-07")
+  // },[])
+
+  const dailyData = (days) => {
+    const postData = {
+      method: "GET",
+      headers:{
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history/date/${days}`,
+    postData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("원래rj", data)
+        setDailyTot(data.map(item => item.amount));
+        // console.log(dailyTot);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    console.log("업뎃rj", dailyTot.reduce((acc, amount) => acc + amount, 0))
+  },[dailyTot])
+
+
 
   const handleLastWeek = () => {
     const lastWeek = new Date(startDate);
     lastWeek.setDate(startDate.getDate() - 7);
     setStartDate(lastWeek);
   };
-
   const handleNextWeek = () => {
     const nextWeek = new Date(startDate);
     nextWeek.setDate(startDate.getDate() + 7);

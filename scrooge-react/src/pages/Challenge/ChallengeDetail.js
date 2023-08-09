@@ -15,7 +15,7 @@ const ChallengeDetail = () => {
   useEffect(() => {
     axios
       .get(
-        `http://day6scrooge.duckdns.org:8081/challenge/6/start-my-challenge`,
+        `https://day6scrooge.duckdns.org/api/challenge/6/start-my-challenge`,
         { headers }
       )
       .then((response) => {

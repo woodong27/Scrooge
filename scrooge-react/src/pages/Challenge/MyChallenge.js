@@ -22,7 +22,7 @@ const MyChallenge = () => {
 
     axios
       .get(
-        `http://day6scrooge.duckdns.org:8081/challenge/${idx}/my-challenge`,
+        `https://day6scrooge.duckdns.org/api/challenge/${idx}/my-challenge`,
         {
           headers,
         }

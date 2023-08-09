@@ -8,7 +8,7 @@ const CommentList = ({ id }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://day6scrooge.duckdns.org:8081/community/${id}/comment`)
+    fetch(`https://day6scrooge.duckdns.org/api/community/${id}/comment`)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
@@ -30,7 +30,7 @@ const CommentList = ({ id }) => {
     console.log(targetId);
     console.log(data);
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/comment/${targetId}`,
+      `https://day6scrooge.duckdns.org/api/community/comment/${targetId}`,
       deleteData
     ).then((res) => {
       if (res.status === 204) {
