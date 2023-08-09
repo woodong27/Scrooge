@@ -17,6 +17,7 @@ const CommentList = ({ id }) => {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {}, []);
   const commentDelete = (targetId) => {
     const deleteData = {
       method: "DELETE",
@@ -26,20 +27,23 @@ const CommentList = ({ id }) => {
       },
     };
 
+    console.log(targetId);
+    console.log(data);
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${targetId}/comment`,
+      `http://day6scrooge.duckdns.org:8081/community/comment/${targetId}`,
       deleteData
-    )
-      .then((res) => res.text())
-      .then((resdata) => {
+    ).then((res) => {
+      if (res.status === 204) {
         setData(data.filter((it) => it.id !== targetId));
-      });
+        console.log(data);
+      }
+    });
   };
 
   return (
     <div>
-      {data.map((it, index) => (
-        <Comment key={index} {...it} id={id} commentDelete={commentDelete} />
+      {data.map((it) => (
+        <Comment key={it.id} {...it} commentDelete={commentDelete} />
       ))}
     </div>
   );

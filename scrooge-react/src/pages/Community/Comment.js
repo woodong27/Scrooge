@@ -4,7 +4,7 @@ import styles from "./Comment.module.css";
 
 const Comment = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
-
+  const memberId = useSelector((state) => state.memberId);
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -13,11 +13,12 @@ const Comment = (props) => {
   }, []);
 
   const handleOpen = () => {
-    setIsEdit(true);
+    if (memberId === props.memberId) {
+      setIsEdit(true);
+    }
   };
 
   const handleDelete = () => {
-    console.log(props);
     props.commentDelete(props.id);
   };
 
@@ -29,19 +30,11 @@ const Comment = (props) => {
         alt="캐릭터"
       />
       <div className={styles.up}>
-        <div className={styles.nickname}>{props.memberNickname}</div>
-        <div className={styles.createdAt}>
-          {props.createdAt.split("T")[0]}{" "}
-          {props.createdAt.split("T")[1].slice(0, 5)}
-        </div>
-      </div>
-      <div className={styles.content}>
-        <div>
-          {comment}
+        <div className={styles.nickname}>
+          {props.memberNickname}
           {isEdit ? (
             <div className={styles.delete} onClick={handleDelete}>
-              {" "}
-              삭제{" "}
+              삭제
             </div>
           ) : (
             <div className={styles.option} onClick={handleOpen}>
@@ -52,6 +45,9 @@ const Comment = (props) => {
             </div>
           )}
         </div>
+      </div>
+      <div className={styles.content}>
+        <div>{comment}</div>
       </div>
     </div>
   );

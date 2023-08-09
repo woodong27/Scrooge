@@ -6,12 +6,6 @@ import Card from "../../components/UI/Card";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  // const navigate = useNavigate();
-  // const handleDetail = () => {
-  //   console.log(props.id);
-  //   navigate(`/community/${props.id}`);
-  // };
-
   const globalToken = useSelector((state) => state.globalToken);
 
   const [showContent, setContent] = useState(props.content);
