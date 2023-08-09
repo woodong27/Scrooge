@@ -208,14 +208,13 @@ const Detail = () => {
       <QuestHeader
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
-        color={"#A2D660"}
-      ></QuestHeader>
+        color={"#A2D660"}></QuestHeader>
       {data ? (
         <div className={styles.frame}>
           <div className={styles.authorInfo}>
             <img
               className={styles.character}
-              src={`https://day6scrooge.duckdns.org/api/${data.memberAvatarAddress}`}
+              src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
               alt="캐릭터"
             />
             <div>
