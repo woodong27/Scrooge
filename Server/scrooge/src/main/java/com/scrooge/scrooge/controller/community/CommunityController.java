@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Tag(name="Community", description = "커뮤니티 API")
@@ -33,7 +34,7 @@ public class CommunityController {
 
     @Operation(summary = "커뮤니티 글 등록")
     @PostMapping(consumes="multipart/form-data")
-    public ResponseEntity<?> createArticle(@RequestHeader("Authorization")String header, String content, @RequestParam MultipartFile img) {
+    public ResponseEntity<?> createArticle(@RequestHeader("Authorization")String header, String content, @RequestParam MultipartFile img) throws IOException {
         System.out.println(content);
         String token = jwtTokenProvider.extractToken(header);
 
