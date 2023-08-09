@@ -99,4 +99,15 @@ public class MemberController {
         memberService.deleteMember(jwtTokenProvider.extractMemberId(token));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("회원탈퇴 완료");
     }
+
+    @Operation(summary = "상태메시지 수정 api")
+    @PutMapping("/message")
+    public ResponseEntity<?> updateMessage(@RequestHeader("Authorization")String header, @RequestBody UpdateMessageDto updateMessageDto) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        return ResponseEntity.ok(memberService.updateMessage(jwtTokenProvider.extractMemberId(token), updateMessageDto.getMessage()));
+    }
 }
