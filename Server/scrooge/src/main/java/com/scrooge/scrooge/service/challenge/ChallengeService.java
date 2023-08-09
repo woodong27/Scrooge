@@ -1,27 +1,23 @@
 package com.scrooge.scrooge.service.challenge;
 
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
 import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeExampleImageDto;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeReqDto;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeRespDto;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
+import com.scrooge.scrooge.dto.challengeDto.*;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
+import com.scrooge.scrooge.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -40,10 +36,15 @@ public class ChallengeService {
     private final ChallengeParticipantRepository challengeParticipantRepository;
 
     private final FileUploadProperties fileUploadProperties;
+    private final UploadService uploadService;
+
+    private final Storage storage;
+    private final String bucketName = "scroogestorage";
+    private final String GCP_ADDRESS = "https://storage.googleapis.com/";
 
     // 챌린지 생성 API
     @Transactional
-    public void createChallenge(ChallengeReqDto challengeReqDto/*, List<MultipartFile> images*/) {
+    public ChallengeDetailDto createChallenge(ChallengeReqDto challengeReqDto, List<MultipartFile> images) throws IOException {
         Challenge challenge = new Challenge();
 
         // 챌린지 정보 저장하기
@@ -58,7 +59,7 @@ public class ChallengeService {
         challenge.setStatus(1);
 
         // Period에 따라 총 인증 횟수 정하기
-        Integer totalAuthCount = 0;
+        int totalAuthCount = 0;
         switch (challengeReqDto.getPeriod()) {
             case "1주" :
                 totalAuthCount = 7;
@@ -86,46 +87,69 @@ public class ChallengeService {
         challengeParticipantRepository.save(challengeParticipant);
 
         // ChallengeExampleImage에 이미지 5장 저장
-//        saveChallengeExampleImages(challenge, images);
-    }
-
-    // 챌린지에 해당하는 성공 예시 이미지 ChallengeExampleImage에 저장하기
-    private void saveChallengeExampleImages(Challenge challenge, List<MultipartFile> images) {
-
-        // 업로드할 위치 설정
-        String uploadLocation = fileUploadProperties.getUploadLocation() + "/challenge/examples/" + challenge.getId();
-
-        System.out.println(images.size());
-
-        for(MultipartFile image : images) {
-            // 업로드된 사진의 파일명을 랜덤 UUID로 생성
-            String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-            Path filePath = null;
-
-            try {
-                // 업로드할 위치에 폴더가 없으면 생성
-                File uploadDir = new File(uploadLocation);
-                if(!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                // 업로드할 위치에 파일 저장
-                byte[] bytes = image.getBytes();
-                filePath = Paths.get(uploadLocation + File.separator + fileName);
-                Files.write(filePath, bytes);
-
-                // ChallengeExampleImage에 이미지를 저장한다.
-                ChallengeExampleImage challengeExampleImage = new ChallengeExampleImage();
-                challengeExampleImage.setChallenge(challenge);
-                challengeExampleImage.setImgAddress(filePath.toString());
-
-                challengeExampleImageRepository.save(challengeExampleImage); //DB에 이미지 저장
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        for (MultipartFile img : images) {
+            uploadExampleImage(img, challenge);
         }
 
+        List<ChallengeExampleImage> challengeExampleImageList = challengeExampleImageRepository.findByChallengeId(challenge.getId());
+        return new ChallengeDetailDto(challenge, challengeExampleImageList);
     }
+
+    public void uploadExampleImage(MultipartFile img, Challenge challenge) throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String ext = img.getContentType();
+
+        BlobInfo blobinfo = BlobInfo.newBuilder(bucketName, uuid)
+                .setContentType(ext)
+                .build();
+
+        storage.create(blobinfo, img.getInputStream());
+
+        String imgAddress = GCP_ADDRESS + bucketName + "/" + uuid;
+        ChallengeExampleImage challengeExampleImage = new ChallengeExampleImage();
+        challengeExampleImage.setChallenge(challenge);
+        challengeExampleImage.setImgAddress(imgAddress);
+        challengeExampleImageRepository.save(challengeExampleImage);
+    }
+
+
+    // 챌린지에 해당하는 성공 예시 이미지 ChallengeExampleImage에 저장하기
+//    private void saveChallengeExampleImages(Challenge challenge, List<MultipartFile> images) {
+//
+//        // 업로드할 위치 설정
+//        String uploadLocation = fileUploadProperties.getUploadLocation() + "/challenge/examples/" + challenge.getId();
+//
+//        System.out.println(images.size());
+//
+//        for(MultipartFile image : images) {
+//            // 업로드된 사진의 파일명을 랜덤 UUID로 생성
+//            String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+//            Path filePath = null;
+//
+//            try {
+//                // 업로드할 위치에 폴더가 없으면 생성
+//                File uploadDir = new File(uploadLocation);
+//                if(!uploadDir.exists()) {
+//                    uploadDir.mkdir();
+//                }
+//
+//                // 업로드할 위치에 파일 저장
+//                byte[] bytes = image.getBytes();
+//                filePath = Paths.get(uploadLocation + File.separator + fileName);
+//                Files.write(filePath, bytes);
+//
+//                // ChallengeExampleImage에 이미지를 저장한다.
+//                ChallengeExampleImage challengeExampleImage = new ChallengeExampleImage();
+//                challengeExampleImage.setChallenge(challenge);
+//                challengeExampleImage.setImgAddress(filePath.toString());
+//
+//                challengeExampleImageRepository.save(challengeExampleImage); //DB에 이미지 저장
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 
     // 챌린지 전체를 조회하는 API
     public List<ChallengeRespDto> getAllChallenges() {
