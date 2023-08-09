@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comment from "./Comment";
-import styles from "./CommentList.module.css";
 
-const CommentList = ({ id }) => {
+const CommentList = ({ id, comments }) => {
   const globalToken = useSelector((state) => state.globalToken);
   const [data, setData] = useState([]);
 

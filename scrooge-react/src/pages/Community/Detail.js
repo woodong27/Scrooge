@@ -17,7 +17,45 @@ const Detail = () => {
   //유저가 게시글에 좋아요 싫어요 눌렀는지
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+
+  //댓글
+  useEffect(() => {
+    fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}/comment`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setComments(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const obj = {
+    id: params.id,
+    content: comment,
+  };
+  const handleSend = () => {
+    const postData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+      body: JSON.stringify(obj),
+    };
+
+    fetch(
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/comment`,
+      postData
+    )
+      .then((res) => res.text())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  //댓글 끝
 
   useEffect(() => {
     fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}`)
@@ -158,32 +196,6 @@ const Detail = () => {
       });
   };
 
-  const obj = {
-    id: params.id,
-    content: comment,
-  };
-  const handleSend = () => {
-    console.log(comment);
-    const postData = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-      body: JSON.stringify(obj),
-    };
-
-    fetch(
-      `https://day6scrooge.duckdns.org/api/community/${params.id}/comment`,
-      postData
-    )
-      .then((res) => res.text())
-      .then((data) => {
-        setBadCnt((prev) => prev - 1);
-        setBad(false);
-      });
-  };
-
   return (
     <div className={styles.box}>
       <QuestHeader
@@ -252,7 +264,7 @@ const Detail = () => {
               <div className={styles.cnt}>{badCnt}</div>
             </div>
           </div>
-          <CommentList id={data.id} />
+          <CommentList id={data.id} comments={comments} />
         </div>
       ) : (
         <p>Loading...</p>
