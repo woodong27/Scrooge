@@ -22,6 +22,7 @@ const Main = (props) => {
 
   useEffect(() => {
     getCurrentDate();
+    console.log(globalToken);
     const postData = {
       method: "GET",
       headers: {
