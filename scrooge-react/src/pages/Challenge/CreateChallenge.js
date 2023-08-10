@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -24,8 +24,9 @@ const CreateChallenge = () => {
   const [authMethod, setAuthMethod] = useState("");
   const [introduce, setIntroduce] = useState("");
 
+  const imgRefs = useRef([]);
+
   const [missToast, setMissToast] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
 
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
@@ -35,11 +36,6 @@ const CreateChallenge = () => {
   };
   const introduceChangeHandler = (event) => {
     setIntroduce(event.target.value);
-  };
-
-  const handleImageChange = (event) => {
-    const selimg = event.target.files[0];
-    setSelectedImage(selimg);
   };
 
   const CreateChallengeHandler = () => {
@@ -62,7 +58,9 @@ const CreateChallenge = () => {
     };
 
     formData.append("info", JSON.stringify(postData));
-    formData.append("images", selectedImage);
+    imgRefs.current.forEach((e) => {
+      if (e.files[0]) formData.append("images", e.files[0]);
+    });
 
     axios
       .post("https://day6scrooge.duckdns.org/api/challenge", formData, {
@@ -206,7 +204,21 @@ const CreateChallenge = () => {
         <div className={styles.length}>{introduce.length}/100</div>
       </div>
 
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+      <input
+        type="file"
+        accept="image/*"
+        ref={(e) => (imgRefs.current[0] = e)}
+      />
+      <input
+        type="file"
+        accept="image/*"
+        ref={(e) => (imgRefs.current[1] = e)}
+      />
+      <input
+        type="file"
+        accept="image/*"
+        ref={(e) => (imgRefs.current[2] = e)}
+      />
 
       <div className={styles.foot}>
         <div className={styles.primary} onClick={CreateChallengeHandler}>

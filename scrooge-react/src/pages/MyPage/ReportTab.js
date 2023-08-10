@@ -7,32 +7,32 @@ import ReportMonth from "./ReportMonth";
 const ReportTab = () => {
   const globalToken = useSelector((state) => state.globalToken);
 
-  const [monthlyData, setMonthlyData] = useState([]);
+  // const [monthlyData, setMonthlyData] = useState([]);
 
-  useEffect(() => {
-    fetchMonthlyData("2023-08");
-  },[]);
+  // useEffect(() => {
+  //   fetchMonthlyData("2023-08");
+  // },[]);
 
-  const fetchMonthlyData = (dateTime) => {
-    const postData = {
-      method: "GET",
-      headers:{
-        Authorization: globalToken,
-      },
-    };
+  // const fetchMonthlyData = (dateTime) => {
+  //   const postData = {
+  //     method: "GET",
+  //     headers:{
+  //       Authorization: globalToken,
+  //     },
+  //   };
 
-    fetch(`https://day6scrooge.duckdns.org/api/payment-history/month/${dateTime}`, postData)
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log("데이터:",data)
-        setMonthlyData(data.map(item => item.paidAt));
-      })
-      .catch((error) => console.log(error));
-  };
+  //   fetch(`https://day6scrooge.duckdns.org/api/payment-history/month/${dateTime}`, postData)
+  //     .then((resp) => resp.json())
+  //     .then((data) => {
+  //       console.log("데이터:",data)
+  //       setMonthlyData(data.map(item => item.paidAt));
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
-  useEffect(() => {
-    console.log("업뎃",monthlyData)
-  },[monthlyData])
+  // useEffect(() => {
+  //   console.log("업뎃",monthlyData)
+  // },[monthlyData])
 
 
 

@@ -7,7 +7,7 @@ const ChallengeItem = (props) => {
     <div className={styles.container}>
       <div className={styles.item_top}>
         <div className={styles.img_contianer}>
-          <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="더미" />
+          <img src={props.mainImg} alt="더미" />
         </div>
         <div className={styles.text_container}>
           <p className={styles.title}>{props.title}</p>
