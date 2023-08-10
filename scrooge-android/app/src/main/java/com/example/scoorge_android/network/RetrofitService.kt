@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
-    private val Base_URL = "http://day6scrooge.duckdns.org:8081"
+    private val Base_URL = "https://day6scrooge.duckdns.org/api/"
 
     private var authToken = ""
 

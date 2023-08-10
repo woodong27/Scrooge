@@ -4,4 +4,33 @@
 
 .box {
   justify-items: center;
+  touch-action: pan-x;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 11;
+}
+
+.addBtn {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--green);
 }

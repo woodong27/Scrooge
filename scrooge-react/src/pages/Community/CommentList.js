@@ -1,23 +1,16 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comment from "./Comment";
-import styles from "./CommentList.module.css";
 
-const CommentList = ({ id }) => {
+const CommentList = React.memo(({ id, comments }) => {
   const globalToken = useSelector((state) => state.globalToken);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`https://day6scrooge.duckdns.org/api/community/${id}/comment`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setData(data);
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    setData(comments);
+  }, [comments]);
 
-  useEffect(() => {}, []);
   const commentDelete = (targetId) => {
     const deleteData = {
       method: "DELETE",
@@ -27,8 +20,6 @@ const CommentList = ({ id }) => {
       },
     };
 
-    console.log(targetId);
-    console.log(data);
     fetch(
       `https://day6scrooge.duckdns.org/api/community/comment/${targetId}`,
       deleteData
@@ -47,6 +38,6 @@ const CommentList = ({ id }) => {
       ))}
     </div>
   );
-};
+});
 
 export default CommentList;

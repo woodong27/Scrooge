@@ -17,7 +17,53 @@ const Detail = () => {
   //유저가 게시글에 좋아요 싫어요 눌렀는지
   const [good, setGood] = useState(false);
   const [bad, setBad] = useState(false);
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+
+  //댓글
+  useEffect(() => {
+    fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}/comment`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        setComments(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const obj = {
+    id: params.id,
+    content: comment,
+  };
+  const handleSend = () => {
+    const postData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+      body: JSON.stringify(obj),
+    };
+
+    fetch(
+      `https://day6scrooge.duckdns.org/api/community/${params.id}/comment`,
+      postData
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const newComment = {
+          id: data.id,
+          content: data.content,
+          memberId: data.memberId,
+          memberNickname: data.memberNickname,
+          memberAvatarAddress: data.memberAvatarAddress,
+        };
+        setComments([newComment, ...comments]);
+        console.log(comments);
+      });
+  };
+
+  //댓글 끝
 
   useEffect(() => {
     fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}`)
@@ -158,45 +204,18 @@ const Detail = () => {
       });
   };
 
-  const obj = {
-    id: params.id,
-    content: comment,
-  };
-  const handleSend = () => {
-    console.log(comment);
-    const postData = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-      body: JSON.stringify(obj),
-    };
-
-    fetch(
-      `https://day6scrooge.duckdns.org/api/community/${params.id}/comment`,
-      postData
-    )
-      .then((res) => res.text())
-      .then((data) => {
-        setBadCnt((prev) => prev - 1);
-        setBad(false);
-      });
-  };
-
   return (
     <div className={styles.box}>
       <QuestHeader
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
-        color={"#A2D660"}
-      ></QuestHeader>
+        color={"#A2D660"}></QuestHeader>
       {data ? (
         <div className={styles.frame}>
           <div className={styles.authorInfo}>
             <img
               className={styles.character}
-              src={`https://day6scrooge.duckdns.org/api/${data.memberAvatarAddress}`}
+              src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
               alt="캐릭터"
             />
             <div>
@@ -208,7 +227,7 @@ const Detail = () => {
             <img
               className={styles.picture}
               // imgAddress
-              src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+              src={`${data.imgAdress}`}
               alt="사진"
             />
             <div className={styles.content}>{data.content}</div>
@@ -252,7 +271,7 @@ const Detail = () => {
               <div className={styles.cnt}>{badCnt}</div>
             </div>
           </div>
-          <CommentList id={data.id} />
+          <CommentList id={data.id} comments={comments} />
         </div>
       ) : (
         <p>Loading...</p>

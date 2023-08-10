@@ -24,7 +24,7 @@ public class ArticleCommentDto {
         this.content = articleComment.getContent();
         this.memberId = articleComment.getMember().getId();
         this.memberNickname = articleComment.getMember().getNickname();
-        this.memberAvatarAddress = articleComment.getMember().getMainAvatar().getImgAddress();
+        this.memberAvatarAddress = articleComment.getMember().getMainAvatar().getId().toString();
     }
 
 }

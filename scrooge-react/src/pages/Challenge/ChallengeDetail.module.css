@@ -1,6 +1,6 @@
 .img {
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 274px;
 
   & div {
@@ -40,4 +40,95 @@
 
 .title {
   text-align: left;
+}
+
+.auth_condition {
+  margin: 1.5rem 0 1rem;
+}
+
+.img_container {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+
+  & img {
+    width: 32.5%;
+  }
+}
+
+.my_auth_container {
+  width: 20rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem auto 8rem;
+  gap: 0.4rem;
+
+  & img {
+    width: 4rem;
+    border-radius: 10px;
+  }
+}
+
+.my_auth_middle {
+  border-radius: 10px;
+  border: 2px solid var(--input-text);
+  padding: 0.25rem;
+}
+
+.idx {
+  width: 2rem;
+  margin: 0 auto 0.25rem;
+  border-radius: 20px;
+  background-color: var(--input);
+}
+
+.succes {
+  color: var(--green);
+}
+
+.fail {
+  color: red;
+}
+
+.layout {
+  position: relative;
+  z-index: 4;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.foot {
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  bottom: 0;
+}
+
+.primary {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.shadow {
+  z-index: -1;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  background: var(--blue);
 }
