@@ -15,6 +15,7 @@ const AllChallenge = () => {
       .get("https://day6scrooge.duckdns.org/api/challenge")
       .then((response) => {
         setData(response.data);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -45,6 +46,7 @@ const AllChallenge = () => {
                 minParticipants={e.minParticipants}
                 period={e.period}
                 category={e.category}
+                mainImg={e.mainImageAddress}
                 text="참여하기"
               ></ChallengeItem>
             );
