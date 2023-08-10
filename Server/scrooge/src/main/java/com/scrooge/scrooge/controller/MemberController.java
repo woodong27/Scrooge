@@ -1,5 +1,6 @@
 package com.scrooge.scrooge.controller;
 
+import com.scrooge.scrooge.domain.member.TokenDto;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.member.MemberRepository;
@@ -11,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
