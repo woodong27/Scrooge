@@ -5,6 +5,7 @@ import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.DateTimeReqDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.repository.LevelRepository;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
@@ -39,6 +40,8 @@ public class PaymentHistoryService {
     private final BadgeService badgeService;
     private final MemberOwningBadgeRepository memberOwningBadgeRepository;
 
+    private final LevelService levelService;
+
     @Transactional
     public PaymentHistoryRespDto addPaymentHistory(Long memberId, PaymentHistoryDto paymentHistoryDto) {
         PaymentHistory paymentHistory = new PaymentHistory();
@@ -47,6 +50,7 @@ public class PaymentHistoryService {
         paymentHistory.setAmount(paymentHistoryDto.getAmount());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
+        paymentHistory.setIsSettled(false);
 
         if(paymentHistoryDto.getPaidAt() == null) {
             paymentHistory.setPaidAt(LocalDateTime.now());
@@ -161,16 +165,20 @@ public class PaymentHistoryService {
         paymentHistory.setCardName(paymentHistoryDto.getCardName());
         paymentHistory.setCategory(paymentHistoryDto.getCategory());
         paymentHistory.setUsedAt(paymentHistoryDto.getUsedAt());
+        paymentHistory.setIsSettled(true);
 
         return paymentHistoryRepository.save(paymentHistory);
     }
 
 
     public MemberDto updateExpAfterDailySettlement(Long memberId) {
-        Optional<Member> member =  memberRepository.findById(memberId);
+        Optional<Member> member =  memberRepository.findWithRelatedEntitiesById(memberId);
         if(member.isPresent()) {
             // 경험치 +100 정산해주기
             member.get().setExp(member.get().getExp() + 100);
+
+            levelService.levelUp(member.get());
+
             // streak 1 증가
             int newStreak = member.get().getStreak() + 1;
             member.get().setStreak(newStreak);
@@ -218,6 +226,27 @@ public class PaymentHistoryService {
         return todayTotalConsumption;
     }
 
+    // 날짜를 입력 받아서 소비 금액 조회하는 API
+    public Integer getDateTotalConsumption(Long memberId, String dateTime) {
 
+        LocalDate date = LocalDate.parse(dateTime);
 
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
+
+        System.out.println(paymentHistories);
+
+        List<PaymentHistory> filterPaymentHistories = paymentHistories.stream()
+                .filter(paymentHistory -> paymentHistory.getPaidAt().toLocalDate().equals(date))
+                .collect(Collectors.toList());
+
+        System.out.println(filterPaymentHistories);
+
+        Integer total = 0;
+
+        for(PaymentHistory paymentHistory : filterPaymentHistories) {
+            total += paymentHistory.getAmount();
+        }
+
+        return total;
+    }
 }

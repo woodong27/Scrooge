@@ -13,9 +13,7 @@ const Comment = (props) => {
   }, []);
 
   const handleOpen = () => {
-    if (memberId === props.memberId) {
-      setIsEdit(true);
-    }
+    setIsEdit(true);
   };
 
   const handleDelete = () => {
@@ -26,23 +24,29 @@ const Comment = (props) => {
     <div className={styles.box}>
       <img
         className={styles.character}
-        src={`https://day6scrooge.duckdns.org/api/${props.memberAvatarAddress}`}
+        src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
         alt="캐릭터"
       />
       <div className={styles.up}>
         <div className={styles.nickname}>
           {props.memberNickname}
-          {isEdit ? (
-            <div className={styles.delete} onClick={handleDelete}>
-              삭제
-            </div>
+          {memberId === props.memberId ? (
+            <>
+              {isEdit ? (
+                <div className={styles.delete} onClick={handleDelete}>
+                  삭제
+                </div>
+              ) : (
+                <div className={styles.option} onClick={handleOpen}>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/option.png`}
+                    alt="더보기"
+                  />
+                </div>
+              )}
+            </>
           ) : (
-            <div className={styles.option} onClick={handleOpen}>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/option.png`}
-                alt="더보기"
-              />
-            </div>
+            ""
           )}
         </div>
       </div>

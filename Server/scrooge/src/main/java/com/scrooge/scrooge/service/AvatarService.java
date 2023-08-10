@@ -2,7 +2,9 @@ package com.scrooge.scrooge.service;
 
 import com.scrooge.scrooge.domain.Avatar;
 import com.scrooge.scrooge.domain.member.Member;
+import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
 import com.scrooge.scrooge.dto.AvatarDto;
+import com.scrooge.scrooge.dto.member.MemberOwningAvatarRespDto;
 import com.scrooge.scrooge.repository.AvatarRepository;
 import com.scrooge.scrooge.repository.member.MemberOwningAvatarRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
@@ -49,6 +51,17 @@ public class AvatarService {
         memberRepository.save(member);
 
         return new AvatarDto(avatar);
+    }
+
+    // 아바타 획득 목록을 조회하는 API
+    public List<MemberOwningAvatarRespDto> getMemberOwningAvatarList(Long memberId) {
+
+        // member가 memberId에 해당하는 목록 가져오기
+        List<MemberOwningAvatar> memberOwningAvatarList = memberOwningAvatarRepository.findByMemberId(memberId);
+
+        return memberOwningAvatarList.stream()
+                .map(MemberOwningAvatarRespDto::new)
+                .collect(Collectors.toList());
     }
 }
 
