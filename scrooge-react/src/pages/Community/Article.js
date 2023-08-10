@@ -163,12 +163,13 @@ const Article = (props) => {
         </div>
         <Link to={`/community/${props.id}`}>
           <div className={styles.detail}>
-            <img
-              className={styles.picture}
-              // imgAddress
-              src={`${props.imgAdress}`}
-              alt="사진"
-            />
+            <div className={styles.pictureFrame}>
+              <img
+                className={styles.picture}
+                src={`${props.imgAdress}`}
+                alt="사진"
+              />
+            </div>
             <div className={styles.content}>
               {showContent} <button></button>
             </div>

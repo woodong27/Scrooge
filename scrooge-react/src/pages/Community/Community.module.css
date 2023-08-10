@@ -1,0 +1,7 @@
+.frame {
+  height: 620px;
+  overflow: auto;
+}
+.frame::-webkit-scrollbar {
+  width: 0;
+}
