@@ -1,6 +1,8 @@
 package com.scrooge.scrooge.domain.member;
 
 import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.domain.challenge.ChallengeChattingMessage;
+import com.scrooge.scrooge.domain.challenge.ChallengeChattingRoom;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleComment;
 import com.scrooge.scrooge.domain.community.ArticleGood;
@@ -92,4 +94,11 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Article> articles = new ArrayList<>();
+
+    /* 챌린지 관련 연결 */
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<ChallengeChattingRoom> challengeChattingRoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<ChallengeChattingMessage> challengeChattingMessageList = new ArrayList<>();
 }
