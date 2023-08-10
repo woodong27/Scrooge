@@ -25,7 +25,6 @@ const Detail = () => {
     fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}/comment`)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         setComments(data);
       })
       .catch((error) => console.log(error));
@@ -59,6 +58,7 @@ const Detail = () => {
           memberAvatarAddress: data.memberAvatarAddress,
         };
         setComments([newComment, ...comments]);
+        setComment("");
         console.log(comments);
       });
   };
@@ -208,7 +208,8 @@ const Detail = () => {
       <QuestHeader
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
-        color={"#A2D660"}></QuestHeader>
+        color={"#A2D660"}
+        show={"true"}></QuestHeader>
       {data ? (
         <div className={styles.frame}>
           <div className={styles.authorInfo}>
@@ -219,13 +220,15 @@ const Detail = () => {
             />
             <div>
               <div className={styles.author}>{data.memberNickname}</div>
-              <div className={styles.createdAt}>{data.createdAt}</div>
+              <div className={styles.createdAt}>
+                {data.createdAt.split("T")[0]}{" "}
+                {data.createdAt.split("T")[1].split(".")[0]}
+              </div>
             </div>
           </div>
           <div className={styles.detail}>
             <img
               className={styles.picture}
-              // imgAddress
               src={`${data.imgAdress}`}
               alt="사진"
             />

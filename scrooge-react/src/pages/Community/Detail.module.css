@@ -1,6 +1,7 @@
 .box {
   position: relative;
 }
+
 .frame {
   overflow: hidden;
   padding-bottom: 132px;
@@ -19,8 +20,14 @@
 }
 
 .author {
+  text-align: left;
   font-size: 20px;
   margin: 12px 0 4px 0;
+}
+
+.createdAt {
+  font-size: 13px;
+  color: var(--input-text);
 }
 
 .picture {

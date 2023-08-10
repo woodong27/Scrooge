@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
 
 const NewArticle = ({}) => {
-  const formData = new FormData();
   const globalToken = useSelector((state) => state.globalToken);
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const formData = new FormData();
   const handleImageChange = (event) => {
     const selimg = event.target.files[0];
     setSelectedImage(selimg);
@@ -36,6 +37,7 @@ const NewArticle = ({}) => {
       .then((data) => {
         console.log(data);
         setContent("");
+        navigate("/community");
       })
       .catch((error) => {
         console.log(error);
@@ -48,6 +50,7 @@ const NewArticle = ({}) => {
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
         color={"#A2D660"}
+        show={"true"}
       />
 
       <div className={styles.box}>
