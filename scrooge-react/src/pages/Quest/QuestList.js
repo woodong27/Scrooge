@@ -18,15 +18,15 @@ const QuestList = ({ props }) => {
         Authorization: globalToken,
       },
     };
-    // fetch("https://day6scrooge.duckdns.org/api/quest", postData)
-    //   .then((resp) => resp.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     setIng(data.filter((it) => it.selected && !it.done));
-    //     setList(data.filter((it) => !it.selected));
-    //     setFinish(data.filter((it) => it.done));
-    //   })
-    //   .catch((error) => console.log(error));
+    fetch("https://day6scrooge.duckdns.org/api/quest", postData)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        setIng(data.filter((it) => it.selected && !it.done));
+        setList(data.filter((it) => !it.selected));
+        setFinish(data.filter((it) => it.done));
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   const handleAdd = ({ id }) => {
@@ -55,20 +55,6 @@ const QuestList = ({ props }) => {
       .catch((error) => console.log(error));
   };
 
-  const dummy = [
-    {
-      id: 1,
-      quest: {
-        id: 4,
-        title: "게시글 작성 2회",
-        description: "게시글 작성 2회 이상 하기",
-        maxCount: 2,
-      },
-      completeCount: 0,
-      done: false,
-      selected: false,
-    },
-  ];
   return (
     <div>
       {ing.length > 0 && <div className={styles.title}> 진행 중 퀘스트 </div>}
@@ -77,7 +63,7 @@ const QuestList = ({ props }) => {
         <QuestItem key={index} {...it} />
       ))}
       <div className={styles.title}> 퀘스트 목록 </div>
-      {dummy.map((it, index) => (
+      {list.map((it, index) => (
         <QuestItem
           className={styles.item}
           key={index}
