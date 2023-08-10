@@ -34,7 +34,20 @@
 }
 
 .chartBox{
-  /* background-color: #F6F8EB; */
+  padding-top: 20px ;
   background: var(--input, rgba(240, 240, 240, 0.50));
   border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+
+.placeholerDiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 250px;
+  background: var(--input, rgba(240, 240, 240, 0.50));
+  border-radius: 10px;
+  margin-bottom: 20px ;
 }
