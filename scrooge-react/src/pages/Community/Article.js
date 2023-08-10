@@ -166,7 +166,7 @@ const Article = (props) => {
             <img
               className={styles.picture}
               // imgAddress
-              src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+              src={`${props.imgAdress}`}
               alt="사진"
             />
             <div className={styles.content}>

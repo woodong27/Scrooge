@@ -5,7 +5,6 @@ import QuestList from "./QuestList";
 const Quest = ({}) => {
   return (
     <div>
-      <PlusBtn></PlusBtn>
       <QuestHeader
         title={"스크루지 드림"}
         titleColor={"#ecd35b"}

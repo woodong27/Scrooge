@@ -25,6 +25,7 @@ const Detail = () => {
     fetch(`https://day6scrooge.duckdns.org/api/community/${params.id}/comment`)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setComments(data);
       })
       .catch((error) => console.log(error));
@@ -225,7 +226,7 @@ const Detail = () => {
             <img
               className={styles.picture}
               // imgAddress
-              src={`${process.env.PUBLIC_URL}/images/dummy.png`}
+              src={`${data.imgAdress}`}
               alt="사진"
             />
             <div className={styles.content}>{data.content}</div>
