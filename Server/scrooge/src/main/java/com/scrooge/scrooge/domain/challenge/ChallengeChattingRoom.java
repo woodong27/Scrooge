@@ -32,6 +32,6 @@ public class ChallengeChattingRoom {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
-    @OneToMany(mappedBy = "challenge_chatting_room", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "challengeChattingRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeChattingMessage> challengeChattingMessageList = new ArrayList<>();
 }

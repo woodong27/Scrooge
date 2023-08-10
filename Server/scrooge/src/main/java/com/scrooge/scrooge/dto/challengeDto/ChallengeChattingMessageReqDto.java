@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public class ChallengeChattingMessageReqDto {
 
     /* 프론트에서 채팅 메시지 데이터를 서버에 보내줄 때 사용하는 DTO */
-
     private Long id;
     private String content;
     private LocalDateTime createdAt;
