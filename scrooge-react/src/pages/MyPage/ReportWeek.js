@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { BarChart, Bar, XAxis } from 'recharts';
+import { BarChart, Bar, XAxis, LabelList,Rectangle } from 'recharts';
 import styles from "./ReportWeek.module.css";
 
 const ReportWeek = () => {
@@ -94,6 +94,15 @@ const ReportWeek = () => {
 
   const [startPoint, setStartPoint] = useState(getStandardDate().startDate); 
   const [endPoint, setEndPoint] = useState(getStandardDate().endDate);
+
+  const resultsSummary = () => {
+    const amounts = weeklyDataResults.map((result) => result.amount);
+
+    const avg = amounts.reduce((sum, amount) => sum + amount, 0);
+    const max = Math.max(...amounts);
+
+    return {avg, max};
+  }
   
   return (
     <div>
@@ -116,19 +125,21 @@ const ReportWeek = () => {
       {/* 소비 요약 */}
       <div className={styles.reportContent}>
         <div className={styles.weekAvg}>
-          <div>평균소비금액</div>
-          <div><b>얼마얼마</b> 원</div>
+          <div>평균소비금액💸</div>
+          <div><b>{resultsSummary().avg.toLocaleString()}</b> 원</div>
         </div>
         <div className={styles.weekMax}>
-          <div>최대절약금액</div>
-          <div><b>얼마얼마~</b> 원</div>
+          <div>이번주과소비😮</div>
+          <div><b>{resultsSummary().max.toLocaleString()}</b> 원</div>
         </div>
       </div>
   
       {/* 소비 그래프 */}
       <div className={styles.chartContainer}>
-        <BarChart width={350} height={200} data={weeklyDataResults}>
-          <Bar dataKey="amount" fill="#A2D660" />
+        <BarChart width={350} height={200} data={weeklyDataResults} className={styles.chartBox}>
+          <Bar dataKey="amount" fill="#A2D660" barSize={35} shape={<Rectangle radius={[15, 15, 0, 0]} />} >
+            <LabelList dataKey ="amount" position="top" formatter = {(value) => `${value.toLocaleString()}`} />
+          </Bar>
           <XAxis dataKey="date"  />
         </BarChart>
       </div>

@@ -25,9 +25,16 @@
   flex-direction: column;
   gap: 0.225rem;
   flex: 1 0 0;
+  
 }
 
 .chartContainer{
   display: flex;
   justify-content:center;
+}
+
+.chartBox{
+  /* background-color: #F6F8EB; */
+  background: var(--input, rgba(240, 240, 240, 0.50));
+  border-radius: 10px;
 }
