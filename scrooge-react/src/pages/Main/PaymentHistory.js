@@ -6,14 +6,7 @@ import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import Modal from "../../components/UI/Modal";
 
-const PaymentHistory = ({
-  total,
-  getTotal,
-  consumFalseHandler,
-  settlement,
-  settlementTrueHandler,
-  settlementFalseHandler,
-}) => {
+const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
   const [data, setData] = useState([]);
@@ -23,6 +16,7 @@ const PaymentHistory = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentItem = data[currentIndex];
   const [modal, setModal] = useState(false);
+  const [settlement, setSettlement] = useState(false);
 
   const handleOpenModal = () => {
     // 소비가 0건인 경우 예외 처리
@@ -37,6 +31,7 @@ const PaymentHistory = ({
     setModal(false);
   };
 
+  //전날로 이동
   const datebeforeHandler = () => {
     const [currentMonth, currentDay] = date;
     const previousDate = new Date();
@@ -44,6 +39,7 @@ const PaymentHistory = ({
     previousDate.setDate(currentDay - 1);
     setDate([previousDate.getMonth() + 1, previousDate.getDate()]);
   };
+  //다음날로 이동
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
     const nextDate = new Date();
@@ -66,7 +62,6 @@ const PaymentHistory = ({
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
       setCurrentIndex(currentIndex + 1);
@@ -80,6 +75,13 @@ const PaymentHistory = ({
 
   // 오늘 소비 내역 불러오기
   const getPaymentHistory = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    if (month === date[0] && day === date[1]) {
+      getTotal();
+    }
+
     if (date.length === 2) {
       const formattedDate = `2023-${date[0]
         .toString()
@@ -98,8 +100,9 @@ const PaymentHistory = ({
       )
         .then((resp) => resp.json())
         .then((data) => {
-          console.log(data);
           setData(data);
+          //첫 false를 index로 지정
+          setCurrentIndex(data.findIndex((item) => !item.isSeetled));
         })
         .catch((error) => console.log(error));
     }
@@ -118,10 +121,6 @@ const PaymentHistory = ({
       cardName,
     };
     setData([...data, newItem]);
-    if (settlement) {
-      getTotal();
-    }
-    settlementFalseHandler();
   };
 
   const onEdit = (targetId, amount, usedAt, cardName, category) => {
