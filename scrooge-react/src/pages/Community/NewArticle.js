@@ -39,7 +39,7 @@ const NewArticle = ({}) => {
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
   };
 
   return (
@@ -70,8 +70,8 @@ const NewArticle = ({}) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <div className={styles.photo}>
-          <label htmlFor="fileInput">
+        <div>
+          <label htmlFor="fileInput" className={styles.photo}>
             <img
               src={`${process.env.PUBLIC_URL}/images/camera.svg`}
               alt="더보기"
@@ -82,9 +82,8 @@ const NewArticle = ({}) => {
             id="fileInput"
             type="file"
             accept="image/*"
-            style={{display: "none"}}
-            onChange={handleImageChange}>
-          </input>
+            style={{ display: "none" }}
+            onChange={handleImageChange}></input>
         </div>
 
         <div className={styles.upload} onClick={handleSend}>
