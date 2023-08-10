@@ -84,7 +84,6 @@ const Article = (props) => {
     )
       .then((res) => res.text())
       .then((data) => {
-        console.log(data);
         if (data === "좋아요 완료") {
           setGoodCnt((prev) => prev + 1);
           setGood(true);

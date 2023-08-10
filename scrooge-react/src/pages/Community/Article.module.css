@@ -4,6 +4,7 @@
 
 .box {
   justify-items: center;
+  margin-bottom: 20px;
 }
 
 .authorInfo {
