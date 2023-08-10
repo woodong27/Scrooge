@@ -98,7 +98,7 @@ const PaymentHistory = ({
       )
         .then((resp) => resp.json())
         .then((data) => {
-          //데이터가 없는 경우도 처리해야겠지?
+          console.log(data);
           setData(data);
         })
         .catch((error) => console.log(error));
@@ -161,12 +161,12 @@ const PaymentHistory = ({
         Authorization: globalToken,
       },
     };
-    fetch(
-      "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
-      postData
-    )
-      .then((res) => res.json())
-      .then(console.log);
+    // fetch(
+    //   "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
+    //   postData
+    // )
+    //   .then((res) => res.json())
+    // .then(console.log);
   };
 
   return (
