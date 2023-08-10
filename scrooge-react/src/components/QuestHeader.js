@@ -12,7 +12,7 @@ const QuestHeader = (props) => {
     textShadow: `2px 2px 0 ${props.titleColor}`,
   };
   const handleBack = () => {
-    navigate(-1);
+    navigate("/community");
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import PlusBtn from "../../components/UI/PlusBtn";
@@ -10,6 +10,10 @@ import HeaderToggle from "../../components/HeaderToggle";
 
 const Community = ({}) => {
   const memberId = useSelector((state) => state.memberId);
+  const [searchParams] = useSearchParams();
+  const deleteId = searchParams.get("delete");
+  const EditId = searchParams.get("edit");
+
   const [isMine, setIsMine] = useState(false);
   const [data, setData] = useState([]);
   const [mine, setMine] = useState([]);
@@ -21,7 +25,7 @@ const Community = ({}) => {
         setMine(data.filter((item) => item.memberId === memberId));
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [EditId]);
 
   const myHandler = () => {
     setIsMine(true);
@@ -29,6 +33,10 @@ const Community = ({}) => {
   const allHandler = () => {
     setIsMine(false);
   };
+  useEffect(() => {
+    setData(data.filter((it) => it.id !== deleteId));
+    setMine(mine.filter((it) => it.id !== deleteId));
+  }, [deleteId]);
 
   return (
     <div className={styles.box}>

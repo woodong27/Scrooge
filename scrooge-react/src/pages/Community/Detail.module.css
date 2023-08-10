@@ -3,14 +3,20 @@
 }
 
 .frame {
-  overflow: hidden;
-  padding-bottom: 132px;
+  height: 580px;
+  overflow: auto;
+}
+.frame::-webkit-scrollbar {
+  width: 0;
 }
 
 .authorInfo {
-  width: 288px;
+  width: 330px;
   display: flex;
+  align-items: center;
+  justify-content: left;
   padding-left: 28px;
+  margin: 0;
 }
 
 .character {
@@ -20,14 +26,32 @@
 }
 
 .author {
+  width: 270px;
   text-align: left;
   font-size: 20px;
   margin: 12px 0 4px 0;
 }
 
+.line {
+  display: flex;
+  justify-content: space-between;
+}
+
 .createdAt {
   font-size: 13px;
   color: var(--input-text);
+}
+
+.btns {
+  width: 80px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 12px;
+}
+
+.option {
+  margin-right: 12px;
+  padding-bottom: 4px;
 }
 
 .picture {
@@ -38,6 +62,7 @@
   margin: 8px 38px;
   text-align: left;
 }
+
 .reaction {
   height: 28px;
   margin: 12px 24px 32px 24px;
@@ -88,4 +113,16 @@
   width: 48px;
   height: 36px;
   background: #fff;
+}
+
+.editContent {
+  position: absolute;
+  top: 200px;
+  left: 28px;
+  width: 296px;
+  height: 260px;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 20px;
 }

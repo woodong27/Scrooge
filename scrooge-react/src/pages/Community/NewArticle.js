@@ -35,7 +35,6 @@ const NewArticle = ({}) => {
     fetch(`https://day6scrooge.duckdns.org/api/community`, postData)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setContent("");
         navigate("/community");
       })
