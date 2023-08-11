@@ -10,6 +10,9 @@ const ProgressBar = ({ goal, consum, setGoal }) => {
     setWeeklyGoal(event.target.value);
   };
   const handleSave = () => {
+    if (inputValue.length < 1) {
+      return;
+    }
     setGoal(inputValue);
   };
 

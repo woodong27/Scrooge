@@ -6,22 +6,39 @@ import PaymentAdd from "./PaymentAdd";
 import styles from "./PaymentHistory.module.css";
 import Modal from "../../components/UI/Modal";
 
-const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
+const PaymentHistory = ({
+  todayProp,
+  total,
+  getTotal,
+  todaySettlement,
+  consumFalseHandler,
+  handleSetTrue,
+  handleSetFalse,
+}) => {
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
-  const [data, setData] = useState([]);
-  const [date, setDate] = useState([]);
+  const [data, setData] = useState();
+  const [date, setDate] = useState(todayProp);
   const [origin, setOrigin] = useState();
 
+  const [settlement, setSettlement] = useState(todaySettlement);
+  //여기서 get하는걸로 하면 이걸 다 거기에 넣어야겠다.
   const [currentIndex, setCurrentIndex] = useState(0);
-  const currentItem = data[currentIndex];
   const [modal, setModal] = useState(false);
-  const [settlement, setSettlement] = useState(false);
+
+  useEffect(() => {
+    getPaymentHistory(todayProp[0], todayProp[1]);
+  }, []);
 
   const handleOpenModal = () => {
     // 소비가 0건인 경우 예외 처리
     if (data.length < 1) {
-      getTotal();
+      const formattedDate = `2023-${date[0]
+        .toString()
+        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
+
+      setOrigin(getTotal(formattedDate));
+
       return;
     }
     setModal(true);
@@ -38,54 +55,46 @@ const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
     previousDate.setMonth(currentMonth - 1);
     previousDate.setDate(currentDay - 1);
     setDate([previousDate.getMonth() + 1, previousDate.getDate()]);
+
+    getPaymentHistory(previousDate.getMonth() + 1, previousDate.getDate());
   };
   //다음날로 이동
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
     const nextDate = new Date();
-    const today = new Date();
     nextDate.setMonth(currentMonth - 1);
     nextDate.setDate(currentDay + 1);
-    if (nextDate <= today) {
+    const todayDate = new Date();
+    if (nextDate <= todayDate) {
       setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
+      getPaymentHistory(nextDate.getMonth() + 1, nextDate.getDate());
     }
   };
-
-  useEffect(() => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
-  }, []);
 
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      postExp();
-      getTotal();
-      setCurrentIndex(currentIndex + 1);
+      if (date === todayProp) {
+        postExp();
+        handleSetTrue();
+      }
+      const formattedDate = `2023-${date[0]
+        .toString()
+        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
+
+      setOrigin(getTotal(formattedDate));
+      setSettlement(true);
       handleCloseModal();
     }
   };
 
-  useEffect(() => {
-    getPaymentHistory();
-  }, [date]);
-
-  // 오늘 소비 내역 불러오기
-  const getPaymentHistory = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    if (month === date[0] && day === date[1]) {
-      getTotal();
-    }
-
+  // 소비 내역 불러오기
+  const getPaymentHistory = (month, day) => {
     if (date.length === 2) {
-      const formattedDate = `2023-${date[0]
+      const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
         .toString()
-        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
+        .padStart(2, "0")}`;
 
       const postData = {
         method: "GET",
@@ -102,7 +111,19 @@ const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
         .then((data) => {
           setData(data);
           //첫 false를 index로 지정
-          setCurrentIndex(data.findIndex((item) => !item.isSeetled));
+          const index = data.findIndex((item) => !item.isSettled);
+          if (index === -1) {
+            setSettlement(true);
+            setOrigin(getTotal(formattedDate));
+            setOrigin(total);
+            setCurrentIndex(data.length());
+          } else {
+            setSettlement(false);
+            setCurrentIndex(index);
+          }
+          if (data.length === 0) {
+            setSettlement(false);
+          }
         })
         .catch((error) => console.log(error));
     }
@@ -120,7 +141,16 @@ const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
       usedAt,
       cardName,
     };
+    //정산 완료된 경우 바로 다음에만 인덱스랑, 아이템 업데이트
+    if (settlement) {
+      setCurrentIndex(currentIndex + 1);
+    }
+    if (date === todayProp) {
+      handleSetFalse();
+    }
     setData([...data, newItem]);
+    console.log(data, newItem);
+    setSettlement(false);
   };
 
   const onEdit = (targetId, amount, usedAt, cardName, category) => {
@@ -192,7 +222,7 @@ const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
 
         <div className={styles.scrollitem}>
           <div className={styles.item}>
-            {data.length > 0 ? (
+            {data && data.length > 0 ? (
               data.map((it, index) => (
                 <PaymentItem key={index} {...it} onEdit={onEdit} />
               ))
@@ -200,27 +230,30 @@ const PaymentHistory = ({ total, getTotal, consumFalseHandler }) => {
               <p>!!소비 내역이 없습니다!!</p>
             )}
             <PaymentAdd onCreate={onCreate} date={date} />
-            <div className={styles.total}>
-              {origin || origin === 0
-                ? `총합: ${origin
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
-                : ""}
-            </div>
-
-            {settlement ? (
-              <button className={styles.finishBtn}>정산완료</button>
-            ) : (
-              <button onClick={handleOpenModal} className={styles.btn}>
-                정산하기
-              </button>
-            )}
           </div>
+        </div>
+        <div className={styles.foot}>
+          {settlement ? (
+            <>
+              <div className={styles.total}>
+                {origin || origin === 0
+                  ? `총합: ${origin
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                  : ""}
+              </div>
+              <button className={styles.finishBtn}>정산완료</button>
+            </>
+          ) : (
+            <button onClick={handleOpenModal} className={styles.btn}>
+              정산하기
+            </button>
+          )}
         </div>
       </div>
       {modal && (
         <Modal
-          item={currentItem}
+          item={data[currentIndex]}
           index={currentIndex}
           goNext={goNext}
           onEdit={onEdit}
