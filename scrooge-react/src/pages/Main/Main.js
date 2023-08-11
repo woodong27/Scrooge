@@ -104,7 +104,7 @@ const Main = (props) => {
 
   return (
     <BackGround>
-      {!isConsum && data && data.levelId && (
+      {!isConsum && data && data.levelId && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
           <CharacterCard>
@@ -125,11 +125,7 @@ const Main = (props) => {
               <span className={styles.charactercoin}>
                 <img
                   className={styles.character}
-                  src={
-                    data.mainAvatar
-                      ? `${process.env.PUBLIC_URL}/Character/${data.mainAvatar}.png`
-                      : `${process.env.PUBLIC_URL}/Character/1.png`
-                  }
+                  src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
                   alt="캐릭터"
                 />
 
@@ -185,8 +181,7 @@ const Main = (props) => {
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
-              setGoal={setGoal}
-            ></ProgressBar>
+              setGoal={setGoal}></ProgressBar>
           </Card>
         </div>
       )}

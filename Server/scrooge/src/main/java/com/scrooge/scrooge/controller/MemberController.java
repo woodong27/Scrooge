@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
@@ -110,4 +111,19 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.updateMessage(jwtTokenProvider.extractMemberId(token), updateMessageDto.getMessage()));
     }
+
+    // 가챠 API 구현
+    @Operation(summary = "아바타 가챠 구현 API")
+    @PutMapping("/gacha")
+    public ResponseEntity<GachaResponseDto> startAvatarGacha(@RequestHeader("Authorization") String tokenHeader) throws Exception {
+        String token = jwtTokenProvider.extractToken(tokenHeader);
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        GachaResponseDto gachaResponseDto = memberService.startAvatarGacha(memberId);
+        return ResponseEntity.ok(gachaResponseDto);
+    }
+
+
+
 }

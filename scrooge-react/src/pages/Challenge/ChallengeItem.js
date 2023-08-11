@@ -7,7 +7,7 @@ const ChallengeItem = (props) => {
     <div className={styles.container}>
       <div className={styles.item_top}>
         <div className={styles.img_contianer}>
-          <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="더미" />
+          <img src={props.mainImg} alt="더미" />
         </div>
         <div className={styles.text_container}>
           <p className={styles.title}>{props.title}</p>
@@ -19,13 +19,13 @@ const ChallengeItem = (props) => {
           </p>
         </div>
       </div>
-      {props.text === "참여하기" && (
-        <Link to={`/challenge/${props.id}`}>
+
+      {props.text === "인증하기" ? (
+        <Link to={`/challenge/my`}>
           <button>{props.text}</button>
         </Link>
-      )}
-      {props.text === "인증하기" && (
-        <Link to={`/challenge/my`}>
+      ) : (
+        <Link to={`/challenge/${props.id}`}>
           <button>{props.text}</button>
         </Link>
       )}

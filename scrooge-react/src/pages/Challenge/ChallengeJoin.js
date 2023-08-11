@@ -1,14 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 import styles from "./ChallengeJoin.module.css";
 import backImg from "../../assets/back.png";
 
 const ChallengeJoin = () => {
-  const globalToken = useSelector((state) => state.globalToken);
-  const headers = { Authorization: globalToken };
   const [data, setData] = useState([]);
   const params = useParams();
 
@@ -30,11 +27,7 @@ const ChallengeJoin = () => {
       <Link className={styles.back} to="/challenge">
         <img src={backImg} alt="뒤로가기"></img>
       </Link>
-      <img
-        className={styles.img}
-        src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-        alt="더미"
-      />
+      <img className={styles.img} src={data.mainImageAddress} alt="더미" />
       <div className={styles.container}>
         <h1>{data.title}</h1>
         <p className={styles.tag}>
@@ -52,36 +45,10 @@ const ChallengeJoin = () => {
         <div>- 매일 전날의 소비 내역을 불러와주세요.</div>
         <div>- 사진이 잘 보이도록 촬영해주세요.</div>
         <div className={styles.auth_img}>
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
+          {data.challengeExampleImageDtoList &&
+            data.challengeExampleImageDtoList.map((e) => (
+              <img className={styles.img} src={e["imgAddress"]} alt="" />
+            ))}
         </div>
       </div>
       <div className={styles.bottom_container}>

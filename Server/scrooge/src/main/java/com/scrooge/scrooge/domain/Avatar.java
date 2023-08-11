@@ -20,6 +20,4 @@ public class Avatar {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(nullable = false, length = 255, name = "img_address")
-    private String imgAddress;
 }

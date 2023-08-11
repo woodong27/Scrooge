@@ -26,7 +26,7 @@ public class Article {
     @Column(length = 255, name = "img_address")
     private String imgAdress; // 일단 nullable true하고 구현하기
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp
     private LocalDateTime createdAt;
 

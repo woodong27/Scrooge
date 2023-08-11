@@ -112,7 +112,10 @@
 }
 
 .layout {
-  margin-bottom: 8rem;
+  position: relative;
+  z-index: 2;
+  background-color: white;
+  min-height: 100vh;
 }
 
 .primary {
@@ -140,4 +143,8 @@
   border-radius: 10px;
   border: 1px solid #000;
   background: var(--blue);
+}
+
+.foot {
+  position: relative;
 }

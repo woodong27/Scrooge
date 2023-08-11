@@ -84,7 +84,6 @@ const Article = (props) => {
     )
       .then((res) => res.text())
       .then((data) => {
-        console.log(data);
         if (data === "좋아요 완료") {
           setGoodCnt((prev) => prev + 1);
           setGood(true);
@@ -101,7 +100,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `https://day6scrooge.duckdns.org//api/community/${props.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
       goodData
     )
       .then((res) => res.text())
@@ -157,20 +156,20 @@ const Article = (props) => {
         <div className={styles.authorInfo}>
           <img
             className={styles.character}
-            // memberAvatarAddress
-            src={`${process.env.PUBLIC_URL}/Character/0.png`}
+            src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
             alt="캐릭터"
           />
           <div className={styles.author}>{props.memberNickname}</div>
         </div>
         <Link to={`/community/${props.id}`}>
           <div className={styles.detail}>
-            <img
-              className={styles.picture}
-              // imgAddress
-              src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-              alt="사진"
-            />
+            <div className={styles.pictureFrame}>
+              <img
+                className={styles.picture}
+                src={`${props.imgAdress}`}
+                alt="사진"
+              />
+            </div>
             <div className={styles.content}>
               {showContent} <button></button>
             </div>

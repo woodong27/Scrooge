@@ -1,8 +1,7 @@
 .toast {
   position: absolute;
-  top: 60rem;
-  left: 2rem;
-  font-size: 20px;
+  bottom: 12rem;
+  left: 6rem;
   z-index: 3;
   size: 120px;
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -10,16 +9,14 @@
 
 .primary {
   margin: 0 auto;
-  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 328px;
-  height: 64px;
+  justify-content: center;
+  width: 14rem;
+  height: 2rem;
   border-radius: 10px;
-  border: 1px solid #000;
-  font-size: 24px;
-  cursor: pointer;
+  box-shadow: 0 10px 10px var(--blue-text);
+  font-size: 16px;
   background-color: var(--blue);
 }
 

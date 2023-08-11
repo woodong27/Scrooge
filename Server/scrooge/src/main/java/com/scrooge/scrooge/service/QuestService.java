@@ -32,6 +32,7 @@ public class QuestService {
     private final MemberRepository memberRepository;
     private final MemberOwningBadgeRepository memberOwningBadgeRepository;
     private final BadgeService badgeService;
+    private final LevelService levelService;
 
     public QuestDto getQuest(Long questId) {
         Quest quest = questRepository.findById(questId)
@@ -84,6 +85,9 @@ public class QuestService {
 
         if (quest.getMaxCount() == currentCompleteCount + 1) {
             member.setExp(member.getExp() + 200);
+
+            levelService.levelUp(member);
+
             memberRepository.save(member);
             memberSelectedQuest.setCompleteCount(currentCompleteCount + 1);
             memberSelectedQuest.setDone(true);

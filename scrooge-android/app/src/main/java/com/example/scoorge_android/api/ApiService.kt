@@ -9,7 +9,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     private val Base_URL: String
-        get() = "http://day6scrooge.duckdns.org:8081/"
+        get() = "https://day6scrooge.duckdns.org/api/"
 
     @POST("payment-history")
     fun postPayInfo(@Body userInfo: PayInfo) : Call<ResponseResult>
