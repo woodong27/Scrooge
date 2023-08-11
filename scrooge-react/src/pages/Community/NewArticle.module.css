@@ -57,3 +57,9 @@
   padding: 5px 20px;
   border-radius: 10px;
 }
+
+.error {
+  display: none;
+  margin-top: 10px;
+  color: rgb(218, 76, 76);
+}
