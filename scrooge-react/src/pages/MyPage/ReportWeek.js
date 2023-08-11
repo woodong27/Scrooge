@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { BarChart, Bar, XAxis, LabelList,Rectangle } from 'recharts';
 import styles from "./ReportWeek.module.css";
