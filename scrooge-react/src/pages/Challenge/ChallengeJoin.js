@@ -1,36 +1,81 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
-import ButtonBlue from "../../components/Button/ButtonBlue";
 import styles from "./ChallengeJoin.module.css";
+import Toast from "../../components/UI/Toast";
 import backImg from "../../assets/back.png";
 
 const ChallengeJoin = () => {
+  const globalToken = useSelector((state) => state.globalToken);
+  const memberId = useSelector((state) => state.memberId);
+
   const [data, setData] = useState([]);
+  const [makeToast, setMakeToast] = useState(false);
   const params = useParams();
+  const navigate = useNavigate();
+
+  const joinChallengeHandler = () => {
+    axios
+      .post(
+        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/participate`,
+        "",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: globalToken,
+          },
+        }
+      )
+      .then(() => {
+        console.log("참여 되었어요!");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  const startChallengeHandler = () => {
+    axios
+      .put(
+        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/start`,
+        "",
+        {
+          headers: {
+            Authorization: globalToken,
+          },
+        }
+      )
+      .then((resp) => {
+        console.log(resp.data.status);
+
+        resp.data.status === "Fail"
+          ? setMakeToast(true)
+          : navigate("/challenge", { state: "시작" });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
   useEffect(() => {
     axios
-      .get(`http://day6scrooge.duckdns.org:8081/challenge/${params.id}`)
+      .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
       .then((response) => {
         setData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [data]);
 
   return (
     <div className={styles.layout}>
       <Link className={styles.back} to="/challenge">
         <img src={backImg} alt="뒤로가기"></img>
       </Link>
-      <img
-        className={styles.img}
-        src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-        alt="더미"
-      />
+      <img className={styles.img} src={data.mainImageAddress} alt="더미" />
       <div className={styles.container}>
         <h1>{data.title}</h1>
         <p className={styles.tag}>
@@ -48,43 +93,35 @@ const ChallengeJoin = () => {
         <div>- 매일 전날의 소비 내역을 불러와주세요.</div>
         <div>- 사진이 잘 보이도록 촬영해주세요.</div>
         <div className={styles.auth_img}>
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
-          <img
-            className={styles.img}
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="더미"
-          />
+          {data.challengeExampleImageDtoList &&
+            data.challengeExampleImageDtoList.map((e) => (
+              <img className={styles.img_list} src={e["imgAddress"]} alt="" />
+            ))}
         </div>
       </div>
       <div className={styles.bottom_container}>
         <h2>이런 분들께 추천해요</h2>
         <div>{data.description}</div>
       </div>
-      <ButtonBlue>챌린지에 도전할래요!</ButtonBlue>
+
+      {memberId === data.masterId ? (
+        <div className={styles.primary} onClick={startChallengeHandler}>
+          챌린지 시작하기!
+          <div className={styles.shadow}></div>
+        </div>
+      ) : (
+        <div className={styles.primary} onClick={joinChallengeHandler}>
+          챌린지에 도전할래요!
+          <div className={styles.shadow}></div>
+        </div>
+      )}
+
+      {makeToast && (
+        <Toast
+          setToast={setMakeToast}
+          text="인원이 짝수가 되어야 시작 가능해요!"
+        />
+      )}
     </div>
   );
 };

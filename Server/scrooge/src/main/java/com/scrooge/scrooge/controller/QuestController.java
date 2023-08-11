@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Tag(name = "Quest", description = "APIs about Quest")
 @RestController
-@RequestMapping("/quest")
+@RequestMapping("/api/quest")
 @RequiredArgsConstructor
 public class QuestController {
 

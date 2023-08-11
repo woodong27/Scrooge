@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "ChallengeStart", description = "시작된 챌린지에 관련된 API")
 @RestController
-@RequestMapping("/challenge")
+@RequestMapping("/api/challenge")
 @RequiredArgsConstructor
 public class StartChallengeController {
 
@@ -28,7 +28,7 @@ public class StartChallengeController {
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     @Operation(summary = "사용자가 참여한 시작된 챌린지에 대한 정보 조회 API")
     @GetMapping("/{challengeId}/start/my-challenge")
-    public ResponseEntity<MyChallengeRespDto> getMyStartedChallenge(@PathVariable("challengeId") Long challengeId) throws IllegalAccessException {
+    public ResponseEntity<MyChallengeRespDto> getMyStartedChallenge(@PathVariable("challengeId") Long challengeId) throws Exception {
         MyChallengeRespDto myChallengeRespDto = startChallengeService.getMyStartedChallenge(challengeId);
         return ResponseEntity.ok(myChallengeRespDto);
     }

@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Card from "../../components/UI/Card";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  const handleDetail = () => {};
-
   const globalToken = useSelector((state) => state.globalToken);
 
   const [showContent, setContent] = useState(props.content);
@@ -24,57 +23,51 @@ const Article = (props) => {
       setContent(showContent.slice(0, 37) + "...");
     }
 
-    //좋아요 개수
+    //좋아요 싫어요 개수
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good-count`
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/review-count`
     )
       .then((resp) => resp.json())
       .then((data) => {
         setGoodCnt(data.goodCount);
-      })
-      .catch((error) => console.log(error));
-    //좋아요 여부
-    const goodCntData = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-    };
-    fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
-      goodCntData
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setGood(data.good);
-      });
-
-    //싫어요 개수
-    fetch(`http://day6scrooge.duckdns.org:8081/community/${props.id}/bad-count`)
-      .then((resp) => resp.json())
-      .then((data) => {
         setBadCnt(data.badCount);
       })
       .catch((error) => console.log(error));
-
-    const BadCntData = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-    };
-    //싫어요 조회
-    fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
-      BadCntData
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setBad(data.bad);
-      });
   }, []);
+
+  //좋아요 여부
+  const goodCntData = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: globalToken,
+    },
+  };
+  fetch(
+    `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
+    goodCntData
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      setGood(data.good);
+    });
+
+  const BadCntData = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: globalToken,
+    },
+  };
+  //싫어요 조회
+  fetch(
+    `https://day6scrooge.duckdns.org/api/community/${props.id}/bad`,
+    BadCntData
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      setBad(data.bad);
+    });
 
   const handleGood = () => {
     const goodData = {
@@ -86,12 +79,11 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
       goodData
     )
       .then((res) => res.text())
       .then((data) => {
-        console.log(data);
         if (data === "좋아요 완료") {
           setGoodCnt((prev) => prev + 1);
           setGood(true);
@@ -108,7 +100,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/good`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/good`,
       goodData
     )
       .then((res) => res.text())
@@ -127,7 +119,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/bad`,
       badData
     )
       .then((res) => res.text())
@@ -148,7 +140,7 @@ const Article = (props) => {
     };
 
     fetch(
-      `http://day6scrooge.duckdns.org:8081/community/${props.id}/bad`,
+      `https://day6scrooge.duckdns.org/api/community/${props.id}/bad`,
       badData
     )
       .then((res) => res.text())
@@ -164,21 +156,25 @@ const Article = (props) => {
         <div className={styles.authorInfo}>
           <img
             className={styles.character}
-            // memberAvatarAddress
-            src={`${process.env.PUBLIC_URL}/Character/0.png`}
+            src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
             alt="캐릭터"
           />
           <div className={styles.author}>{props.memberNickname}</div>
         </div>
-        <div className={styles.detail} onClick={handleDetail()}>
-          <img
-            className={styles.picture}
-            // imgAddress
-            src={`${process.env.PUBLIC_URL}/images/dummy.png`}
-            alt="사진"
-          />
-          <div className={styles.content}>{showContent}</div>
-        </div>
+        <Link to={`/community/${props.id}`}>
+          <div className={styles.detail}>
+            <div className={styles.pictureFrame}>
+              <img
+                className={styles.picture}
+                src={`${props.imgAdress}`}
+                alt="사진"
+              />
+            </div>
+            <div className={styles.content}>
+              {showContent} <button></button>
+            </div>
+          </div>
+        </Link>
         <div className={styles.line}>
           <div className={styles.reaction}>
             {good ? (
@@ -219,7 +215,6 @@ const Article = (props) => {
             className={styles.comment}
             src={`${process.env.PUBLIC_URL}/images/comment.svg`}
             alt="댓글"
-            onClick={handleDetail}
           />
         </div>
       </Card>

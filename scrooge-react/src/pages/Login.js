@@ -51,18 +51,19 @@ const Login = ({ loginHandler }) => {
       },
       body: JSON.stringify(obj),
     };
-    fetch("http://day6scrooge.duckdns.org:8081/member/login", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/login", postData)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Login 실패");
         }
-        return res.text();
+        return res.json();
       })
       .then((data) => {
-        const jwtToken = data;
+        const jwtToken = data.token;
         sendJwtTokenToAndroid(jwtToken);
 
-        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data });
+        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
+        dispatch({ type: "SET_ID_STRING", payload: data.memberId });
 
         loginHandler();
         navigate("/");

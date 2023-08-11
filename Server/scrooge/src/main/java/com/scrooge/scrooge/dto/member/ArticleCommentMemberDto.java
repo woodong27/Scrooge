@@ -18,6 +18,6 @@ public class ArticleCommentMemberDto {
     public ArticleCommentMemberDto(Member member) {
         this.id = member.getId();
         this.nickname = member.getNickname();
-        this.mainAvatarAddress = member.getMainAvatar().getImgAddress();
+        this.mainAvatarAddress = member.getMainAvatar().getId().toString();
     }
 }

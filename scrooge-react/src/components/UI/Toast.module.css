@@ -1,0 +1,27 @@
+.toast {
+  position: absolute;
+  bottom: 16rem;
+  z-index: 3;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 4rem;
+  border-radius: 10px;
+  font-size: 20px;
+  background-color: var(--yellow);
+}
+
+.show {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+.hide {
+  opacity: 0;
+  transform: translateX(0) translateY(20px);
+}

@@ -16,31 +16,25 @@ public class AvatarDataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        insertInitialData();
+        if(checkIfInitialDataExists()) {
+            insertInitialData();
+        }
+    }
+
+    private boolean checkIfInitialDataExists() {
+        Long count = (Long) entityManager.createQuery("SELECT COUNT(a) FROM Avatar a").getSingleResult();
+        return count == 0;
     }
 
     private void insertInitialData() {
-        String[] names = {
-                "avatar0", "avatar1", "avatar2", "avatar3", "avatar4",
-                "avatar5", "avatar6", "avatar7", "avatar8", "avatar9",
-                "avatar10", "avatar11", "avatar12", "avatar13", "avatar14",
-                "avatar15", "avatar16", "avatar17", "avatar18", "avatar19",
-                "avatar20"
-        };
-
-        String[] imgAddresses = {
-                "assets/avatars/0.png", "assets/avatars/1.png", "assets/avatars/2.png",
-                "assets/avatars/3.png", "assets/avatars/4.png", "assets/avatars/5.png",
-                "assets/avatars/6.png", "assets/avatars/7.png", "assets/avatars/8.png",
-                "assets/avatars/9.png", "assets/avatars/10.png", "assets/avatars/11.png",
-                "assets/avatars/12.png", "assets/avatars/13.png", "assets/avatars/14.png",
-                "assets/avatars/15.png", "assets/avatars/16.png", "assets/avatars/17.png",
-                "assets/avatars/18.png", "assets/avatars/19.png", "assets/avatars/20.png"
-        };
+        String[] names = new String[101];
+        for(int i=1; i<=101;i++) {
+            names[i-1] = "avatar" + i;
+        }
 
         for (int i = 0; i < names.length; i++) {
-            String insertQuery = "INSERT INTO avatar (name, img_address) VALUES " +
-                    "('" + names[i] + "', '" + imgAddresses[i] + "');";
+            String insertQuery = "INSERT INTO avatar (name) VALUES " +
+                    "('" + names[i] +  "');";
             entityManager.createNativeQuery(insertQuery).executeUpdate();
         }
     }
