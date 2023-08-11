@@ -79,7 +79,6 @@ const PaymentHistory = ({
       const formattedDate = `2023-${date[0]
         .toString()
         .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
-      console.log(formattedDate);
 
       setOrigin(getTotal(formattedDate));
       setSettlement(true);
@@ -110,7 +109,6 @@ const PaymentHistory = ({
           setData(data);
           //첫 false를 index로 지정
           const index = data.findIndex((item) => !item.isSettled);
-          console.log("확인", index);
           if (index === -1) {
             setSettlement(true);
             setOrigin(getTotal(formattedDate));
@@ -142,7 +140,6 @@ const PaymentHistory = ({
     };
     //정산 완료된 경우 바로 다음에만 인덱스랑, 아이템 업데이트
     if (settlement) {
-      console.log("야얍");
       setCurrentIndex(currentIndex + 1);
     }
     setData([...data, newItem]);
