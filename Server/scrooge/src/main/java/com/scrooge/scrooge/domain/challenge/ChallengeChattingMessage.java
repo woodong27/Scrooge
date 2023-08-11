@@ -31,5 +31,4 @@ public class ChallengeChattingMessage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "message_author")
     private Member member;
-
 }

@@ -23,15 +23,13 @@ public class ChallengeChattingRoom {
     @Column
     Integer team;
 
-    /* 연결 */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_member")
-    private Member member;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
     @OneToMany(mappedBy = "challengeChattingRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeChattingMessage> challengeChattingMessageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "challengeChattingRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<ChallengeParticipant> challengeParticipantList = new ArrayList<>();
 }

@@ -4,9 +4,12 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
+import com.scrooge.scrooge.domain.challenge.ChallengeChattingRoom;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
 import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
+import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.challengeDto.*;
+import com.scrooge.scrooge.repository.challenge.ChallengeChattingRoomRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
@@ -32,6 +35,7 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
     private final ChallengeParticipantRepository challengeParticipantRepository;
+    private final ChallengeChattingRoomRepository challengeChattingRoomRespository;
 
     private final FileUploadProperties fileUploadProperties;
     private final UploadService uploadService;
@@ -232,6 +236,30 @@ public class ChallengeService {
             return challengeStartRespDto;
         }
         else {
+            // 채팅방 만들기
+            ChallengeChattingRoom challengeChattingRoom0 = new ChallengeChattingRoom();
+            // 0번팀 채팅방 만들기
+            List<ChallengeParticipant> challengeParticipantList0 = challengeParticipantRepository.findByChallengeIdAndTeam(challengeId, 0);
+            challengeChattingRoom0.setTeam(0);
+            challengeChattingRoom0.setChallenge(challengeRepository.findById(challengeId)
+                    .orElseThrow(() -> new NotFoundException("챌린지 없음")));
+            challengeChattingRoom0.setChallengeParticipantList(challengeParticipantList0.stream()
+                    .filter(participant -> participant.getTeam() == 0)
+                    .collect(Collectors.toList()));
+            // 메시지들 연결 필요
+            challengeChattingRoomRespository.save(challengeChattingRoom0);
+
+            ChallengeChattingRoom challengeChattingRoom1 = new ChallengeChattingRoom();
+            List<ChallengeParticipant> challengeParticipantList1 = challengeParticipantRepository.findByChallengeIdAndTeam(challengeId, 1);
+            challengeChattingRoom1.setTeam(1);
+            challengeChattingRoom1.setChallenge(challengeRepository.findById(challengeId)
+                    .orElseThrow(() -> new NotFoundException("챌린지 없음")));
+            challengeChattingRoom1.setChallengeParticipantList(challengeParticipantList1.stream()
+                    .filter(participant -> participant.getTeam() == 1)
+                    .collect(Collectors.toList()));
+            // 메시지들 연결 필요
+            challengeChattingRoomRespository.save(challengeChattingRoom1);
+
             /* 시작할 수 있다!! */
 
             /* challenge 테이블에서 수정되는 내용 바꾸기 */
