@@ -93,6 +93,9 @@ const Detail = () => {
   };
 
   const handleCommentSend = () => {
+    if (comment < 0) {
+      return;
+    }
     const obj = {
       id: params.id,
       content: comment,
@@ -272,7 +275,8 @@ const Detail = () => {
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
         color={"#A2D660"}
-        show={"true"}></QuestHeader>
+        show={"true"}
+      ></QuestHeader>
       {data ? (
         <div className={styles.frame}>
           <div className={styles.authorInfo}>
@@ -308,7 +312,8 @@ const Detail = () => {
                             </div>
                             <div
                               className={styles.delete}
-                              onClick={handleDelete}>
+                              onClick={handleDelete}
+                            >
                               삭제
                             </div>
                           </div>

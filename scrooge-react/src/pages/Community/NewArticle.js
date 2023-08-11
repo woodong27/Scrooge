@@ -20,26 +20,36 @@ const NewArticle = ({}) => {
   };
 
   const handleSend = () => {
+    if (content.length < 5) {
+      const errorDiv = document.getElementById("errorcontent");
+      errorDiv.style.display = "block";
+      return;
+    }
     formData.append("content", content);
     formData.append("img", selectedImage);
 
     const postData = {
       method: "POST",
       headers: {
-        // "Content-Type": "multipart/form-data",
         Authorization: globalToken,
       },
       body: formData,
     };
 
     fetch(`https://day6scrooge.duckdns.org/api/community`, postData)
-      .then((res) => res.json())
+      .then((res) => {
+        res.text();
+        if (!res.ok) {
+          throw new Error("글 등록 실패");
+        }
+      })
       .then((data) => {
         setContent("");
         navigate("/community");
       })
       .catch((error) => {
-        console.log(error);
+        const errorDiv = document.getElementById("errorphoto");
+        errorDiv.style.display = "block";
       });
   };
 
@@ -85,12 +95,19 @@ const NewArticle = ({}) => {
             type="file"
             accept="image/*"
             style={{ display: "none" }}
-            onChange={handleImageChange}></input>
+            onChange={handleImageChange}
+          ></input>
         </div>
 
         <div className={styles.upload} onClick={handleSend}>
           게시하기
         </div>
+      </div>
+      <div id="errorcontent" className={styles.error}>
+        본문이 너무 짧습니다.
+      </div>
+      <div id="errorphoto" className={styles.error}>
+        사진을 첨부해주세요.
       </div>
     </div>
   );
