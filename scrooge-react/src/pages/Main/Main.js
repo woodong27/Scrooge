@@ -31,6 +31,13 @@ const Main = (props) => {
     setMessage(data.message);
     setIsEdit(false);
   };
+  const handleSetTrue = () => {
+    setSettlement(true);
+  };
+
+  const handleSetFalse = () => {
+    setSettlement(false);
+  };
 
   const handleSend = () => {
     const obj = {
@@ -278,6 +285,8 @@ const Main = (props) => {
             todaySettlement={settlement}
             consumFalseHandler={consumFalseHandler}
             todayProp={date}
+            handleSetFalse={handleSetFalse}
+            handleSetTrue={handleSetTrue}
           />
         </div>
       )}

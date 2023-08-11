@@ -12,6 +12,8 @@ const PaymentHistory = ({
   getTotal,
   todaySettlement,
   consumFalseHandler,
+  handleSetTrue,
+  handleSetFalse,
 }) => {
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
@@ -75,6 +77,7 @@ const PaymentHistory = ({
     } else {
       if (date === todayProp) {
         postExp();
+        handleSetTrue();
       }
       const formattedDate = `2023-${date[0]
         .toString()
@@ -141,6 +144,9 @@ const PaymentHistory = ({
     //정산 완료된 경우 바로 다음에만 인덱스랑, 아이템 업데이트
     if (settlement) {
       setCurrentIndex(currentIndex + 1);
+    }
+    if (date === todayProp) {
+      handleSetFalse();
     }
     setData([...data, newItem]);
     console.log(data, newItem);
