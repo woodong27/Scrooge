@@ -1,6 +1,7 @@
 package com.scrooge.scrooge.service.challenge;
 
 import com.scrooge.scrooge.config.FileUploadProperties;
+import com.scrooge.scrooge.controller.ImageCompareController;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeAuth;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
@@ -14,11 +15,8 @@ import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfFloat;
-import org.opencv.core.MatOfInt;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
+//import org.opencv.imgcodecs.Imgcodecs;
+//import org.opencv.imgproc.Imgproc;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +43,7 @@ public class StartChallengeService {
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
 
     private final FileUploadProperties fileUploadProperties;
+    private final ImageCompareController imageCompareController;
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     public MyChallengeRespDto getMyStartedChallenge(Long challengeId) throws Exception {
@@ -124,7 +123,7 @@ public class StartChallengeService {
         
         // 5개의 예시 이미지와 비교해서 하나라도 유사도가 높으면 성공
         for (ChallengeExampleImage challengeExampleImage : challengeExampleImages) {
-            if (compareImages(challengeExampleImage.getImgAddress(), filePath.toString()) > 0.8) {
+            if (imageCompareController.compareImages(challengeExampleImage.getImgAddress(), filePath.toString()).getBody() > 0.8) {
                 challengeAuth.setIsSuccess(true);
                 challengeAuthRepository.save(challengeAuth);
 
@@ -191,35 +190,35 @@ public class StartChallengeService {
         }
     }
 
-    public double compareImages(String imagePath1, String imagePath2) {
-        Mat image1 = Imgcodecs.imread(imagePath1);
-        Mat image2 = Imgcodecs.imread(imagePath2);
-
-        Mat hist1 = new Mat();
-        Mat hist2 = new Mat();
-
-        Imgproc.cvtColor(image1, image1, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.cvtColor(image2, image2, Imgproc.COLOR_BGR2GRAY);
-
-        Imgproc.calcHist(
-                Arrays.asList(image1),
-                new MatOfInt(0),
-                new Mat(),
-                hist1,
-                new MatOfInt(256),
-                new MatOfFloat(0, 256)
-        );
-
-        Imgproc.calcHist(
-                Arrays.asList(image2),
-                new MatOfInt(0),
-                new Mat(),
-                hist2,
-                new MatOfInt(256),
-                new MatOfFloat(0, 256)
-        );
-
-        return Imgproc.compareHist(hist1, hist2, Imgproc.CV_COMP_CORREL);
-    }
+//    public double compareImages(String imagePath1, String imagePath2) {
+//        Mat image1 = Imgcodecs.imread(imagePath1);
+//        Mat image2 = Imgcodecs.imread(imagePath2);
+//
+//        Mat hist1 = new Mat();
+//        Mat hist2 = new Mat();
+//
+//        Imgproc.cvtColor(image1, image1, Imgproc.COLOR_BGR2GRAY);
+//        Imgproc.cvtColor(image2, image2, Imgproc.COLOR_BGR2GRAY);
+//
+//        Imgproc.calcHist(
+//                Arrays.asList(image1),
+//                new MatOfInt(0),
+//                new Mat(),
+//                hist1,
+//                new MatOfInt(256),
+//                new MatOfFloat(0, 256)
+//        );
+//
+//        Imgproc.calcHist(
+//                Arrays.asList(image2),
+//                new MatOfInt(0),
+//                new Mat(),
+//                hist2,
+//                new MatOfInt(256),
+//                new MatOfFloat(0, 256)
+//        );
+//
+//        return Imgproc.compareHist(hist1, hist2, Imgproc.CV_COMP_CORREL);
+//    }
 
 }

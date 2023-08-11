@@ -35,7 +35,7 @@ public class StartChallengeController {
 
     // 사용자 인증 등록 API
     @Operation(summary = "사용자가 인증을 등록하는 API")
-    @PostMapping(value = "/{challengeId}/my-challenge", consumes = "multipart/form-data")
+    @PostMapping(value = "/{challengeId}/auth", consumes = "multipart/form-data")
     public ResponseEntity<ChallengeStartRespDto> createMyChallengeAuth(@RequestHeader("Authorization") String tokenHeader, @PathVariable("challengeId") Long challengeId,
                                                                        @RequestParam MultipartFile img) {
         ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
