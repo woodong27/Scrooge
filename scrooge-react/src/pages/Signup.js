@@ -88,6 +88,7 @@ const Signup = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/signup", postData)
       .then((res) => {
         if (!res.ok) {
+          console.log(res);
           throw new Error("회원가입 실패");
         }
         return res.text();
