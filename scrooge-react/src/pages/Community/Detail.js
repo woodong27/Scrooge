@@ -124,7 +124,6 @@ const Detail = () => {
         };
         setComments([newComment, ...comments]);
         setComment("");
-        console.log(comments);
       });
   };
 
@@ -136,6 +135,7 @@ const Detail = () => {
       .then((data) => {
         setData(data);
         setContent(data.content);
+        console.log(data);
       })
       .catch((error) => console.log(error));
 
@@ -334,7 +334,7 @@ const Detail = () => {
               </div>
             </div>
           </div>
-          <div className={styles.detail}>
+          <div>
             {isEdit ? (
               <textarea
                 className={styles.editContent}
@@ -348,7 +348,7 @@ const Detail = () => {
                   src={`${data.imgAdress}`}
                   alt="사진"
                 />
-                <div className={styles.content}>{data.content}</div>
+                <textarea className={styles.content} value={content} readOnly />
               </>
             )}
           </div>
