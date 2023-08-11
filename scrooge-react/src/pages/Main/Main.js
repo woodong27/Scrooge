@@ -16,6 +16,7 @@ const Main = (props) => {
   const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isConsum, setIsConsum] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -58,7 +59,10 @@ const Main = (props) => {
   };
 
   useEffect(() => {
-    getCurrentDate();
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
     const postData = {
       method: "GET",
       headers: {
@@ -74,14 +78,29 @@ const Main = (props) => {
         setWeeklyConsum(data.weeklyConsum);
       })
       .catch((error) => console.log(error));
-  }, []);
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
-  };
+    const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+
+    const todayData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
+      todayData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+        setCurrentIndex(data.findIndex((item) => !item.isSettled));
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   //주간 목표 설정
   const setGoal = (goal) => {
@@ -126,14 +145,6 @@ const Main = (props) => {
 
   const consumFalseHandler = () => {
     setIsConsum(false);
-  };
-
-  const settlementTrueHandler = () => {
-    setSettlement(true);
-  };
-
-  const settlementFalseHandler = () => {
-    setSettlement(false);
   };
 
   return (
@@ -256,10 +267,10 @@ const Main = (props) => {
           <PaymentHistory
             total={total}
             getTotal={getTotal}
-            consumFalseHandler={consumFalseHandler}
             settlement={settlement}
-            settlementTrueHandler={settlementTrueHandler}
-            settlementFalseHandler={settlementFalseHandler}
+            consumFalseHandler={consumFalseHandler}
+            todayProp={date}
+            currentIndex={currentIndex}
           />
         </div>
       )}

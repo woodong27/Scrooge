@@ -7,20 +7,20 @@ import styles from "./PaymentHistory.module.css";
 import Modal from "../../components/UI/Modal";
 
 const PaymentHistory = ({
+  todayProp,
   total,
   getTotal,
-  consumFalseHandler,
   settlement,
-  settlementTrueHandler,
-  settlementFalseHandler,
+  consumFalseHandler,
+  startIndex,
 }) => {
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
   const [data, setData] = useState([]);
-  const [date, setDate] = useState([]);
+  const [date, setDate] = useState(todayProp);
   const [origin, setOrigin] = useState();
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
   const currentItem = data[currentIndex];
   const [modal, setModal] = useState(false);
 
@@ -37,6 +37,7 @@ const PaymentHistory = ({
     setModal(false);
   };
 
+  //전날로 이동
   const datebeforeHandler = () => {
     const [currentMonth, currentDay] = date;
     const previousDate = new Date();
@@ -44,29 +45,21 @@ const PaymentHistory = ({
     previousDate.setDate(currentDay - 1);
     setDate([previousDate.getMonth() + 1, previousDate.getDate()]);
   };
+  //다음날로 이동
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
     const nextDate = new Date();
-    const today = new Date();
     nextDate.setMonth(currentMonth - 1);
     nextDate.setDate(currentDay + 1);
-    if (nextDate <= today) {
+    if (nextDate <= todayProp) {
       setDate([nextDate.getMonth() + 1, nextDate.getDate()]);
     }
   };
-
-  useEffect(() => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
-  }, []);
 
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      settlementTrueHandler(); //정산되었음을 저장
       postExp();
       getTotal();
       setCurrentIndex(currentIndex + 1);
@@ -80,6 +73,13 @@ const PaymentHistory = ({
 
   // 오늘 소비 내역 불러오기
   const getPaymentHistory = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    if (month === date[0] && day === date[1]) {
+      getTotal();
+    }
+
     if (date.length === 2) {
       const formattedDate = `2023-${date[0]
         .toString()
@@ -98,8 +98,9 @@ const PaymentHistory = ({
       )
         .then((resp) => resp.json())
         .then((data) => {
-          //데이터가 없는 경우도 처리해야겠지?
           setData(data);
+          //첫 false를 index로 지정
+          setCurrentIndex(data.findIndex((item) => !item.isSeetled));
         })
         .catch((error) => console.log(error));
     }
@@ -118,10 +119,6 @@ const PaymentHistory = ({
       cardName,
     };
     setData([...data, newItem]);
-    if (settlement) {
-      getTotal();
-    }
-    settlementFalseHandler();
   };
 
   const onEdit = (targetId, amount, usedAt, cardName, category) => {
@@ -161,12 +158,12 @@ const PaymentHistory = ({
         Authorization: globalToken,
       },
     };
-    fetch(
-      "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
-      postData
-    )
-      .then((res) => res.json())
-      .then(console.log);
+    // fetch(
+    //   "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
+    //   postData
+    // )
+    //   .then((res) => res.json())
+    // .then(console.log);
   };
 
   return (
