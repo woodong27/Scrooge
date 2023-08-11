@@ -18,7 +18,7 @@ const ReportMonth = () => {
   useEffect(() => {
     const getMonthlyData = async () => {
       const postData = {
-        mehtod: "GET",
+        method: "GET",
         headers: {
           Authorization: globalToken,
         },
@@ -27,8 +27,21 @@ const ReportMonth = () => {
       try{
         const resp = await fetch(`https://day6scrooge.duckdns.org/api/payment-history/month/${formattedMonth}`,postData)
         const data = await resp.json();
-        setMonthlyData(data);
-        console.log("데이터..뭡네까", )
+
+        const processedData = [];
+        data.forEach(item => {
+          const date = item.paidAt.split('T')[0];
+          const testData = processedData.find(dataItem => dataItem.date === date);
+
+          if (testData) {
+            testData.amount += item.amount;
+          } else {
+            processedData.push({date, amount: item.amount});
+          }
+        });
+
+        setMonthlyData(processedData);
+        console.log("데이터..뭡네까", processedData)
       } catch (error) {
         console.log(error)
       }
@@ -70,8 +83,10 @@ const ReportMonth = () => {
       }
       calendar.push(nowWeek);
     };
+    console.log("달력~",calendar)
     return calendar;
   };
+    
 
 
 
@@ -79,17 +94,37 @@ const ReportMonth = () => {
   const components = [];
 
   datas.forEach((week, weekIndex) => {
-    const weeks = week.map((date, dayIndex) => ({
-      key: date !==0 ? date: dayIndex,
-      render: date !==0 ? <span>{date}</span> : <span />,
-    }));
+    const weeks = week.map((date, dayIndex) => {
+      const foundData = monthlyData.find(dataItem => {
+        const dataDay = new Date(dataItem.date).getDate();
+        return dataDay === date;
+      });
+      // console.log("나와라고우",foundData)
+
+      const amountToShow = foundData ? foundData.amount : '';
+
+      return {
+        key: date !== 0 ? date: dayIndex,
+        render: (
+          date !== 0? 
+          <div className={styles.dayBox}>
+            <p>{date}</p>
+            <p className={styles.calAmt}>{amountToShow.toLocaleString()}</p>
+          </div> 
+          :
+          <div>🎀</div>
+        ),
+      };
+    }) ;
 
     const weekData = {
-      id: `w_${8}${weekIndex}`,
+      id: `w_${month}${weekIndex}`,
       columns: weeks,
     };
     components.push(weekData);
   });
+  // console.log("이게머지", components);
+
 
   return(
     <div>

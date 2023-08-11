@@ -1,11 +1,43 @@
 .tableContainer{
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items:center; */
+  width: 100%;
+  height: 100%;
   background-color: var(--input, rgba(240, 240, 240, 0.50));
-}
 
+  
+}
+h2 {
+  margin: 1rem
+}
 .tableContent{
   width: 100%;
   height: 100%;
+  padding-top: 20px;
+}
+
+table {
+  width: 100%;
+  /*일단 임의로 작게 줄여둠 */
+  font-size: 0.7rem;
+}
+
+tr {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+thead > tr {
+  height: 1rem;
+}
+
+td {
+  width: calc(100% / 7);
+  text-align: center;
+} 
+
+.calAmt{
+  color: tomato;
 }
