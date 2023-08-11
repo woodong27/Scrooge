@@ -32,8 +32,7 @@
 
 .scrollitem {
   margin-top: 10px;
-  height: 460px;
-  overflow-y: scroll;
+  overflow: scroll;
 }
 
 .foot {
@@ -41,7 +40,7 @@
 }
 
 .item {
-  height: 552px;
+  height: 440px;
 }
 
 .total {
