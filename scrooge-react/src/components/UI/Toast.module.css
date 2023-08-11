@@ -1,23 +1,19 @@
 .toast {
   position: absolute;
-  bottom: 12rem;
-  left: 6rem;
+  bottom: 16rem;
   z-index: 3;
-  size: 120px;
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .primary {
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 14rem;
-  height: 2rem;
+  width: 100vw;
+  height: 4rem;
   border-radius: 10px;
-  box-shadow: 0 10px 10px var(--blue-text);
-  font-size: 16px;
-  background-color: var(--blue);
+  font-size: 20px;
+  background-color: var(--yellow);
 }
 
 .show {

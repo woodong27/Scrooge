@@ -1,15 +1,63 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import styles from "./ChallengeJoin.module.css";
+import Toast from "../../components/UI/Toast";
 import backImg from "../../assets/back.png";
 
 const ChallengeJoin = () => {
-  const [data, setData] = useState([]);
-  const params = useParams();
+  const globalToken = useSelector((state) => state.globalToken);
+  const memberId = useSelector((state) => state.memberId);
 
-  const joinChallengeHandler = () => {};
+  const [data, setData] = useState([]);
+  const [makeToast, setMakeToast] = useState(false);
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const joinChallengeHandler = () => {
+    axios
+      .post(
+        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/participate`,
+        "",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: globalToken,
+          },
+        }
+      )
+      .then(() => {
+        console.log("참여 되었어요!");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  const startChallengeHandler = () => {
+    axios
+      .put(
+        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/start`,
+        "",
+        {
+          headers: {
+            Authorization: globalToken,
+          },
+        }
+      )
+      .then((resp) => {
+        console.log(resp.data.status);
+
+        resp.data.status === "Fail"
+          ? setMakeToast(true)
+          : navigate("/challenge", { state: "시작" });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -20,7 +68,7 @@ const ChallengeJoin = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [data]);
 
   return (
     <div className={styles.layout}>
@@ -47,7 +95,7 @@ const ChallengeJoin = () => {
         <div className={styles.auth_img}>
           {data.challengeExampleImageDtoList &&
             data.challengeExampleImageDtoList.map((e) => (
-              <img className={styles.img} src={e["imgAddress"]} alt="" />
+              <img className={styles.img_list} src={e["imgAddress"]} alt="" />
             ))}
         </div>
       </div>
@@ -56,10 +104,24 @@ const ChallengeJoin = () => {
         <div>{data.description}</div>
       </div>
 
-      <div className={styles.primary} onClick={joinChallengeHandler}>
-        챌린지에 도전할래요!
-        <div className={styles.shadow}></div>
-      </div>
+      {memberId === data.masterId ? (
+        <div className={styles.primary} onClick={startChallengeHandler}>
+          챌린지 시작하기!
+          <div className={styles.shadow}></div>
+        </div>
+      ) : (
+        <div className={styles.primary} onClick={joinChallengeHandler}>
+          챌린지에 도전할래요!
+          <div className={styles.shadow}></div>
+        </div>
+      )}
+
+      {makeToast && (
+        <Toast
+          setToast={setMakeToast}
+          text="인원이 짝수가 되어야 시작 가능해요!"
+        />
+      )}
     </div>
   );
 };

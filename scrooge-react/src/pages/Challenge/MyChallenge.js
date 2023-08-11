@@ -15,19 +15,12 @@ const MyChallenge = () => {
   const [selectedCategory, setSelectedCategory] = useState("시작전");
 
   useEffect(() => {
-    console.log(globalToken);
-    let idx;
-    if (selectedCategory === "시작전") idx = 1;
-    if (selectedCategory === "진행중") idx = 2;
-    if (selectedCategory === "종료된") idx = 3;
+    const idx = category.indexOf(selectedCategory) + 1;
 
     axios
-      .get(
-        `https://day6scrooge.duckdns.org/api/challenge/${idx}/my-challenge`,
-        {
-          headers,
-        }
-      )
+      .get(`https://day6scrooge.duckdns.org/api/challenge/${idx}/member`, {
+        headers,
+      })
       .then((response) => {
         setData(response.data);
       })
@@ -49,31 +42,39 @@ const MyChallenge = () => {
       ))}
 
       <div className={styles.list}>
-        {data.map((e) => {
-          return category === "진행중" ? (
-            <ChallengeItem
-              key={e.id}
-              id={e.id}
-              title={e.title}
-              currentParticipants={e.currentParticipants}
-              minParticipants={e.minParticipants}
-              period={e.period}
-              category={e.category}
-              text="인증하기"
-            ></ChallengeItem>
-          ) : (
-            <ChallengeItem
-              key={e.id}
-              id={e.id}
-              title={e.title}
-              currentParticipants={e.currentParticipants}
-              minParticipants={e.minParticipants}
-              period={e.period}
-              category={e.category}
-              text="살펴보기"
-            ></ChallengeItem>
-          );
-        })}
+        {globalToken === ""
+          ? "로그인이 필요해요!"
+          : selectedCategory === "진행중"
+          ? data.length === 0
+            ? "참여중인 챌린지가 없어요!"
+            : data.map((e) => (
+                <ChallengeItem
+                  key={e.idx}
+                  id={e.id}
+                  title={e.title}
+                  currentParticipants={e.currentParticipants}
+                  minParticipants={e.minParticipants}
+                  period={e.period}
+                  category={e.category}
+                  mainImg={e.mainImageAddress}
+                  text="인증하기"
+                ></ChallengeItem>
+              ))
+          : data.length === 0
+          ? "참여중인 챌린지가 없어요!"
+          : data.map((e) => (
+              <ChallengeItem
+                key={e.idx}
+                id={e.id}
+                title={e.title}
+                currentParticipants={e.currentParticipants}
+                minParticipants={e.minParticipants}
+                period={e.period}
+                category={e.category}
+                mainImg={e.mainImageAddress}
+                text="살펴보기"
+              ></ChallengeItem>
+            ))}
       </div>
     </div>
   );
