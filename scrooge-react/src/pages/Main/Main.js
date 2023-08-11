@@ -16,8 +16,6 @@ const Main = (props) => {
   const [total, setTotal] = useState();
   const [date, setDate] = useState([]);
 
-  const [settlement, setSettlement] = useState(false);
-
   const [weeklyGoal, setWeeklyGoal] = useState();
   const [weeklyConsum, setWeeklyConsum] = useState();
 
@@ -94,14 +92,6 @@ const Main = (props) => {
     setIsConsum(false);
   };
 
-  const settlementTrueHandler = () => {
-    setSettlement(true);
-  };
-
-  const settlementFalseHandler = () => {
-    setSettlement(false);
-  };
-
   return (
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
@@ -175,7 +165,7 @@ const Main = (props) => {
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
               </div>
               <div className={styles.amount}>
-                {settlement ? `${total}원` : "정산이 필요해요!"}
+                {/* {settlement ? `${total}원` : "정산이 필요해요!"} */}
               </div>
             </div>
             <ProgressBar
@@ -191,9 +181,6 @@ const Main = (props) => {
             total={total}
             getTotal={getTotal}
             consumFalseHandler={consumFalseHandler}
-            settlement={settlement}
-            settlementTrueHandler={settlementTrueHandler}
-            settlementFalseHandler={settlementFalseHandler}
           />
         </div>
       )}

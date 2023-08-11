@@ -2,6 +2,7 @@ package com.scrooge.scrooge.dto.challengeDto;
 
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
+import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class ChallengeDetailDto {
     private Integer minParticipants;
     private Integer maxParticipants;
     private Integer currentParticipants;
+    private List<Long> participantIds;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String period;
@@ -39,6 +41,9 @@ public class ChallengeDetailDto {
         this.minParticipants = challenge.getMinParticipants();
         this.maxParticipants = challenge.getMaxParticipants();
         this.currentParticipants = challenge.getChallengeParticipantList().size();
+        this.participantIds = challenge.getChallengeParticipantList().stream()
+                .map(challengeParticipant -> challengeParticipant.getMember().getId())
+                .collect(Collectors.toList());
         this.startDate = challenge.getStartDate();
         this.endDate = challenge.getEndDate();
         this.period = challenge.getPeriod();

@@ -16,6 +16,7 @@ import CreateChallenge from "./pages/Challenge/CreateChallenge";
 import Community from "./pages/Community/Community";
 import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
+import Chatting from "./pages/Challenge/Chatting";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -28,7 +29,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-screen ">
+    <div>
       <Routes>
         {isLogin ? (
           <>
@@ -43,6 +44,7 @@ function App() {
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
             <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/challenge/chat" element={<Chatting />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/mypage/settings"
@@ -63,6 +65,7 @@ function App() {
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
             <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/challenge/chat" element={<Chatting />} />
             <Route path="/quest" element={<Quest />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/:id" element={<Detail />} />

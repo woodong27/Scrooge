@@ -23,8 +23,7 @@ const Challenge = () => {
   };
 
   useEffect(() => {
-    if (state === "성공") {
-      console.log("hi");
+    if (state === "시작") {
       setMakeToast(true);
     }
   }, [state]);
@@ -46,7 +45,7 @@ const Challenge = () => {
       {isMyChallenge ? <MyChallenge /> : <AllChallenge />}
 
       {makeToast && (
-        <Toast setToast={setMakeToast} text="챌린지가 생성 되었어요!" />
+        <Toast setToast={setMakeToast} text="챌린지가 시작 되었어요!" />
       )}
     </div>
   );

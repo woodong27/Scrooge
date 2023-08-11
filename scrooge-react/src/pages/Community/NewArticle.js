@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
 
 const NewArticle = ({}) => {
-  const formData = new FormData();
   const globalToken = useSelector((state) => state.globalToken);
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const formData = new FormData();
   const handleImageChange = (event) => {
     const selimg = event.target.files[0];
     setSelectedImage(selimg);
@@ -34,12 +35,12 @@ const NewArticle = ({}) => {
     fetch(`https://day6scrooge.duckdns.org/api/community`, postData)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setContent("");
+        navigate("/community");
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
   };
 
   return (
@@ -48,6 +49,7 @@ const NewArticle = ({}) => {
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
         color={"#A2D660"}
+        show={"true"}
       />
 
       <div className={styles.box}>
@@ -70,8 +72,8 @@ const NewArticle = ({}) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <div className={styles.photo}>
-          <label htmlFor="fileInput">
+        <div>
+          <label htmlFor="fileInput" className={styles.photo}>
             <img
               src={`${process.env.PUBLIC_URL}/images/camera.svg`}
               alt="더보기"
@@ -82,9 +84,8 @@ const NewArticle = ({}) => {
             id="fileInput"
             type="file"
             accept="image/*"
-            style={{display: "none"}}
-            onChange={handleImageChange}>
-          </input>
+            style={{ display: "none" }}
+            onChange={handleImageChange}></input>
         </div>
 
         <div className={styles.upload} onClick={handleSend}>

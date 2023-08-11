@@ -84,7 +84,6 @@ const Article = (props) => {
     )
       .then((res) => res.text())
       .then((data) => {
-        console.log(data);
         if (data === "좋아요 완료") {
           setGoodCnt((prev) => prev + 1);
           setGood(true);
@@ -164,12 +163,13 @@ const Article = (props) => {
         </div>
         <Link to={`/community/${props.id}`}>
           <div className={styles.detail}>
-            <img
-              className={styles.picture}
-              // imgAddress
-              src={`${props.imgAdress}`}
-              alt="사진"
-            />
+            <div className={styles.pictureFrame}>
+              <img
+                className={styles.picture}
+                src={`${props.imgAdress}`}
+                alt="사진"
+              />
+            </div>
             <div className={styles.content}>
               {showContent} <button></button>
             </div>
