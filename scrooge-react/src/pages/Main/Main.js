@@ -83,6 +83,7 @@ const Main = (props) => {
       .toString()
       .padStart(2, "0")}`;
 
+    getTotal(formattedDate);
     const todayData = {
       method: "GET",
       headers: {
@@ -96,8 +97,11 @@ const Main = (props) => {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        setData(data);
-        setCurrentIndex(data.findIndex((item) => !item.isSettled));
+        const index = data.findIndex((item) => !item.isSettled);
+        if (index === -1) {
+          setSettlement(true);
+        }
+        setCurrentIndex(index);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -121,7 +125,7 @@ const Main = (props) => {
       .then(console.log);
   };
 
-  const getTotal = () => {
+  const getTotal = (formattedDate) => {
     const postData = {
       method: "GET",
       headers: {
@@ -129,7 +133,7 @@ const Main = (props) => {
       },
     };
     fetch(
-      "https://day6scrooge.duckdns.org/api/payment-history/today-total",
+      `https://day6scrooge.duckdns.org/api/payment-history/date-total/${formattedDate}`,
       postData
     )
       .then((resp) => resp.json())
@@ -251,7 +255,11 @@ const Main = (props) => {
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
               </div>
               <div className={styles.amount}>
-                {settlement ? `${total}원` : "정산이 필요해요!"}
+                {settlement
+                  ? `${total
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                  : "정산이 필요해요!"}
               </div>
             </div>
             <ProgressBar
@@ -267,10 +275,9 @@ const Main = (props) => {
           <PaymentHistory
             total={total}
             getTotal={getTotal}
-            settlement={settlement}
+            todaySettlement={settlement}
             consumFalseHandler={consumFalseHandler}
             todayProp={date}
-            currentIndex={currentIndex}
           />
         </div>
       )}

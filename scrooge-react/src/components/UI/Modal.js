@@ -1,7 +1,9 @@
 import { Fragment, useState, useRef, useEffect } from "react";
 import styles from "./Modal.module.css";
 
-const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
+const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
+  console.log(item);
+  console.log(index);
   const [origin, setOrigin] = useState(item.amount);
   const [place, setPlace] = useState(item.usedAt);
   const [card, setCard] = useState(item.cardName);
@@ -15,7 +17,7 @@ const Modal = ({ item, onEdit, onCloseModal, goNext }) => {
     setPlace(item.usedAt);
     setCard(item.cardName);
     setCategory(" ");
-  }, [item]);
+  }, [index]);
 
   const buttons = [
     { id: 1, label: "식비" },

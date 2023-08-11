@@ -32,7 +32,12 @@
 
 .scrollitem {
   margin-top: 10px;
+  height: 460px;
   overflow-y: scroll;
+}
+
+.foot {
+  height: 100px;
 }
 
 .item {
