@@ -1,0 +1,11 @@
+.tableContainer{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  background-color: var(--input, rgba(240, 240, 240, 0.50));
+}
+
+.tableContent{
+  width: 100%;
+  height: 100%;
+}
