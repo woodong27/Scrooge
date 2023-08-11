@@ -50,8 +50,9 @@ const Login = ({ loginHandler }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(obj),
+      credentials: "include",
     };
-    fetch("https://day6scrooge.duckdns.org/api/member/login", postData)
+    fetch("http://localhost:8081/api/member/login", postData)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Login 실패");
@@ -59,11 +60,22 @@ const Login = ({ loginHandler }) => {
         return res.json();
       })
       .then((data) => {
+        console.log(data);
         const jwtToken = data.token;
+        const refreshToken = data.refreshToken;
+
+        localStorage.setItem('refreshToken', refreshToken);
+
+        setCookie('refreshToken', refreshToken, 7);
+
         sendJwtTokenToAndroid(jwtToken);
+
+        console.log(jwtToken);
+        console.log(refreshToken);
 
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
         dispatch({ type: "SET_ID_STRING", payload: data.memberId });
+        dispatch({ type: 'SET_LOG_IN', payload: true });
 
         loginHandler();
         navigate("/");
@@ -78,6 +90,18 @@ const Login = ({ loginHandler }) => {
     if (window.AndroidBridge) {
       window.AndroidBridge.sendJwtTokenToAndroid(jwtToken);
     }
+  }
+
+  function calculateExpiration(days) {
+    const now = new Date();
+    now.setTime(now.getTime() + days * 24 * 60 * 60 * 1000);
+    return now.toUTCString();
+  }
+
+  // 쿠키 설정 함수
+  function setCookie(name, value, days) {
+    const expires = calculateExpiration(days);
+    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
   }
 
   return (

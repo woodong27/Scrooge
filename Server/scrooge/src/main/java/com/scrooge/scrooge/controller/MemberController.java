@@ -34,8 +34,8 @@ public class MemberController {
 
     @Operation(summary = "로그인 API", description = "로그인 POST")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto, response);
         return ResponseEntity.ok(loginResponseDto);
     }
     

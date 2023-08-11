@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +26,10 @@ public class TokenService {
     public ResponseEntity<TokenDto> reIssue(TokenDto tokenDto, HttpServletResponse response) throws Exception {
         if(!jwtTokenProvider.validateToken(tokenDto.getRefreshToken()))
             throw new Exception("유효하지 않은 Token 입니다.");
+
         Member member = memberRepository.findByRefreshToken(tokenDto.getRefreshToken());
+
+        System.out.println("갱신하는 member의 ID : " + member.getId());
 
         String accessToken = jwtTokenProvider.createToken(member.getEmail(), member.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -33,12 +38,6 @@ public class TokenService {
         TokenDto newTokenDto = new TokenDto();
         newTokenDto.setAccessToken(accessToken);
         newTokenDto.setRefreshToken(refreshToken);
-
-        // refreshToken을 쿠키로 설정하여 브라우저에 저장
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
 
         return ResponseEntity.ok(newTokenDto);
     }

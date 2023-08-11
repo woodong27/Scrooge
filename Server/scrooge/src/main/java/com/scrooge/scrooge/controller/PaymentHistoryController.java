@@ -45,6 +45,9 @@ public class PaymentHistoryController {
     public ResponseEntity<PaymentHistoryRespDto> addPaymentHistory(@RequestBody PaymentHistoryDto paymentHistoryDto, @RequestHeader("Authorization")String tokenHeader) {
         String token = extractToken(tokenHeader);
 
+        System.out.print("컨트롤러에서 받은 토큰: " + token);
+
+
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
         Optional<Member> member = memberRepository.findById(memberId);

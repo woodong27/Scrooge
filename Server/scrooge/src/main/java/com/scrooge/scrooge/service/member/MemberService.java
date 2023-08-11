@@ -35,7 +35,7 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -50,6 +50,11 @@ public class MemberService {
 
             member.updateRefreshToken(jwtTokenProvider.createRefreshToken());
             loginResponseDto.setRefreshToken(member.getRefreshToken());
+
+            Cookie cookie = new Cookie("refreshToken", member.getRefreshToken());
+            cookie.setPath("/");
+            cookie.setHttpOnly(false);
+            response.addCookie(cookie);
 
             return loginResponseDto;
         } else {

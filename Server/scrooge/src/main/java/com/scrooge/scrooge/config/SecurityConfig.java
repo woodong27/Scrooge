@@ -52,7 +52,7 @@ public class SecurityConfig{
 //                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new RefreshTokenFilter(tokenService), JwtAuthenticationFilter.class)
+//                .addFilterBefore(new RefreshTokenFilter(tokenService, jwtTokenProvider), JwtAuthenticationFilter.class)
                 .build();
     }
 
