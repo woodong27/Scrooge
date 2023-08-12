@@ -10,20 +10,66 @@ import PaymentHistory from "../../pages/Main/PaymentHistory";
 
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
-  console.log(globalToken);
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
   const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isConsum, setIsConsum] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
+  const [message, setMessage] = useState();
   const [weeklyGoal, setWeeklyGoal] = useState();
   const [weeklyConsum, setWeeklyConsum] = useState();
 
+  const handleOpen = () => {
+    setIsEdit(true);
+  };
+  const handleClose = () => {
+    setMessage(data.message);
+    setIsEdit(false);
+  };
+  const handleSetTrue = () => {
+    setSettlement(true);
+  };
+
+  const handleSetFalse = () => {
+    setSettlement(false);
+  };
+
+  const handleSend = () => {
+    const obj = {
+      message: message,
+    };
+    const postData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+      body: JSON.stringify(obj),
+    };
+    fetch("https://day6scrooge.duckdns.org/api/member/message", postData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("상태메시지 저장 실패");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setData(data);
+        setMessage(data.message);
+        setIsEdit(false);
+      });
+  };
+
   useEffect(() => {
-    getCurrentDate();
-    console.log(globalToken);
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
     const postData = {
       method: "GET",
       headers: {
@@ -34,18 +80,38 @@ const Main = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        setMessage(data.message);
         setWeeklyGoal(data.weeklyGoal);
         setWeeklyConsum(data.weeklyConsum);
       })
       .catch((error) => console.log(error));
-  }, []);
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
-  };
+    const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+
+    getTotal(formattedDate);
+    const todayData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
+      todayData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        const index = data.findIndex((item) => !item.isSettled);
+        if (index === -1) {
+          setSettlement(true);
+        }
+        setCurrentIndex(index);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   //주간 목표 설정
   const setGoal = (goal) => {
@@ -66,7 +132,7 @@ const Main = (props) => {
       .then(console.log);
   };
 
-  const getTotal = () => {
+  const getTotal = (formattedDate) => {
     const postData = {
       method: "GET",
       headers: {
@@ -74,7 +140,7 @@ const Main = (props) => {
       },
     };
     fetch(
-      "https://day6scrooge.duckdns.org/api/payment-history/today-total",
+      `https://day6scrooge.duckdns.org/api/payment-history/date-total/${formattedDate}`,
       postData
     )
       .then((resp) => resp.json())
@@ -84,22 +150,12 @@ const Main = (props) => {
       .catch((error) => console.log(error));
   };
 
-  const [isConsum, setIsConsum] = useState(false);
-
   const consumTrueHandler = () => {
     setIsConsum(true);
   };
 
   const consumFalseHandler = () => {
     setIsConsum(false);
-  };
-
-  const settlementTrueHandler = () => {
-    setSettlement(true);
-  };
-
-  const settlementFalseHandler = () => {
-    setSettlement(false);
   };
 
   return (
@@ -138,17 +194,48 @@ const Main = (props) => {
                 </div>
               </span>
               <div className={styles.statemessage}>
-                <div>
-                  상태메세지 <br />
-                  에엥
-                  <br />
-                  괜찮나?
-                </div>
-                <img
-                  className={styles.editBtn}
-                  src={`${process.env.PUBLIC_URL}/images/write.svg`}
-                  alt="코인"
-                />
+                {isEdit ? (
+                  <>
+                    <textarea
+                      className={styles.content}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      maxLength="50"
+                      rows="3"
+                    />
+                    <div className={styles.line}>
+                      <button
+                        className={styles.cancleBtn}
+                        onClick={handleClose}
+                      >
+                        취소
+                      </button>
+                      <button
+                        className={styles.completeBtn}
+                        onClick={handleSend}
+                      >
+                        완료
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <textarea
+                      className={styles.content}
+                      value={message}
+                      readOnly
+                    />
+
+                    <div className={styles.line}>
+                      <img
+                        className={styles.editBtn}
+                        src={`${process.env.PUBLIC_URL}/images/write.svg`}
+                        alt="수정"
+                        onClick={handleOpen}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </CharacterCard>
@@ -175,13 +262,18 @@ const Main = (props) => {
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
               </div>
               <div className={styles.amount}>
-                {settlement ? `${total}원` : "정산이 필요해요!"}
+                {settlement
+                  ? `${total
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                  : "정산이 필요해요!"}
               </div>
             </div>
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
-              setGoal={setGoal}></ProgressBar>
+              setGoal={setGoal}
+            ></ProgressBar>
           </Card>
         </div>
       )}
@@ -190,10 +282,11 @@ const Main = (props) => {
           <PaymentHistory
             total={total}
             getTotal={getTotal}
+            todaySettlement={settlement}
             consumFalseHandler={consumFalseHandler}
-            settlement={settlement}
-            settlementTrueHandler={settlementTrueHandler}
-            settlementFalseHandler={settlementFalseHandler}
+            todayProp={date}
+            handleSetFalse={handleSetFalse}
+            handleSetTrue={handleSetTrue}
           />
         </div>
       )}

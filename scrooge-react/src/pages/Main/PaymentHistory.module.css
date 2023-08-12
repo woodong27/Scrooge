@@ -32,11 +32,15 @@
 
 .scrollitem {
   margin-top: 10px;
-  overflow-y: scroll;
+  overflow: scroll;
+}
+
+.foot {
+  height: 100px;
 }
 
 .item {
-  height: 552px;
+  height: 440px;
 }
 
 .total {

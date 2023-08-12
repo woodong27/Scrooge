@@ -11,11 +11,13 @@ import Challenge from "./pages/Challenge/Challenge";
 import ChallengeJoin from "./pages/Challenge/ChallengeJoin";
 import ChallengeDetail from "./pages/Challenge/ChallengeDetail";
 import MyPage from "./pages/MyPage/MyPage";
-import Settings from "./pages/MyPage/Settings";
+import Settings from "./pages/Settings/Settings";
 import CreateChallenge from "./pages/Challenge/CreateChallenge";
 import Community from "./pages/Community/Community";
 import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
+import Chatting from "./pages/Challenge/Chatting";
+// import Settings from "./pages/Settings/Settings";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -28,7 +30,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-screen ">
+    <div>
       <Routes>
         {isLogin ? (
           <>
@@ -43,11 +45,14 @@ function App() {
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
             <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/challenge/chat" element={<Chatting />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route
+            <Route path="/mypage/settings" element={<Settings onLogout={logoutHandler}/>} />
+
+            {/* <Route
               path="/mypage/settings"
               element={<Settings onLogout={logoutHandler} />}
-            />
+            /> */}
           </>
         ) : (
           <>
@@ -63,6 +68,7 @@ function App() {
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
             <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/challenge/chat" element={<Chatting />} />
             <Route path="/quest" element={<Quest />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/:id" element={<Detail />} />
