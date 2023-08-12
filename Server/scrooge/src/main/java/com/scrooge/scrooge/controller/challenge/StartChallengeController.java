@@ -15,6 +15,8 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @Tag(name = "ChallengeStart", description = "시작된 챌린지에 관련된 API")
 @RestController
 @RequestMapping("/api/challenge")
@@ -35,9 +37,9 @@ public class StartChallengeController {
 
     // 사용자 인증 등록 API
     @Operation(summary = "사용자가 인증을 등록하는 API")
-    @PostMapping(value = "/{challengeId}/my-challenge", consumes = "multipart/form-data")
+    @PostMapping(value = "/{challengeId}/auth", consumes = "multipart/form-data")
     public ResponseEntity<ChallengeStartRespDto> createMyChallengeAuth(@RequestHeader("Authorization") String tokenHeader, @PathVariable("challengeId") Long challengeId,
-                                                                       @RequestParam MultipartFile img) {
+                                                                       @RequestParam MultipartFile img) throws IOException {
         ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
 
         String token = extractToken(tokenHeader);
