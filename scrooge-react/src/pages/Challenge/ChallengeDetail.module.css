@@ -2,6 +2,7 @@
   position: relative;
   width: 100vw;
   height: 274px;
+  filter: brightness(0.8);
 
   & div {
     position: absolute;
@@ -29,6 +30,7 @@
   top: 24px;
   left: 24px;
   padding: 4px;
+  color: white;
 }
 
 .fight_container {
@@ -40,6 +42,10 @@
 
 .title {
   text-align: left;
+
+  & p {
+    justify-content: flex-start;
+  }
 }
 
 .auth_condition {
