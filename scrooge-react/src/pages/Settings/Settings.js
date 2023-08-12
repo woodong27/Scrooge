@@ -3,6 +3,7 @@ import BackGround from "../../components/BackGround";
 import SettingModal from "../../components/UI/SettingModal";
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -10,7 +11,6 @@ import { useSelector } from "react-redux";
 
 const Settings = ({ onLogout }) => {
   const globalToken = useSelector((state) => state.globalToken);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -42,9 +42,9 @@ const Settings = ({ onLogout }) => {
       if (resp.status === 204) {
         // 회원탈퇴 성공 시 처리
         confirmLogout();
-        console.log("주님..한 놈 갑니다..")
+        console.log("회원탈퇴 성공")
       } else {
-        console.log("회원탈퇴 실패작");
+        console.log("회원탈퇴 실패");
       }
     } catch(error) {
       console.error("API 호출 오류:", error);
@@ -59,7 +59,9 @@ const Settings = ({ onLogout }) => {
           <div className={styles.infoHeader}>계정설정</div>
           <div className={styles.infoContent}>
             <div>프로필 변경</div>
-            <div>비밀번호 변경</div>
+            <Link to=".passwordChange">
+              <div>비밀번호 변경</div>  
+            </Link>
           </div>
 
           <div className={styles.infoHeader}>알림설정</div>
