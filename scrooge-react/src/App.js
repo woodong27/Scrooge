@@ -62,7 +62,7 @@ function App() {
         .then((data) => {
             console.log(data.accessToken);
             dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.accessToken });
-
+            setIsLogin(!!refreshToken);
             console.log(data.refreshToken);
             setCookie('refreshToken', data.refreshToken, 7);
         })
@@ -71,7 +71,7 @@ function App() {
         });
     }
 
-    setIsLogin(!!refreshToken);
+    
 
     console.log("refreshToken 확인 " + isLogin);
   })
