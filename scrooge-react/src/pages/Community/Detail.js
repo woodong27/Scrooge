@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import styles from "./Detail.module.css";
 import CommentList from "./CommentList";
 import QuestHeader from "../../components/QuestHeader";
+import Image from "../../components/UI/Image";
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -25,6 +26,17 @@ const Detail = () => {
   const [isOption, setIsOption] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [content, setContent] = useState("");
+
+  const [image, setImage] = useState(false);
+
+  //이미지 확대 및 축소
+  const handleBig = () => {
+    setImage(true);
+  };
+
+  const handleSmall = () => {
+    setImage(false);
+  };
 
   //댓글
   useEffect(() => {
@@ -135,7 +147,6 @@ const Detail = () => {
       .then((data) => {
         setData(data);
         setContent(data.content);
-        console.log(data);
       })
       .catch((error) => console.log(error));
 
@@ -271,139 +282,150 @@ const Detail = () => {
 
   return (
     <div className={styles.box}>
-      <QuestHeader
-        title={"스크루지 빌리지"}
-        titleColor={"#5B911F"}
-        color={"#A2D660"}
-        show={"true"}
-      ></QuestHeader>
-      {data ? (
-        <div className={styles.frame}>
-          <div className={styles.authorInfo}>
-            <img
-              className={styles.character}
-              src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
-              alt="캐릭터"
-            />
-            <div>
-              <div className={styles.author}>{data.memberNickname}</div>
-              <div className={styles.line}>
-                <div className={styles.createdAt}>
-                  {data.createdAt.split("T")[0]}{" "}
-                  {data.createdAt.split("T")[1].split(".")[0]}
-                </div>
-                {memberId === data.memberId ? (
-                  <div>
-                    {isOption ? (
-                      <>
-                        {isEdit ? (
-                          <div className={styles.btns}>
-                            <div className={styles.edit} onClick={handleCancle}>
-                              취소
-                            </div>
-                            <div className={styles.delete} onClick={handleSend}>
-                              완료
-                            </div>
-                          </div>
-                        ) : (
-                          <div className={styles.btns}>
-                            <div className={styles.edit} onClick={handleEdit}>
-                              수정
-                            </div>
-                            <div
-                              className={styles.delete}
-                              onClick={handleDelete}
-                            >
-                              삭제
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div onClick={handleOpen} className={styles.option}>
-                        <img
-                          src={`${process.env.PUBLIC_URL}/images/option.png`}
-                          alt="더보기"
-                        />
-                      </div>
-                    )}
+      <div className={styles.testbox}>
+        <QuestHeader
+          title={"스크루지 빌리지"}
+          titleColor={"#5B911F"}
+          color={"#A2D660"}
+          show={"true"}></QuestHeader>
+
+        {data ? (
+          <div className={styles.frame}>
+            <div className={styles.authorInfo}>
+              <img
+                className={styles.character}
+                src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
+                alt="캐릭터"
+              />
+              <div>
+                <div className={styles.author}>{data.memberNickname}</div>
+                <div className={styles.line}>
+                  <div className={styles.createdAt}>
+                    {data.createdAt.split("T")[0]}{" "}
+                    {data.createdAt.split("T")[1].split(".")[0]}
                   </div>
-                ) : (
-                  ""
-                )}
+                  {memberId === data.memberId ? (
+                    <div>
+                      {isOption ? (
+                        <>
+                          {isEdit ? (
+                            <div className={styles.btns}>
+                              <div
+                                className={styles.edit}
+                                onClick={handleCancle}>
+                                취소
+                              </div>
+                              <div
+                                className={styles.delete}
+                                onClick={handleSend}>
+                                완료
+                              </div>
+                            </div>
+                          ) : (
+                            <div className={styles.btns}>
+                              <div className={styles.edit} onClick={handleEdit}>
+                                수정
+                              </div>
+                              <div
+                                className={styles.delete}
+                                onClick={handleDelete}>
+                                삭제
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <div onClick={handleOpen} className={styles.option}>
+                          <img
+                            src={`${process.env.PUBLIC_URL}/images/option.png`}
+                            alt="더보기"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div>
+            <div>
+              {isEdit ? (
+                <textarea
+                  className={styles.editContent}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+              ) : (
+                <>
+                  <img
+                    className={styles.picture}
+                    src={`${data.imgAdress}`}
+                    alt="사진"
+                    onClick={handleBig}
+                  />
+
+                  <div className={styles.content}>{content}</div>
+                </>
+              )}
+            </div>
             {isEdit ? (
-              <textarea
-                className={styles.editContent}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
+              ""
             ) : (
               <>
-                <img
-                  className={styles.picture}
-                  src={`${data.imgAdress}`}
-                  alt="사진"
-                />
-                <textarea className={styles.content} value={content} readOnly />
+                <div className={styles.reaction}>
+                  <div className={styles.left}>
+                    {good ? (
+                      <button
+                        onClick={handleGoodCancle}
+                        className={styles.emoji}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/upColor.png`}
+                          alt="환호"
+                        />
+                      </button>
+                    ) : (
+                      <button onClick={handleGood} className={styles.emoji}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/up.png`}
+                          alt="환호"
+                        />
+                      </button>
+                    )}
+                    <div className={styles.cnt}>{goodCnt}</div>
+                  </div>
+                  <div className={styles.right}>
+                    {bad ? (
+                      <button
+                        onClick={handleBadCancle}
+                        className={styles.emoji}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/downColor.png`}
+                          alt="야유"
+                        />
+                      </button>
+                    ) : (
+                      <button onClick={handleBad} className={styles.emoji}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/down.png`}
+                          alt="야유"
+                        />
+                      </button>
+                    )}
+
+                    <div className={styles.cnt}>{badCnt}</div>
+                  </div>
+                </div>
+                <CommentList id={data.id} comments={comments} />
               </>
             )}
           </div>
-          {isEdit ? (
-            ""
-          ) : (
-            <>
-              <div className={styles.reaction}>
-                <div className={styles.left}>
-                  {good ? (
-                    <button onClick={handleGoodCancle} className={styles.emoji}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/upColor.png`}
-                        alt="환호"
-                      />
-                    </button>
-                  ) : (
-                    <button onClick={handleGood} className={styles.emoji}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/up.png`}
-                        alt="환호"
-                      />
-                    </button>
-                  )}
-                  <div className={styles.cnt}>{goodCnt}</div>
-                </div>
-                <div className={styles.right}>
-                  {bad ? (
-                    <button onClick={handleBadCancle} className={styles.emoji}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/downColor.png`}
-                        alt="야유"
-                      />
-                    </button>
-                  ) : (
-                    <button onClick={handleBad} className={styles.emoji}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/down.png`}
-                        alt="야유"
-                      />
-                    </button>
-                  )}
-
-                  <div className={styles.cnt}>{badCnt}</div>
-                </div>
-              </div>
-              <CommentList id={data.id} comments={comments} />
-            </>
-          )}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
       {isEdit ? (
-        ""
+        <></>
       ) : (
         <div className={styles.addFrame}>
           <input
@@ -418,6 +440,7 @@ const Detail = () => {
           </button>
         </div>
       )}
+      {image && <Image imageUrl={data.imgAdress} onClose={handleSmall} />}
     </div>
   );
 };

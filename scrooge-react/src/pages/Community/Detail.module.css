@@ -2,9 +2,13 @@
   position: relative;
 }
 
+.testbox {
+  height: 700px;
+}
+
 .frame {
-  height: auto;
-  overflow: auto;
+  height: 600px;
+  overflow: scroll;
 }
 
 .frame::-webkit-scrollbar {
@@ -57,12 +61,16 @@
 
 .picture {
   width: 330px;
+  max-height: 600px;
 }
 
 .content {
   width: 330px;
-  height: 120px;
+  height: fit-content;
   text-align: left;
+  margin-left: 30px;
+  margin-top: 8px;
+  white-space: pre-line;
 }
 
 .reaction {
