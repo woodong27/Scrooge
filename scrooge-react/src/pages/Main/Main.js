@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
@@ -7,10 +8,12 @@ import CharacterCard from "../../components/UI/CharacterCard";
 import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
+import { tokenReissue } from "../../utils/JwtTokenReissue";
 
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
-  console.log(globalToken);
+  const dispatch = useDispatch();
+
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
@@ -22,23 +25,33 @@ const Main = (props) => {
   const [weeklyConsum, setWeeklyConsum] = useState();
 
   useEffect(() => {
-    getCurrentDate();
-    console.log(globalToken);
-    const postData = {
-      method: "GET",
-      headers: {
-        Authorization: globalToken,
-      },
-    };
-    fetch("http://localhost:8081/api/member/info", postData)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setData(data);
-        setWeeklyGoal(data.weeklyGoal);
-        setWeeklyConsum(data.weeklyConsum);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    
+    if(globalToken===null) {
+      tokenReissue(dispatch);
+    }
+    else {
+      getCurrentDate();
+      console.log(globalToken);
+      const postData = {
+        method: "GET",
+        headers: {
+          Authorization: globalToken,
+        },
+      };
+  
+      console.log(postData);
+  
+      fetch("http://localhost:8081/api/member/info", postData)
+        .then((resp) => resp.json())
+        .then((data) => {
+          setData(data);
+          setWeeklyGoal(data.weeklyGoal);
+          setWeeklyConsum(data.weeklyConsum);
+        })
+        .catch((error) => console.log(error));
+    }
+
+  }, [globalToken]);
 
   const getCurrentDate = () => {
     const today = new Date();
