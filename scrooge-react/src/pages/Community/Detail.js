@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import styles from "./Detail.module.css";
 import CommentList from "./CommentList";
 import QuestHeader from "../../components/QuestHeader";
+import Image from "../../components/UI/Image";
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -25,6 +26,17 @@ const Detail = () => {
   const [isOption, setIsOption] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [content, setContent] = useState("");
+
+  const [image, setImage] = useState(false);
+
+  //이미지 확대 및 축소
+  const handleBig = () => {
+    setImage(true);
+  };
+
+  const handleSmall = () => {
+    setImage(false);
+  };
 
   //댓글
   useEffect(() => {
@@ -350,7 +362,9 @@ const Detail = () => {
                     className={styles.picture}
                     src={`${data.imgAdress}`}
                     alt="사진"
+                    onClick={handleBig}
                   />
+
                   <div className={styles.content}>{content}</div>
                 </>
               )}
@@ -426,6 +440,7 @@ const Detail = () => {
           </button>
         </div>
       )}
+      {image && <Image imageUrl={data.imgAdress} onClose={handleSmall} />}
     </div>
   );
 };
