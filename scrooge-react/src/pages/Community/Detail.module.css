@@ -3,9 +3,10 @@
 }
 
 .frame {
-  height: 580px;
+  height: auto;
   overflow: auto;
 }
+
 .frame::-webkit-scrollbar {
   width: 0;
 }
@@ -59,13 +60,14 @@
 }
 
 .content {
-  margin: 8px 38px;
+  width: 330px;
+  height: 120px;
   text-align: left;
 }
 
 .reaction {
-  height: 28px;
-  margin: 12px 24px 32px 24px;
+  height: 26px;
+  margin: 6px 24px 32px 24px;
   display: flex;
   justify-content: space-between;
 }
@@ -120,7 +122,7 @@
   top: 200px;
   left: 28px;
   width: 296px;
-  height: 260px;
+  height: 130px;
   padding: 16px;
   background-color: #fff;
   border: 1px solid #000;
