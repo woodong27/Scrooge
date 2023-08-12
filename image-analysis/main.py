@@ -1,16 +1,11 @@
 from fastapi import FastAPI, Depends, Path, HTTPException
 from pydantic import BaseModel
-from database import engineconn
 import requests
 import cv2
 from io import BytesIO
 import numpy as np
 
 app = FastAPI()
-
-engine = engineconn()
-session = engine.sessionmaker()
-
 
 def compareImages(imgURL1, imgURL2):
     image1=requests.get(imgURL1)
@@ -39,7 +34,10 @@ def compareImages(imgURL1, imgURL2):
     print(similarity)
     return similarity
 
+class ImagePaths(BaseModel):
+    imageURL1: str
+    imageURL2: str
 
 @app.post("/compare-images")
-async def first_get(imagePath1:str, imagePath2:str):
-    return compareImages(imagePath1, imagePath2)
+async def first_get(imagePaths: ImagePaths):
+    return compareImages(imagePaths.imageURL1, imagePaths.imageURL2)
