@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./BadgeList.module.css";
+import BottomSheet from "../../components/UI/BottomSheet";
 
 const BadgeList = () => {
   const globalToken = useSelector((state) => state.globalToken);
-  const badgeCount = 9;
   const badges = [
     {
       id: 1,
@@ -52,28 +53,41 @@ const BadgeList = () => {
       badgeDescription: "미구현",
     },
   ];
+  const [showModal, setShowModal] = useState(false);
+  const [id, setId] = useState();
+  const [badgeName, setBadgeName] = useState();
+  const [badgeDescription, setBadgeDescription] = useState();
 
-  badges.map((e) => console.log(e.id));
+  const showModalHandler = (event) => {
+    setId(event.target.src.split("/")[4][0]);
+    setBadgeName(event.target.name);
+    setBadgeDescription(event.target.alt);
 
-  // for (let i = 1; i <= badgeCount; i++) {
-  //   const badgePath = `${process.env.PUBLIC_URL}/Badge/${i}.png`;
-  //   badges.push(
-  //     <img
-  //       key={i}
-  //       className={styles.badgeImage}
-  //       src={badgePath}
-  //       alt={`뱃지 사진 ${i}`}
-  //     />
-  //   );
-  // }
+    setShowModal(true);
+  };
+  const hideModalHandler = () => setShowModal(false);
 
   return (
     <div className={styles.badgeContainer}>
+      {showModal && (
+        <BottomSheet onClose={hideModalHandler}>
+          <img
+            className={styles.img}
+            src={`${process.env.PUBLIC_URL}/Badge/${id}.png`}
+            alt=""
+          />
+          <div className={styles.title}>{badgeName}</div>
+          <div className={styles.body}>{badgeDescription}</div>
+        </BottomSheet>
+      )}
       {badges.map((e) => (
         <img
+          onClick={showModalHandler}
+          key={e.id}
           className={styles.badgeImage}
           src={`${process.env.PUBLIC_URL}/Badge/${e.id}.png`}
-          alt=""
+          alt={e.badgeDescription}
+          name={e.badgeName}
         />
       ))}
     </div>
