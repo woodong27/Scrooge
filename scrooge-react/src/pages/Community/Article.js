@@ -17,7 +17,6 @@ const Article = (props) => {
   const [bad, setBad] = useState(false);
 
   useEffect(() => {
-    console.log(props.content);
     if (showContent.length <= 40) {
       setContent(showContent);
     } else {
