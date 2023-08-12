@@ -10,6 +10,8 @@ import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 import { tokenReissue } from "../../utils/JwtTokenReissue";
 
+import { handleTokenError } from "../../utils/commonJwtError";
+
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
   const dispatch = useDispatch();
@@ -42,13 +44,26 @@ const Main = (props) => {
       console.log(postData);
   
       fetch("http://localhost:8081/api/member/info", postData)
-        .then((resp) => resp.json())
+        .then((resp) => {
+          if(resp.status === 401) {
+            const error = new Error();
+            error.name = "ExpiredError";
+            throw error;
+          }
+          console.log(resp);
+          return resp.json()
+        })
         .then((data) => {
           setData(data);
           setWeeklyGoal(data.weeklyGoal);
           setWeeklyConsum(data.weeklyConsum);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          if(error.name === "ExpiredError") {
+            handleTokenError(error, globalToken, dispatch);
+          }
+        });
     }
 
   }, [globalToken]);

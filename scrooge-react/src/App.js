@@ -22,8 +22,6 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
 
-  console.log("처음에는 : " + isLogin);
-
   useEffect(() => {
     const cookies = document.cookie.split(';');
     let refreshToken = null;
@@ -35,8 +33,6 @@ function App() {
         break;
       }
     }
-
-    console.log("refreshToken:" + refreshToken);
 
     // refreshToken이 있다면 access Token 받기
     if(refreshToken) {
@@ -60,20 +56,16 @@ function App() {
             return res.json();
         })
         .then((data) => {
-            console.log(data.accessToken);
+            // console.log(data.accessToken);
             dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.accessToken });
             setIsLogin(!!refreshToken);
-            console.log(data.refreshToken);
+            // console.log(data.refreshToken);
             setCookie('refreshToken', data.refreshToken, 7);
         })
         .catch((error) => {
             console.log(error);
         });
     }
-
-    
-
-    console.log("refreshToken 확인 " + isLogin);
   })
 
   function calculateExpiration(days) {
@@ -90,7 +82,6 @@ function App() {
 
   const loginHandler = () => {
     setIsLogin(true);
-    console.log("로그인 하고 나서,," + isLogin);
   };
   const logoutHandler = () => {
     setIsLogin(false);
