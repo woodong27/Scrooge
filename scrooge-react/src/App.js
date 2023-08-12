@@ -43,10 +43,18 @@ function App() {
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
-            <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/challenge/my/:id" element={<ChallengeDetail />} />
             <Route path="/challenge/chat" element={<Chatting />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route
+<<<<<<< Updated upstream
+=======
+              path="/mypage/settings"
+              element={<Settings onLogout={logoutHandler} />}
+            />
+
+            {/* <Route
+>>>>>>> Stashed changes
               path="/mypage/settings"
               element={<Settings onLogout={logoutHandler} />}
             />
@@ -64,7 +72,7 @@ function App() {
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
-            <Route path="/challenge/my" element={<ChallengeDetail />} />
+            <Route path="/challenge/my/:id" element={<ChallengeDetail />} />
             <Route path="/challenge/chat" element={<Chatting />} />
             <Route path="/quest" element={<Quest />} />
             <Route path="/community" element={<Community />} />

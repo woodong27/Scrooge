@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -10,18 +10,38 @@ import Chips from "../../components/UI/Chips";
 import AuthProgress from "./AuthProgress";
 
 const ChallengeDetail = () => {
-  const globalToken = useSelector((state) => state.globalToken);
-  const headers = { Authorization: globalToken };
+  // const globalToken = useSelector((state) => state.globalToken);
+  // const headers = { Authorization: globalToken };
+  const params = useParams();
   const [data, setData] = useState([]);
   const [selectChip, setSelectChip] = useState("나의 인증 현황");
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 
   useEffect(() => {
+    // console.log(globalToken);
+
     axios
       .get(
-        `https://day6scrooge.duckdns.org/api/challenge/6/start-my-challenge`,
-        { headers }
+        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/start/my-challenge`
       )
       .then((response) => {
+        const startDate = new Date(response.data.startDate);
+        const endDate = new Date(response.data.endDate);
+
+        const startMonth = startDate.getMonth() + 1;
+        const startDay = startDate.getDate();
+        const startAt = daysOfWeek[startDate.getDay()];
+        const endMonth = endDate.getMonth() + 1;
+        const endDay = endDate.getDate();
+        const endAt = daysOfWeek[endDate.getDay()];
+
+        response.data.startMonth = startMonth;
+        response.data.startDay = startDay;
+        response.data.startAt = startAt;
+        response.data.endMonth = endMonth;
+        response.data.endDay = endDay;
+        response.data.endAt = endAt;
+
         setData(response.data);
       })
       .catch((error) => {
@@ -33,20 +53,24 @@ const ChallengeDetail = () => {
     <div className={styles.layout}>
       <div className={styles.img}>
         <Link className={styles.back} to="/challenge">
-          <img src={backImg} alt="뒤로가기"></img>
+          <img src={backImg} alt=""></img>
         </Link>
-        <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="더미" />
+        <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
         <div className={styles.title}>
-          <p className={styles.day}>7.31(월) - 8.13(일)</p>
-          {data.title}
-          <p>
-            #{data.category} #{data.period} #경험치 500+
+          <p className={styles.day}>
+            {data.startMonth}.{data.startDay}({data.startAt}) - {data.endMonth}.
+            {data.endDay}({data.endAt})
           </p>
+          {data.title}
+          <p>#{data.period} #경험치 500+</p>
         </div>
       </div>
       <div className={styles.fight_container}>
         <div>대전 현황</div>
-        <ProgressBar ally={60} enemy={40}></ProgressBar>
+        <ProgressBar
+          ally={data.teamOneSuccessCount + 1}
+          enemy={data.teamZeroSuccessCount + 1}
+        ></ProgressBar>
       </div>
       <hr></hr>
       <div className={styles.auth_condition}>
