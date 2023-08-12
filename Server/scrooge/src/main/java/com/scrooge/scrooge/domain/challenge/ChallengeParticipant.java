@@ -33,4 +33,8 @@
         @OneToMany(mappedBy = "challengeParticipant", cascade = CascadeType.REMOVE)
         private List<ChallengeAuth> challengeAuths = new ArrayList<>();
 
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "challenge_chatting_room_id")
+        private ChallengeChattingRoom challengeChattingRoom;
+
     }

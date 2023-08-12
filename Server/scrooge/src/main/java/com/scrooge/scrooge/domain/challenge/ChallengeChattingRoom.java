@@ -30,6 +30,11 @@ public class ChallengeChattingRoom {
     @OneToMany(mappedBy = "challengeChattingRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeChattingMessage> challengeChattingMessageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challengeChattingRoom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<ChallengeParticipant> challengeParticipantList = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "challenge_chatting_room_participants", joinColumns = @JoinColumn(name = "chatting_room_id"))
+    @Column(name = "participant_id")
+    private List<Long> roomParticipantIds = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "challengeChattingRoomList", fetch = FetchType.LAZY)
+    private List<Member> participants = new ArrayList<>();
 }

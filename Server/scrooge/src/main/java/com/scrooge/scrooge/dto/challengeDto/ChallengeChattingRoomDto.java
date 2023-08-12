@@ -20,12 +20,11 @@ public class ChallengeChattingRoomDto {
     private List<Long> roomParticipantIds;
     private Long challengeId;
 
-//    @Builder
-//    public ChallengeChattingRoomDto(ChallengeParticipant challengeParticipant) {
-//        this.team = challengeParticipant.getTeam();
-////        this.roomMemberIds = challengeChattingRoom.getMember().getId();
-//        this.roomParticipantIds = challengeParticipant.get
-//        this.challengeId = challengeChattingRoom.getChallenge().getId();
-//    }
+    public ChallengeChattingRoomDto(ChallengeChattingRoom challengeChattingRoom) {
+        this.id = challengeChattingRoom.getId();
+        this.team = challengeChattingRoom.getTeam();
+        this.roomParticipantIds = challengeChattingRoom.getRoomParticipantIds();
+        this.challengeId = challengeChattingRoom.getChallenge().getId();
+    }
 
 }

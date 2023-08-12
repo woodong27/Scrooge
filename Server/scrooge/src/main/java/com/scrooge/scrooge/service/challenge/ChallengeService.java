@@ -243,9 +243,11 @@ public class ChallengeService {
             challengeChattingRoom0.setTeam(0);
             challengeChattingRoom0.setChallenge(challengeRepository.findById(challengeId)
                     .orElseThrow(() -> new NotFoundException("챌린지 없음")));
-            challengeChattingRoom0.setChallengeParticipantList(challengeParticipantList0.stream()
-                    .filter(participant -> participant.getTeam() == 0)
-                    .collect(Collectors.toList()));
+            for (ChallengeParticipant participant : challengeParticipantList0) {
+                if (participant.getTeam() == 0) {
+                    challengeChattingRoom0.getRoomParticipantIds().add(participant.getId());
+                }
+            }
             // 메시지들 연결 필요
             challengeChattingRoomRespository.save(challengeChattingRoom0);
 
@@ -254,9 +256,11 @@ public class ChallengeService {
             challengeChattingRoom1.setTeam(1);
             challengeChattingRoom1.setChallenge(challengeRepository.findById(challengeId)
                     .orElseThrow(() -> new NotFoundException("챌린지 없음")));
-            challengeChattingRoom1.setChallengeParticipantList(challengeParticipantList1.stream()
-                    .filter(participant -> participant.getTeam() == 1)
-                    .collect(Collectors.toList()));
+            for (ChallengeParticipant participant : challengeParticipantList1) {
+                if (participant.getTeam() == 1) {
+                    challengeChattingRoom1.getRoomParticipantIds().add(participant.getId());
+                }
+            }
             // 메시지들 연결 필요
             challengeChattingRoomRespository.save(challengeChattingRoom1);
 

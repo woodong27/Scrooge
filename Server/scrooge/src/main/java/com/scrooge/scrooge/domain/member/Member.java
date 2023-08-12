@@ -2,7 +2,7 @@ package com.scrooge.scrooge.domain.member;
 
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.challenge.ChallengeChattingMessage;
-import com.scrooge.scrooge.domain.challenge.ChallengeChattingParticipant;
+import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
 import com.scrooge.scrooge.domain.challenge.ChallengeChattingRoom;
 import com.scrooge.scrooge.domain.community.Article;
 import com.scrooge.scrooge.domain.community.ArticleComment;
@@ -96,8 +96,12 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Article> articles = new ArrayList<>();
 
-    /* 챌린지 관련 연결 */
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "member_challenge_chatting_room",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "chatting_room_id")
+    )
     private List<ChallengeChattingRoom> challengeChattingRoomList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
