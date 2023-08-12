@@ -7,6 +7,7 @@ import com.scrooge.scrooge.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +90,17 @@ public class MemberController {
         return ResponseEntity.ok(memberDto);
     }
 
+    // 닉네임 변경 API
+    @Operation(summary = "닉네임 변경 API")
+    @PutMapping("/change-nickname")
+    public ResponseEntity<MemberDto> updateNickname(@RequestHeader("Authorization")String header, @RequestBody UpdateNicknameDto updateNicknameDto) {
+        String token = extractToken(header);
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+        MemberDto memberDto = memberService.updateNickname(updateNicknameDto, memberId);
+        return ResponseEntity.ok(memberDto);
+    }
+
     @Operation(summary = "회원 탈퇴", description = "회원탈퇴 API")
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteMember(@RequestHeader("Authorization")String header) {
@@ -123,7 +135,5 @@ public class MemberController {
         GachaResponseDto gachaResponseDto = memberService.startAvatarGacha(memberId);
         return ResponseEntity.ok(gachaResponseDto);
     }
-
-
 
 }
