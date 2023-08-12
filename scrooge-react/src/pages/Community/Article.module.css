@@ -41,6 +41,9 @@
 .content {
   text-align: left;
   margin: 0 20px;
+  height: 36px;
+  white-space: pre-line;
+  overflow: hidden;
 }
 
 .line {
