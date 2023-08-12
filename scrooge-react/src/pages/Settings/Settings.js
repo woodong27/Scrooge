@@ -1,31 +1,55 @@
 import styles from "./Settings.module.css";
 import BackGround from "../../components/BackGround";
+import SettingModal from "../../components/UI/SettingModal";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 
 const Settings = ({ onLogout }) => {
+  const globalToken = useSelector((state) => state.globalToken);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
-  const handleModal = () => {
-    setShowModal(!showModal);
+  const handleLogoutModal = () => {
+    setShowLogoutModal(!showLogoutModal);
   };
 
-  const handleLogout = () => {
-    handleModal();
+  const handleWithdrawModal = () => {
+    setShowWithdrawModal(!showWithdrawModal);
   };
 
   const confirmLogout = () => {
     onLogout();
     dispatch({type: "SET_TOKEN_STRING", payload:""}); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기 
     navigate("/"); // 로그아웃 후 리디렉션: "/"
-  }
+  };
 
+  const confirmWithdraw = async () => {
+    try {
+      const resp = await fetch(`https://day6scrooge.duckdns.org/api/member/delete`,{
+        method: "DELETE",
+        headers: {
+          Authorization: globalToken,
+        },
+      });
 
+      if (resp.status === 204) {
+        // 회원탈퇴 성공 시 처리
+        confirmLogout();
+        console.log("주님..한 놈 갑니다..")
+      } else {
+        console.log("회원탈퇴 실패작");
+      }
+    } catch(error) {
+      console.error("API 호출 오류:", error);
+    }
+  };
 
   return(
     <BackGround>
@@ -54,24 +78,24 @@ const Settings = ({ onLogout }) => {
 
           <div className={styles.infoHeader}>ETC</div>
           <div className={styles.infoContent}>
-            <div onClick={handleLogout}>로그아웃</div>
-            <div>회원탈퇴</div>
+            <div onClick={handleLogoutModal}>로그아웃</div>
+            <div onClick={handleWithdrawModal}>회원탈퇴</div>
           </div>
-
-
         </div>
       </div>
       
-      {showModal && (
-        <div className={styles.modalContainer}>
-          <div className={styles.modal}>
-            <p>로그아웃 하시겠습니까?</p>
-            <div className={styles.modalBtn}>
-              <button onClick={confirmLogout}>확인</button>
-              <button onClick={handleModal}>취소</button>
-            </div>
-          </div>
-        </div>
+      {showLogoutModal && (
+        <SettingModal
+          message="로그아웃 하시겠습니까?"
+          onConfirm={confirmLogout}
+          onCancel={handleLogoutModal} />
+      )}
+
+      {showWithdrawModal && (
+        <SettingModal 
+          message="미워잉..탈퇴를 진행하시겠습니까?"
+          onConfirm={confirmWithdraw}
+          onCancel = {handleWithdrawModal} />
       )}
     </BackGround>
   );
