@@ -17,6 +17,7 @@ const Article = (props) => {
   const [bad, setBad] = useState(false);
 
   useEffect(() => {
+    console.log(props.content);
     if (showContent.length <= 40) {
       setContent(showContent);
     } else {
@@ -170,9 +171,7 @@ const Article = (props) => {
                 alt="사진"
               />
             </div>
-            <div className={styles.content}>
-              {showContent} <button></button>
-            </div>
+            <div className={styles.content}>{showContent}</div>
           </div>
         </Link>
         <div className={styles.line}>
