@@ -136,4 +136,11 @@ public class MemberController {
         return ResponseEntity.ok(gachaResponseDto);
     }
 
+    // memberId로 프로필 정보 받아오기
+    @Operation(summary = "멤버 프로필 api")
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ProfileDto> getProfile(@PathVariable("memberId")Long memberId) {
+        return ResponseEntity.ok(memberService.getProfile(memberId));
+    }
+
 }
