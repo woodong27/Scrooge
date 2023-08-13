@@ -202,7 +202,12 @@ public class MemberService {
         return gachaResponseDto;
     }
 
+    public ProfileDto getProfile(Long memberId) {
+        Member member = memberRepository.findWithRelatedEntitiesById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
+        return new ProfileDto(member);
+    }
 
 }
 
