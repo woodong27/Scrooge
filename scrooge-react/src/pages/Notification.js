@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import styles from "./Notification.module.css";
 
-const Notification = (props) => {
+const Notification = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [savedTime, setSavedTime] = useState("");
 
