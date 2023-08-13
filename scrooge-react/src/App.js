@@ -17,6 +17,9 @@ import Community from "./pages/Community/Community";
 import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
 import Chatting from "./pages/Challenge/Chatting";
+import Profile from "./pages/Profile";
+// import Settings from "./pages/Settings/Settings";
+import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
 
 function App() {
@@ -72,6 +75,8 @@ function App() {
             <Route path="/community" element={<Community />} />
             <Route path="/community/:id" element={<Detail />} />
             <Route path="/community/create" element={<NewArticle />} />
+            <Route path="/notification" element={<Notification />} />
+            <Route path="/profile" element={<Profile />} />
           </>
         )}
       </Routes>
