@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./MyPageProfile.module.css";
-import ProgressBar from "../Challenge/ProgressBar"; //Exp 바로 
+import ProgressBar from "../Challenge/ProgressBar"; 
+import MyPageExpBar from "./MyPageExpBar";
 import Report from "./Report";
 import Item from "./Item";
 
@@ -56,8 +57,8 @@ const MyPageProfile = () => {
           </ul>
         </div>
       )}
-
-      <ProgressBar />
+      <MyPageExpBar />
+      {/* <ProgressBar /> */}
       <div
         className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}
         onClick={handleEditBtn}

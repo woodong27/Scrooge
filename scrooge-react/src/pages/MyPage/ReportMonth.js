@@ -112,7 +112,7 @@ const ReportMonth = () => {
             <p className={styles.calAmt}>{amountToShow.toLocaleString()}</p>
           </div> 
           :
-          <div>🎀</div>
+          <div></div>
         ),
       };
     }) ;
