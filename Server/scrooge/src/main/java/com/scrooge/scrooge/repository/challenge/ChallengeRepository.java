@@ -10,5 +10,5 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findAllByCategory(String category);
     List<Challenge> findAllByStatus(Integer status);
 
-
+    boolean existsByIdAndChallengeMasterId(Long challengeId, Long challengeMasterId);
 }
