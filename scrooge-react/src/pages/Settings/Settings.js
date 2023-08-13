@@ -59,7 +59,7 @@ const Settings = ({ onLogout }) => {
           <div className={styles.infoHeader}>계정설정</div>
           <div className={styles.infoContent}>
             <div>프로필 변경</div>
-            <Link to=".passwordChange">
+            <Link to="/passwordChange">
               <div>비밀번호 변경</div>  
             </Link>
           </div>
@@ -95,7 +95,7 @@ const Settings = ({ onLogout }) => {
 
       {showWithdrawModal && (
         <SettingModal 
-          message="미워잉..탈퇴를 진행하시겠습니까?"
+          message="탈퇴를 진행하시겠습니까?"
           onConfirm={confirmWithdraw}
           onCancel = {handleWithdrawModal} />
       )}

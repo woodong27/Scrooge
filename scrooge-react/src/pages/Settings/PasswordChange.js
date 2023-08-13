@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { UseSelector, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import BackGround from "../../components/BackGround";
 import styles from "./PasswordChange.module.css"
 
 
 const PasswordChange = () => {
   const globalToken = useSelector((state) => state.globalToken);
+  const navigate = useNavigate();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -15,7 +18,7 @@ const PasswordChange = () => {
         currentPassword,
         newPassword
       };
-      const postDate = {
+      const postData = {
         method: "PUT",
         headers: {
           "Content-Type" : "application/json",
@@ -29,6 +32,7 @@ const PasswordChange = () => {
       if (resp.status === 200) {
         const data = await resp.json();
         setMessage("비밀번호 변경 완료");
+        navigate(-1);
       } else {
         setMessage("비밀번호 변경 실패");
       }
@@ -39,9 +43,33 @@ const PasswordChange = () => {
   };
 
   return(
-    <div className={styles.container}>
-      비번바꾸겠어요
-    </div>
+    <BackGround>
+      
+      <div className={styles.container}>
+        <button onClick={() => navigate(-1)}>이전</button>
+        <h2>비밀번호 변경</h2>
+        <div>
+          <p>현재 비밀번호</p>
+          <input
+            type="password"
+            placeholder="현재 비밀번호"
+            value={currentPassword}
+            onChange = {(e) => setCurrentPassword(e.target.value)} 
+          />
+        </div>
+        <div>
+          <p>새 비밀번호</p>
+          <input 
+            type="password"
+            placeholder="새 비밀번호"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </div>
+        <button onClick={handleChangePassword}>비밀번호 변경</button>
+        {message && <p className={styles.message}>{message}</p>}
+      </div>
+    </BackGround>
   );
 };
 
