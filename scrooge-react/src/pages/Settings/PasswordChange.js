@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BackGround from "../../components/BackGround";
 import styles from "./PasswordChange.module.css"
 
 
@@ -42,34 +41,33 @@ const PasswordChange = () => {
     }
   };
 
-  return(
-    <BackGround>
-      
-      <div className={styles.container}>
-        <button onClick={() => navigate(-1)}>이전</button>
-        <h2>비밀번호 변경</h2>
-        <div>
-          <p>현재 비밀번호</p>
-          <input
-            type="password"
-            placeholder="현재 비밀번호"
-            value={currentPassword}
-            onChange = {(e) => setCurrentPassword(e.target.value)} 
-          />
-        </div>
-        <div>
-          <p>새 비밀번호</p>
-          <input 
-            type="password"
-            placeholder="새 비밀번호"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </div>
-        <button onClick={handleChangePassword}>비밀번호 변경</button>
-        {message && <p className={styles.message}>{message}</p>}
+  return(   
+    <div className={styles.container}>
+      <button onClick={() => navigate(-1)}>이전</button>
+      <h2>비밀번호 변경</h2>
+      <div>
+        <p>현재 비밀번호</p>
+        <input
+          className={styles.pwInput}
+          type="password"
+          placeholder="현재 비밀번호"
+          value={currentPassword}
+          onChange = {(e) => setCurrentPassword(e.target.value)} 
+        />
       </div>
-    </BackGround>
+      <div>
+        <p>새 비밀번호</p>
+        <input
+          className={styles.pwInput} 
+          type="password"
+          placeholder="새 비밀번호"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+      </div>
+      <button onClick={handleChangePassword}>비밀번호 변경</button>
+      {message && <p className={styles.message}>{message}</p>}
+    </div>
   );
 };
 
