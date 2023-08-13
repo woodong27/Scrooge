@@ -4,14 +4,12 @@ import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
-import com.scrooge.scrooge.service.challenge.ChallengeService;
 import com.scrooge.scrooge.service.challenge.StartChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,8 +27,13 @@ public class StartChallengeController {
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     @Operation(summary = "사용자가 참여한 시작된 챌린지에 대한 정보 조회 API")
-    @GetMapping("/{challengeId}/start/my-challenge")
-    public ResponseEntity<MyChallengeRespDto> getMyStartedChallenge(@PathVariable("challengeId") Long challengeId) throws Exception {
+    @GetMapping("/{challengeId}/member/started")
+    public ResponseEntity<?> getMyStartedChallenge(@RequestHeader("Authorization")String header, @PathVariable("challengeId") Long challengeId) throws Exception {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
         MyChallengeRespDto myChallengeRespDto = startChallengeService.getMyStartedChallenge(challengeId);
         return ResponseEntity.ok(myChallengeRespDto);
     }
@@ -45,7 +48,7 @@ public class StartChallengeController {
         String token = extractToken(tokenHeader);
 
         if (!jwtTokenProvider.validateToken(token)) {
-            challengeStartRespDto.setStatus("Fail");
+            challengeStartRespDto.setStatus("Failed");
             challengeStartRespDto.setMessage("유효하지 않은 토큰입니다.");
             return ResponseEntity.ok(challengeStartRespDto);
         }
@@ -57,13 +60,25 @@ public class StartChallengeController {
     // 사용자 인증 현황 조회 API
     @Operation(summary = "사용자 인증 현황 조회 API")
     @GetMapping("/{challengeId}/my-challenge/my-auth")
-    public ResponseEntity<MyChallengeMyAuthDto> getMyChallengeMyAuth(@RequestHeader("Authorization") String tokenHeader,
-                                                                     @PathVariable("challengeId") Long challengeId) {
+    public ResponseEntity<MyChallengeMyAuthDto> getMyChallengeMyAuth(
+            @RequestHeader("Authorization") String tokenHeader,
+            @PathVariable("challengeId") Long challengeId) {
         String token = extractToken(tokenHeader);
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
         MyChallengeMyAuthDto myChallengeMyAuthDto = startChallengeService.getMyChallengeMyAuth(challengeId, memberId);
         return ResponseEntity.ok(myChallengeMyAuthDto);
+    }
+
+    @Operation(summary = "우리팀 인증 현황 조회")
+    @GetMapping("/{challengeId}/team-auth")
+    public ResponseEntity<?> getTeamAuths(@RequestHeader("Authorization")String header, @PathVariable("challengeId")Long challengeId) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        return ResponseEntity.ok(startChallengeService.getTeamAuths(challengeId, jwtTokenProvider.extractMemberId(token)));
     }
 
     private String extractToken (String tokenHeader){

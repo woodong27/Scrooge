@@ -20,6 +20,7 @@ import Chatting from "./pages/Challenge/Chatting";
 import Profile from "./pages/Profile";
 // import Settings from "./pages/Settings/Settings";
 import Notification from "./pages/Notification";
+import PasswordChange from "./pages/Settings/PasswordChange";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -53,6 +54,7 @@ function App() {
               path="/mypage/settings"
               element={<Settings onLogout={logoutHandler} />}
             />
+            <Route path="/passwordChange" element={<PasswordChange />} />
           </>
         ) : (
           <>
