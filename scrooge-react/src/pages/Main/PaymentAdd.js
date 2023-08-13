@@ -1,9 +1,14 @@
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import styles from "./PaymentAdd.module.css";
+import { handleTokenError } from "../../utils/commonJwtError";
 
 const PaymentAdd = ({ onCreate, date }) => {
+
+  const dispatch = useDispatch();
+
   const globalToken = useSelector((state) => state.globalToken);
 
   const usedAtInput = useRef();
@@ -67,9 +72,17 @@ const PaymentAdd = ({ onCreate, date }) => {
         Authorization: globalToken,
       },
       body: JSON.stringify(obj),
+      credentials: "include",
     };
     fetch(`https://day6scrooge.duckdns.org/api/payment-history`, postData)
-      .then((res) => res.json())
+      .then((res) =>  {
+        if(res.status === 500) {
+          const error = new Error("에러 발생");
+          error.name = "ExpiredError";
+          throw error;
+        }
+        return res.json()
+      })
       .then((data) => {
         const koreaTime = new Date(
           new Date().getTime() + 9 * 60 * 60 * 1000
@@ -87,6 +100,11 @@ const PaymentAdd = ({ onCreate, date }) => {
           paidAt: "",
           cardName: "",
         });
+      })
+      .catch((error) => {
+        if(error.name === "ExpiredError") {
+          handleTokenError(error, globalToken, dispatch);
+        }
       });
   };
 

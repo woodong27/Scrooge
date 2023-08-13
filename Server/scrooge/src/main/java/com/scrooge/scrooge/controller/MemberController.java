@@ -1,5 +1,6 @@
 package com.scrooge.scrooge.controller;
 
+import com.scrooge.scrooge.domain.member.TokenDto;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.member.MemberRepository;
@@ -12,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Tag(name = "Member", description = "Member API")
@@ -34,8 +35,8 @@ public class MemberController {
 
     @Operation(summary = "로그인 API", description = "로그인 POST")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        LoginResponseDto loginResponseDto = memberService.login(loginRequestDto, response);
         return ResponseEntity.ok(loginResponseDto);
     }
     
