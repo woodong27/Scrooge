@@ -1,4 +1,4 @@
-package com.scrooge.scrooge.controller;
+package com.scrooge.scrooge.controller.challenge;
 
 import com.scrooge.scrooge.dto.challengeDto.ImagePaths;
 import org.springframework.http.HttpEntity;
