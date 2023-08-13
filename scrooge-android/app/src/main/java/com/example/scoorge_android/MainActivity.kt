@@ -26,8 +26,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.Data
+import androidx.work.WorkManager
 import com.example.scoorge_android.network.RetrofitService
 import java.util.Calendar
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,50 +59,77 @@ class MainActivity : AppCompatActivity() {
         webview.settings.javaScriptEnabled = true
         webview.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
 
+
         val androidBridge = AndroidBridge()
         webview.addJavascriptInterface(androidBridge, "AndroidBridge")
 
+        // 알림 채널 생성 및 등록
+        createNotificationChannel()
+
         webview.webChromeClient = CustomWebChromeClient()
-        webview.loadUrl("http://10.0.2.2:3000/")
-
-
+        webview.loadUrl("https://day6scrooge.duckdns.org/")
     }
 
-    private fun sendNotification(title: String, message: String) {
-        // 알림 생성 및 설정
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-        // 알림 표시
-        val notificationManager = NotificationManagerCompat.from(this)
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
+    /* 알림 관련 */
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Test Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
-        val currentTimeMillis = Calendar.getInstance().timeInMillis
-        val notificationId = currentTimeMillis.toInt()
-        notificationManager.notify(notificationId, builder.build())
     }
+
+
+
+
     inner class WebAppInterface(private val context: Context) {
         @JavascriptInterface
         fun sendTimeToApp(time: String) {
-            // 시간을 받아서 알림 생성 로직 호출
-            sendNotification("알림", "선택한 시간: $time")
+            val selectedTime = parseSelectedTime(time) // 시간 파싱
+
+            if (selectedTime != null) {
+                // 현재 시간 가져오기
+                val currentTime = Calendar.getInstance()
+                val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
+                val currentMinute = currentTime.get(Calendar.MINUTE)
+
+                // 선택한 시간의 시와 분 분리
+                val selectedHour = selectedTime[0]
+                val selectedMinute = selectedTime[1]
+
+                Log.d("Check", currentTime.toString())
+                Log.d("Check", currentHour.toString())
+                Log.d("Check", currentMinute.toString())
+
+                Log.d("Check", selectedHour.toString())
+                Log.d("Check", selectedMinute.toString())
+
+                // 시간 비교 및 알림 생성
+                if (currentHour == selectedHour && currentMinute == selectedMinute) {
+                }
+            }
+        }
+
+
+        private fun parseSelectedTime(time: String): IntArray? {
+            try {
+                val splitTime = time.split(":")
+                val hour = splitTime[0].toInt()
+                val minute = splitTime[1].toInt()
+                return intArrayOf(hour, minute)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return null
+            }
         }
     }
+
 
 
     inner class AndroidBridge {
