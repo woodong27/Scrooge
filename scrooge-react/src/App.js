@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import Main from "./pages/Main/Main";
 import Footer from "./components/Footer";
@@ -23,7 +24,17 @@ import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
 
 function App() {
+
   const [isLogin, setIsLogin] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
+      setIsLogin(true);
+    }
+  }, []);
 
   const loginHandler = () => {
     setIsLogin(true);
