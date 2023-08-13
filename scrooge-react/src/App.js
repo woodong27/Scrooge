@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Main from "./pages/Main/Main";
@@ -25,65 +24,6 @@ import PasswordChange from "./pages/Settings/PasswordChange";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const cookies = document.cookie.split(';');
-    let refreshToken = null;
-
-    for(let i=0; i<cookies.length; i++) {
-      const cookie  = cookies[i].trim();
-      if(cookie.startsWith('refreshToken=')) {
-        refreshToken = cookie.substring('refreshToken='.length, cookie.length);
-        break;
-      }
-    }
-
-    // refreshToken이 있다면 access Token 받기
-    if(refreshToken) {
-      const refreshTokenUrl = "https://day6scrooge.duckdns.org/api/token/reissue";
-
-      const obj = {
-        refreshToken
-    }
-
-    const postData = {
-        method: "POST",
-        headers: {
-            "Content-Type" : "application/json",
-        },
-        body: JSON.stringify(obj),
-    }
-
-
-    fetch(refreshTokenUrl, postData)
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => {
-            // console.log(data.accessToken);
-            dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.accessToken });
-            setIsLogin(!!refreshToken);
-            // console.log(data.refreshToken);
-            setCookie('refreshToken', data.refreshToken, 7);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
-  })
-
-  function calculateExpiration(days) {
-    const now = new Date();
-    now.setTime(now.getTime() + days * 24 * 60 * 60 * 1000);
-    return now.toUTCString();
-  }
-
-  // 쿠키 설정 함수
-  function setCookie(name, value, days) {
-    const expires = calculateExpiration(days);
-    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
-  }
 
   const loginHandler = () => {
     setIsLogin(true);
