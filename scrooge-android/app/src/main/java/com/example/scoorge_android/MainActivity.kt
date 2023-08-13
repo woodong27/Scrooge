@@ -1,14 +1,12 @@
 package com.example.scoorge_android
 
-import android.Manifest
 import android.app.Activity
-import android.app.Notification
-import android.app.NotificationChannel
+import android.app.AlarmManager
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -18,30 +16,19 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.work.Data
-import androidx.work.WorkManager
 import com.example.scoorge_android.network.RetrofitService
 import java.util.Calendar
+import java.util.TimeZone
 
 
 class MainActivity : AppCompatActivity() {
-
-    private val CHANNEL_ID = "testChannel01"   // Channel for notification
-    private var notificationManager: NotificationManager? = null
-
     /* 이미지 업로드를 위한 변수 */
     private val FILE_CHOOSER_RESULT_CODE = 1
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,12 +46,8 @@ class MainActivity : AppCompatActivity() {
         webview.settings.javaScriptEnabled = true
         webview.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
 
-
         val androidBridge = AndroidBridge()
         webview.addJavascriptInterface(androidBridge, "AndroidBridge")
-
-        // 알림 채널 생성 및 등록
-        createNotificationChannel()
 
         webview.webChromeClient = CustomWebChromeClient()
         webview.loadUrl("https://day6scrooge.duckdns.org/")
@@ -73,63 +56,64 @@ class MainActivity : AppCompatActivity() {
 
     /* 알림 관련 */
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Test Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-
-
-
     inner class WebAppInterface(private val context: Context) {
         @JavascriptInterface
         fun sendTimeToApp(time: String) {
-            val selectedTime = parseSelectedTime(time) // 시간 파싱
-
-            if (selectedTime != null) {
-                // 현재 시간 가져오기
-                val currentTime = Calendar.getInstance()
-                val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
-                val currentMinute = currentTime.get(Calendar.MINUTE)
-
-                // 선택한 시간의 시와 분 분리
-                val selectedHour = selectedTime[0]
-                val selectedMinute = selectedTime[1]
-
-                Log.d("Check", currentTime.toString())
-                Log.d("Check", currentHour.toString())
-                Log.d("Check", currentMinute.toString())
-
-                Log.d("Check", selectedHour.toString())
-                Log.d("Check", selectedMinute.toString())
-
-                // 시간 비교 및 알림 생성
-                if (currentHour == selectedHour && currentMinute == selectedMinute) {
-                }
-            }
-        }
-
-
-        private fun parseSelectedTime(time: String): IntArray? {
-            try {
-                val splitTime = time.split(":")
-                val hour = splitTime[0].toInt()
-                val minute = splitTime[1].toInt()
-                return intArrayOf(hour, minute)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return null
-            }
+            Log.d("TAG", "sendTimeToApp")
+            val futureTimeMillis = parseTime(time)
+            scheduleNotification(futureTimeMillis)
         }
     }
 
+    private fun parseTime(time: String): Long {
+        Log.d("Test", time)
+        val parts = time.split(":")
+        val hours = parts[0].toInt()
+        val minutes = parts[1].toInt()
+        Log.d("Time", hours.toString())
+        Log.d("Time", minutes.toString())
+        val currentTimeMillis = System.currentTimeMillis()
+        val timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        val calendar = Calendar.getInstance(timeZone).apply {
+            timeInMillis = currentTimeMillis
+            set(Calendar.HOUR_OF_DAY, hours)
+            set(Calendar.MINUTE, minutes)
+            set(Calendar.SECOND, 0)
+        }
+        if (calendar.timeInMillis <= currentTimeMillis) {
+            // 선택한 시간이 현재 시간보다 이전일 경우 다음 날로 설정
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+        return calendar.timeInMillis
+    }
+
+    private fun scheduleNotification(timeInMillis: Long) {
+        Log.d("TAG", "Scheduled time: $timeInMillis")
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        // 시간을 현재 시간과 비교하여 다음날로 설정하는 부분을 추가합니다.
+        val currentTimeMillis = System.currentTimeMillis()
+        if (timeInMillis <= currentTimeMillis) {
+            // 선택한 시간이 현재 시간보다 이전일 경우 다음 날로 설정
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = timeInMillis
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                timeInMillis,
+                pendingIntent
+            )
+        }
+    }
 
 
     inner class AndroidBridge {
