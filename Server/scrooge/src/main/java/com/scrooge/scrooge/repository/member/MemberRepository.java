@@ -3,7 +3,6 @@ package com.scrooge.scrooge.repository.member;
 import com.scrooge.scrooge.domain.member.Member;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -22,7 +21,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsMemberByEmail(String email);
 
     boolean existsMemberByNickname(String nickname);
-
-    @Query("SELECT m FROM Member m where m.refreshToken = :refreshToken")
-    Member findByRefreshToken(String refreshToken);
 }
