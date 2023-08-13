@@ -17,10 +17,8 @@ public interface ChallengeAuthRepository extends JpaRepository<ChallengeAuth, Lo
     Integer countOneSuccessCount(Long challengeId);
 
     // challengeParticipantId를 통해 인증 성공 횟수 가져오기
-    @Query("SELECT COUNT(ca) FROM ChallengeAuth ca WHERE ca.challengeParticipant.id = :challengeParticipantId AND ca.isSuccess = true")
-    Integer countSuccessCountByChallengeParticipantId(Long challengeParticipantId);
+    Integer countByChallengeParticipantIdAndIsSuccess(Long challengeParticipantId, boolean isSuccess);
 
     // challengeParticipantId에 맞는 인증 데이터 모두 가져오기
-    @Query("SELECT ca FROM ChallengeAuth ca WHERE ca.challengeParticipant.id = :challengeParticipantId")
-    List<ChallengeAuth> findAllByChallengeParticipantId(Long challengeParticipantId);
+    List<ChallengeAuth> findByChallengeParticipantId(Long challengeParticipantId);
 }

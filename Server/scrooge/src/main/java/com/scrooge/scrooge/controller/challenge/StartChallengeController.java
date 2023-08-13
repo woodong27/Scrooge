@@ -4,14 +4,11 @@ import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
-import com.scrooge.scrooge.service.challenge.ChallengeService;
 import com.scrooge.scrooge.service.challenge.StartChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,8 +54,9 @@ public class StartChallengeController {
     // 사용자 인증 현황 조회 API
     @Operation(summary = "사용자 인증 현황 조회 API")
     @GetMapping("/{challengeId}/my-challenge/my-auth")
-    public ResponseEntity<MyChallengeMyAuthDto> getMyChallengeMyAuth(@RequestHeader("Authorization") String tokenHeader,
-                                                                     @PathVariable("challengeId") Long challengeId) {
+    public ResponseEntity<MyChallengeMyAuthDto> getMyChallengeMyAuth(
+            @RequestHeader("Authorization") String tokenHeader,
+            @PathVariable("challengeId") Long challengeId) {
         String token = extractToken(tokenHeader);
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
