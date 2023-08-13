@@ -9,4 +9,7 @@ public class LoginResponseDto {
 
     private Long memberId;
     private String token;
+
+    /* 리프레시 토큰 */
+    private String refreshToken;
 }
