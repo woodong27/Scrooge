@@ -3,10 +3,7 @@ package com.scrooge.scrooge.config;
 import com.scrooge.scrooge.config.jwt.JwtAuthenticationFilter;
 import com.scrooge.scrooge.config.jwt.JwtAuthenticationProvider;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.config.jwt.RefreshTokenFilter;
 import com.scrooge.scrooge.service.member.CustumMemberDetailsService;
-import com.scrooge.scrooge.service.member.MemberService;
-import com.scrooge.scrooge.service.member.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +24,6 @@ public class SecurityConfig{
     private final CustumMemberDetailsService memberDetailsService;
     private final JwtAuthenticationProvider authenticationProvider;
     private final JwtTokenProvider jwtTokenProvider;
-
-    private final TokenService tokenService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -52,8 +47,6 @@ public class SecurityConfig{
 //                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new RefreshTokenFilter(tokenService, jwtTokenProvider), JwtAuthenticationFilter.class)
                 .build();
     }
-
 }

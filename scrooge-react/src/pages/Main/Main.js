@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
@@ -8,14 +7,9 @@ import CharacterCard from "../../components/UI/CharacterCard";
 import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
-import { tokenReissue } from "../../utils/JwtTokenReissue";
-
-import { handleTokenError } from "../../utils/commonJwtError";
 
 const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
-  const dispatch = useDispatch();
-
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState();
@@ -72,8 +66,10 @@ const Main = (props) => {
   };
 
   useEffect(() => {
-    getCurrentDate();
-    console.log(globalToken);
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    setDate([month, day]);
     const postData = {
       method: "GET",
       headers: {
@@ -84,18 +80,38 @@ const Main = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        setMessage(data.message);
         setWeeklyGoal(data.weeklyGoal);
         setWeeklyConsum(data.weeklyConsum);
       })
       .catch((error) => console.log(error));
-  }, []);
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    setDate([month, day]);
-  };
+    const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+
+    getTotal(formattedDate);
+    const todayData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
+
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
+      todayData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        const index = data.findIndex((item) => !item.isSettled);
+        if (index === -1) {
+          setSettlement(true);
+        }
+        setCurrentIndex(index);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   //주간 목표 설정
   const setGoal = (goal) => {

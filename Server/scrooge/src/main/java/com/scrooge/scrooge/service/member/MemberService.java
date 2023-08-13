@@ -3,25 +3,25 @@ package com.scrooge.scrooge.service.member;
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
-import com.scrooge.scrooge.domain.member.TokenDto;
+import com.scrooge.scrooge.dto.AvatarDto;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.repository.*;
 import com.scrooge.scrooge.repository.member.MemberOwningAvatarRepository;
+import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +36,7 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public LoginResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -48,15 +48,6 @@ public class MemberService {
             LoginResponseDto loginResponseDto = new LoginResponseDto();
             loginResponseDto.setToken(jwtTokenProvider.createToken(email, member.getId()));
             loginResponseDto.setMemberId(member.getId());
-
-            member.updateRefreshToken(jwtTokenProvider.createRefreshToken());
-            loginResponseDto.setRefreshToken(member.getRefreshToken());
-
-            Cookie cookie = new Cookie("refreshToken", member.getRefreshToken());
-            cookie.setPath("/");
-            cookie.setHttpOnly(false);
-            response.addCookie(cookie);
-
             return loginResponseDto;
         } else {
             throw new NotFoundException("비밀번호가 일치하지 않습니다.");
