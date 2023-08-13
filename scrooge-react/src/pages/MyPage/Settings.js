@@ -10,7 +10,6 @@ const Settings = ({ onLogout }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    onLogout();
 
     // refreshToken 삭제
     document.cookie = `refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
@@ -18,6 +17,7 @@ const Settings = ({ onLogout }) => {
     // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기 
     dispatch({type: "SET_TOKEN_STRING", payload:""});
 
+    onLogout();
     // 로그아웃 후 리디렉션: "/"
     navigate("/")
   };
