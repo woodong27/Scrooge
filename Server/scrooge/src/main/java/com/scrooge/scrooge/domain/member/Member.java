@@ -76,6 +76,9 @@ public class Member {
     @Column(name = "joined_at")
     private LocalDateTime joinedAt;
 
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
     /* 연결 */
     // 소비 내역
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -92,4 +95,10 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Article> articles = new ArrayList<>();
+
+    /* refresh Token 갱신 */
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }
