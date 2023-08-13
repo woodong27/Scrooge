@@ -95,4 +95,10 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Article> articles = new ArrayList<>();
+
+    /* refresh Token 갱신 */
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }

@@ -74,9 +74,9 @@ const PaymentAdd = ({ onCreate, date }) => {
       body: JSON.stringify(obj),
       credentials: "include",
     };
-    fetch(`http://localhost:8081/api/payment-history`, postData)
+    fetch(`https://day6scrooge.duckdns.org/api/payment-history`, postData)
       .then((res) =>  {
-        if(!res.ok) {
+        if(res.status === 500) {
           const error = new Error("에러 발생");
           error.name = "ExpiredError";
           throw error;

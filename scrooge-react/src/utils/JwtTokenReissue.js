@@ -1,5 +1,5 @@
 export const tokenReissue = (dispatch) => {
-    const refreshTokenUrl = "http://localhost:8081/api/token/reissue";
+    const refreshTokenUrl = "https://day6scrooge.duckdns.org/api/token/reissue";
 
         // 기존 refresh Token을 쿠키에서 가져온다
 

@@ -3,7 +3,7 @@ export const handleTokenError = (error, globalToken, dispatch) => {
         // JWT 토큰 만료 에러일 경우
         console.log("JWT 토큰이 만료되었습니다.");
 
-        const refreshTokenUrl = "http://localhost:8081/api/token/reissue";
+        const refreshTokenUrl = "https://day6scrooge.duckdns.org/api/token/reissue";
 
         // 기존 refresh Token을 쿠키에서 가져온다
 

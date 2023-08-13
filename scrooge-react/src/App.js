@@ -41,7 +41,7 @@ function App() {
 
     // refreshToken이 있다면 access Token 받기
     if(refreshToken) {
-      const refreshTokenUrl = "http://localhost:8081/api/token/reissue";
+      const refreshTokenUrl = "https://day6scrooge.duckdns.org/api/token/reissue";
 
       const obj = {
         refreshToken

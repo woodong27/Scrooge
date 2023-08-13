@@ -52,7 +52,7 @@ const Login = ({ loginHandler }) => {
       body: JSON.stringify(obj),
       credentials: "include",
     };
-    fetch("http://localhost:8081/api/member/login", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/login", postData)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Login 실패");
