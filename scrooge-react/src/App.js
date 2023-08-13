@@ -30,9 +30,22 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
+    
     if (token !== null) {
-      dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
-      setIsLogin(true);
+      const expirationTime = decodeAccessToken(token);
+
+      if(expirationTime) {
+        const currentTime = Date.now();
+        if(expirationTime <= currentTime) {
+          localStorage.removeItem("token");
+        }
+      }
+
+      if(localStorage.getItem("token") !== null) {
+        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
+        setIsLogin(true);
+      }
     }
   }, []);
 
@@ -42,6 +55,23 @@ function App() {
   const logoutHandler = () => {
     setIsLogin(false);
   };
+
+  function decodeAccessToken(token) {
+    try {
+      // 토큰의 payload 부분 추출 (두 번째 부분)
+      const payload = token.split('.')[1];
+      // base64 디코딩 후 JSON 파싱
+      const decodedPayload = JSON.parse(atob(payload));
+      
+      // 'exp' 필드로부터 만료 시간 확인
+      const expirationTime = decodedPayload.exp * 1000; // 밀리초 단위
+      return expirationTime;
+    } catch (error) {
+      console.error('Failed to decode access token:', error);
+      return null;
+    }
+  }
+  
 
   return (
     <div>
