@@ -18,6 +18,7 @@ import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
 import Chatting from "./pages/Challenge/Chatting";
 // import Settings from "./pages/Settings/Settings";
+import Notification from "./pages/Notification";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -71,6 +72,7 @@ function App() {
             <Route path="/community" element={<Community />} />
             <Route path="/community/:id" element={<Detail />} />
             <Route path="/community/create" element={<NewArticle />} />
+            <Route path="/notification" element={<Notification />} />
           </>
         )}
       </Routes>
