@@ -53,8 +53,8 @@ public class Challenge {
     private LocalDateTime endDate;
 
     // 다른 엔티티와 연결
-    @ManyToOne
-    @JoinColumn(name = "challenge_master")
+    @OneToOne
+    @JoinColumn(name = "challenge_master_id")
     private Member challengeMaster;
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
