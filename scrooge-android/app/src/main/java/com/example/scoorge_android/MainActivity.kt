@@ -1,5 +1,6 @@
 package com.example.scoorge_android
 
+import android.Manifest
 import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
@@ -7,6 +8,7 @@ import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +23,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.scoorge_android.network.RetrofitService
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,18 +54,53 @@ class MainActivity : AppCompatActivity() {
             settings.javaScriptEnabled=true
         }
         webview.settings.javaScriptEnabled = true
+        webview.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
 
         val androidBridge = AndroidBridge()
         webview.addJavascriptInterface(androidBridge, "AndroidBridge")
 
         webview.webChromeClient = CustomWebChromeClient()
-        webview.loadUrl("https://day6scrooge.duckdns.org/")
-
-//        val textView = findViewById<TextView>(R.id.textView)
-//        textView.setText(MyNotificationListenerService.Test)
+        webview.loadUrl("http://10.0.2.2:3000/")
 
 
     }
+
+    private fun sendNotification(title: String, message: String) {
+        // 알림 생성 및 설정
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        // 알림 표시
+        val notificationManager = NotificationManagerCompat.from(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        val currentTimeMillis = Calendar.getInstance().timeInMillis
+        val notificationId = currentTimeMillis.toInt()
+        notificationManager.notify(notificationId, builder.build())
+    }
+    inner class WebAppInterface(private val context: Context) {
+        @JavascriptInterface
+        fun sendTimeToApp(time: String) {
+            // 시간을 받아서 알림 생성 로직 호출
+            sendNotification("알림", "선택한 시간: $time")
+        }
+    }
+
 
     inner class AndroidBridge {
         @JavascriptInterface
