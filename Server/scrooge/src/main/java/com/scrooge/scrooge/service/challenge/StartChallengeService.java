@@ -1,27 +1,24 @@
 package com.scrooge.scrooge.service.challenge;
 
-import com.scrooge.scrooge.config.FileUploadProperties;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.scrooge.scrooge.controller.challenge.ImageCompareController;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeAuth;
+import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
 import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeAuthDto;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
-import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
-import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
+import com.scrooge.scrooge.dto.challengeDto.*;
 import com.scrooge.scrooge.repository.challenge.ChallengeAuthRepository;
+import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +32,11 @@ public class StartChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeParticipantRepository challengeParticipantRepository;
     private final ChallengeAuthRepository challengeAuthRepository;
-
-    private final FileUploadProperties fileUploadProperties;
+    private final ChallengeExampleImageRepository challengeExampleImageRepository;
+    private final ImageCompareController imageCompareController;
+    private final Storage storage;
+    private static final String bucketName = "scroogestorage";
+    private static final String GCP_ADDRESS = "https://storage.googleapis.com/";
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     public MyChallengeRespDto getMyStartedChallenge(Long challengeId) throws Exception {
@@ -75,52 +75,43 @@ public class StartChallengeService {
     }
 
     // 사용자 인증 등록 API
-    public ChallengeStartRespDto createMyChallengeAuth(Long challengeId, Long memberId, MultipartFile img) {
+    public ChallengeStartRespDto createMyChallengeAuth(Long challengeId, Long memberId, MultipartFile img) throws IOException {
         ChallengeAuth challengeAuth = new ChallengeAuth();
 
-        // 일단 성공으로 가정 (추후에 AI로 검증 필요)
-        challengeAuth.setIsSuccess(true);
         //오늘 날짜로 정하기
         challengeAuth.setCreatedAt(LocalDateTime.now());
 
+        String authImageAddress = uploadAuthImage(img);
+        challengeAuth.setImgAddress(authImageAddress);
 
-        // challengeParticipantId 찾기
         ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
         challengeAuth.setChallengeParticipant(challengeParticipant);
+        // stackoverflow 에러 발생
 
-        /* 이미지 파일 등록 구현 */
-        // 업로드할 위치 설정
-        String uploadLocation = fileUploadProperties.getUploadLocation() + "/challenge/memberImg/" + challengeId;
+        List<ChallengeExampleImage> challengeExampleImageList = challengeExampleImageRepository.findByChallengeId(challengeId);
 
-        // 업로드할 사진의 파일명을 랜덤 UUID로 생성
-        String fileName = UUID.randomUUID().toString() + "_" + img.getOriginalFilename();
-        Path filePath = null;
+        for (ChallengeExampleImage challengeExampleImage : challengeExampleImageList) {
+            if (imageCompareController.sendImages(new ImagePaths(challengeExampleImage.getImgAddress(), authImageAddress)).getBody() >= 0.7) {
+                challengeAuth.setIsSuccess(true);
+                challengeAuthRepository.save(challengeAuth);
 
-        try {
-            // 업로드할 위치에 폴더가 없으면 생성
-            File uploadDir = new File(uploadLocation);
-            if(!uploadDir.exists()) {
-                uploadDir.mkdir();
+                ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
+                challengeStartRespDto.setStatus("Successed");
+                challengeStartRespDto.setMessage("챌린지 인증에 성공했습니다.");
+                return challengeStartRespDto;
             }
-
-            // 업로드할 위치에 파일 저장
-            byte[] bytes = img.getBytes();
-            filePath = Paths.get(uploadLocation + File.separator + fileName);
-            Files.write(filePath, bytes);
-
-            // 이미지 주소 저장하기
-            challengeAuth.setImgAddress(filePath.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
+        // 5개 사진에 대해서 전부 유사도가 0.8이상이 되지 못했음 -> 실패
+        challengeAuth.setIsSuccess(false);
         challengeAuthRepository.save(challengeAuth);
 
         ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
-        challengeStartRespDto.setStatus("Success");
-        challengeStartRespDto.setMessage("챌린지 인증에 성공했습니다.");
+        challengeStartRespDto.setStatus("Failed");
+        challengeStartRespDto.setMessage("챌린지 인증에 실패했습니다.");
         return challengeStartRespDto;
     }
+
 
 
     // 나의 인증 현황 조회하는 API
@@ -131,17 +122,22 @@ public class StartChallengeService {
         /* 달성률 계산하기 */
         // 1. challengeId와 memberId에 해당하는 challengeParticipant를 가져온다.
         ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
+
         // 2. 현재 challengeParticipant가 성공한 횟수를 가져온다.
-        Integer curSuccessCount = challengeAuthRepository.countSuccessCountByChallengeParticipantId(challengeParticipant.getId());
+        Integer currentSuccessCount = challengeAuthRepository.countByChallengeParticipantIdAndIsSuccess(challengeParticipant.getId(), true);
+
         // 3. challengeId에 해당하는 challenge의 총 인증해야하는 횟수를 가져온다.
-        Integer totalAuthCount = challengeRepository.findById(challengeId).get().getTotalAuthCount();
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다."));
+        Integer totalAuthCount = challenge.getTotalAuthCount();
+
         //4. 현재 달성률을 계산한다.
-        double currentCompletionRate = (double)curSuccessCount / totalAuthCount * 100;
+        double currentCompletionRate = (double)currentSuccessCount / totalAuthCount * 100;
         myChallengeMyAuthDto.setCurrentCompletionRate((int)currentCompletionRate);
 
         /* challengeAuth 목록 리턴하기 */
         // 1. challengeParticipant ID에 해당하는 challengeAuthList를 가져오기
-        List<ChallengeAuth> challengeAuthList = challengeAuthRepository.findAllByChallengeParticipantId(challengeParticipant.getId());
+        List<ChallengeAuth> challengeAuthList = challengeAuthRepository.findByChallengeParticipantId(challengeParticipant.getId());
         // 2. 직렬화,,
         myChallengeMyAuthDto.setChallengeAuthList(challengeAuthList.stream()
                 .map(ChallengeAuthDto::new)
@@ -149,6 +145,17 @@ public class StartChallengeService {
 
         return myChallengeMyAuthDto;
     }
+
+    // 우리팀의 챌린지 인증 현황 가져오기
+    public List<TeamMemberAuths> getTeamAuths(Long challengeId, Long memberId) {
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
+        Integer team = challengeParticipant.getTeam();
+
+        return challengeParticipantRepository.findByChallengeIdAndTeam(challengeId, team).stream()
+                .map(TeamMemberAuths::new)
+                .collect(Collectors.toList());
+    }
+
 
     // endDate의 시간이 지나면 자동으로 status 3으로 변경, 즉 상태가 종료됨으로 변경된다.
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
@@ -166,6 +173,21 @@ public class StartChallengeService {
                 challengeRepository.save(challenge);
             }
         }
+    }
+
+    // Google Cloud platform에 이미지 업로드
+    public String uploadAuthImage(MultipartFile img) throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String ext = img.getContentType();
+
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, uuid)
+                .setContentType(ext)
+                .build();
+
+        storage.create(blobInfo, img.getInputStream());
+
+        String imgAddress = GCP_ADDRESS + bucketName + "/" + uuid;
+        return imgAddress;
     }
 
 }

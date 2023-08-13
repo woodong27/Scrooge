@@ -16,7 +16,14 @@ public class QuestDataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        insertInitialData();
+        if(checkIfInitialDataExists()) {
+            insertInitialData();
+        }
+    }
+
+    private boolean checkIfInitialDataExists() {
+        Long count = (Long) entityManager.createQuery("SELECT COUNT(q) FROM Quest q").getSingleResult();
+        return count == 0;
     }
 
     private void insertInitialData() {

@@ -3,6 +3,7 @@ package com.scrooge.scrooge.controller.challenge;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.challengeDto.*;
+import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import com.scrooge.scrooge.service.challenge.ChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Tag(name="Challenge", description = "챌린지 API")
 @RestController
@@ -25,19 +25,23 @@ import java.util.stream.Collectors;
 public class ChallengeController {
 
     private final ChallengeService challengeService;
-
     private final JwtTokenProvider jwtTokenProvider;
+    private final ChallengeParticipantRepository challengeParticipantRepository;
     private final ChallengeRepository challengeRepository;
 
     // 챌린지를 생성하는 API
     @Operation(summary = "챌린지 생성")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ChallengeDetailDto> createChallenge(
+    public ResponseEntity<?> createChallenge(
             @RequestHeader("Authorization") String tokenHeader,
             @RequestPart("info") String info,
             @RequestParam("images") List<MultipartFile> images) throws IOException {
 
         String token = extractToken(tokenHeader);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
         Long memberId = jwtTokenProvider.extractMemberId(token);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -93,13 +97,28 @@ public class ChallengeController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
         }
 
-        return ResponseEntity.ok(challengeService.participateInChallenge(challengeId, jwtTokenProvider.extractMemberId(token)));
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        if (challengeParticipantRepository.existsByChallengeIdAndMemberId(challengeId, memberId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 참여한 챌린지 입니다.");
+        }
+
+        return ResponseEntity.ok(challengeService.participateInChallenge(challengeId, memberId));
     }
 
     // 챌린지 마스터가 챌린지를 시작하는 API
     @Operation(summary = "챌린지 마스터가 챌린지를 시작하는 API")
     @PutMapping("/{challengeId}/start")
-    public ResponseEntity<ChallengeStartRespDto> startChallenge(@PathVariable("challengeId") Long challengeId) {
+    public ResponseEntity<?> startChallenge(@RequestHeader("Authorization")String header, @PathVariable("challengeId") Long challengeId) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        if (!challengeRepository.existsByIdAndChallengeMasterId(challengeId, jwtTokenProvider.extractMemberId(token))) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("챌린지 마스터만 챌린지를 시작할 수 있습니다.");
+        }
+
         ChallengeStartRespDto challengeStartRespDto = challengeService.startChallenge(challengeId);
         return ResponseEntity.ok(challengeStartRespDto);
     }

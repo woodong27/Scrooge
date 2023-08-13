@@ -36,7 +36,7 @@ const AllChallenge = () => {
       <div className={styles.list}>
         {data.map((e) => {
           if (selectedCategory === "전체" || selectedCategory === e.category) {
-            return (
+            return e.status === 1 ? (
               <ChallengeItem
                 key={e.id}
                 id={e.id}
@@ -45,8 +45,11 @@ const AllChallenge = () => {
                 minParticipants={e.minParticipants}
                 period={e.period}
                 category={e.category}
+                mainImg={e.mainImageAddress}
                 text="참여하기"
               ></ChallengeItem>
+            ) : (
+              ""
             );
           }
         })}

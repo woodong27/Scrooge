@@ -1,44 +1,55 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
 
 const NewArticle = ({}) => {
-  const formData = new FormData();
   const globalToken = useSelector((state) => state.globalToken);
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const formData = new FormData();
   const handleImageChange = (event) => {
     const selimg = event.target.files[0];
     setSelectedImage(selimg);
   };
 
   const handleSend = () => {
+    if (content.length < 5) {
+      const errorDiv = document.getElementById("errorcontent");
+      errorDiv.style.display = "block";
+      return;
+    }
     formData.append("content", content);
     formData.append("img", selectedImage);
 
     const postData = {
       method: "POST",
       headers: {
-        // "Content-Type": "multipart/form-data",
         Authorization: globalToken,
       },
       body: formData,
     };
 
     fetch(`https://day6scrooge.duckdns.org/api/community`, postData)
-      .then((res) => res.json())
+      .then((res) => {
+        res.text();
+        if (!res.ok) {
+          throw new Error("글 등록 실패");
+        }
+      })
       .then((data) => {
-        console.log(data);
         setContent("");
+        navigate("/community");
       })
       .catch((error) => {
-        console.log(error);
+        const errorDiv = document.getElementById("errorphoto");
+        errorDiv.style.display = "block";
       });
   };
 
@@ -48,6 +59,7 @@ const NewArticle = ({}) => {
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
         color={"#A2D660"}
+        show={"true"}
       />
 
       <div className={styles.box}>
@@ -89,6 +101,12 @@ const NewArticle = ({}) => {
         <div className={styles.upload} onClick={handleSend}>
           게시하기
         </div>
+      </div>
+      <div id="errorcontent" className={styles.error}>
+        본문이 너무 짧습니다.
+      </div>
+      <div id="errorphoto" className={styles.error}>
+        사진을 첨부해주세요.
       </div>
     </div>
   );

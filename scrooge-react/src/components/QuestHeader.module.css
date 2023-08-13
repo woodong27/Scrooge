@@ -14,3 +14,9 @@
   display: flex;
   align-items: center;
 }
+
+.back {
+  position: absolute;
+  top: 50px;
+  left: 30px;
+}

@@ -22,4 +22,8 @@ public interface ChallengeParticipantRepository extends JpaRepository<ChallengeP
 
    // memberId와 challengeId로 challengeParticipant 찾기
     ChallengeParticipant findByMemberIdAndChallengeId(Long memberId, Long challengeId);
+
+    List<ChallengeParticipant> findByChallengeIdAndTeam(Long challengeId, Integer team);
+
+    boolean existsByChallengeIdAndMemberId(Long challengeId, Long memberId);
 }

@@ -11,6 +11,7 @@ import com.scrooge.scrooge.repository.member.MemberOwningAvatarRepository;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -149,6 +150,16 @@ public class MemberService {
         return new MemberDto(member);
     }
 
+    // 닉네임을 변경하는 API
+    public MemberDto updateNickname(UpdateNicknameDto updateNicknameDto, Long memberId) {
+        Member member = memberRepository.findWithRelatedEntitiesById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+
+        member.setNickname(updateNicknameDto.getNickname());
+        memberRepository.save(member);
+        return new MemberDto(member);
+    }
+
     // 아바타 가챠를 구현하는 API
     public GachaResponseDto startAvatarGacha(Long memberId) throws Exception {
         // 0. GachaResponseDto 객체 생성
@@ -200,6 +211,12 @@ public class MemberService {
         return gachaResponseDto;
     }
 
+    public ProfileDto getProfile(Long memberId) {
+        Member member = memberRepository.findWithRelatedEntitiesById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+
+        return new ProfileDto(member);
+    }
 
 }
 

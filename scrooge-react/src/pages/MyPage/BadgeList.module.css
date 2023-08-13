@@ -1,11 +1,24 @@
-.chartContainer{
+.chartContainer {
   margin: 0 0 4.625rem;
   display: flex;
   flex-wrap: wrap;
 }
 
-.badgeImage{
+.badgeImage {
   width: 4.25rem;
   height: 4.25rem;
   margin: 1.25rem;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 1.2rem;
+}
+
+.img {
+  margin: 1rem;
+  padding: 1.6rem;
+  border-radius: 40%;
+  background-color: var(--input);
 }
