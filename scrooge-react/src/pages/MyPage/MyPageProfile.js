@@ -28,7 +28,7 @@ const MyPageProfile = () => {
         setData(data);
       })
       .catch((error) => console.log(error));
-  },  []);
+  }, []);
 
 
   return(

@@ -17,7 +17,7 @@ import Community from "./pages/Community/Community";
 import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
 import Chatting from "./pages/Challenge/Chatting";
-// import Settings from "./pages/Settings/Settings";
+import PasswordChange from "./pages/Settings/PasswordChange";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -51,6 +51,7 @@ function App() {
               path="/mypage/settings"
               element={<Settings onLogout={logoutHandler} />}
             />
+            <Route path="/passwordChange" element={<PasswordChange />} />
           </>
         ) : (
           <>
