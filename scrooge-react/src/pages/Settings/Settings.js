@@ -25,6 +25,7 @@ const Settings = ({ onLogout }) => {
   };
 
   const confirmLogout = () => {
+    document.cookie = `refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     onLogout();
     dispatch({type: "SET_TOKEN_STRING", payload:""}); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기 
     navigate("/"); // 로그아웃 후 리디렉션: "/"
