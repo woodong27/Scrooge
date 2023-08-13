@@ -18,7 +18,7 @@ import java.util.Map;
 public class JwtTokenProvider {
 
     @Value("${jwt.expiration}")
-    private static final Long expirationTime = 1000L * 60/* * 60 * 24 * 7*/;
+    private static final Long expirationTime = 1000L * 60 * 60 * 24 * 7;
     private final Key key;
 
     public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
