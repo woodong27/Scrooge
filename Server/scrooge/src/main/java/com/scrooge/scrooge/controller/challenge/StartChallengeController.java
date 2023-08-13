@@ -27,8 +27,13 @@ public class StartChallengeController {
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     @Operation(summary = "사용자가 참여한 시작된 챌린지에 대한 정보 조회 API")
-    @GetMapping("/{challengeId}/start/my-challenge")
-    public ResponseEntity<MyChallengeRespDto> getMyStartedChallenge(@PathVariable("challengeId") Long challengeId) throws Exception {
+    @GetMapping("/{challengeId}/member/started")
+    public ResponseEntity<?> getMyStartedChallenge(@RequestHeader("Authorization")String header, @PathVariable("challengeId") Long challengeId) throws Exception {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
         MyChallengeRespDto myChallengeRespDto = startChallengeService.getMyStartedChallenge(challengeId);
         return ResponseEntity.ok(myChallengeRespDto);
     }
@@ -43,7 +48,7 @@ public class StartChallengeController {
         String token = extractToken(tokenHeader);
 
         if (!jwtTokenProvider.validateToken(token)) {
-            challengeStartRespDto.setStatus("Fail");
+            challengeStartRespDto.setStatus("Failed");
             challengeStartRespDto.setMessage("유효하지 않은 토큰입니다.");
             return ResponseEntity.ok(challengeStartRespDto);
         }

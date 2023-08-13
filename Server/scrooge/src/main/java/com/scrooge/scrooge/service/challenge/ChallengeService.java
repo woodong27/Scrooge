@@ -2,7 +2,6 @@ package com.scrooge.scrooge.service.challenge;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
 import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
@@ -11,7 +10,6 @@ import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
-import com.scrooge.scrooge.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,13 +30,9 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
     private final ChallengeParticipantRepository challengeParticipantRepository;
-
-    private final FileUploadProperties fileUploadProperties;
-    private final UploadService uploadService;
-
     private final Storage storage;
-    private final String bucketName = "scroogestorage";
-    private final String GCP_ADDRESS = "https://storage.googleapis.com/";
+    private static final String bucketName = "scroogestorage";
+    private static final String GCP_ADDRESS = "https://storage.googleapis.com/";
 
     // 챌린지 생성 API
     @Transactional

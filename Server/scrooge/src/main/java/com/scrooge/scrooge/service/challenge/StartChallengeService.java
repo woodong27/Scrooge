@@ -2,7 +2,6 @@ package com.scrooge.scrooge.service.challenge;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.controller.challenge.ImageCompareController;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeAuth;
@@ -34,13 +33,10 @@ public class StartChallengeService {
     private final ChallengeParticipantRepository challengeParticipantRepository;
     private final ChallengeAuthRepository challengeAuthRepository;
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
-
-    private final FileUploadProperties fileUploadProperties;
     private final ImageCompareController imageCompareController;
-
     private final Storage storage;
-    private final String bucketName = "scroogestorage";
-    private final String GCP_ADDRESS = "https://storage.googleapis.com/";
+    private static final String bucketName = "scroogestorage";
+    private static final String GCP_ADDRESS = "https://storage.googleapis.com/";
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     public MyChallengeRespDto getMyStartedChallenge(Long challengeId) throws Exception {
