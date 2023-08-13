@@ -53,7 +53,7 @@ public class StartChallengeController {
 
     // 사용자 인증 현황 조회 API
     @Operation(summary = "사용자 인증 현황 조회 API")
-    @GetMapping("/{challengeId}/auth")
+    @GetMapping("/{challengeId}/my-challenge/my-auth")
     public ResponseEntity<MyChallengeMyAuthDto> getMyChallengeMyAuth(
             @RequestHeader("Authorization") String tokenHeader,
             @PathVariable("challengeId") Long challengeId) {

@@ -134,7 +134,7 @@ public class StartChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다."));
         Integer totalAuthCount = challenge.getTotalAuthCount();
-        
+
         //4. 현재 달성률을 계산한다.
         double currentCompletionRate = (double)currentSuccessCount / totalAuthCount * 100;
         myChallengeMyAuthDto.setCurrentCompletionRate((int)currentCompletionRate);
