@@ -50,7 +50,6 @@ const Login = ({ loginHandler }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(obj),
-      credentials: "include",
     };
     fetch("https://day6scrooge.duckdns.org/api/member/login", postData)
       .then((res) => {
