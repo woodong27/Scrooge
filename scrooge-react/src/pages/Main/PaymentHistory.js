@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import PaymentItem from "./PaymentItem";
 import PaymentAdd from "./PaymentAdd";
@@ -15,6 +16,8 @@ const PaymentHistory = ({
   handleSetTrue,
   handleSetFalse,
 }) => {
+  const navigate = useNavigate();
+
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
   const [data, setData] = useState();
@@ -198,10 +201,15 @@ const PaymentHistory = ({
     // .then(console.log);
   };
 
+  const handlePush = () => {
+    navigate("/notification");
+  };
+
   return (
     <div>
       <div className={styles.empty}>
         <button onClick={consumFalseHandler}>홈 으로</button>
+        <button onClick={handlePush}>알림 시간</button>
       </div>
       <div className={styles.card}>
         <div className={styles.title}>

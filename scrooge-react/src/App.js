@@ -55,6 +55,7 @@ function App() {
               element={<Settings onLogout={logoutHandler} />}
             />
             <Route path="/passwordChange" element={<PasswordChange />} />
+            <Route path="/notification" element={<Notification />} />
           </>
         ) : (
           <>
