@@ -150,6 +150,16 @@ public class StartChallengeService {
         return myChallengeMyAuthDto;
     }
 
+    // 우리팀의 챌린지 인증 현황 가져오기
+    public List<TeamMemberAuths> getTeamAuths(Long challengeId, Long memberId) {
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
+        Integer team = challengeParticipant.getTeam();
+
+        return challengeParticipantRepository.findByChallengeIdAndTeam(challengeId, team).stream()
+                .map(TeamMemberAuths::new)
+                .collect(Collectors.toList());
+    }
+
 
     // endDate의 시간이 지나면 자동으로 status 3으로 변경, 즉 상태가 종료됨으로 변경된다.
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행

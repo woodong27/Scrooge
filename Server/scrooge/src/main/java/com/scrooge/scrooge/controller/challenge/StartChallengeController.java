@@ -8,6 +8,7 @@ import com.scrooge.scrooge.service.challenge.StartChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +63,17 @@ public class StartChallengeController {
 
         MyChallengeMyAuthDto myChallengeMyAuthDto = startChallengeService.getMyChallengeMyAuth(challengeId, memberId);
         return ResponseEntity.ok(myChallengeMyAuthDto);
+    }
+
+    @Operation(summary = "우리팀 인증 현황 조회")
+    @GetMapping("/{challengeId}/team-auth")
+    public ResponseEntity<?> getTeamAuths(@RequestHeader("Authorization")String header, @PathVariable("challengeId")Long challengeId) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        return ResponseEntity.ok(startChallengeService.getTeamAuths(challengeId, jwtTokenProvider.extractMemberId(token)));
     }
 
     private String extractToken (String tokenHeader){
