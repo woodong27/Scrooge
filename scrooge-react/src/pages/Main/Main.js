@@ -79,6 +79,7 @@ const Main = (props) => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setData(data);
         setMessage(data.message);
         setWeeklyGoal(data.weeklyGoal);

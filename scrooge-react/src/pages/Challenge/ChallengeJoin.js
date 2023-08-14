@@ -13,6 +13,7 @@ const ChallengeJoin = () => {
 
   const [data, setData] = useState([]);
   const [makeToast, setMakeToast] = useState(false);
+  const [isJoin, setIsJoin] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -64,11 +65,19 @@ const ChallengeJoin = () => {
       .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
       .then((response) => {
         setData(response.data);
+        console.log(data);
+
+        for (const id of response.data.participantIds) {
+          if (memberId === id) {
+            setIsJoin(true);
+            break;
+          }
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [data]);
+  }, []);
 
   return (
     <div className={styles.layout}>
@@ -111,16 +120,13 @@ const ChallengeJoin = () => {
         </div>
       ) : (
         <div className={styles.primary} onClick={joinChallengeHandler}>
-          챌린지에 도전할래요!
+          {isJoin ? "이미 참여 중이에요" : "챌린지에 도전할래요!"}
           <div className={styles.shadow}></div>
         </div>
       )}
 
       {makeToast && (
-        <Toast
-          setToast={setMakeToast}
-          text="인원이 짝수가 되어야 시작 가능해요!"
-        />
+        <Toast setToast={setMakeToast} text="시작 가능한 인원이 부족해요!" />
       )}
     </div>
   );
