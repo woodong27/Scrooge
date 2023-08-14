@@ -12,7 +12,7 @@ const Main = (props) => {
   const globalToken = useSelector((state) => state.globalToken);
 
   const [data, setData] = useState([]);
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
   const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
