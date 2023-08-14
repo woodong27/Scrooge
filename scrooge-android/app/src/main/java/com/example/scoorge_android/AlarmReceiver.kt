@@ -10,14 +10,17 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class AlarmReceiver : BroadcastReceiver() {
     private var context: Context? = null
     private val channelId = "alarm_channel"
 
     override fun onReceive(context: Context, intent: Intent) {
+
         Log.d("Tag", "나와주라... 주")
         this.context = context
         val busRouteIntent = Intent(context, MainActivity::class.java)
