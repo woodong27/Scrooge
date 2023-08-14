@@ -3,8 +3,8 @@ import React, { Fragment, useState, useEffect } from "react";
 import styles from "./Notification.module.css";
 
 const Notification = ({ handleAlarmClose }) => {
-  const [selectedTime, setSelectedTime] = useState("");
-  const [savedTime, setSavedTime] = useState("");
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [savedTime, setSavedTime] = useState(null);
 
   //로컬에 저장된 시간 불러오기
   useEffect(() => {
