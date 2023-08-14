@@ -72,7 +72,6 @@ const CreateChallenge = () => {
       })
       .then((resp) => {
         navigate("/challenge", { state: "성공" });
-        console.log(resp);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

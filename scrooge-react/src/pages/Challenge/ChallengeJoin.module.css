@@ -125,6 +125,20 @@
   background-color: white;
 }
 
+.primary2 {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  font-size: 24px;
+  background-color: white;
+}
+
 .shadow {
   z-index: -1;
   position: absolute;
