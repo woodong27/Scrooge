@@ -12,4 +12,7 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
     List<PaymentHistory> findByMemberId(Long memberId);
     List<PaymentHistory> findByMemberIdAndPaidAtBetween(Long memberId, LocalDateTime todayStart, LocalDateTime todayEnd);
     PaymentHistory findByIdAndMemberId(Long paymentHistoryId, Long memberId);
+
+    @Query("SELECT COUNT(pmh) FROM PaymentHistory pmh WHERE pmh.member.id = :memberId")
+    Integer countByMemberId(Long memberId);
 }
