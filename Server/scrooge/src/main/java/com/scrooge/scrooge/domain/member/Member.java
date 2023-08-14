@@ -71,7 +71,7 @@ public class Member {
     private String refreshToken;
 
     @Column(name = "is_settlement_done")
-    private boolean isSettlementDone = false;
+    private Boolean isSettlementDone = false;
 
     /* 연결 */
     // 소비 내역
