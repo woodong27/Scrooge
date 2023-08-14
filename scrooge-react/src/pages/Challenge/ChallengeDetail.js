@@ -7,26 +7,29 @@ import backImg from "../../assets/back.png";
 import styles from "./ChallengeDetail.module.css";
 import ProgressBar from "./ProgressBar";
 import Chips from "../../components/UI/Chips";
-import AuthProgress from "./AuthProgress";
 import AuthModal from "./AuthModal";
+import MyAuthProcess from "./MyAuthProcess";
+import TeamAuthProcess from "./TeamAuthProcess";
 
 const ChallengeDetail = () => {
   const globalToken = useSelector((state) => state.globalToken);
+  const memberId = useSelector((state) => state.memberId);
   const headers = { Authorization: globalToken };
   const params = useParams();
 
   const [data, setData] = useState([]);
   const [authImg, setAuthImg] = useState([]);
-  const imgRef = useRef();
   const [showModal, setShowModal] = useState(false);
   const [selectChip, setSelectChip] = useState("나의 인증 현황");
+  const [isTeamZero, setIsTeamZero] = useState();
+  const imgRef = useRef();
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   const formData = new FormData();
 
   useEffect(() => {
     axios
       .get(
-        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/member/started`,
+        `https://day6scrooge.duckdns.org/api/challenge/${params.id}/started`,
         { headers }
       )
       .then((response) => {
@@ -59,7 +62,15 @@ const ChallengeDetail = () => {
             }));
             setAuthImg(response.data.challengeExampleImageDtoList);
 
-            console.log(authImg);
+            for (let i = 0; i < response.data.participantIds.length; i++) {
+              if (response.data.participantIds[i] === memberId) {
+                if (i % 2 === 0) setIsTeamZero(true);
+                else setIsTeamZero(false);
+                break;
+              }
+            }
+
+            console.log(data);
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
@@ -90,9 +101,7 @@ const ChallengeDetail = () => {
           },
         }
       )
-      .then((response) => {
-        console.log(response);
-      })
+      .then(() => {})
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
@@ -122,10 +131,17 @@ const ChallengeDetail = () => {
       </div>
       <div className={styles.fight_container}>
         <div>대전 현황</div>
-        <ProgressBar
-          ally={data.teamOneSuccessCount + 1}
-          enemy={data.teamZeroSuccessCount + 1}
-        ></ProgressBar>
+        {isTeamZero ? (
+          <ProgressBar
+            ally={data.teamZeroAuthCount}
+            enemy={data.teamOneAuthCount}
+          ></ProgressBar>
+        ) : (
+          <ProgressBar
+            ally={data.teamOneAuthCount}
+            enemy={data.teamZeroAuthCount}
+          ></ProgressBar>
+        )}
       </div>
       <hr></hr>
       <div className={styles.auth_condition}>
@@ -138,70 +154,12 @@ const ChallengeDetail = () => {
       </div>
 
       {selectChip === "나의 인증 현황" ? (
-        <div>
-          <AuthProgress per={60}></AuthProgress>
-          <div className={styles.my_auth_container}>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>1</div>
-              <div>8/3</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>2</div>
-              <div>8/4</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>3</div>
-              <div>8/5</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>4</div>
-              <div>8/6</div>
-              <div className={styles.fail}>실패</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>5</div>
-              <div>8/7</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>5</div>
-              <div>8/7</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>5</div>
-              <div>8/7</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-            <div className={styles.my_auth_middle}>
-              <div className={styles.idx}>5</div>
-              <div>8/7</div>
-              <div className={styles.succes}>성공</div>
-              <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            </div>
-          </div>
-        </div>
+        <MyAuthProcess token={globalToken}></MyAuthProcess>
       ) : (
-        <div>
-          <AuthProgress per={60}></AuthProgress>
-          <div className={styles.img_container}>
-            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-            <img src={`${process.env.PUBLIC_URL}/images/dummy.png`} alt="" />
-          </div>
-        </div>
+        <TeamAuthProcess
+          token={globalToken}
+          isTeamZero={isTeamZero}
+        ></TeamAuthProcess>
       )}
 
       <div className={styles.foot}>
