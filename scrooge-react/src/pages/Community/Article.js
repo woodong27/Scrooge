@@ -170,9 +170,7 @@ const Article = (props) => {
                 alt="사진"
               />
             </div>
-            <div className={styles.content}>
-              {showContent} <button></button>
-            </div>
+            <div className={styles.content}>{showContent}</div>
           </div>
         </Link>
         <div className={styles.line}>

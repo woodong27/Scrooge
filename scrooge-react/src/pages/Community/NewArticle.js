@@ -95,8 +95,7 @@ const NewArticle = ({}) => {
             type="file"
             accept="image/*"
             style={{ display: "none" }}
-            onChange={handleImageChange}
-          ></input>
+            onChange={handleImageChange}></input>
         </div>
 
         <div className={styles.upload} onClick={handleSend}>

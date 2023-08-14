@@ -2,8 +2,7 @@ package com.scrooge.scrooge.service.challenge;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.scrooge.scrooge.config.FileUploadProperties;
-import com.scrooge.scrooge.controller.ImageCompareController;
+import com.scrooge.scrooge.controller.challenge.ImageCompareController;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeAuth;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
@@ -14,19 +13,13 @@ import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
-//import org.opencv.imgcodecs.Imgcodecs;
-//import org.opencv.imgproc.Imgproc;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,13 +33,10 @@ public class StartChallengeService {
     private final ChallengeParticipantRepository challengeParticipantRepository;
     private final ChallengeAuthRepository challengeAuthRepository;
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
-
-    private final FileUploadProperties fileUploadProperties;
     private final ImageCompareController imageCompareController;
-
     private final Storage storage;
-    private final String bucketName = "scroogestorage";
-    private final String GCP_ADDRESS = "https://storage.googleapis.com/";
+    private static final String bucketName = "scroogestorage";
+    private static final String GCP_ADDRESS = "https://storage.googleapis.com/";
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     public MyChallengeRespDto getMyStartedChallenge(Long challengeId) throws Exception {
@@ -101,12 +91,12 @@ public class StartChallengeService {
         List<ChallengeExampleImage> challengeExampleImageList = challengeExampleImageRepository.findByChallengeId(challengeId);
 
         for (ChallengeExampleImage challengeExampleImage : challengeExampleImageList) {
-            if (imageCompareController.sendImages(new ImagePaths(challengeExampleImage.getImgAddress(), authImageAddress)).getBody() > 0.8) {
+            if (imageCompareController.sendImages(new ImagePaths(challengeExampleImage.getImgAddress(), authImageAddress)).getBody() >= 0.7) {
                 challengeAuth.setIsSuccess(true);
                 challengeAuthRepository.save(challengeAuth);
 
                 ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
-                challengeStartRespDto.setStatus("Success");
+                challengeStartRespDto.setStatus("Successed");
                 challengeStartRespDto.setMessage("챌린지 인증에 성공했습니다.");
                 return challengeStartRespDto;
             }
@@ -132,23 +122,38 @@ public class StartChallengeService {
         /* 달성률 계산하기 */
         // 1. challengeId와 memberId에 해당하는 challengeParticipant를 가져온다.
         ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
+
         // 2. 현재 challengeParticipant가 성공한 횟수를 가져온다.
-        Integer curSuccessCount = challengeAuthRepository.countSuccessCountByChallengeParticipantId(challengeParticipant.getId());
+        Integer currentSuccessCount = challengeAuthRepository.countByChallengeParticipantIdAndIsSuccess(challengeParticipant.getId(), true);
+
         // 3. challengeId에 해당하는 challenge의 총 인증해야하는 횟수를 가져온다.
-        Integer totalAuthCount = challengeRepository.findById(challengeId).get().getTotalAuthCount();
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다."));
+        Integer totalAuthCount = challenge.getTotalAuthCount();
+
         //4. 현재 달성률을 계산한다.
-        double currentCompletionRate = (double)curSuccessCount / totalAuthCount * 100;
+        double currentCompletionRate = (double)currentSuccessCount / totalAuthCount * 100;
         myChallengeMyAuthDto.setCurrentCompletionRate((int)currentCompletionRate);
 
         /* challengeAuth 목록 리턴하기 */
         // 1. challengeParticipant ID에 해당하는 challengeAuthList를 가져오기
-        List<ChallengeAuth> challengeAuthList = challengeAuthRepository.findAllByChallengeParticipantId(challengeParticipant.getId());
+        List<ChallengeAuth> challengeAuthList = challengeAuthRepository.findByChallengeParticipantId(challengeParticipant.getId());
         // 2. 직렬화,,
         myChallengeMyAuthDto.setChallengeAuthList(challengeAuthList.stream()
                 .map(ChallengeAuthDto::new)
                 .collect(Collectors.toList()));
 
         return myChallengeMyAuthDto;
+    }
+
+    // 우리팀의 챌린지 인증 현황 가져오기
+    public List<TeamMemberAuths> getTeamAuths(Long challengeId, Long memberId) {
+        ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challengeId);
+        Integer team = challengeParticipant.getTeam();
+
+        return challengeParticipantRepository.findByChallengeIdAndTeam(challengeId, team).stream()
+                .map(TeamMemberAuths::new)
+                .collect(Collectors.toList());
     }
 
 
