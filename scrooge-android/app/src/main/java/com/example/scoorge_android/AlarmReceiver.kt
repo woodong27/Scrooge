@@ -20,8 +20,6 @@ class AlarmReceiver : BroadcastReceiver() {
     private val channelId = "alarm_channel"
 
     override fun onReceive(context: Context, intent: Intent) {
-
-        Log.d("Tag", "나와주라... 주")
         this.context = context
         val busRouteIntent = Intent(context, MainActivity::class.java)
         val stackBuilder = TaskStackBuilder.create(context)
@@ -46,7 +44,7 @@ class AlarmReceiver : BroadcastReceiver() {
             )
             notificationManager.createNotificationChannel(channel)
         }
-        val id = System.currentTimeMillis().toInt()
+        val id = 6
         notificationManager.notify(id, notificationBuilder.build())
     }
 }
