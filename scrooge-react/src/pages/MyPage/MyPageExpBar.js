@@ -35,7 +35,7 @@ const MyPageExpBar = ({ exp, maxExp }) => {
 
       </div>
       <p className={styles.expText}>
-        경험치 : {exp} / {maxExp}
+        Exp : {exp} / {maxExp}
       </p>
     </div>
   );

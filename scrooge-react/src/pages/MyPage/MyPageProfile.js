@@ -10,22 +10,9 @@ const MyPageProfile = () => {
 
   const [data, setData] = useState([]); 
   const [showItemList, setShowItemList] = useState(false);
-  const [exp, setExp] = useState(50);
-  const maxExp = 100;
-
-  // 경험치 증가
-  const increaseExp = () => {
-    if (exp === maxExp) {
-      setExp(0);
-      setLevelId((prevLevelId) => prevLevelId + 1);
-    } else {
-      setExp((prevExp) => 
-        prevExp < maxExp ? prevExp + 50 : prevExp
-      );
-    };
-  }
-  
   const [levelId, setLevelId] = useState(1);
+  const [exp, setExp] = useState(0);
+  const maxExp = 100;
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -42,11 +29,12 @@ const MyPageProfile = () => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
-        console.log("레벨업 데이터",data)
+        setExp(data.exp)
+        console.log("레벨업 데이터",data.exp)
         setLevelId(data.levelId)
       })
       .catch((error) => console.log(error));
-  }, [globalToken]);
+  }, [globalToken]); // [] : globalToken
 
 
   return(
@@ -75,7 +63,7 @@ const MyPageProfile = () => {
         </div>
       )}
       <MyPageExpBar exp={exp} maxExp={maxExp} />
-      <button onClick={increaseExp}>경험치 획득</button> 
+      {/* <button onClick={increaseExp}>경험치 획득</button>  */}
 
       <div
         className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}

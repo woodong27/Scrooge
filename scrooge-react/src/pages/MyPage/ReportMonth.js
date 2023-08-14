@@ -41,7 +41,7 @@ const ReportMonth = () => {
         });
 
         setMonthlyData(processedData);
-        console.log("데이터..뭡네까", processedData)
+        console.log(processedData)
       } catch (error) {
         console.log(error)
       }
@@ -83,7 +83,6 @@ const ReportMonth = () => {
       }
       calendar.push(nowWeek);
     };
-    console.log("달력~",calendar)
     return calendar;
   };
     

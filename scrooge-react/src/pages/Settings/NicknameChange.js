@@ -48,6 +48,7 @@ const NicknameChange = () => {
 
   return (
     <div>
+      <button onClick={() => navigate(-1)}>이전</button>
       <h1>닉네임 변경</h1>
       <input
         type="text"

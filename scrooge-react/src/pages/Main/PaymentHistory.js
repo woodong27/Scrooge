@@ -80,7 +80,7 @@ const PaymentHistory = ({
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
-    } else {
+      } else {
       if (date === todayProp) {
         postExp();
         handleSetTrue();
@@ -201,7 +201,7 @@ const PaymentHistory = ({
       postData
     )
       .then((res) => res.json())
-      .then(console.log);
+      .then(console.log());
   };
 
   const handlePush = () => {
