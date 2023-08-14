@@ -21,6 +21,7 @@ import Profile from "./pages/Profile";
 // import Settings from "./pages/Settings/Settings";
 import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
+import NicknameChange from "./pages/Settings/NicknameChange";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -55,6 +56,7 @@ function App() {
               element={<Settings onLogout={logoutHandler} />}
             />
             <Route path="/passwordChange" element={<PasswordChange />} />
+            <Route path="/nicknameChange" element={<NicknameChange />} />
             <Route path="/notification" element={<Notification />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
