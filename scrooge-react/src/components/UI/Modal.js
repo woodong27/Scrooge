@@ -2,8 +2,7 @@ import { Fragment, useState, useRef, useEffect } from "react";
 import styles from "./Modal.module.css";
 
 const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
-  console.log(item);
-  console.log(index);
+  const numericPattern = /^[0-9]+$/;
   const [origin, setOrigin] = useState(item.amount);
   const [place, setPlace] = useState(item.usedAt);
   const [card, setCard] = useState(item.cardName);
@@ -36,7 +35,7 @@ const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
       localPlaceInput.current.focus();
       return;
     }
-    if (origin.length < 2) {
+    if (!numericPattern.test(origin) || origin.length < 2) {
       localContentInput.current.focus();
       return;
     }
