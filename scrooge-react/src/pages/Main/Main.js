@@ -75,7 +75,7 @@ const Main = (props) => {
         Authorization: globalToken,
       },
     };
-    fetch("http://localhost:8081/api/member/info", postData)
+    fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
