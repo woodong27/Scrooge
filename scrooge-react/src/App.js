@@ -24,13 +24,11 @@ import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
 
 function App() {
-
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     
     if (token !== null) {
       const expirationTime = decodeAccessToken(token);
@@ -43,8 +41,26 @@ function App() {
       }
 
       if(localStorage.getItem("token") !== null) {
+        
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
         setIsLogin(true);
+
+        console.log(token);
+
+        const postData = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        };
+
+        fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log(data.id);
+            dispatch({ type: "SET_ID_STRING", payload: data.id});
+          })
+          .catch((error) => console.log(error));
       }
     }
   }, []);
