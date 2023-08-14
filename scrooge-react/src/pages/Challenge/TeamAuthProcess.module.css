@@ -1,0 +1,10 @@
+.img_container {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+
+  & img {
+    width: 32.5%;
+  }
+}
