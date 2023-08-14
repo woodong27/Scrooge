@@ -2,7 +2,6 @@ import { Fragment, useState, useRef, useEffect } from "react";
 import styles from "./Modal.module.css";
 
 const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
-  console.log(item);
   const numericPattern = /^[0-9]+$/;
 
   const [origin, setOrigin] = useState(item.amount);

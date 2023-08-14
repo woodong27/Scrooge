@@ -153,7 +153,6 @@ const PaymentHistory = ({
       handleSetFalse();
     }
     setData([...data, newItem]);
-    console.log(data, newItem);
     setSettlement(false);
   };
 
@@ -255,7 +254,7 @@ const PaymentHistory = ({
           )}
         </div>
       </div>
-      {modal && (
+      {modal && currentIndex <= data.length && (
         <Modal
           item={data[currentIndex]}
           index={currentIndex}
