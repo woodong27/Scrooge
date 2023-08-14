@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
     private lateinit var notificationManager: NotificationManagerCompat
+
+    // BGM 구현 위한 변수
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +63,14 @@ class MainActivity : AppCompatActivity() {
 
         webview.webChromeClient = CustomWebChromeClient()
         webview.loadUrl("https://day6scrooge.duckdns.org/")
+
+        /* BGM 구현 */
+        mediaPlayer = MediaPlayer.create(this, R.raw.bgm)
+        mediaPlayer.isLooping = true
+        mediaPlayer.start()
+
+        val androidSound = AndroidSound()
+        webview.addJavascriptInterface(androidSound, "AndroidSound")
     }
 
 
@@ -135,13 +147,25 @@ class MainActivity : AppCompatActivity() {
     inner class AndroidAlarmAllow {
         @JavascriptInterface
         fun sendAllowToApp() {
-            Log.d("CHECK", "왔니?")
             val hasPostNotificationPermission = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
             if(!hasPostNotificationPermission) {
                 val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                     .putExtra(Settings.EXTRA_APP_PACKAGE, "com.example.scoorge_android")
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 applicationContext.startActivity(intent)
+            }
+        }
+    }
+
+    /* 소리 구현 위한 클래스 */
+    inner class AndroidSound {
+        @JavascriptInterface
+        fun sendSoundToggleToAndroid(isSoundOn: Boolean) {
+            if(isSoundOn) {
+                mediaPlayer.stop();
+            }
+            else {
+                mediaPlayer.start();
             }
         }
     }
