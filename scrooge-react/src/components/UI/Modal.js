@@ -12,18 +12,10 @@ const Modal = ({ item, index, goNext, onEdit, onCloseModal }) => {
   const localCardInput = useRef();
 
   useEffect(() => {
-    console.log(item);
     setOrigin(item.amount);
     setPlace(item.usedAt);
     setCard(item.cardName);
-  }, [item]);
-
-  useEffect(() => {
-    setOrigin(item.amount);
-    setPlace(item.usedAt);
-    setCard(item.cardName);
-    setCategory(" ");
-  }, [index]);
+  }, [item, index]);
 
   const buttons = [
     { id: 1, label: "식비" },
@@ -102,7 +94,7 @@ const Modal = ({ item, index, goNext, onEdit, onCloseModal }) => {
           <div className={styles.line}>
             <div className={styles.title}>결제 일자</div>
             <div className={styles.content}>
-              {/* {`${item.paidAt.slice(0, 19).split("T")[1]} `} */}
+              {`${item.paidAt.slice(0, 19).split("T")[1]} `}
             </div>
           </div>{" "}
         </div>

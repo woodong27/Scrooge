@@ -57,6 +57,7 @@ const PaymentHistory = ({
 
     getPaymentHistory(previousDate.getMonth() + 1, previousDate.getDate());
   };
+
   //다음날로 이동
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
@@ -246,10 +247,9 @@ const PaymentHistory = ({
           )}
         </div>
       </div>
-      {modal && data && <p>{console.log(data[currentIndex])}</p> && (
+      {modal && data && (
         <Modal
           item={data[currentIndex]}
-          // data={data}
           index={currentIndex}
           goNext={goNext}
           onEdit={onEdit}
