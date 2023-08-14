@@ -16,7 +16,6 @@ const Main = (props) => {
   const [date, setDate] = useState([]);
 
   const [settlement, setSettlement] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isConsum, setIsConsum] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -79,7 +78,9 @@ const Main = (props) => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setData(data);
+        setSettlement(data.isSettlementDone);
         setMessage(data.message);
         setWeeklyGoal(data.weeklyGoal);
         setWeeklyConsum(data.weeklyConsum);
@@ -104,14 +105,13 @@ const Main = (props) => {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        const index = data.findIndex((item) => !item.isSettled);
-        if (index === -1) {
-          setSettlement(true);
-        }
-        setCurrentIndex(index);
+        // const index = data.findIndex((item) => !item.isSettled);
+        // if (index === -1) {
+        //   setSettlement(true);
+        // }
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [isConsum]);
 
   //주간 목표 설정
   const setGoal = (goal) => {
