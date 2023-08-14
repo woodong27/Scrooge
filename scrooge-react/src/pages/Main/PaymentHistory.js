@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import PaymentItem from "./PaymentItem";
 import PaymentAdd from "./PaymentAdd";
@@ -16,8 +15,6 @@ const PaymentHistory = ({
   handleSetTrue,
   handleSetFalse,
 }) => {
-  const navigate = useNavigate();
-
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
   const [data, setData] = useState();
@@ -25,7 +22,7 @@ const PaymentHistory = ({
   const [origin, setOrigin] = useState();
 
   const [settlement, setSettlement] = useState(todaySettlement);
-  //여기서 get하는걸로 하면 이걸 다 거기에 넣어야겠다.
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modal, setModal] = useState(false);
 
@@ -36,15 +33,15 @@ const PaymentHistory = ({
   const handleOpenModal = () => {
     // 소비가 0건인 경우 예외 처리
     if (data.length < 1) {
-      const formattedDate = `2023-${date[0]
-        .toString()
-        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
-
-      setOrigin(getTotal(formattedDate));
-      setSettlement(true);
-      if (date === todayProp) {
+      setOrigin(0);
+      console.log("오니?");
+      console.log(date, todayProp);
+      if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
+        console.log("여기 안 와..?");
         postExp();
       }
+      setSettlement(true);
+
       return;
     }
     setModal(true);
@@ -127,7 +124,8 @@ const PaymentHistory = ({
             setSettlement(false);
             setCurrentIndex(index);
           }
-          if (data.length === 0) {
+          //데이터가 0인데 정산하기 안 누른 경우
+          if (data.length === 0 && !settlement) {
             setSettlement(false);
           }
         })
@@ -199,20 +197,14 @@ const PaymentHistory = ({
     fetch(
       "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
       postData
-    )
-      .then((res) => res.json())
-      .then(console.log);
-  };
-
-  const handlePush = () => {
-    navigate("/notification");
+    ).then((res) => res.json());
   };
 
   return (
     <div>
       <div className={styles.empty}>
         <button onClick={consumFalseHandler}>홈 으로</button>
-        <button onClick={handlePush}>알림 시간</button>
+        {settlement}
       </div>
       <div className={styles.card}>
         <div className={styles.title}>
@@ -238,11 +230,12 @@ const PaymentHistory = ({
                 <PaymentItem key={index} {...it} onEdit={onEdit} />
               ))
             ) : (
-              <p>!!소비 내역이 없습니다!!</p>
+              <p>!!소비 내역이 없습니다!! {settlement}</p>
             )}
             <PaymentAdd onCreate={onCreate} date={date} />
           </div>
         </div>
+
         <div className={styles.foot}>
           {settlement ? (
             <>
