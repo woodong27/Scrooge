@@ -5,6 +5,7 @@ import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.dto.DateTimeReqDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.member.MemberDto;
+import com.scrooge.scrooge.dto.paymentHistory.RecapDto;
 import com.scrooge.scrooge.repository.LevelRepository;
 import com.scrooge.scrooge.repository.member.MemberOwningBadgeRepository;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
@@ -25,7 +26,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -183,6 +186,10 @@ public class PaymentHistoryService {
             // 스트릭 1 증가
             int currentStreak = member.getStreak();
             member.setStreak(currentStreak + 1);
+            // 스트릭 max값 갱신
+            if(member.getMaxStreak() < member.getStreak()) {
+                member.setMaxStreak(member.getStreak());
+            }
 
             // SettlementDone true로 변경
             member.setIsSettlementDone(true);
@@ -245,5 +252,96 @@ public class PaymentHistoryService {
         }
 
         return total;
+    }
+
+
+    // 내 소비에 대한 리캡을 조회하는 API
+    public RecapDto getMyRecap(Long memberId) {
+        // 소비내역 이번달 기준으로 ,,,
+
+        /* 반환하는 요소
+        0. 이 사람 ,, 정산 내역이 있는지 ,,
+        1. 많이 쓴 카테고리
+        2. 최대 스트릭
+        2-1. 최대 스트릭 상위 N% 인지 ,,
+        2-1-1. N에 따라 메세지 보내주기
+        3. 무슨 시간에 돈을 많이 쓰는 유형인지 ,,, String
+     */
+        RecapDto recapDto = new RecapDto();
+
+        LocalDate date = LocalDate.now();
+
+        // 해당 월의 시작일과 종료일 계산하기
+        LocalDate startDate = YearMonth.of(date.getYear(), date.getMonth()).atDay(1);
+        LocalDate endDate = YearMonth.of(date.getYear(), date.getMonth()).atEndOfMonth();
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+
+        List<PaymentHistory> paymentHistoryList = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, startDateTime, endDateTime);
+        if(paymentHistoryList.size() == 0) {
+            // 소비내역이 없음 ,, 정산 내역 없다고 false로 반환!
+            recapDto.setHasPaymentHistory(false);
+        }
+        else {
+            // 소비내역이 있다면 리캡 시작
+            // 1. 많이 쓴 카테고리
+            Map<String, Integer> categoryFrequency = new HashMap<>();
+
+            for(PaymentHistory paymentHistory : paymentHistoryList) {
+                String category = paymentHistory.getCategory();
+                categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
+            }
+
+            String mostUsedCategory = null;
+            int maxFrequency = 0;
+
+            for(Map.Entry<String, Integer> entry : categoryFrequency.entrySet()) {
+                if(entry.getValue() > maxFrequency) {
+                    maxFrequency= entry.getValue();
+                    mostUsedCategory = entry.getKey();
+                }
+            }
+            recapDto.setCategory(mostUsedCategory);
+
+
+            // 3. 최대 스트릭
+            // member 가져오기
+            Optional<Member> member = memberRepository.findWithRelatedEntitiesById(memberId);
+            if(member.isPresent()) {
+                int maxStreak = member.get().getMaxStreak();
+                recapDto.setMaxStreak(maxStreak); // 최대 스트릭
+
+                // 최대 스트릭 상위 몇 프로 인지 ,,, 반환
+                // 1. 일단 ,,, Member들 ,, 2023 08 15에 이어서 작성하겠습니다 ,,,
+                List<Member> sortedMembers = memberRepository.findByOrderByMaxStreakDesc();
+                int totalMembers = sortedMembers.size();
+                int myMaxStreak = recapDto.getMaxStreak();
+
+                int rank = -1; // 초기 순위 설정
+
+                for(int i=0; i<totalMembers; i++) {
+                    if(sortedMembers.get(i).getMaxStreak() == myMaxStreak) {
+                        rank = i + 1;
+                        break;
+                    }
+                }
+
+                if(rank != -1) {
+                    double percentage = ((double) rank / totalMembers) * 100;
+                    double roundedPercentage = Math.round(percentage * 10.0) / 10.0;
+
+                    recapDto.setTopStreakPercentage(roundedPercentage); // 상위 몇 퍼센트인지 적용
+                }
+
+                // 그 뒤부터 0815 ,, 구현하겠습니다 ,,,
+            }
+            else {
+                throw new NotFoundException(memberId + "에 해당하는 member를 찾지 못했습니다.");
+            }
+
+        }
+
+        return recapDto;
     }
 }

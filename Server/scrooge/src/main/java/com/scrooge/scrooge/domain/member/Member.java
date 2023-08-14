@@ -53,6 +53,9 @@ public class Member {
     @Column(columnDefinition = "int default 0")
     private Integer streak;
 
+    @Column(columnDefinition = "int default 0", name = "max_streak")
+    private Integer maxStreak;
+
     @Column(name = "weekly_goal", columnDefinition = "int default 0")
     private Integer weeklyGoal;
 
