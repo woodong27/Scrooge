@@ -41,7 +41,10 @@ const PaymentHistory = ({
         .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
 
       setOrigin(getTotal(formattedDate));
-
+      setSettlement(true);
+      if (date === todayProp) {
+        postExp();
+      }
       return;
     }
     setModal(true);
@@ -119,7 +122,7 @@ const PaymentHistory = ({
             setSettlement(true);
             setOrigin(getTotal(formattedDate));
             setOrigin(total);
-            setCurrentIndex(data.length());
+            setCurrentIndex(data.length);
           } else {
             setSettlement(false);
             setCurrentIndex(index);
@@ -193,12 +196,12 @@ const PaymentHistory = ({
         Authorization: globalToken,
       },
     };
-    // fetch(
-    //   "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
-    //   postData
-    // )
-    //   .then((res) => res.json())
-    // .then(console.log);
+    fetch(
+      "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
+      postData
+    )
+      .then((res) => res.json())
+      .then(console.log);
   };
 
   const handlePush = () => {

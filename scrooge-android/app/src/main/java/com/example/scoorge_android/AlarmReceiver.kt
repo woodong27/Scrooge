@@ -10,21 +10,22 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class AlarmReceiver : BroadcastReceiver() {
     private var context: Context? = null
     private val channelId = "alarm_channel"
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d("Tag", "나와주라... 주")
         this.context = context
         val busRouteIntent = Intent(context, MainActivity::class.java)
         val stackBuilder = TaskStackBuilder.create(context)
         stackBuilder.addNextIntentWithParentStack(busRouteIntent)
         val busRoutePendingIntent =
-            stackBuilder.getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE )
+            stackBuilder.getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground).setDefaults(Notification.DEFAULT_ALL)
@@ -43,7 +44,7 @@ class AlarmReceiver : BroadcastReceiver() {
             )
             notificationManager.createNotificationChannel(channel)
         }
-        val id = System.currentTimeMillis().toInt()
+        val id = 6
         notificationManager.notify(id, notificationBuilder.build())
     }
 }

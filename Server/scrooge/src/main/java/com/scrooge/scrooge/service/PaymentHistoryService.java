@@ -170,18 +170,24 @@ public class PaymentHistoryService {
         return paymentHistoryRepository.save(paymentHistory);
     }
 
-
     public MemberDto updateExpAfterDailySettlement(Long memberId) {
-        Optional<Member> member =  memberRepository.findWithRelatedEntitiesById(memberId);
-        if(member.isPresent()) {
+        Member member =  memberRepository.findWithRelatedEntitiesById(memberId)
+                .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
+
+        // 오늘의 첫 정산일 경우에
+        if (!member.isSettlementDone()) {
             // 경험치 +100 정산해주기
-            member.get().setExp(member.get().getExp() + 100);
+            member.setExp(member.getExp() + 100);
+            levelService.levelUp(member);
 
-            levelService.levelUp(member.get());
+            // 스트릭 1 증가
+            int currentStreak = member.getStreak();
+            member.setStreak(currentStreak + 1);
 
-            // streak 1 증가
-            int newStreak = member.get().getStreak() + 1;
-            member.get().setStreak(newStreak);
+            // SettlementDone true로 변경
+            member.setSettlementDone(true);
+
+            memberRepository.save(member);
 
             // 정산하기 관련 퀘스트 소지 시 퀘스트 완료 진행
             if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 1L)) {
@@ -190,24 +196,19 @@ public class PaymentHistoryService {
 
             // 정산하기 관련 뱃지 획득
             // 첫번째 정산하기 완료시 뱃지 부여
-            if (newStreak == 1 || memberOwningBadgeRepository.existsByBadgeIdAndMemberId(1L, memberId)) {
+            if (currentStreak == 0 || !memberOwningBadgeRepository.existsByBadgeIdAndMemberId(1L, memberId)) {
                 badgeService.giveBadge(1L, memberId);
             }
             // 7번째 정산하기 완료시 뱃시 증정
-            if (newStreak == 7 || memberOwningBadgeRepository.existsByBadgeIdAndMemberId(2L, memberId)) {
+            if (currentStreak == 6 || !memberOwningBadgeRepository.existsByBadgeIdAndMemberId(2L, memberId)) {
                 badgeService.giveBadge(2L, memberId);
             }
             // 30번째 정산하기 완료시 뱃지 증정
-            if (newStreak == 30 || memberOwningBadgeRepository.existsByBadgeIdAndMemberId(3L, memberId)) {
+            if (currentStreak == 29 || !memberOwningBadgeRepository.existsByBadgeIdAndMemberId(3L, memberId)) {
                 badgeService.giveBadge(3L, memberId);
             }
-
-            Member updatedMember = memberRepository.save(member.get());
-            return new MemberDto(updatedMember);
         }
-        else {
-            throw new NotFoundException("해당 Member가 존재하지 않습니다.");
-        }
+        return new MemberDto(member);
     }
 
     // 하루 전체 소비 금액 조회하는 API
