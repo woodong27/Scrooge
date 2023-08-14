@@ -181,7 +181,7 @@ const Main = (props) => {
               <span className={styles.charactercoin}>
                 <img
                   className={styles.character}
-                  src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
+                  src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-2.png`}
                   alt="캐릭터"
                 />
 
@@ -194,6 +194,7 @@ const Main = (props) => {
                   <div className={styles.streak}>{data.streak}일 째</div>
                 </div>
               </span>
+
               <div className={styles.statemessage}>
                 {isEdit ? (
                   <>
