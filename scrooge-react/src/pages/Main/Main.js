@@ -139,7 +139,7 @@ const Main = (props) => {
       },
     };
     fetch(
-      `https://day6scrooge.duckdns.org/api/payment-history/date-total/${formattedDate}`,
+      `http://localhost:8081/api/payment-history/date-total/${formattedDate}`,
       postData
     )
       .then((resp) => resp.json())
