@@ -17,7 +17,7 @@ public class ImageCompareController {
 
     @PostMapping("/send-images")
     public ResponseEntity<Double> sendImages(@RequestBody ImagePaths imagePaths) {
-        String fastApiURL = "http://127.0.0.1:8000/compare-images";
+        String fastApiURL = "http://day6scrooge.duckdns.org:8000/compare-images";
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
