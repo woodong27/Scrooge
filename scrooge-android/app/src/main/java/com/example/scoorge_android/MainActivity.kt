@@ -154,10 +154,14 @@ class MainActivity : AppCompatActivity() {
         @JavascriptInterface
         fun sendSoundToggleToAndroid(isSoundOn: Boolean) {
             if(isSoundOn) {
+                Log.d("CHECK", "소리를 꺼요")
                 mediaPlayer.stop();
             }
             else {
-                mediaPlayer.start();
+                Log.d("CHECK", "소리를 켜요")
+                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
+                mediaPlayer.isLooping = true
+                mediaPlayer.start()
             }
         }
     }
