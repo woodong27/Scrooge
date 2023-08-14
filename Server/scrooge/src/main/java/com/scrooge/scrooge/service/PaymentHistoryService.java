@@ -234,13 +234,9 @@ public class PaymentHistoryService {
 
         List<PaymentHistory> paymentHistories = paymentHistoryRepository.findByMemberId(memberId);
 
-        System.out.println(paymentHistories);
-
         List<PaymentHistory> filterPaymentHistories = paymentHistories.stream()
                 .filter(paymentHistory -> paymentHistory.getPaidAt().toLocalDate().equals(date))
                 .collect(Collectors.toList());
-
-        System.out.println(filterPaymentHistories);
 
         Integer total = 0;
 
