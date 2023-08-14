@@ -4,6 +4,8 @@ import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
 import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
 import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
+import com.scrooge.scrooge.dto.challengeDto.StartedChallengeDto;
+import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import com.scrooge.scrooge.service.challenge.StartChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,18 +26,17 @@ public class StartChallengeController {
     private final StartChallengeService startChallengeService;
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final ChallengeRepository challengeRepository;
 
     // 사용자가 참여한 시작된 챌린지에 대한 정보 조회
     @Operation(summary = "사용자가 참여한 시작된 챌린지에 대한 정보 조회 API")
-    @GetMapping("/{challengeId}/member/started")
-    public ResponseEntity<?> getMyStartedChallenge(@RequestHeader("Authorization")String header, @PathVariable("challengeId") Long challengeId) throws Exception {
-        String token = jwtTokenProvider.extractToken(header);
-        if (!jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+    @GetMapping("/{challengeId}/started")
+    public ResponseEntity<?> getMyStartedChallenge(@PathVariable("challengeId") Long challengeId) {
+        if (!challengeRepository.existsByIdAndStatus(challengeId, 2)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("시작하지 않은 챌린지입니다.");
         }
 
-        MyChallengeRespDto myChallengeRespDto = startChallengeService.getMyStartedChallenge(challengeId);
-        return ResponseEntity.ok(myChallengeRespDto);
+        return ResponseEntity.ok(startChallengeService.getStartedChallenge(challengeId));
     }
 
     // 사용자 인증 등록 API
