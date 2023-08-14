@@ -70,11 +70,17 @@
   position: relative;
   margin-left: 8px;
   margin-bottom: 40px;
-
+  display: flex;
+  justify-content: center;
   & img {
     width: 132px;
     height: 140px;
   }
+}
+
+.streak {
+  position: absolute;
+  top: 132px;
 }
 
 .payBtn {

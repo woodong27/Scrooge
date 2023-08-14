@@ -191,7 +191,8 @@ const Main = (props) => {
                     src={`${process.env.PUBLIC_URL}/images/coin.png`}
                     alt="코인"
                   />
-                  <div className={styles.payBtn}>정산하기</div>
+                  <div className={styles.payBtn}>정산하기</div>{" "}
+                  <div className={styles.streak}>{data.streak}일 째</div>
                 </div>
               </span>
               <div className={styles.statemessage}>
@@ -257,7 +258,7 @@ const Main = (props) => {
               alt="고리"
             />
           </div>
-          <Card height={220}>
+          <Card height={236}>
             <div className={styles.todayCard}>
               <div className={styles.title}>
                 {date[0]}월 {date[1]}일, 오늘의 소비💸
