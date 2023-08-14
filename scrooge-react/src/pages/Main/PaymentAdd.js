@@ -39,7 +39,13 @@ const PaymentAdd = ({ onCreate, date }) => {
       usedAtInput.current.focus();
       return;
     }
-    if (!numericPattern.test(origin) || state.amount.length < 2) {
+    if (!numericPattern.test(state.amount)) {
+      console.log("숫자 아님");
+      amountInput.current.focus();
+      return;
+    }
+    if (state.amountlength < 2) {
+      console.log("길이 부족");
       amountInput.current.focus();
       return;
     }
