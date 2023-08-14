@@ -34,7 +34,6 @@ const QuestList = ({ props }) => {
   };
 
   const questAdd = (id) => {
-    console.log(id, globalToken);
     const postData = {
       method: "POST",
       headers: {
@@ -61,23 +60,39 @@ const QuestList = ({ props }) => {
       {ing.length > 0 && <div className={styles.title}> 진행 중 퀘스트 </div>}
 
       {ing.map((it, index) => (
-        <QuestItem key={index} {...it} id={it.id} title={it.quest.title} />
+        <QuestItem
+          key={index}
+          title={it.quest.title}
+          selectQuest={"true"}
+          id={it.id}
+          questId={it.quest.id}
+          {...it}
+        />
       ))}
       <div className={styles.title}> 퀘스트 목록 </div>
       {list.map((it, index) => (
         <QuestItem
           className={styles.item}
           key={index}
-          {...it}
-          handleAdd={handleAdd}
-          id={it.quest.id}
           title={it.quest.title}
+          handleAdd={handleAdd}
+          //퀘스트 3개 초과를 막기 위해
           show={list.length > 3 ? "true" : "false"}
+          id={it.id}
+          questId={it.quest.id}
+          {...it}
         />
       ))}
       {finish.length > 0 && <div className={styles.title}> 완료 퀘스트 </div>}
       {finish.map((it, index) => (
-        <QuestItem key={index} {...it} id={it.id} title={it.quest.title} />
+        <QuestItem
+          key={index}
+          title={it.quest.title}
+          selectQuest={"true"}
+          id={it.id}
+          questId={it.quest.id}
+          {...it}
+        />
       ))}
     </div>
   );
