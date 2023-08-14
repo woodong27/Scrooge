@@ -38,7 +38,6 @@ public class PaymentHistoryController {
 
     private final PaymentHistoryService paymentHistoryService;
     private final MemberRepository memberRepository;
-    public boolean isSettlementDone = false;
 
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping
@@ -146,13 +145,6 @@ public class PaymentHistoryController {
     @Operation(summary = "일일 정산 후 경험치 획득")
     @PutMapping("/settlement-exp")
     public ResponseEntity<?> updateExpAfterDailySettlement(@RequestHeader("Authorization") String tokenHeader) {
-
-        if (isSettlementDone) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("오늘은 이미 정산 했습니다.");
-        }
-
-        isSettlementDone = true;
-
         String token = extractToken(tokenHeader);
 
         if(!jwtTokenProvider.validateToken(token)) {

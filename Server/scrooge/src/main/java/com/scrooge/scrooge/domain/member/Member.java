@@ -2,25 +2,16 @@ package com.scrooge.scrooge.domain.member;
 
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.community.Article;
-import com.scrooge.scrooge.domain.community.ArticleComment;
-import com.scrooge.scrooge.domain.community.ArticleGood;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @NamedEntityGraph(name = "member.withRelatedEntities", attributeNodes = {
         @NamedAttributeNode("mainAvatar"),
         @NamedAttributeNode("mainBadge"),
@@ -78,6 +69,9 @@ public class Member {
 
     @Column(name = "refresh_token")
     private String refreshToken;
+
+    @Column(name = "is_settlement_done")
+    private boolean isSettlementDone = false;
 
     /* 연결 */
     // 소비 내역
