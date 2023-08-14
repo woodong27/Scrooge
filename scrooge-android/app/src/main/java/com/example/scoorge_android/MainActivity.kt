@@ -75,8 +75,12 @@ class MainActivity : AppCompatActivity() {
         }
         @JavascriptInterface
         fun cancelNotification() {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.cancel(6)
+            Log.d("TAG", "삭제")
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(context, AlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            alarmManager.cancel(pendingIntent);
         }
     }
 
