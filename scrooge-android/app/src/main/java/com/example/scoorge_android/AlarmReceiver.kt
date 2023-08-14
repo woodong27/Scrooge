@@ -25,7 +25,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val stackBuilder = TaskStackBuilder.create(context)
         stackBuilder.addNextIntentWithParentStack(busRouteIntent)
         val busRoutePendingIntent =
-            stackBuilder.getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE )
+            stackBuilder.getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground).setDefaults(Notification.DEFAULT_ALL)
