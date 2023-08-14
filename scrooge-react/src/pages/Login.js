@@ -60,6 +60,9 @@ const Login = ({ loginHandler }) => {
       })
       .then((data) => {
         const jwtToken = data.token;
+
+        localStorage.setItem("token", jwtToken);
+
         sendJwtTokenToAndroid(jwtToken);
 
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
