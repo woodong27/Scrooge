@@ -1,6 +1,6 @@
 .list {
   display: flex;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   list-style-type: none;
   margin: 0;
