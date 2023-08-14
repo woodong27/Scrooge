@@ -18,6 +18,9 @@ const Settings = ({ onLogout }) => {
 
   const [alarmModal, setAlarmModal] = useState(false);
 
+  // BGM 관련
+  const[isSoundOn, setIsSoundOn] = useState(true); // 소리 켜진 상태로 시작
+
   const handleLogoutModal = () => {
     setShowLogoutModal(!showLogoutModal);
   };
@@ -33,12 +36,25 @@ const Settings = ({ onLogout }) => {
     setAlarmModal(false);
   };
 
+  const handleSoundToggle = () => {
+    // Android와 통신하여 소리 상태 변경하기
+    if(window.AndroidSound) {
+      window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
+    }
+
+    // 소리 상태 변경하기 
+    setIsSoundOn(!isSoundOn);
+  }
+
+
   const confirmLogout = () => {
     localStorage.removeItem("token");
     onLogout();
     dispatch({ type: "SET_TOKEN_STRING", payload: "" }); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기
     navigate("/"); // 로그아웃 후 리디렉션: "/"
   };
+
+
 
   const confirmWithdraw = async () => {
     try {
@@ -77,9 +93,12 @@ const Settings = ({ onLogout }) => {
             </Link>
           </div>
 
-          <div className={styles.infoHeader}>알림설정</div>
+          <div className={styles.infoHeader}>추가설정</div>
           <div className={styles.infoContent}>
             <div onClick={handleAlarmOpen}>정산 알림 보내기</div>
+            <div onClick={handleSoundToggle}>
+             {isSoundOn ? "BGM 끄기" : "BGM 켜기"}
+            </div>
           </div>
 
           <div className={styles.infoHeader}>스크루지</div>
