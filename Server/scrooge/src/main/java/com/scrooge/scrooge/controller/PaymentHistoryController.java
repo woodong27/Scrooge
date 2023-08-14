@@ -8,6 +8,7 @@ import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
+import com.scrooge.scrooge.dto.paymentHistory.RecapDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.PaymentHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -165,6 +166,21 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(todayTotalConsumption);
     }
 
+    // 내 소비에 대한 리캡을 조회하는 API
+    @Operation(summary = "소비에 대한 리캡을 조회하는 API")
+    @GetMapping("/recap")
+    public ResponseEntity<?> getMyRecap(@RequestHeader("Authorization") String tokenHeader) {
+        String token = extractToken(tokenHeader);
+
+        if(!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        RecapDto recapDto = paymentHistoryService.getMyRecap(memberId);
+        return ResponseEntity.ok(recapDto);
+    }
 
 
 
