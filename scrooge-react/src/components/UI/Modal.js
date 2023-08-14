@@ -1,16 +1,22 @@
 import { Fragment, useState, useRef, useEffect } from "react";
 import styles from "./Modal.module.css";
 
-const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
+const Modal = ({ item, index, goNext, onEdit, onCloseModal }) => {
   const numericPattern = /^[0-9]+$/;
-
-  const [origin, setOrigin] = useState(item.amount);
-  const [place, setPlace] = useState(item.usedAt);
-  const [card, setCard] = useState(item.cardName);
-  const [category, setCategory] = useState(" ");
+  const [origin, setOrigin] = useState(0);
+  const [place, setPlace] = useState("");
+  const [card, setCard] = useState("");
+  const [category, setCategory] = useState("");
   const localContentInput = useRef();
   const localPlaceInput = useRef();
   const localCardInput = useRef();
+
+  useEffect(() => {
+    console.log(item);
+    setOrigin(item.amount);
+    setPlace(item.usedAt);
+    setCard(item.cardName);
+  }, [item]);
 
   useEffect(() => {
     setOrigin(item.amount);
@@ -36,7 +42,6 @@ const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
       localPlaceInput.current.focus();
       return;
     }
-    console.log(typeof origin, numericPattern.test(origin));
     if (!numericPattern.test(origin) || origin.length < 2) {
       localContentInput.current.focus();
       return;
