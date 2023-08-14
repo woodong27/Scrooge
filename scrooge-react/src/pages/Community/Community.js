@@ -25,7 +25,7 @@ const Community = ({}) => {
         setMine(data.filter((item) => item.memberId === memberId));
       })
       .catch((error) => console.log(error));
-  }, [EditId]);
+  }, [EditId, memberId]);
 
   const myHandler = () => {
     setIsMine(true);
