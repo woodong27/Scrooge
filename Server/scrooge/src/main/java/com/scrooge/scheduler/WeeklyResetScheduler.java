@@ -42,10 +42,10 @@ public class WeeklyResetScheduler {
 
         // 모든 회원정보를 가져와서 정산유무를 초기화
         memberRepository.findAll().forEach(member -> {
-                    if (!member.isSettlementDone()) {
+                    if (!member.getIsSettlementDone()) {
                         member.setStreak(0);
                     }
-                    member.setSettlementDone(false);
+                    member.setIsSettlementDone(false);
                     memberRepository.save(member);
                 });
     }

@@ -175,7 +175,7 @@ public class PaymentHistoryService {
                 .orElseThrow(() -> new NotFoundException("해당 멤버를 찾을 수 없습니다."));
 
         // 오늘의 첫 정산일 경우에
-        if (!member.isSettlementDone()) {
+        if (!member.getIsSettlementDone()) {
             // 경험치 +100 정산해주기
             member.setExp(member.getExp() + 100);
             levelService.levelUp(member);
@@ -185,7 +185,7 @@ public class PaymentHistoryService {
             member.setStreak(currentStreak + 1);
 
             // SettlementDone true로 변경
-            member.setSettlementDone(true);
+            member.setIsSettlementDone(true);
 
             memberRepository.save(member);
 

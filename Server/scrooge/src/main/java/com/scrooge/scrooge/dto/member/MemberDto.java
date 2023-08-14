@@ -26,6 +26,7 @@ public class MemberDto {
     private int remainGacha;
     private Avatar mainAvatar;
     private Badge mainBadge;
+    private Boolean isSettlementDone;
 
     @Builder
     public MemberDto(Member member) {
@@ -42,5 +43,6 @@ public class MemberDto {
         this.remainGacha = member.getRemainGacha();
         this.mainBadge = member.getMainBadge();
         this.mainAvatar = member.getMainAvatar();
+        this.isSettlementDone = member.getIsSettlementDone();
     }
 }
