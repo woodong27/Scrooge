@@ -98,23 +98,36 @@ public class StartChallengeService {
 
         List<ChallengeExampleImage> challengeExampleImageList = challengeExampleImageRepository.findByChallengeId(challengeId);
 
+        // 실패일때 사용할 이미지주소와 결과값
+        Double failedResult = -0.5;
+        String failedImageAddress = null;
+
         for (ChallengeExampleImage challengeExampleImage : challengeExampleImageList) {
-            if (imageCompareController.sendImages(new ImagePaths(challengeExampleImage.getImgAddress(), authImageAddress)).getBody() >= 0.7) {
+            Double result = imageCompareController.sendImages(new ImagePaths(challengeExampleImage.getImgAddress(), authImageAddress)).getBody();
+            if (failedResult < result && result < 0.65) {
+                failedResult = result;
+                failedImageAddress = challengeExampleImage.getImgAddress();
+            }
+            if (result >= 0.65) {
                 challengeAuth.setIsSuccess(true);
                 challengeAuthRepository.save(challengeAuth);
 
                 ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
+                challengeStartRespDto.setExampleImageAddress(challengeExampleImage.getImgAddress());
+                challengeStartRespDto.setResult(result);
                 challengeStartRespDto.setStatus("Successed");
                 challengeStartRespDto.setMessage("챌린지 인증에 성공했습니다.");
                 return challengeStartRespDto;
             }
         }
 
-        // 5개 사진에 대해서 전부 유사도가 0.8이상이 되지 못했음 -> 실패
+        // 5개 사진에 대해서 전부 유사도가 0.65이상이 되지 못했음 -> 실패
         challengeAuth.setIsSuccess(false);
         challengeAuthRepository.save(challengeAuth);
 
         ChallengeStartRespDto challengeStartRespDto = new ChallengeStartRespDto();
+        challengeStartRespDto.setResult(failedResult);
+        challengeStartRespDto.setExampleImageAddress(failedImageAddress);
         challengeStartRespDto.setStatus("Failed");
         challengeStartRespDto.setMessage("챌린지 인증에 실패했습니다.");
         return challengeStartRespDto;
