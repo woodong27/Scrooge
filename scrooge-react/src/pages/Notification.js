@@ -22,6 +22,9 @@ const Notification = ({ handleAlarmClose }) => {
   };
 
   const handleSaveTime = () => {
+    if (selectedTime === null) {
+      return;
+    }
     if (window.AndroidInterface) {
       localStorage.setItem("savedTime", selectedTime);
       window.AndroidInterface.sendTimeToApp(selectedTime);
@@ -33,6 +36,7 @@ const Notification = ({ handleAlarmClose }) => {
       window.AndroidInterface.cancelNotification();
       localStorage.removeItem("savedTime");
       setSavedTime("");
+      handleDeleteTime();
     }
   };
 
