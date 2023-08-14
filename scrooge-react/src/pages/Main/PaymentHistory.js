@@ -78,7 +78,7 @@ const PaymentHistory = ({
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      if (date === todayProp) {
+      if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
         postExp();
         handleSetTrue();
       }
