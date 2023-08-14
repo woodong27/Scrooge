@@ -12,8 +12,7 @@ const Notification = ({ handleAlarmClose }) => {
     if (storedTime) {
       setSavedTime(storedTime);
     }
-    if(window.AndroidAlarmAllow) {
-      console.log("보냈니?");
+    if (window.AndroidAlarmAllow) {
       window.AndroidAlarmAllow.sendAllowToApp();
     }
   }, []);
@@ -23,11 +22,17 @@ const Notification = ({ handleAlarmClose }) => {
   };
 
   const handleSaveTime = () => {
-    //여기가 진짜
     if (window.AndroidInterface) {
       localStorage.setItem("savedTime", selectedTime);
       window.AndroidInterface.sendTimeToApp(selectedTime);
       setSavedTime(selectedTime);
+    }
+  };
+  const handleDeleteTime = () => {
+    if (window.AndroidInterface) {
+      window.AndroidInterface.cancelNotification();
+      localStorage.removeItem("savedTime");
+      setSavedTime("");
     }
   };
 
@@ -50,7 +55,7 @@ const Notification = ({ handleAlarmClose }) => {
           </div>
           <div className={styles.saveTime}>
             <p>저장 시간: {savedTime}</p>
-            <button onClick={handleSaveTime}>삭제</button>
+            <button onClick={handleDeleteTime}>삭제</button>
           </div>
         </div>
       </div>
