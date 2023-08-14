@@ -2,6 +2,7 @@ package com.example.scoorge_android
 
 import android.app.Activity
 import android.app.AlarmManager
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private val FILE_CHOOSER_RESULT_CODE = 1
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
+    private lateinit var notificationManager: NotificationManagerCompat
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,16 +41,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
 
+
         val webview = findViewById<WebView>(R.id.webview)
         webview.apply{
             webViewClient= WebViewClient()
             settings.javaScriptEnabled=true
         }
         webview.settings.javaScriptEnabled = true
-        webview.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
+        webview.getSettings().setDomStorageEnabled(true);
 
         val androidBridge = AndroidBridge()
         webview.addJavascriptInterface(androidBridge, "AndroidBridge")
+
+        val androidAlarmAllow = AndroidAlarmAllow()
+        webview.addJavascriptInterface(androidAlarmAllow ,"AndroidAlarmAllow")
+        webview.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
 
         webview.webChromeClient = CustomWebChromeClient()
         webview.loadUrl("https://day6scrooge.duckdns.org/")
@@ -121,6 +129,20 @@ class MainActivity : AppCompatActivity() {
         fun sendJwtTokenToAndroid(jwtToken: String) {
             Log.d("check", jwtToken)
             RetrofitService.setAuthToken(jwtToken)
+        }
+    }
+
+    inner class AndroidAlarmAllow {
+        @JavascriptInterface
+        fun sendAllowToApp() {
+            Log.d("CHECK", "왔니?")
+            val hasPostNotificationPermission = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
+            if(!hasPostNotificationPermission) {
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, "com.example.scoorge_android")
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                applicationContext.startActivity(intent)
+            }
         }
     }
 

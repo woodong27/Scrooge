@@ -12,6 +12,10 @@ const Notification = ({ handleAlarmClose }) => {
     if (storedTime) {
       setSavedTime(storedTime);
     }
+    if(window.AndroidAlarmAllow) {
+      console.log("보냈니?");
+      window.AndroidAlarmAllow.sendAllowToApp();
+    }
   }, []);
 
   const handleTimeChange = (event) => {
@@ -19,10 +23,6 @@ const Notification = ({ handleAlarmClose }) => {
   };
 
   const handleSaveTime = () => {
-    //안드로이드 연결 전 테스트
-    localStorage.setItem("savedTime", selectedTime);
-    setSavedTime(selectedTime);
-
     //여기가 진짜
     if (window.AndroidInterface) {
       localStorage.setItem("savedTime", selectedTime);
