@@ -110,7 +110,7 @@ const Main = (props) => {
         // }
       })
       .catch((error) => console.log(error));
-  }, [isConsum]);
+  }, [isConsum]); //이걸 onCreate되면 하는 걸로 해야겠는데
 
   //주간 목표 설정
   const setGoal = (goal) => {
