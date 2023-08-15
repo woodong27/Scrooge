@@ -3,7 +3,7 @@ import BackGround from "../../components/BackGround";
 import SettingModal from "../../components/UI/SettingModal";
 import Notification from "../../pages/Notification";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -19,7 +19,20 @@ const Settings = ({ onLogout }) => {
   const [alarmModal, setAlarmModal] = useState(false);
 
   // BGM 관련
-  const[isSoundOn, setIsSoundOn] = useState(true); // 소리 켜진 상태로 시작
+  const [isSoundOn, setIsSoundOn] = useState(true)
+
+  useEffect(() => {
+    const storedSoundStatus = localStorage.getItem("isSoundOn");
+    if (storedSoundStatus !== null) {
+      setIsSoundOn(storedSoundStatus === "true");
+    }
+    else {
+      setIsSoundOn(true);
+      localStorage.setItem("isSoundOn", "true");
+    }
+  }, []);
+
+  console.log(isSoundOn)
 
   const handleLogoutModal = () => {
     setShowLogoutModal(!showLogoutModal);
@@ -42,16 +55,13 @@ const Settings = ({ onLogout }) => {
       window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
     }
 
-    // 소리 상태 변경하기 
-    setIsSoundOn(!isSoundOn);
+    const newSoundState = !isSoundOn;
+    setIsSoundOn(newSoundState);
+    localStorage.setItem("isSoundOn", newSoundState.toString());
   }
 
 
   const confirmLogout = () => {
-    // localStorage.removeItem("token");
-    if(window.AndroidLogout) {
-      window.AndroidLogout.sendLogoutToAndroid();
-    }
     onLogout();
     dispatch({ type: "SET_TOKEN_STRING", payload: "" }); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기
     navigate("/"); // 로그아웃 후 리디렉션: "/"

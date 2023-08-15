@@ -72,10 +72,6 @@ class MainActivity : AppCompatActivity() {
 
         val androidSound = AndroidSound()
         webview.addJavascriptInterface(androidSound, "AndroidSound")
-
-        /* 로그아웃 시 처리 */
-        val androidLogout = AndroidLogout()
-        webview.addJavascriptInterface(androidLogout, "AndroidLogout")
     }
 
 
@@ -175,18 +171,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    inner class AndroidLogout {
-        @JavascriptInterface
-        fun sendLogoutToAndroid() {
-            if(!isBgmOn) {
-                isBgmOn = true
-                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
-                mediaPlayer.isLooping = true
-                mediaPlayer.start()
-            }
-        }
-
-    }
 
     private fun isNotificationPermissionGranted(): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
