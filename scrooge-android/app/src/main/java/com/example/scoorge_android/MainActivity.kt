@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     // BGM 구현 위한 변수
     private lateinit var mediaPlayer: MediaPlayer
+    private var isBgmOn: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +72,10 @@ class MainActivity : AppCompatActivity() {
 
         val androidSound = AndroidSound()
         webview.addJavascriptInterface(androidSound, "AndroidSound")
+
+        /* 로그아웃 시 처리 */
+        val androidLogout = AndroidLogout()
+        webview.addJavascriptInterface(androidLogout, "AndroidLogout")
     }
 
 
@@ -155,15 +160,32 @@ class MainActivity : AppCompatActivity() {
         fun sendSoundToggleToAndroid(isSoundOn: Boolean) {
             if(isSoundOn) {
                 Log.d("CHECK", "소리를 꺼요")
+                isBgmOn = false
                 mediaPlayer.stop();
+                mediaPlayer.release();
             }
             else {
                 Log.d("CHECK", "소리를 켜요")
+                isBgmOn = true
                 mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
                 mediaPlayer.isLooping = true
                 mediaPlayer.start()
             }
         }
+
+    }
+
+    inner class AndroidLogout {
+        @JavascriptInterface
+        fun sendLogoutToAndroid() {
+            if(!isBgmOn) {
+                isBgmOn = true
+                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
+                mediaPlayer.isLooping = true
+                mediaPlayer.start()
+            }
+        }
+
     }
 
     private fun isNotificationPermissionGranted(): Boolean {
