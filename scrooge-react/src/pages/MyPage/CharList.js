@@ -11,7 +11,7 @@ const Button = ({ onClick, children, className }) => {
   );
 };
 
-const CharList = () => {
+const CharList = ({ setModal, setItem, handleModalOpen }) => {
   const globalToken = useSelector((state) => state.globalToken);
   const [characters, setCharacters] = useState([]);
 
@@ -28,19 +28,39 @@ const CharList = () => {
       .then((data) => {
         console.log(data);
 
-        const id = data.map((item) => item.avatar.id); // specificColumn은 특정 컬럼의 이름
+        const id = data.map((item) => item.avatar.id);
         setCharacters(id);
       });
   }, []);
 
+  const handleGacha = () => {
+    const putData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+    fetch("https://day6scrooge.duckdns.org/api/member/gacha", putData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("캐릭터 가챠 실패");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setCharacters(...characters, data.avatarId);
+        setItem(data);
+        handleModalOpen();
+      });
+  };
+
   return (
     <div className={styles.frame}>
       <div className={styles.btnContainer}>
-        <Button
-          className={styles.gachaBtn}
-          onClick={() => console.log("캐릭터....뽑습니다....")}
-        >
-          캐릭터 뽑기!!!!!!!!!
+        <Button className={styles.gachaBtn} onClick={handleGacha}>
+          캐릭터 뽑기
         </Button>
       </div>
 

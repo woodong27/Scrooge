@@ -3,14 +3,20 @@ import styles from "./ReportTab.module.css";
 import CharList from "./CharList";
 import BadgeList from "./BadgeList";
 
-export default function ItemTab() {
+export default function ItemTab({ setModal, setItem, handleModalOpen }) {
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
     {
       id: 1,
       tabTitle: "캐릭터",
-      content: <CharList />,
+      content: (
+        <CharList
+          setModal={setModal}
+          setItem={setItem}
+          handleModalOpen={handleModalOpen}
+        />
+      ),
     },
     {
       id: 2,
