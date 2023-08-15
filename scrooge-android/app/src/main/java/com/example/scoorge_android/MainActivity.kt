@@ -156,6 +156,7 @@ class MainActivity : AppCompatActivity() {
             if(isSoundOn) {
                 Log.d("CHECK", "소리를 꺼요")
                 mediaPlayer.stop();
+                mediaPlayer.release();
             }
             else {
                 Log.d("CHECK", "소리를 켜요")
