@@ -269,10 +269,36 @@ public class PaymentHistoryService {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 
+        // 저번 달의 시작일과 종료일 계산하기
+        YearMonth previousMonth = YearMonth.from(date).minusMonths(1);
+
+        LocalDate previousMonthStartDate = previousMonth.atDay(1);
+        LocalDate previousMonthEndDate = previousMonth.atEndOfMonth();
+
+        LocalDateTime previousMonthStartDateTime = LocalDateTime.of(previousMonthStartDate, LocalTime.MIN);
+        LocalDateTime previousMonthEndDateTime = LocalDateTime.of(previousMonthEndDate, LocalTime.MAX);
+
         List<PaymentHistory> paymentHistoryList = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, startDateTime, endDateTime);
+        List<PaymentHistory> lastPaymentHistoryList = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, previousMonthStartDateTime, previousMonthEndDateTime);
+
+        if(lastPaymentHistoryList.size() == 0) {
+            recapDto.setHasLastMonthPaymentHistory(false);
+        }
+        else {
+            recapDto.setHasLastMonthPaymentHistory(true);
+            // 저번 달 소비 총합 계산
+            int lastMonthTotal = 0;
+            for(PaymentHistory paymentHistory : lastPaymentHistoryList) {
+                lastMonthTotal += paymentHistory.getAmount();
+            }
+            recapDto.setLastMonthTotal(lastMonthTotal);
+        }
+
+
         if(paymentHistoryList.size() == 0) {
             // 소비내역이 없음 ,, 정산 내역 없다고 false로 반환!
             recapDto.setHasPaymentHistory(false);
+            return recapDto;
         }
         else {
             recapDto.setHasPaymentHistory(true);
@@ -281,11 +307,14 @@ public class PaymentHistoryService {
             Map<String, Integer> categoryFrequency = new HashMap<>();
             // 2. 시간대 처리
             Map<String, Integer> timeOfDayFrequency = new HashMap<>();
-
+            // 3. 총합 계산
+            int thisMonthTotal = 0;
             for(PaymentHistory paymentHistory : paymentHistoryList) {
+                // 카테고리
                 String category = paymentHistory.getCategory();
                 categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
 
+                // 시간대
                 LocalDateTime paidAt = paymentHistory.getPaidAt();
                 int hour = paidAt.getHour();
                 if(hour < 6) {
@@ -300,8 +329,15 @@ public class PaymentHistoryService {
                 else {
                     timeOfDayFrequency.put("밤", timeOfDayFrequency.getOrDefault("밤", 0) + 1);
                 }
-            }
 
+                // 총 합 계산
+                thisMonthTotal += paymentHistory.getAmount();
+            }
+            recapDto.setThisMonthTotal(thisMonthTotal);
+            if(recapDto.getLastMonthTotal() != null) {
+                recapDto.setTotalDifference(recapDto.getLastMonthTotal() - recapDto.getThisMonthTotal());
+            }
+            
             // 가장 돈을 많이 쓴 카테고리
             String mostUsedCategory = null;
             int maxFrequency = 0;
