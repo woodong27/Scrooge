@@ -23,48 +23,49 @@ import Profile from "./pages/Profile";
 import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
 import NicknameChange from "./pages/Settings/NicknameChange";
+import WebSocketComponent from "./utils/WebSocketComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
     
-    if (token !== null) {
-      const expirationTime = decodeAccessToken(token);
+  //   if (token !== null) {
+  //     const expirationTime = decodeAccessToken(token);
 
-      if(expirationTime) {
-        const currentTime = Date.now();
-        if(expirationTime <= currentTime) {
-          localStorage.removeItem("token");
-        }
-      }
+  //     if(expirationTime) {
+  //       const currentTime = Date.now();
+  //       if(expirationTime <= currentTime) {
+  //         localStorage.removeItem("token");
+  //       }
+  //     }
 
-      if(localStorage.getItem("token") !== null) {
+  //     if(localStorage.getItem("token") !== null) {
         
-        dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
-        setIsLogin(true);
+  //       dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
+  //       setIsLogin(true);
 
-        console.log(token);
+  //       console.log(token);
 
-        const postData = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        };
+  //       const postData = {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       };
 
-        fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
-          .then((resp) => resp.json())
-          .then((data) => {
-            console.log(data.id);
-            dispatch({ type: "SET_ID_STRING", payload: data.id});
-          })
-          .catch((error) => console.log(error));
-      }
-    }
-  }, []);
+  //       fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
+  //         .then((resp) => resp.json())
+  //         .then((data) => {
+  //           console.log(data.id);
+  //           dispatch({ type: "SET_ID_STRING", payload: data.id});
+  //         })
+  //         .catch((error) => console.log(error));
+  //     }
+  //   }
+  // }, []);
 
   const loginHandler = () => {
     setIsLogin(true);
@@ -127,6 +128,7 @@ function App() {
             element={<Login loginHandler={loginHandler} />}
           />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/ws" element={<WebSocketComponent />} />
         </Routes>
       )}
     </div>

@@ -70,7 +70,7 @@ const NewArticle = ({}) => {
         />
         <img
           className={styles.character}
-          src={`https://storage.googleapis.com/scroogestorage/avatars/73-1.png`}
+          src={`${process.env.PUBLIC_URL}/images/scrooge_img.png`}
           alt="캐릭터"
         />
         <div className={styles.title}>
@@ -95,7 +95,8 @@ const NewArticle = ({}) => {
             type="file"
             accept="image/*"
             style={{ display: "none" }}
-            onChange={handleImageChange}></input>
+            onChange={handleImageChange}
+          ></input>
         </div>
 
         <div className={styles.upload} onClick={handleSend}>

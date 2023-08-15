@@ -75,24 +75,32 @@
 
 .reaction {
   height: 26px;
-  margin: 6px 24px 32px 24px;
+  margin: 18px 28px 32px 16px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .left {
   display: flex;
   height: 28px;
+  align-items: center;
 }
 
 .right {
   display: flex;
+  align-items: center;
   height: 28px;
   margin-right: 4px;
 }
 
 .emoji {
   background-color: #fff;
+}
+
+.bademoji {
+  background-color: #fff;
+  margin-top: 8px;
 }
 
 .addFrame {
@@ -117,11 +125,13 @@
   border-radius: 10px;
   border: 1px solid #000;
   padding-left: 16px;
+  margin-bottom: 8px;
 }
 
 .sendBtn {
-  width: 48px;
+  width: 72px;
   height: 36px;
+  margin-bottom: 8px;
   background: #fff;
 }
 

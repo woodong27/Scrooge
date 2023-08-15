@@ -13,6 +13,8 @@ const ChallengeJoin = () => {
 
   const [data, setData] = useState([]);
   const [makeToast, setMakeToast] = useState(false);
+  const [joinToast, setJoinToast] = useState(false);
+  const [isJoin, setIsJoin] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -29,13 +31,12 @@ const ChallengeJoin = () => {
         }
       )
       .then(() => {
-        console.log("참여 되었어요!");
+        setJoinToast(true);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   };
-
   const startChallengeHandler = () => {
     axios
       .put(
@@ -48,8 +49,6 @@ const ChallengeJoin = () => {
         }
       )
       .then((resp) => {
-        console.log(resp.data.status);
-
         resp.data.status === "Fail"
           ? setMakeToast(true)
           : navigate("/challenge", { state: "시작" });
@@ -64,11 +63,18 @@ const ChallengeJoin = () => {
       .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
       .then((response) => {
         setData(response.data);
+
+        for (const id of response.data.participantIds) {
+          if (memberId === id) {
+            setIsJoin(true);
+            break;
+          }
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [data]);
+  }, [joinToast]);
 
   return (
     <div className={styles.layout}>
@@ -110,17 +116,26 @@ const ChallengeJoin = () => {
           <div className={styles.shadow}></div>
         </div>
       ) : (
-        <div className={styles.primary} onClick={joinChallengeHandler}>
-          챌린지에 도전할래요!
-          <div className={styles.shadow}></div>
+        <div>
+          {isJoin ? (
+            <div className={styles.primary2}>
+              이미 참여중이에요!
+              <div className={styles.shadow}></div>
+            </div>
+          ) : (
+            <div className={styles.primary} onClick={joinChallengeHandler}>
+              챌린지에 도전할래요!
+              <div className={styles.shadow}></div>
+            </div>
+          )}
         </div>
       )}
 
       {makeToast && (
-        <Toast
-          setToast={setMakeToast}
-          text="인원이 짝수가 되어야 시작 가능해요!"
-        />
+        <Toast setToast={setMakeToast} text="시작 가능한 인원이 부족해요!" />
+      )}
+      {joinToast && (
+        <Toast setToast={setJoinToast} text="참여가 완료 되었어요!" />
       )}
     </div>
   );

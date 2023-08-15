@@ -39,6 +39,7 @@ const CreateChallenge = () => {
   };
 
   const CreateChallengeHandler = () => {
+    console.log(imgRefs.current[0]);
     if (
       title.length === 0 ||
       authMethod.length === 0 ||
@@ -70,11 +71,11 @@ const CreateChallenge = () => {
         },
       })
       .then((resp) => {
-        // navigate("/challenge", { state: "성공" });
-        console.log(resp);
+        navigate("/challenge", { state: "성공" });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setMissToast(true);
       });
   };
 

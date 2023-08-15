@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import PaymentItem from "./PaymentItem";
 import PaymentAdd from "./PaymentAdd";
@@ -16,8 +15,6 @@ const PaymentHistory = ({
   handleSetTrue,
   handleSetFalse,
 }) => {
-  const navigate = useNavigate();
-
   const globalToken = useSelector((state) => state.globalToken); //렌더링 여러번 되는 기분?
 
   const [data, setData] = useState();
@@ -25,7 +22,7 @@ const PaymentHistory = ({
   const [origin, setOrigin] = useState();
 
   const [settlement, setSettlement] = useState(todaySettlement);
-  //여기서 get하는걸로 하면 이걸 다 거기에 넣어야겠다.
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modal, setModal] = useState(false);
 
@@ -36,15 +33,11 @@ const PaymentHistory = ({
   const handleOpenModal = () => {
     // 소비가 0건인 경우 예외 처리
     if (data.length < 1) {
-      const formattedDate = `2023-${date[0]
-        .toString()
-        .padStart(2, "0")}-${date[1].toString().padStart(2, "0")}`;
-
-      setOrigin(getTotal(formattedDate));
-      setSettlement(true);
-      if (date === todayProp) {
+      setOrigin(0);
+      if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
         postExp();
       }
+      setSettlement(true);
       return;
     }
     setModal(true);
@@ -64,6 +57,7 @@ const PaymentHistory = ({
 
     getPaymentHistory(previousDate.getMonth() + 1, previousDate.getDate());
   };
+
   //다음날로 이동
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
@@ -80,8 +74,9 @@ const PaymentHistory = ({
   const goNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      } else {
-      if (date === todayProp) {
+    } else {
+      if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
+        console.log(goNext);
         postExp();
         handleSetTrue();
       }
@@ -97,42 +92,47 @@ const PaymentHistory = ({
 
   // 소비 내역 불러오기
   const getPaymentHistory = (month, day) => {
-    if (date.length === 2) {
-      const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
-        .toString()
-        .padStart(2, "0")}`;
+    const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
 
-      const postData = {
-        method: "GET",
-        headers: {
-          Authorization: globalToken,
-        },
-      };
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
 
-      fetch(
-        `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
-        postData
-      )
-        .then((resp) => resp.json())
-        .then((data) => {
-          setData(data);
-          //첫 false를 index로 지정
-          const index = data.findIndex((item) => !item.isSettled);
-          if (index === -1) {
-            setSettlement(true);
-            setOrigin(getTotal(formattedDate));
-            setOrigin(total);
-            setCurrentIndex(data.length);
-          } else {
-            setSettlement(false);
-            setCurrentIndex(index);
-          }
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
+      postData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+        const index = data.findIndex((item) => !item.isSettled);
+        //모든 항목 정산 완료 / data가 없거나
+        if (index === -1) {
+          //소비 내역이 없을 때, 오늘 제외 무조건 정산 완료로
           if (data.length === 0) {
-            setSettlement(false);
+            if (month === todayProp[0] && day === todayProp[1]) {
+              setSettlement(todaySettlement);
+            } else {
+              setSettlement(true);
+            }
+          } else {
+            setSettlement(true);
           }
-        })
-        .catch((error) => console.log(error));
-    }
+          setOrigin(getTotal(formattedDate));
+          setOrigin(total);
+          setCurrentIndex(data.length);
+        } else {
+          //정산 안 된
+          setSettlement(false);
+          setCurrentIndex(index);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -147,15 +147,10 @@ const PaymentHistory = ({
       usedAt,
       cardName,
     };
-    //정산 완료된 경우 바로 다음에만 인덱스랑, 아이템 업데이트
-    if (settlement) {
-      setCurrentIndex(currentIndex + 1);
-    }
     if (date === todayProp) {
       handleSetFalse();
     }
     setData([...data, newItem]);
-    console.log(data, newItem);
     setSettlement(false);
   };
 
@@ -189,6 +184,7 @@ const PaymentHistory = ({
 
   // 일일정산 경험치 추가
   const postExp = () => {
+    console.log("postExp");
     const postData = {
       method: "PUT",
       headers: {
@@ -199,20 +195,17 @@ const PaymentHistory = ({
     fetch(
       "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
       postData
-    )
-      .then((res) => res.json())
-      .then(console.log());
-  };
-
-  const handlePush = () => {
-    navigate("/notification");
+    ).then((res) => {
+      res.text();
+      console.log(res);
+    });
   };
 
   return (
     <div>
       <div className={styles.empty}>
         <button onClick={consumFalseHandler}>홈 으로</button>
-        <button onClick={handlePush}>알림 시간</button>
+        {settlement}
       </div>
       <div className={styles.card}>
         <div className={styles.title}>
@@ -238,11 +231,12 @@ const PaymentHistory = ({
                 <PaymentItem key={index} {...it} onEdit={onEdit} />
               ))
             ) : (
-              <p>!!소비 내역이 없습니다!!</p>
+              <h4>소비 내역이 없습니다 {settlement}</h4>
             )}
             <PaymentAdd onCreate={onCreate} date={date} />
           </div>
         </div>
+
         <div className={styles.foot}>
           {settlement ? (
             <>
@@ -262,7 +256,7 @@ const PaymentHistory = ({
           )}
         </div>
       </div>
-      {modal && (
+      {modal && data && (
         <Modal
           item={data[currentIndex]}
           index={currentIndex}

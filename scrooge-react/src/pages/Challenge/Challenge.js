@@ -26,6 +26,9 @@ const Challenge = () => {
     if (state === "시작") {
       setMakeToast(true);
     }
+
+    if (state === "생성") {
+    }
   }, [state]);
 
   return (
