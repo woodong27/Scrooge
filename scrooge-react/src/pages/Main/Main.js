@@ -202,6 +202,7 @@ const Main = (props) => {
               <div className={styles.border} />
 
               {settlement ? (
+                //정산 완료
                 <span className={styles.charactercoin}>
                   <img
                     className={styles.character}
@@ -219,6 +220,7 @@ const Main = (props) => {
                   </div>
                 </span>
               ) : (
+                //정산 전
                 <span className={styles.charactercoin}>
                   <img
                     className={styles.character}
