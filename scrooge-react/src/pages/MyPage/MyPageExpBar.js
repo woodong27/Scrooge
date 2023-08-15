@@ -1,30 +1,42 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import styles from "./MyPageExpBar.module.css";
 
-const MyPageExpBar = ({ totalExp, currentExp }) => {
-  const calculatePercentage = (current, total) => {
-    return (current / total) * 100;
-  };
+const MyPageExpBar = ({ exp, maxExp }) => {
+  const [progress, setProgress] = useState(0);
+  const [showImg, setShowImg] = useState(false);
 
-  const expBarStyle = {
-    width: `${calculatePercentage(currentExp, totalExp)}%`,
-  };
+  useEffect(() => {
+    setProgress(exp / maxExp);
+    setShowImg(exp === maxExp);
+  },[exp, maxExp]);
 
   return (
-    <div className={styles["exp-container"]}>
-      <div className={styles["expBar"]}>
-        {/* 전체 경험치 바 */}
-        <div className={styles["totalExpBar"]}>
-          <div className={styles["progressBar"]}></div>
-        </div>
+    <div className={styles.expBarContainer}>
+      <div className={styles.expBarBg}>
+        <div
+          className={styles.expBar}
+          style = {{
+            width: `${progress * 100}%`
+          }}
+        />
+        {showImg ? (
+          <img
+            src={`${process.env.PUBLIC_URL}/images/afterExp.svg`}
+            alt="레벨업 후"
+            className={`${styles.afterExp} ${styles.expBarImage}`}
+          />
+          ) : (        
+          <img
+            src={`${process.env.PUBLIC_URL}/images/beforeExp.svg`}
+            alt="레벨업 전"
+            className={`${styles.beforeExp} ${styles.expBarImage}`}
+          />
+        )}
 
-        {/* 현재 경험치 바 */}
-        <div className={styles["currentExpBar"]} style={expBarStyle}></div>
       </div>
-      <img
-        src={`${process.env.PUBLIC_URL}/images/exp-icon.png`}
-        alt="경험치 아이콘"
-      />
+      <p className={styles.expText}>
+        Exp : {exp} / {maxExp}
+      </p>
     </div>
   );
 };
