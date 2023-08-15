@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./MyPageProfile.module.css";
-import ProgressBar from "../Challenge/ProgressBar"; //Exp 바로
+import MyPageExpBar from "./MyPageExpBar";
 import Report from "./Report";
 import ItemTab from "./ItemTab";
 
@@ -10,11 +10,9 @@ const MyPageProfile = () => {
 
   const [data, setData] = useState([]);
   const [showItemList, setShowItemList] = useState(false);
-
-  const [modal, setModal] = useState(false);
-  const [gacha, setGacha] = useState(0);
-  const [item, setItem] = useState([]);
-  const [avatar, setAvatar] = useState(0);
+  const [levelId, setLevelId] = useState(1);
+  const [exp, setExp] = useState(0);
+  const maxExp = 100;
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -39,11 +37,12 @@ const MyPageProfile = () => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
-        setAvatar(data.mainAvatar.id);
-        setGacha(data.remainGacha);
+        setExp(data.exp)
+        console.log("레벨업 데이터",data.exp)
+        setLevelId(data.levelId)
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [globalToken]); // [] : globalToken
 
   const handleGacha = () => {
     //0번 남은 경우 통신 X
@@ -133,8 +132,8 @@ const MyPageProfile = () => {
           </ul>
         </div>
       )}
-
-      <ProgressBar />
+      <MyPageExpBar exp={exp} maxExp={maxExp} />
+      {/* <button onClick={increaseExp}>경험치 획득</button>  */}
 
       <div
         className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}

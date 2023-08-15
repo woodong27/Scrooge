@@ -18,6 +18,7 @@ public class MemberDto {
     private String email;
     private int exp;
     private int streak;
+    private int maxStreak;
     private int weeklyGoal;
     private int weeklyConsum;
     private String message;
@@ -35,6 +36,7 @@ public class MemberDto {
         this.email = member.getEmail();
         this.exp = member.getExp();
         this.streak = member.getStreak();
+        this.maxStreak = member.getMaxStreak();
         this.weeklyConsum = member.getWeeklyConsum();
         this.weeklyGoal = member.getWeeklyGoal();
         this.message = member.getMessage();

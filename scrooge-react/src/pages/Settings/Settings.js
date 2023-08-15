@@ -87,7 +87,9 @@ const Settings = ({ onLogout }) => {
         <div className={styles.settingContent}>
           <div className={styles.infoHeader}>계정설정</div>
           <div className={styles.infoContent}>
-            <div>프로필 변경</div>
+            <Link to ="/nicknameChange">
+              <div>프로필 변경</div>
+            </Link>
             <Link to="/passwordChange">
               <div>비밀번호 변경</div>
             </Link>

@@ -1,27 +1,46 @@
-.exp-container {
-  display: inline-flex;
+.expBarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  top: -1rem
+}
+
+.expBarBg {
+  width: 20.5rem;
+  height: 0.8rem;
+  border-radius: 2rem;
+  background: var(--btn, #EBECF0);
+  position: relative;
+  border-radius: 5px;
 }
 
 .expBar {
-  width: 18.1875rem;
-  height: 0.6875rem;
-  border-radius: 2rem;
-  background: var(--btn, #ebecf0);
-  position: relative;
+  height: 100%;
+  background-color: var(--test-3, #FFEC87);
+  border-radius: 5px;
+  /* transition: width 0.3s ease-in-out; */
+  /* position: relative; */
+  z-index: 1;
 }
 
-.totalExpBar {
-  height: 100%;
-}
-
-.currentExpBar {
-  height: 100%;
-  background: var(--test-3, #ffec87);
-  border-radius: 2rem;
+.expBarImage {
   position: absolute;
-  width: 50%;
+  right: 0;
+  top: 15%;
+  transform: translateY(-50%);
+  z-index: 2; /* Ensure image is on top */
 }
 
-.progressBar {
-  height: 100%;
+.expText {
+  margin-top: 5px;
+  font-size: 14px;
 }
+
+.beforeExp .afterExp{
+  width: 2.67931rem;
+  height: 2.6875rem;
+  flex-shrink: 0;
+}
+
