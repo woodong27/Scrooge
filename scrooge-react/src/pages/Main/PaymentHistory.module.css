@@ -41,6 +41,10 @@
 
 .item {
   height: 440px;
+  & h4 {
+    text-align: center;
+    margin-right: 20px;
+  }
 }
 
 .total {
