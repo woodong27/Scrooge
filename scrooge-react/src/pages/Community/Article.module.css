@@ -47,22 +47,27 @@
 }
 
 .line {
-  width: 288px;
+  width: 300px;
   height: 18px;
   display: flex;
   justify-content: space-between;
-  margin: 8px 0 0 20px;
+  margin: 8px 0 0 6px;
 }
 
 .reaction {
   width: 200px;
   height: 18px;
   display: flex;
-}
-
-.emoji {
-  margin-right: 4px;
-  background: #fff;
+  align-items: center;
+  & .bademoji {
+    padding-bottom: 4px;
+    margin-right: 4px;
+    background: #fff;
+  }
+  & .emoji {
+    margin-right: 4px;
+    background: #fff;
+  }
 }
 
 .cnt {
