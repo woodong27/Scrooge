@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import SettingModal from "../../components/UI/SettingModal";
 import styles from "./CharList.module.css";
 
-const Button = ({ onClick, children, className }) => {
-  return (
-    <button className={className} onClick={onClick}>
-      {children}
-    </button>
-  );
-};
-
-const CharList = () => {
+const CharList = ({ handleCharacterChange }) => {
   const globalToken = useSelector((state) => state.globalToken);
   const [characters, setCharacters] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [characterId, setCharacterId] = useState(0);
 
   useEffect(() => {
     const getData = {
@@ -28,22 +23,28 @@ const CharList = () => {
       .then((data) => {
         console.log(data);
 
-        const id = data.map((item) => item.avatar.id); // specificColumn은 특정 컬럼의 이름
+        const id = data.map((item) => item.avatar.id);
         setCharacters(id);
+        setModal(false);
       });
   }, []);
 
+  const handleModalOpen = (index) => {
+    setCharacterId(index);
+    setModal(true);
+  };
+
+  const handleModalClose = () => {
+    setModal(false);
+  };
+
+  const handleConfirm = () => {
+    handleCharacterChange(characterId);
+    setModal(false);
+  };
+
   return (
     <div className={styles.frame}>
-      <div className={styles.btnContainer}>
-        <Button
-          className={styles.gachaBtn}
-          onClick={() => console.log("캐릭터....뽑습니다....")}
-        >
-          캐릭터 뽑기!!!!!!!!!
-        </Button>
-      </div>
-
       <div className={styles.characters}>
         {characters.length > 0 && (
           <div className={styles.charContainer}>
@@ -54,7 +55,10 @@ const CharList = () => {
 
               return (
                 <div key={index} className={styles.item}>
-                  <div className={styles.one}>
+                  <div
+                    className={styles.one}
+                    onClick={() => handleModalOpen(index)}
+                  >
                     <img
                       src={imageUrl}
                       className={styles.profile}
@@ -68,6 +72,13 @@ const CharList = () => {
           </div>
         )}
       </div>
+      {modal && (
+        <SettingModal
+          message="메인 아바타를 변경하겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={handleModalClose}
+        />
+      )}
     </div>
   );
 };
