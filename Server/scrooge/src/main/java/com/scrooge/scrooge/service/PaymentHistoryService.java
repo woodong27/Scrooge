@@ -264,7 +264,6 @@ public class PaymentHistoryService {
         1. 많이 쓴 카테고리
         2. 최대 스트릭
         2-1. 최대 스트릭 상위 N% 인지 ,,
-        2-1-1. N에 따라 메세지 보내주기
         3. 무슨 시간에 돈을 많이 쓰는 유형인지 ,,, String
      */
         RecapDto recapDto = new RecapDto();
@@ -285,6 +284,7 @@ public class PaymentHistoryService {
         }
         else {
             // 소비내역이 있다면 리캡 시작
+            recapDto.setHasPaymentHistory(true);
             // 1. 많이 쓴 카테고리
             Map<String, Integer> categoryFrequency = new HashMap<>();
 
@@ -333,9 +333,9 @@ public class PaymentHistoryService {
 
                     recapDto.setTopStreakPercentage(roundedPercentage); // 상위 몇 퍼센트인지 적용
                 }
-
-                // 그 뒤부터 0815 ,, 구현하겠습니다 ,,,
             }
+
+
             else {
                 throw new NotFoundException(memberId + "에 해당하는 member를 찾지 못했습니다.");
             }

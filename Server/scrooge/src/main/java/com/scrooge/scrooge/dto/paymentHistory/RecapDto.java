@@ -20,7 +20,6 @@ public class RecapDto {
     private String category;
     private Integer maxStreak;
     private Double topStreakPercentage;
-    private String streakMessage;
     private String mostSpendTime;
 
 }
