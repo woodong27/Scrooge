@@ -31,17 +31,3 @@
   margin-bottom: 1rem;
   margin: 0 2px;
 }
-
-.btnContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.gachaBtn {
-  background-color: tomato;
-  display: flex;
-  width: 20.625rem;
-  height: 3.125rem;
-  padding: 0.9375rem 3rem;
-  justify-content: center;
-}

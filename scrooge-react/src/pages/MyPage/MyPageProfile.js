@@ -12,6 +12,7 @@ const MyPageProfile = () => {
   const [showItemList, setShowItemList] = useState(false);
 
   const [modal, setModal] = useState(false);
+  const [gacha, setGacha] = useState(0);
   const [item, setItem] = useState([]);
 
   const handleEditBtn = () => {
@@ -22,6 +23,7 @@ const MyPageProfile = () => {
     setModal(true);
   };
   const handleModalClose = () => {
+    setShowItemList(true);
     setModal(false);
   };
 
@@ -36,9 +38,38 @@ const MyPageProfile = () => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        setGacha(data.remainGacha);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const handleGacha = () => {
+    //0번 남은 경우 통신 X
+    if (gacha === 0) {
+      return;
+    }
+
+    const putData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+    fetch("https://day6scrooge.duckdns.org/api/member/gacha", putData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("캐릭터 가챠 실패");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setItem(data);
+        setGacha(gacha - 1);
+        handleModalOpen();
+      });
+  };
 
   return (
     <div className={styles["profile-container"]}>
@@ -74,21 +105,19 @@ const MyPageProfile = () => {
       )}
 
       <ProgressBar />
+
+      <div className={styles.btnContainer}>
+        <button className={styles.gachaBtn} onClick={handleGacha}>
+          뽑기 {gacha}회권
+        </button>
+      </div>
       <div
         className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}
         onClick={handleEditBtn}
       >
         {showItemList ? "소비 리포트 보러 가기" : "캐릭터 뽑으러 가기"}
       </div>
-      {showItemList ? (
-        <ItemTab
-          setModal={setModal}
-          setItem={setItem}
-          handleModalOpen={handleModalOpen}
-        />
-      ) : (
-        <Report />
-      )}
+      {showItemList ? <ItemTab /> : <Report />}
 
       {modal && (
         <div>
