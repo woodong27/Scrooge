@@ -258,15 +258,6 @@ public class PaymentHistoryService {
     // 내 소비에 대한 리캡을 조회하는 API
     public RecapDto getMyRecap(Long memberId) {
         // 소비내역 이번달 기준으로 ,,,
-
-        /* 반환하는 요소
-        0. 이 사람 ,, 정산 내역이 있는지 ,,
-        1. 많이 쓴 카테고리
-        2. 최대 스트릭
-        2-1. 최대 스트릭 상위 N% 인지 ,,
-        2-1-1. N에 따라 메세지 보내주기
-        3. 무슨 시간에 돈을 많이 쓰는 유형인지 ,,, String
-     */
         RecapDto recapDto = new RecapDto();
 
         LocalDate date = LocalDate.now();
@@ -284,15 +275,34 @@ public class PaymentHistoryService {
             recapDto.setHasPaymentHistory(false);
         }
         else {
+            recapDto.setHasPaymentHistory(true);
             // 소비내역이 있다면 리캡 시작
             // 1. 많이 쓴 카테고리
             Map<String, Integer> categoryFrequency = new HashMap<>();
+            // 2. 시간대 처리
+            Map<String, Integer> timeOfDayFrequency = new HashMap<>();
 
             for(PaymentHistory paymentHistory : paymentHistoryList) {
                 String category = paymentHistory.getCategory();
                 categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
+
+                LocalDateTime paidAt = paymentHistory.getPaidAt();
+                int hour = paidAt.getHour();
+                if(hour < 6) {
+                    timeOfDayFrequency.put("새벽", timeOfDayFrequency.getOrDefault("새벽", 0) + 1);
+                }
+                else if(hour < 12) {
+                    timeOfDayFrequency.put("오전", timeOfDayFrequency.getOrDefault("오전", 0) + 1);
+                }
+                else if(hour < 18) {
+                    timeOfDayFrequency.put("오후", timeOfDayFrequency.getOrDefault("오후", 0) + 1);
+                }
+                else {
+                    timeOfDayFrequency.put("밤", timeOfDayFrequency.getOrDefault("밤", 0) + 1);
+                }
             }
 
+            // 가장 돈을 많이 쓴 카테고리
             String mostUsedCategory = null;
             int maxFrequency = 0;
 
@@ -304,6 +314,18 @@ public class PaymentHistoryService {
             }
             recapDto.setCategory(mostUsedCategory);
 
+            // 시간대별로 가장 많이 지출한 시간대
+            String mostSpendTimeOfDay = null;
+            int maxTimeOfDayFrequency = 0;
+
+            for(Map.Entry<String, Integer> entry : timeOfDayFrequency.entrySet()) {
+                if(entry.getValue() > maxTimeOfDayFrequency) {
+                    maxTimeOfDayFrequency = entry.getValue();
+                    mostSpendTimeOfDay = entry.getKey();
+                }
+            }
+            recapDto.setMostSpendTime(mostSpendTimeOfDay);
+
 
             // 3. 최대 스트릭
             // member 가져오기
@@ -313,7 +335,6 @@ public class PaymentHistoryService {
                 recapDto.setMaxStreak(maxStreak); // 최대 스트릭
 
                 // 최대 스트릭 상위 몇 프로 인지 ,,, 반환
-                // 1. 일단 ,,, Member들 ,, 2023 08 15에 이어서 작성하겠습니다 ,,,
                 List<Member> sortedMembers = memberRepository.findByOrderByMaxStreakDesc();
                 int totalMembers = sortedMembers.size();
                 int myMaxStreak = recapDto.getMaxStreak();
@@ -333,8 +354,6 @@ public class PaymentHistoryService {
 
                     recapDto.setTopStreakPercentage(roundedPercentage); // 상위 몇 퍼센트인지 적용
                 }
-
-                // 그 뒤부터 0815 ,, 구현하겠습니다 ,,,
             }
             else {
                 throw new NotFoundException(memberId + "에 해당하는 member를 찾지 못했습니다.");

@@ -168,16 +168,8 @@ public class PaymentHistoryController {
 
     // 내 소비에 대한 리캡을 조회하는 API
     @Operation(summary = "소비에 대한 리캡을 조회하는 API")
-    @GetMapping("/recap")
-    public ResponseEntity<?> getMyRecap(@RequestHeader("Authorization") String tokenHeader) {
-        String token = extractToken(tokenHeader);
-
-        if(!jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-        }
-
-        Long memberId = jwtTokenProvider.extractMemberId(token);
-
+    @GetMapping("/recap/{memberId}")
+    public ResponseEntity<?> getMyRecap(@PathVariable("memberId")Long memberId) {
         RecapDto recapDto = paymentHistoryService.getMyRecap(memberId);
         return ResponseEntity.ok(recapDto);
     }
