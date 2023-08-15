@@ -34,14 +34,10 @@ const PaymentHistory = ({
     // 소비가 0건인 경우 예외 처리
     if (data.length < 1) {
       setOrigin(0);
-      console.log("오니?");
-      console.log(date, todayProp);
       if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
-        console.log("여기 안 와..?");
         postExp();
       }
       setSettlement(true);
-
       return;
     }
     setModal(true);
@@ -61,6 +57,7 @@ const PaymentHistory = ({
 
     getPaymentHistory(previousDate.getMonth() + 1, previousDate.getDate());
   };
+
   //다음날로 이동
   const dateafterHandler = () => {
     const [currentMonth, currentDay] = date;
@@ -78,7 +75,7 @@ const PaymentHistory = ({
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      if (date === todayProp) {
+      if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
         postExp();
         handleSetTrue();
       }
@@ -145,15 +142,10 @@ const PaymentHistory = ({
       usedAt,
       cardName,
     };
-    //정산 완료된 경우 바로 다음에만 인덱스랑, 아이템 업데이트
-    if (settlement) {
-      setCurrentIndex(currentIndex + 1);
-    }
     if (date === todayProp) {
       handleSetFalse();
     }
     setData([...data, newItem]);
-    console.log(data, newItem);
     setSettlement(false);
   };
 
@@ -255,7 +247,7 @@ const PaymentHistory = ({
           )}
         </div>
       </div>
-      {modal && (
+      {modal && data && (
         <Modal
           item={data[currentIndex]}
           index={currentIndex}

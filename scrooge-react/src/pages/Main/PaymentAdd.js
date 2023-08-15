@@ -44,12 +44,12 @@ const PaymentAdd = ({ onCreate, date }) => {
       amountInput.current.focus();
       return;
     }
-    if (state.amountlength < 2) {
+    if (state.amount.length < 2) {
       console.log("길이 부족");
       amountInput.current.focus();
       return;
     }
-    if (state.cardName.length < 3) {
+    if (state.cardName.length < 2) {
       cardNameInput.current.focus();
       return;
     }

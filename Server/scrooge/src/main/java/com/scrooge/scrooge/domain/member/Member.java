@@ -1,6 +1,9 @@
 package com.scrooge.scrooge.domain.member;
 
 import com.scrooge.scrooge.domain.*;
+import com.scrooge.scrooge.domain.challenge.ChallengeChattingMessage;
+import com.scrooge.scrooge.domain.challenge.ChallengeParticipant;
+import com.scrooge.scrooge.domain.challenge.ChallengeChattingRoom;
 import com.scrooge.scrooge.domain.community.Article;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -98,4 +101,17 @@ public class Member {
         this.refreshToken = refreshToken;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "member_challenge_chatting_room",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "chatting_room_id")
+    )
+    private List<ChallengeChattingRoom> challengeChattingRoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<ChallengeChattingMessage> challengeChattingMessageList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+//    private List<ChallengeChattingParticipant>
 }

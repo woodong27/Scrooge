@@ -1,12 +1,12 @@
 import { Fragment, useState, useRef, useEffect } from "react";
 import styles from "./Modal.module.css";
 
-const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
+const Modal = ({ item, index, goNext, onEdit, onCloseModal }) => {
   const numericPattern = /^[0-9]+$/;
-  const [origin, setOrigin] = useState(item.amount);
-  const [place, setPlace] = useState(item.usedAt);
-  const [card, setCard] = useState(item.cardName);
-  const [category, setCategory] = useState(" ");
+  const [origin, setOrigin] = useState(0);
+  const [place, setPlace] = useState("");
+  const [card, setCard] = useState("");
+  const [category, setCategory] = useState("");
   const localContentInput = useRef();
   const localPlaceInput = useRef();
   const localCardInput = useRef();
@@ -15,8 +15,7 @@ const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
     setOrigin(item.amount);
     setPlace(item.usedAt);
     setCard(item.cardName);
-    setCategory(" ");
-  }, [index]);
+  }, [item, index]);
 
   const buttons = [
     { id: 1, label: "식비" },
@@ -95,7 +94,7 @@ const Modal = ({ item, index, onEdit, onCloseModal, goNext }) => {
           <div className={styles.line}>
             <div className={styles.title}>결제 일자</div>
             <div className={styles.content}>
-              {/* {`${item.paidAt.slice(0, 19).split("T")[1]} `} */}
+              {`${item.paidAt.slice(0, 19).split("T")[1]} `}
             </div>
           </div>{" "}
         </div>

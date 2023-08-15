@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChallengeStartRespDto {
 
+    private Double result;
+    private String exampleImageAddress;
     private String status;
     private String message;
 }
