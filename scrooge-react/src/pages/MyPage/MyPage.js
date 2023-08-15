@@ -1,11 +1,10 @@
 import MyPageHeader from "./MyPageHeader";
 import MyPageProfile from "./MyPageProfile";
-
-// import Report from "./Report"
+import styles from "./Mypage.module.css";
 
 const MyPage = () => {
   return (
-    <div>
+    <div className={styles.body}>
       <MyPageHeader />
       <MyPageProfile />
     </div>
