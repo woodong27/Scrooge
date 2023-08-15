@@ -13,6 +13,10 @@ const MyPageProfile = () => {
   const [levelId, setLevelId] = useState(1);
   const [exp, setExp] = useState(0);
   const maxExp = 100;
+  const [modal, setModal] = useState(false);
+  const [gacha, setGacha] = useState(0);
+  const [item, setItem] = useState([]);
+  const [avatar, setAvatar] = useState(0);
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -37,9 +41,11 @@ const MyPageProfile = () => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
-        setExp(data.exp)
-        console.log("레벨업 데이터",data.exp)
-        setLevelId(data.levelId)
+        setExp(data.exp);
+        console.log("레벨업 데이터", data.exp);
+        setLevelId(data.levelId);
+        setAvatar(data.mainAvatar.id);
+        setGacha(data.remainGacha);
       })
       .catch((error) => console.log(error));
   }, [globalToken]); // [] : globalToken

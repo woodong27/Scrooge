@@ -21,8 +21,6 @@ const CharList = ({ handleCharacterChange }) => {
     fetch(`https://day6scrooge.duckdns.org/api/avatar/my-avatar`, getData)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-
         const id = data.map((item) => item.avatar.id);
         setCharacters(id);
         setModal(false);
