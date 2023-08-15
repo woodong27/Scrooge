@@ -40,6 +40,12 @@
   margin-bottom: 1.35rem;
 }
 
+.gachaBtn {
+  background-color: #fff;
+  text-align: left;
+  padding: 0;
+}
+
 .modal_overlay {
   position: fixed;
   z-index: 2;

@@ -106,6 +106,7 @@ const MyPageProfile = () => {
           <ul className={styles["profile-info"]}>
             <li>Lv.{data.levelId}</li>
             <li>{data.nickname}</li>
+
             <li className={styles["items-info"]}>
               <div>
                 <img
@@ -122,17 +123,19 @@ const MyPageProfile = () => {
                 <span>6</span>
               </div>
             </li>
+            <li>
+              <div className={styles.btnContainer}>
+                <button className={styles.gachaBtn} onClick={handleGacha}>
+                  뽑기 {gacha}회 가능
+                </button>
+              </div>
+            </li>
           </ul>
         </div>
       )}
 
       <ProgressBar />
 
-      <div className={styles.btnContainer}>
-        <button className={styles.gachaBtn} onClick={handleGacha}>
-          뽑기 {gacha}회권
-        </button>
-      </div>
       <div
         className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}
         onClick={handleEditBtn}
