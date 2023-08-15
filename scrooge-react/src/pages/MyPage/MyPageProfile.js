@@ -14,6 +14,7 @@ const MyPageProfile = () => {
   const [modal, setModal] = useState(false);
   const [gacha, setGacha] = useState(0);
   const [item, setItem] = useState([]);
+  const [avatar, setAvatar] = useState(0);
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -38,6 +39,7 @@ const MyPageProfile = () => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        setAvatar(data.mainAvatar.id);
         setGacha(data.remainGacha);
       })
       .catch((error) => console.log(error));
@@ -71,13 +73,33 @@ const MyPageProfile = () => {
       });
   };
 
+  const handleChange = (newId) => {
+    const putData = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+    fetch(`https://day6scrooge.duckdns.org/api/avatar/${newId}`, putData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("캐릭터 변경 실패");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setAvatar(newId);
+      });
+  };
+
   return (
     <div className={styles["profile-container"]}>
       {data && data.levelId && data.mainAvatar.id && (
         <div className={styles["profile-content"]}>
           <div className={styles.profileImage}>
             <img
-              src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
+              src={`https://storage.googleapis.com/scroogestorage/avatars/${avatar}-1.png`}
               alt="프로필 사진"
             />
           </div>
@@ -117,7 +139,11 @@ const MyPageProfile = () => {
       >
         {showItemList ? "소비 리포트 보러 가기" : "캐릭터 뽑으러 가기"}
       </div>
-      {showItemList ? <ItemTab /> : <Report />}
+      {showItemList ? (
+        <ItemTab handleCharacterChange={handleChange} />
+      ) : (
+        <Report />
+      )}
 
       {modal && (
         <div>

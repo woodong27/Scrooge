@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import SettingModal from "../../components/UI/SettingModal";
 import styles from "./CharList.module.css";
 
-const CharList = () => {
+const CharList = ({ handleCharacterChange }) => {
   const globalToken = useSelector((state) => state.globalToken);
   const [characters, setCharacters] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [characterId, setCharacterId] = useState(0);
 
   useEffect(() => {
     const getData = {
@@ -22,8 +25,23 @@ const CharList = () => {
 
         const id = data.map((item) => item.avatar.id);
         setCharacters(id);
+        setModal(false);
       });
   }, []);
+
+  const handleModalOpen = (index) => {
+    setCharacterId(index);
+    setModal(true);
+  };
+
+  const handleModalClose = () => {
+    setModal(false);
+  };
+
+  const handleConfirm = () => {
+    handleCharacterChange(characterId);
+    setModal(false);
+  };
 
   return (
     <div className={styles.frame}>
@@ -37,7 +55,10 @@ const CharList = () => {
 
               return (
                 <div key={index} className={styles.item}>
-                  <div className={styles.one}>
+                  <div
+                    className={styles.one}
+                    onClick={() => handleModalOpen(index)}
+                  >
                     <img
                       src={imageUrl}
                       className={styles.profile}
@@ -51,6 +72,13 @@ const CharList = () => {
           </div>
         )}
       </div>
+      {modal && (
+        <SettingModal
+          message="메인 아바타를 변경하겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={handleModalClose}
+        />
+      )}
     </div>
   );
 };
