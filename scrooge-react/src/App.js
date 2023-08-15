@@ -22,6 +22,7 @@ import Profile from "./pages/Profile";
 // import Settings from "./pages/Settings/Settings";
 import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
+import WebSocketComponent from "./utils/WebSocketComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -125,6 +126,7 @@ function App() {
             element={<Login loginHandler={loginHandler} />}
           />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/ws" element={<WebSocketComponent />} />
         </Routes>
       )}
     </div>

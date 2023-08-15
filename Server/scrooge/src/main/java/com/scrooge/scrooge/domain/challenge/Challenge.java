@@ -62,4 +62,7 @@ public class Challenge {
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ChallengeParticipant> challengeParticipantList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<ChallengeChattingRoom> challengeChattingRoomList = new ArrayList<>();
 }
