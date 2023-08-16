@@ -6,7 +6,6 @@ import Card from "../../components/UI/Card";
 import styles from "./Article.module.css";
 
 const Article = (props) => {
-  console.log(props);
   const globalToken = useSelector((state) => state.globalToken);
 
   const [showContent, setContent] = useState(props.content);
