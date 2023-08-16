@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Stomp from "stompjs";
 
+import backImg from "../assets/back.png";
 import styles from "./WebSocketComponent.module.css";
 
 const WebSocketComponent = () => {
@@ -69,6 +70,9 @@ const WebSocketComponent = () => {
 
   return (
     <div className={styles.bg}>
+      <Link className={styles.back} to={`/challenge/my/${params.id}`}>
+        <img src={backImg} alt=""></img>
+      </Link>
       <div className={styles.chat}>우리팀 채팅</div>
       <div className={styles.body} ref={containerRef}>
         {msg.map((e, i) =>

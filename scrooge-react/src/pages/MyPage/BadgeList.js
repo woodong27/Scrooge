@@ -72,7 +72,11 @@ const BadgeList = () => {
       {showModal && (
         <BottomSheet onClose={hideModalHandler}>
           <img
-            className={styles.img}
+            className={
+              id === "1" || id === "4" || id === "6" || id === "7"
+                ? styles.img
+                : styles.noImg
+            }
             src={`${process.env.PUBLIC_URL}/Badge/${id}.png`}
             alt=""
           />
@@ -80,11 +84,15 @@ const BadgeList = () => {
           <div className={styles.body}>{badgeDescription}</div>
         </BottomSheet>
       )}
-      {badges.map((e) => (
+      {badges.map((e, i) => (
         <img
           onClick={showModalHandler}
           key={e.id}
-          className={styles.badgeImage}
+          className={
+            i === 0 || i === 3 || i === 5 || i === 6
+              ? styles.badgeImage
+              : styles.noBadgeImage
+          }
           src={`${process.env.PUBLIC_URL}/Badge/${e.id}.png`}
           alt={e.badgeDescription}
           name={e.badgeName}

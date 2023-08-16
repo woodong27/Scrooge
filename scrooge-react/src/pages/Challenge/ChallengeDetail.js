@@ -62,7 +62,6 @@ const ChallengeDetail = () => {
         axios
           .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
           .then((response) => {
-            console.log(response);
             setData((prevData) => ({
               ...prevData,
               authMethod: response.data.authMethod,

@@ -75,22 +75,24 @@
 
 .you {
   text-align: left;
+  position: relative;
+  height: 8rem;
   flex-shrink: 0;
 
   & .text {
     position: absolute;
     border: 1px solid black;
     background-color: white;
-    top: 4rem;
+    top: 3.6rem;
     width: 40%;
     padding: 1rem;
-    left: 4rem;
-    border-radius: 1rem 0 1rem 1rem;
+    left: 4.4rem;
+    border-radius: 0 1rem 1rem 1rem;
   }
 
   & .nickname {
     position: absolute;
-    left: 4rem;
+    left: 4.4rem;
     top: 2.4rem;
   }
 }
@@ -102,4 +104,13 @@
   height: 78%;
   overflow: scroll;
   padding-bottom: 2rem;
+}
+
+.back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 4px;
+  color: white;
+  z-index: 1;
 }
