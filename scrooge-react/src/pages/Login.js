@@ -6,6 +6,7 @@ import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/Button/ButtonWhite";
 import CharacterCard from "../components/UI/CharacterCard";
 import styles from "./Login.module.css";
+import Cookies from "js-cookie";
 
 const Login = ({ loginHandler }) => {
   //이메일 정규식
@@ -60,9 +61,9 @@ const Login = ({ loginHandler }) => {
       })
       .then((data) => {
         const jwtToken = data.token;
-
-        localStorage.setItem("token", jwtToken);
-
+        
+        Cookies.set('accessToken', jwtToken, {expires: 7});
+      
         sendJwtTokenToAndroid(jwtToken);
 
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
