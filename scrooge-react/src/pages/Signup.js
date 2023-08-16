@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import BackGround from "../components/BackGround";
 import ButtonWhite from "../components/Button/ButtonWhite";
-import CharacterCard from "../components/UI/CharacterCard";
+import Card from "../components/UI/Card";
 import styles from "./Signup.module.css";
 
 const Signup = () => {
@@ -105,75 +105,82 @@ const Signup = () => {
   return (
     <BackGround>
       <div className={styles.empty} />
-      <CharacterCard>
-        <div className={styles.title}>회원가입</div>
+      <div className={styles.body}>
+        <Card height={440}>
+          <div className={styles.title}>회원가입</div>
 
-        <div className={styles.frame}>
-          <input
-            className={styles.input}
-            ref={nicknameInput}
-            name="nickname"
-            value={state.nickname}
-            placeholder="닉네임을 입력해주세요"
-            onChange={handleChangeState}
-          />
-          <div id="nickname" className={styles.error}>
-            닉네임을 4글자 이상 입력해주세요.
-          </div>
+          <div className={styles.frame}>
+            <input
+              className={styles.input}
+              ref={nicknameInput}
+              name="nickname"
+              value={state.nickname}
+              placeholder="닉네임을 입력해주세요"
+              onChange={handleChangeState}
+            />
+            <div id="nickname" className={styles.error}>
+              닉네임을 4글자 이상 입력해주세요.
+            </div>
 
-          <input
-            className={styles.input}
-            ref={emailInput}
-            name="email"
-            value={state.email}
-            placeholder="이메일을 입력해주세요"
-            onChange={handleChangeState}
-          />
-          <div id="email" className={styles.error}>
-            올바른 이메일을 입력해주세요.
-          </div>
+            <input
+              className={styles.input}
+              ref={emailInput}
+              name="email"
+              value={state.email}
+              placeholder="이메일을 입력해주세요"
+              onChange={handleChangeState}
+            />
+            <div id="email" className={styles.error}>
+              올바른 이메일을 입력해주세요.
+            </div>
 
-          <input
-            className={styles.input}
-            ref={passwordInput}
-            name="password"
-            type="password"
-            value={state.password}
-            placeholder="비밀번호를 입력해주세요"
-            onChange={handleChangeState}
-          />
-          <div id="password" className={styles.error}>
-            알파벳, 숫자, 특수문자를 포함한 <br />
-            8글자 이상 비밀번호를 입력해주세요.
-          </div>
+            <input
+              className={styles.input}
+              ref={passwordInput}
+              name="password"
+              type="password"
+              value={state.password}
+              placeholder="비밀번호를 입력해주세요"
+              onChange={handleChangeState}
+            />
+            <div id="password" className={styles.error}>
+              알파벳, 숫자, 특수문자를 포함한 <br />
+              8글자 이상 비밀번호를 입력해주세요.
+            </div>
 
-          <input
-            className={styles.input}
-            ref={passwordcheckInput}
-            name="passwordcheck"
-            type="password"
-            value={state.passwordcheck}
-            placeholder="비밀번호를 확인해주세요"
-            onChange={handleChangeState}
-          />
-          <div id="passwordcheck" className={styles.error}>
-            비밀번호를 다시 확인해주세요.
+            <input
+              className={styles.input}
+              ref={passwordcheckInput}
+              name="passwordcheck"
+              type="password"
+              value={state.passwordcheck}
+              placeholder="비밀번호를 확인해주세요"
+              onChange={handleChangeState}
+            />
+            <div id="passwordcheck" className={styles.error}>
+              비밀번호를 다시 확인해주세요.
+            </div>
+            <div id="error" className={styles.error}>
+              회원가입에 실패했습니다.
+            </div>
           </div>
-          <div id="error" className={styles.error}>
-            회원가입에 실패했습니다.
-          </div>
+          <button
+            className={styles.yesAccount}
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            계정이 있으신가요?
+          </button>
+        </Card>
+        <br />
+
+        <div onClick={handleSignup}>
+          <Card height={60}>
+            <div className={styles.buttonText}>회원가입</div>
+          </Card>
         </div>
-        <button
-          className={styles.yesAccount}
-          onClick={() => {
-            navigate("/login");
-          }}
-        >
-          계정이 있으신가요?
-        </button>
-      </CharacterCard>
-
-      <ButtonWhite text="회원가입" onClick={handleSignup}></ButtonWhite>
+      </div>
     </BackGround>
   );
 };
