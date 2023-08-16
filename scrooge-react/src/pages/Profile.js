@@ -97,7 +97,7 @@ const Profile = (props) => {
               </div>
             </div>
           </CharacterCard>
-          <Card height={246}>
+          <Card height={248}>
             <div className={styles.todayCard}>
               <div>
                 <table className={styles.table}>

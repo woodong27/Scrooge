@@ -2,7 +2,9 @@
   z-index: -1;
   width: 100vw;
   height: 100vh;
-  background-image: url("../../public/images/bg-images.png"), linear-gradient(180deg, #8CD5FF 0%, #B0E2FF 46.67%, #FAFBFC 99.99%);
+  margin: 0;
+  background-image: url("../../public/images/bg-images.png"),
+    linear-gradient(180deg, #8cd5ff 0%, #b0e2ff 46.67%, #fafbfc 99.99%);
   background-size: cover, cover;
   background-repeat: no-repeat, no-repeat;
 }

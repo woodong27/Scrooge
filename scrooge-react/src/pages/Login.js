@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
-import ButtonWhite from "../components/Button/ButtonWhite";
-import CharacterCard from "../components/UI/CharacterCard";
+import Card from "../components/UI/Card";
 import styles from "./Login.module.css";
 import Cookies from "js-cookie";
 
@@ -86,41 +85,50 @@ const Login = ({ loginHandler }) => {
   return (
     <BackGround>
       <div className={styles.empty} />
-      <CharacterCard>
-        <div className={styles.title}>로그인</div>
+      <div className={styles.body}>
+        <Card height={360}>
+          <div className={styles.title}>로그인</div>
 
-        <input
-          className={styles.input}
-          ref={emailInput}
-          name="email"
-          value={state.email}
-          placeholder="이메일을 입력해주세요"
-          onChange={handleChangeState}
-        />
-        <input
-          className={styles.input}
-          ref={passwordInput}
-          name="password"
-          type="password"
-          value={state.password}
-          placeholder="비밀번호를 입력해주세요"
-          onChange={handleChangeState}
-        />
-        <div id="error" className={styles.error}>
-          이메일과 비밀번호를 확인해주세요.
+          <input
+            className={styles.input}
+            ref={emailInput}
+            name="email"
+            value={state.email}
+            placeholder="이메일을 입력해주세요"
+            onChange={handleChangeState}
+          />
+          <input
+            className={styles.input}
+            ref={passwordInput}
+            name="password"
+            type="password"
+            value={state.password}
+            placeholder="비밀번호를 입력해주세요"
+            onChange={handleChangeState}
+          />
+          <div id="error" className={styles.error}>
+            이메일과 비밀번호를 확인해주세요.
+          </div>
+          <button className={styles.missPassword}>
+            {" "}
+            비밀번호를 잊으셨나요?
+          </button>
+          <button
+            className={styles.noAccount}
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            계정이 없으신가요?
+          </button>
+        </Card>
+        <br />
+        <div onClick={handleLogin}>
+          <Card height={60}>
+            <div className={styles.buttonText}>로그인</div>
+          </Card>
         </div>
-        <button className={styles.missPassword}> 비밀번호를 잊으셨나요?</button>
-        <button
-          className={styles.noAccount}
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          계정이 없으신가요?
-        </button>
-      </CharacterCard>
-
-      <ButtonWhite text="로그인" onClick={handleLogin}></ButtonWhite>
+      </div>
     </BackGround>
   );
 };
