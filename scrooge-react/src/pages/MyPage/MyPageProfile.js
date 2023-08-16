@@ -69,7 +69,6 @@ const MyPageProfile = () => {
   }, []);
 
   const handleGacha = () => {
-    console.log("가챠");
     //0번 남은 경우 통신 X
     if (gacha === 0) {
       return;
