@@ -156,6 +156,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     inner class AndroidAlarmAllow {
         @JavascriptInterface
         fun sendAllowToApp() {
