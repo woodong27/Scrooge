@@ -4,7 +4,6 @@ import SettingModal from "../../components/UI/SettingModal";
 import styles from "./CharList.module.css";
 
 const CharList = ({ handleCharacterChange, characters }) => {
-  console.log(characters);
   const [modal, setModal] = useState(false);
   const [characterId, setCharacterId] = useState(0);
 
