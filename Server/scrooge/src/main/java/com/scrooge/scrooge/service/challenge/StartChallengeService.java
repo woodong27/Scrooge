@@ -13,9 +13,10 @@ import com.scrooge.scrooge.repository.challenge.ChallengeAuthRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeExampleImageRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeParticipantRepository;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
+import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
+import com.scrooge.scrooge.service.QuestService;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.LevelService;
-import jdk.internal.org.jline.utils.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class StartChallengeService {
     private final ChallengeParticipantRepository challengeParticipantRepository;
     private final ChallengeAuthRepository challengeAuthRepository;
     private final ChallengeExampleImageRepository challengeExampleImageRepository;
+    private final MemberSelectedQuestRepository memberSelectedQuestRepository;
+    private final QuestService questService;
     private final ImageCompareController imageCompareController;
     private final Storage storage;
 
@@ -116,6 +119,13 @@ public class StartChallengeService {
                 failedImageAddress = challengeExampleImage.getImgAddress();
             }
             if (result >= 0.65) {
+
+                // 인증하기 퀘스트를 선택했을 때
+                if (memberSelectedQuestRepository.existsByMemberIdAndQuestIdAndIsSelected(memberId, 5L, true)) {
+                    questService.completeQuest(5L, memberId);
+                }
+
+
                 challengeAuth.setIsSuccess(true);
                 challengeAuthRepository.save(challengeAuth);
 
