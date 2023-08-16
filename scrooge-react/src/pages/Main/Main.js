@@ -8,7 +8,7 @@ import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
-const Main = (props) => {
+const Main = () => {
   const globalToken = useSelector((state) => state.globalToken);
 
   const [data, setData] = useState([]);

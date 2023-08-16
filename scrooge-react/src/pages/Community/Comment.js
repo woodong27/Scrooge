@@ -32,7 +32,9 @@ const Comment = (props) => {
       </Link>
       <div className={styles.up}>
         <div className={styles.nickname}>
-          <Link to={`/profile/${props.memberId}`}>{props.memberNickname}</Link>
+          <Link className={styles.link} to={`/profile/${props.memberId}`}>
+            {props.memberNickname}
+          </Link>
           {memberId === props.memberId ? (
             <>
               {isEdit ? (
