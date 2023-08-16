@@ -6,11 +6,12 @@ import axios from "axios";
 
 const MyAuthProcess = (props) => {
   const [data, setData] = useState();
+  const day = new Date().getDate();
 
   useEffect(() => {
     axios
       .get(
-        `https://day6scrooge.duckdns.org/api/challenge/1/my-challenge/my-auth`,
+        `https://day6scrooge.duckdns.org/api/challenge/${props.id}/my-challenge/my-auth`,
         {
           headers: {
             Authorization: props.token,
@@ -18,24 +19,30 @@ const MyAuthProcess = (props) => {
         }
       )
       .then((resp) => {
+        resp.data.challengeAuthList.map((e) => {
+          if (e.isSuccess && day === new Date(e.createdAt).getDate()) {
+            props.setTodayAuth();
+          }
+        });
         setData(resp.data);
       })
       .catch((e) => console.log(e));
   }, []);
+
   return (
     <Fragment>
       {data && <AuthProgress per={data.currentCompletionRate}></AuthProgress>}
       <div className={styles.my_auth_container}>
         {data &&
-          data.challengeAuthList.map((e) => {
+          data.challengeAuthList.map((e, i) => {
             return (
-              <div className={styles.my_auth_middle}>
-                <div className={styles.idx}>{e.id}</div>
+              <div className={styles.my_auth_middle} key={i}>
+                <div className={styles.idx}>{i + 1}</div>
                 <div>
                   {new Date(e.createdAt).getMonth() + 1}/
                   {new Date(e.createdAt).getDate()}
                 </div>
-                <div className={styles.succes}>
+                <div className={e.isSuccess ? styles.success : styles.fail}>
                   {e.isSuccess ? "성공" : "실패"}
                 </div>
                 <img src={e.imageAddress} alt="" />

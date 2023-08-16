@@ -84,6 +84,20 @@
   background-color: white;
 }
 
+.already {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  font-size: 24px;
+  background-color: white;
+}
+
 .shadow {
   z-index: -1;
   position: absolute;
@@ -97,11 +111,12 @@
 }
 
 .auth_img {
+  margin-left: 2rem;
   display: flex;
   gap: 2rem;
   width: 100%;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
   height: 16rem;
   white-space: nowrap;
   overflow-x: scroll;
@@ -118,21 +133,23 @@
   flex-flow: column;
   text-align: left;
   gap: 0.4rem;
+  margin: 0 auto;
+  width: 84%;
 }
 
 .body_title {
   font-size: 20px;
   font-weight: bold;
-  margin: 1rem 0;
+  margin: 0.4rem 0;
 }
 
 .loadImg {
-  margin-top: 1rem;
+  margin: 0.8rem auto 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 88vw;
-  height: 3rem;
+  height: 2rem;
   border: 1px solid var(--input-text);
   border-radius: 1rem;
   font-size: 20px;
@@ -144,10 +161,18 @@
     display: inline-block;
     width: 8rem;
   }
+
+  & img {
+    width: 12rem;
+    height: 8rem;
+  }
 }
 
 .authImg {
-  margin-top: 3rem;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  bottom: 1.6rem;
   display: flex;
   justify-content: center;
   align-items: center;
