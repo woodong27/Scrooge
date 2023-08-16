@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styles from "./Comment.module.css";
 
 const Comment = (props) => {
@@ -22,14 +23,16 @@ const Comment = (props) => {
 
   return (
     <div className={styles.box}>
-      <img
-        className={styles.character}
-        src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
-        alt="캐릭터"
-      />
+      <Link to={`/profile/${props.memberId}`}>
+        <img
+          className={styles.character}
+          src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
+          alt="캐릭터"
+        />
+      </Link>
       <div className={styles.up}>
         <div className={styles.nickname}>
-          {props.memberNickname}
+          <Link to={`/profile/${props.memberId}`}>{props.memberNickname}</Link>
           {memberId === props.memberId ? (
             <>
               {isEdit ? (
