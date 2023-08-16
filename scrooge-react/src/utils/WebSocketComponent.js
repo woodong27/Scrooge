@@ -12,17 +12,17 @@ const WebSocketComponent = () => {
   const [msg, setMsg] = useState();
 
   useEffect(() => {
-    axios
-      .get("https://day6scrooge.duckdns.org/api/member/info", {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImxlZWRuajAxMTNAbmF2ZXIuY29tIiwibWVtYmVySWQiOjYsImlhdCI6MTY5MjAwMTM4MCwiZXhwIjoxNjkyNjA2MTgwfQ._18pTvWAWaIG79Eaw32K0vEH67NAsGhwPri68U1E1EA",
-        },
-      })
-      .then((resp) => {
-        setData(resp.data);
-      })
-      .catch((e) => console.log(e));
+    // axios
+    //   .get("https://day6scrooge.duckdns.org/api/member/info", {
+    //     headers: {
+    //       Authorization: globalToken,
+    //     },
+    //   })
+    //   .then((resp) => {
+    //     console.log(resp);
+    //     setData(resp.data);
+    //   })
+    //   .catch((e) => console.log(e));
 
     const onConnect = () => {
       console.log("Connected to WebSocket");

@@ -31,7 +31,7 @@ function App() {
 
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
-    
+
   //   if (token !== null) {
   //     const expirationTime = decodeAccessToken(token);
 
@@ -43,7 +43,7 @@ function App() {
   //     }
 
   //     if(localStorage.getItem("token") !== null) {
-        
+
   //       dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
   //       setIsLogin(true);
 
@@ -77,19 +77,18 @@ function App() {
   function decodeAccessToken(token) {
     try {
       // 토큰의 payload 부분 추출 (두 번째 부분)
-      const payload = token.split('.')[1];
+      const payload = token.split(".")[1];
       // base64 디코딩 후 JSON 파싱
       const decodedPayload = JSON.parse(atob(payload));
-      
+
       // 'exp' 필드로부터 만료 시간 확인
       const expirationTime = decodedPayload.exp * 1000; // 밀리초 단위
       return expirationTime;
     } catch (error) {
-      console.error('Failed to decode access token:', error);
+      console.error("Failed to decode access token:", error);
       return null;
     }
   }
-  
 
   return (
     <div>
@@ -108,6 +107,10 @@ function App() {
             <Route path="/challenge/create" element={<CreateChallenge />} />
             <Route path="/challenge/my/:id" element={<ChallengeDetail />} />
             <Route path="/challenge/chat" element={<Chatting />} />
+            <Route
+              path="/challenge/chat/:id"
+              element={<WebSocketComponent />}
+            />
             <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/mypage/settings"
@@ -128,7 +131,6 @@ function App() {
             element={<Login loginHandler={loginHandler} />}
           />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/ws" element={<WebSocketComponent />} />
         </Routes>
       )}
     </div>
