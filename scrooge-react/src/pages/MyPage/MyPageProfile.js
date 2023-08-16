@@ -59,7 +59,6 @@ const MyPageProfile = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         setData(data);
         setExp(data.exp);
         setMaxExp(data.maxExp);
