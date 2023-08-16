@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import styles from "./Profile.module.css";
@@ -6,27 +7,61 @@ import CharacterCard from "../components/UI/CharacterCard";
 import BackGround from "../components/BackGround";
 
 const Profile = (props) => {
+  const memberId = useSelector((state) => state.memberId);
+  const params = useParams();
+  console.log(memberId, params.id);
+
   const [data, setData] = useState([]);
+  const [myData, setMyData] = useState([]);
+  const [hereData, setHereData] = useState([]);
 
   useEffect(() => {
+    //방문 페이지 정보 가져오기
     const postData = {
       method: "GET",
     };
-    //API에 필요한 것만 받아오게...
-    fetch(
-      `https://day6scrooge.duckdns.org/api/member/info/${props.id}`,
-      postData
-    )
+    fetch(`https://day6scrooge.duckdns.org/api/member/${params.id}`, postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
+        console.log("data", data);
       })
       .catch((error) => console.log(error));
-  }, []);
+
+    const myData = {
+      method: "GET",
+    };
+
+    //방문 페이지 리캡 가져오기
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/recap/${params.id}`,
+      myData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setHereData(data);
+        console.log("hereData", hereData);
+      })
+      .catch((error) => console.log(error));
+  }, [params.id]);
+
+  useEffect(() => {
+    //내 리캡 가져오기
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/recap/${memberId}`,
+      myData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setMyData(data);
+        console.log("myData", myData);
+      })
+      .catch((error) => console.log(error));
+  }, [memberId]);
 
   return (
     <BackGround>
-      {data && data.levelId && data.mainAvatar.id && (
+      {data && data.level && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
           <CharacterCard>
@@ -38,7 +73,7 @@ const Profile = (props) => {
                   alt="뱃지"
                 />
                 <span>
-                  <p>Lv. {data.levelId}</p>
+                  <p>Lv. {data.level}</p>
                   <p>{data.nickname}</p>
                 </span>
               </div>

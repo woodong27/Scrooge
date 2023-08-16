@@ -87,6 +87,7 @@ const PaymentHistory = ({
       setOrigin(getTotal(formattedDate));
       setSettlement(true);
       handleCloseModal();
+      setCurrentIndex(currentIndex + 1);
     }
   };
 
