@@ -40,7 +40,6 @@ const Profile = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setHereData(data);
-        console.log("hereData", data);
       })
       .catch((error) => console.log(error));
   }, [params.id]);
@@ -54,7 +53,6 @@ const Profile = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setMyData(data);
-        console.log("myData", data);
       })
       .catch((error) => console.log(error));
   }, [memberId]);
