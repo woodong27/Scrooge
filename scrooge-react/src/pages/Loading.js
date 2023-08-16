@@ -6,20 +6,19 @@ import BackGround from "../components/BackGround";
 
 const Loading = () => {
   return (
-    <BackGround>
+    <BackGround className={styles.backGround}>
       <div className={styles.body}>
         <div className={styles.main}>
           <div className={styles.title_border}>
             <div className={styles.title}>
               <div>더 나은</div>
               <div>소비습관을</div>
-              <div style={{ color: "#A2D660" }}>스크루지와</div>
+              <div>
+                <span style={{ color: "#A2D660" }}>스크루지</span>와
+              </div>
+
               <div>함께</div>
             </div>
-          </div>
-          <div className={styles.sub_title}>
-            Better consumption habits <br />
-            with Scrooge
           </div>
         </div>
         <div className={styles.foot}>
