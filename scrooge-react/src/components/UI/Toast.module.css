@@ -1,15 +1,19 @@
 .toast {
   position: absolute;
   bottom: 16rem;
-  z-index: 3;
+  z-index: 30;
   transition: opacity 0.5s ease, transform 0.5s ease;
+  margin: 0 auto;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }
 
 .primary {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
+  width: 92vw;
   height: 4rem;
   border-radius: 10px;
   font-size: 20px;

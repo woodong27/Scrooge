@@ -69,12 +69,10 @@ const CreateChallenge = () => {
           Authorization: globalToken,
         },
       })
-      .then((resp) => {
-        // navigate("/challenge", { state: "성공" });
-        console.log(resp);
-      })
+      .then(() => navigate("/challenge", { state: "생성" }))
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setMissToast(true);
       });
   };
 

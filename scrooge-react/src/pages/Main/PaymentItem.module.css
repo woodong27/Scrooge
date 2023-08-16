@@ -2,36 +2,65 @@
   margin: 20px auto;
 }
 
-.box {
+/* .box {
   position: relative;
   width: 294px;
   height: 80px;
   margin: 10px 0;
   border-bottom: 1px dashed var(--input-text, #8d8e90);
+} */
+.box {
+  width: 264px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px;
+  margin: 10px;
+  border-bottom: 1px dashed var(--input-text, #8d8e90);
+}
+
+.upLine {
+  width: 264px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 6px 0;
 }
 
 .usedAt {
-  position: absolute;
-  top: 0;
-  left: 10px;
+  width: 184px;
+  display: flex;
+  justify-content: left;
+  font-size: 16px;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.paidAt {
+  width: 60px;
+  font-size: 14px;
+  text-align: right;
+  color: #61646b;
+  margin: 0;
+}
+
+.downLine {
+  width: 264px;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
 }
 
 .amount {
-  position: absolute;
-  bottom: 0;
-  left: 10px;
+  font-size: 14px;
+  text-align: left;
+  margin: 0;
 }
-.paidAt {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  color: #61646b;
-}
+
 .cardName {
-  position: absolute;
-  bottom: 0;
-  right: 10px;
+  font-size: 14px;
+  text-align: right;
   color: #61646b;
+  margin: 0;
 }
 
 .btn {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import styles from "./Detail.module.css";
 import CommentList from "./CommentList";
@@ -287,18 +287,23 @@ const Detail = () => {
           title={"스크루지 빌리지"}
           titleColor={"#5B911F"}
           color={"#A2D660"}
-          show={"true"}></QuestHeader>
+          show={"true"}
+        ></QuestHeader>
 
         {data ? (
           <div className={styles.frame}>
             <div className={styles.authorInfo}>
-              <img
-                className={styles.character}
-                src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
-                alt="캐릭터"
-              />
+              <Link to={`/profile/${data.memberId}`}>
+                <img
+                  className={styles.character}
+                  src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
+                  alt="캐릭터"
+                />
+              </Link>
               <div>
-                <div className={styles.author}>{data.memberNickname}</div>
+                <Link to={`/profile/${data.memberId}`}>
+                  <div className={styles.author}>{data.memberNickname}</div>
+                </Link>
                 <div className={styles.line}>
                   <div className={styles.createdAt}>
                     {data.createdAt.split("T")[0]}{" "}
@@ -312,12 +317,14 @@ const Detail = () => {
                             <div className={styles.btns}>
                               <div
                                 className={styles.edit}
-                                onClick={handleCancle}>
+                                onClick={handleCancle}
+                              >
                                 취소
                               </div>
                               <div
                                 className={styles.delete}
-                                onClick={handleSend}>
+                                onClick={handleSend}
+                              >
                                 완료
                               </div>
                             </div>
@@ -328,7 +335,8 @@ const Detail = () => {
                               </div>
                               <div
                                 className={styles.delete}
-                                onClick={handleDelete}>
+                                onClick={handleDelete}
+                              >
                                 삭제
                               </div>
                             </div>
@@ -378,7 +386,8 @@ const Detail = () => {
                     {good ? (
                       <button
                         onClick={handleGoodCancle}
-                        className={styles.emoji}>
+                        className={styles.emoji}
+                      >
                         <img
                           src={`${process.env.PUBLIC_URL}/images/upColor.png`}
                           alt="환호"
@@ -398,14 +407,15 @@ const Detail = () => {
                     {bad ? (
                       <button
                         onClick={handleBadCancle}
-                        className={styles.emoji}>
+                        className={styles.bademoji}
+                      >
                         <img
                           src={`${process.env.PUBLIC_URL}/images/downColor.png`}
                           alt="야유"
                         />
                       </button>
                     ) : (
-                      <button onClick={handleBad} className={styles.emoji}>
+                      <button onClick={handleBad} className={styles.bademoji}>
                         <img
                           src={`${process.env.PUBLIC_URL}/images/down.png`}
                           alt="야유"

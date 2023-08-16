@@ -1,0 +1,34 @@
+.my_auth_container {
+  width: 20rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.6rem auto 6rem;
+  gap: 0.4rem;
+
+  & img {
+    height: 3.6rem;
+    width: 4rem;
+    border-radius: 10px;
+  }
+}
+
+.my_auth_middle {
+  border-radius: 10px;
+  border: 2px solid var(--input-text);
+  padding: 0.25rem;
+}
+
+.idx {
+  width: 2rem;
+  margin: 0 auto 0.25rem;
+  border-radius: 20px;
+  background-color: var(--input);
+}
+
+.success {
+  color: var(--green);
+}
+
+.fail {
+  color: red;
+}

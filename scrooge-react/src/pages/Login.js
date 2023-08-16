@@ -61,9 +61,7 @@ const Login = ({ loginHandler }) => {
       })
       .then((data) => {
         const jwtToken = data.token;
-        
         Cookies.set('accessToken', jwtToken, {expires: 7});
-      
         sendJwtTokenToAndroid(jwtToken);
 
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });

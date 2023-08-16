@@ -9,7 +9,7 @@
   width: 20rem;
   margin: auto;
   text-align: left;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
   border-bottom: 2px solid #ebecf0;
 
   & p {
@@ -39,6 +39,7 @@
 
   & h2 {
     font-size: 20px;
+    margin-bottom: 0.4rem;
   }
 }
 
@@ -66,7 +67,7 @@
 .content {
   position: absolute;
   width: 20rem;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   display: flex;
   justify-content: space-between;
 }
@@ -78,7 +79,8 @@
 }
 
 .img_list {
-  border: 1px solid var(--input-text);
+  min-width: 8rem;
+  border: 1px solid var(--input);
   border-radius: 10px;
 }
 
@@ -111,7 +113,6 @@
 }
 
 .primary {
-  margin: 0 auto;
   position: relative;
   display: flex;
   justify-content: center;
@@ -123,6 +124,22 @@
   font-size: 24px;
   cursor: pointer;
   background-color: white;
+  margin: 0 auto;
+}
+
+.primary2 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 328px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: white;
+  margin: 0 auto;
 }
 
 .shadow {

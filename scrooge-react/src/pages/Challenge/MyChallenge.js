@@ -12,7 +12,7 @@ const MyChallenge = () => {
 
   const category = ["시작전", "진행중", "종료된"];
   const [data, setData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("시작전");
+  const [selectedCategory, setSelectedCategory] = useState("진행중");
 
   useEffect(() => {
     const idx = category.indexOf(selectedCategory) + 1;
@@ -44,12 +44,14 @@ const MyChallenge = () => {
       <div className={styles.list}>
         {globalToken === ""
           ? "로그인이 필요해요!"
+          : selectedCategory === "종료된"
+          ? "종료된 챌린지가 없어요!"
           : selectedCategory === "진행중"
           ? data.length === 0
             ? "참여중인 챌린지가 없어요!"
             : data.map((e) => (
                 <ChallengeItem
-                  key={e.idx}
+                  key={e.id}
                   id={e.id}
                   title={e.title}
                   currentParticipants={e.currentParticipants}
@@ -64,7 +66,7 @@ const MyChallenge = () => {
           ? "참여중인 챌린지가 없어요!"
           : data.map((e) => (
               <ChallengeItem
-                key={e.idx}
+                key={e.id}
                 id={e.id}
                 title={e.title}
                 currentParticipants={e.currentParticipants}

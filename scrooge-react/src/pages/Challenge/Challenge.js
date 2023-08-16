@@ -13,6 +13,7 @@ const Challenge = () => {
   const state = location.state;
 
   const [isMyChallenge, setIsMyChallnge] = useState(false);
+  const [startToast, setStartToast] = useState(false);
   const [makeToast, setMakeToast] = useState(false);
 
   const myChallengeHandler = () => {
@@ -23,9 +24,8 @@ const Challenge = () => {
   };
 
   useEffect(() => {
-    if (state === "시작") {
-      setMakeToast(true);
-    }
+    if (state === "시작") setStartToast(true);
+    if (state === "생성") setMakeToast(true);
   }, [state]);
 
   return (
@@ -44,8 +44,11 @@ const Challenge = () => {
 
       {isMyChallenge ? <MyChallenge /> : <AllChallenge />}
 
+      {startToast && (
+        <Toast setToast={setStartToast} text="챌린지가 시작 되었어요!" />
+      )}
       {makeToast && (
-        <Toast setToast={setMakeToast} text="챌린지가 시작 되었어요!" />
+        <Toast setToast={setMakeToast} text="챌린지가 생성 되었어요!" />
       )}
     </div>
   );

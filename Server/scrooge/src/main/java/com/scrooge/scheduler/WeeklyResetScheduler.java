@@ -39,6 +39,14 @@ public class WeeklyResetScheduler {
     // 매일 초기화 크론식 추가해야함
     @Scheduled(cron = "0 0 0 * * *")
     public void resetDailyMidNight() {
-        paymentHistoryController.isSettlementDone=false;
+
+        // 모든 회원정보를 가져와서 정산유무를 초기화
+        memberRepository.findAll().forEach(member -> {
+                    if (!member.getIsSettlementDone()) {
+                        member.setStreak(0);
+                    }
+                    member.setIsSettlementDone(false);
+                    memberRepository.save(member);
+                });
     }
 }

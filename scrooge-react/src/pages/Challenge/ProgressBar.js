@@ -9,7 +9,7 @@ const ProgressBar = (props) => {
     const allyCnt = (props.ally / allCnt) * 100;
     const enemyCnt = (props.enemy / allCnt) * 100;
 
-    setProgress({ ally: allyCnt, enemy: enemyCnt });
+    allCnt && setProgress({ ally: allyCnt, enemy: enemyCnt });
   }, [props]);
 
   return (

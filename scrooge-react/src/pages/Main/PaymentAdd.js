@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./PaymentAdd.module.css";
 
 const PaymentAdd = ({ onCreate, date }) => {
   const globalToken = useSelector((state) => state.globalToken);
+  const numericPattern = /^[0-9]+$/;
 
   const usedAtInput = useRef();
   const amountInput = useRef();
@@ -15,6 +16,16 @@ const PaymentAdd = ({ onCreate, date }) => {
     amount: "",
     cardName: "",
   });
+
+  //날짜 변경에 따라 초기화
+  useEffect(() => {
+    setState({
+      usedAt: "",
+      amount: "",
+      paidAt: "",
+      cardName: "",
+    });
+  }, [date]);
 
   const handleChangeState = (e) => {
     setState({
@@ -28,11 +39,17 @@ const PaymentAdd = ({ onCreate, date }) => {
       usedAtInput.current.focus();
       return;
     }
-    if (state.amount.length < 2) {
+    if (!numericPattern.test(state.amount)) {
+      console.log("숫자 아님");
       amountInput.current.focus();
       return;
     }
-    if (state.cardName.length < 3) {
+    if (state.amount.length < 2) {
+      console.log("길이 부족");
+      amountInput.current.focus();
+      return;
+    }
+    if (state.cardName.length < 2) {
       cardNameInput.current.focus();
       return;
     }

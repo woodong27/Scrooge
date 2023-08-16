@@ -1,32 +1,71 @@
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import styles from "./Profile.module.css";
 import CharacterCard from "../components/UI/CharacterCard";
+import Card from "../components/UI/Card";
 import BackGround from "../components/BackGround";
 
 const Profile = (props) => {
+  const navigate = useNavigate();
+  const memberId = useSelector((state) => state.memberId);
+  const params = useParams();
+
   const [data, setData] = useState([]);
+  const [myData, setMyData] = useState([]);
+  const [hereData, setHereData] = useState([]);
 
   useEffect(() => {
+    //방문 페이지 정보 가져오기
     const postData = {
       method: "GET",
     };
-    //API에 필요한 것만 받아오게...
-    fetch(
-      `https://day6scrooge.duckdns.org/api/member/info/${props.id}`,
-      postData
-    )
+    fetch(`https://day6scrooge.duckdns.org/api/member/${params.id}`, postData)
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+
+    const myData = {
+      method: "GET",
+    };
+
+    //방문 페이지 리캡 가져오기
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/recap/${params.id}`,
+      myData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setHereData(data);
+        console.log("hereData", data);
+      })
+      .catch((error) => console.log(error));
+  }, [params.id]);
+
+  useEffect(() => {
+    //내 리캡 가져오기
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/recap/${memberId}`,
+      myData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setMyData(data);
+        console.log("myData", data);
+      })
+      .catch((error) => console.log(error));
+  }, [memberId]);
 
   return (
     <BackGround>
-      {data && data.levelId && data.mainAvatar.id && (
+      <div className={styles.back}>
+        <button onClick={() => navigate(-1)}>돌아가기</button>
+      </div>
+
+      {data && data.level && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
           <CharacterCard>
@@ -38,7 +77,7 @@ const Profile = (props) => {
                   alt="뱃지"
                 />
                 <span>
-                  <p>Lv. {data.levelId}</p>
+                  <p>Lv. {data.level}</p>
                   <p>{data.nickname}</p>
                 </span>
               </div>
@@ -60,6 +99,60 @@ const Profile = (props) => {
               </div>
             </div>
           </CharacterCard>
+          <Card height={246}>
+            <div className={styles.todayCard}>
+              <div>
+                <table className={styles.table}>
+                  <tr className={styles.up}>
+                    <th className={styles.one}>비교</th>
+                    <th className={styles.two}>나</th>
+                    <th className={styles.three}>{data.nickname}</th>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>이번 달</td>
+                    <td className={styles.two}>{myData.thisMonthTotal}</td>
+                    <td className={styles.three}>{hereData.thisMonthTotal}</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>자주 소비</td>
+                    <td className={styles.two}>
+                      {myData.frequentlyUsedCategory}
+                    </td>
+                    <td className={styles.three}>
+                      {hereData.frequentlyUsedCategory}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>많이 소비</td>
+                    <td className={styles.two}>
+                      {myData.highSpendingCategory}
+                    </td>
+                    <td className={styles.three}>
+                      {hereData.highSpendingCategory}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>스트릭</td>
+                    <td className={styles.two}>{myData.maxStreak}</td>
+                    <td className={styles.three}>{hereData.maxStreak}</td>
+                  </tr>
+                </table>
+                {hereData.hasLastMonthPaymentHistory &&
+                myData.hasLastMonthPaymentHistory ? (
+                  <div>
+                    당신의 절약 금액이
+                    <span className={styles.highlight}>
+                      {hereData.totalDifference > myData.totalDifference
+                        ? " 적어요 "
+                        : " 많아요 "}
+                    </span>
+                  </div>
+                ) : (
+                  <div className={styles.notYet}>아직 비교가 어려워요</div>
+                )}
+              </div>
+            </div>
+          </Card>
         </div>
       )}
     </BackGround>

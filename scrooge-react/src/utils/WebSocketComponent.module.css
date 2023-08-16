@@ -1,0 +1,116 @@
+.bg {
+  position: fixed;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../public/images/clouds.png"),
+    linear-gradient(180deg, #8cd5ff 0%, #b0e2ff 46.67%, #fafbfc 99.99%);
+  background-size: cover, cover;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.input_layout {
+  position: absolute;
+  width: 84%;
+  height: 3rem;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 1rem;
+
+  & button {
+    height: 100%;
+    bottom: 1rem;
+    right: 0;
+    border-radius: 1rem;
+  }
+
+  & input {
+    padding-left: 1rem;
+  }
+}
+.chat {
+  font-size: 24px;
+  margin: 2rem 0;
+}
+
+.me {
+  text-align: right;
+  position: relative;
+  height: 8rem;
+  flex-shrink: 0;
+
+  & .text {
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    top: 3.6rem;
+    width: 40%;
+    padding: 1rem;
+    max-height: 4rem;
+    overflow: hidden;
+    right: 4rem;
+    border-radius: 1rem 0 1rem 1rem;
+  }
+
+  & .nickname {
+    position: absolute;
+    right: 4rem;
+    top: 2rem;
+  }
+
+  & img {
+    height: 6rem;
+  }
+}
+
+.you {
+  text-align: left;
+  position: relative;
+  height: 8rem;
+  flex-shrink: 0;
+
+  & .text {
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    top: 3.6rem;
+    width: 40%;
+    padding: 1rem;
+    left: 4.4rem;
+    border-radius: 0 1rem 1rem 1rem;
+  }
+
+  & .nickname {
+    position: absolute;
+    left: 4.4rem;
+    top: 2.4rem;
+  }
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 78%;
+  overflow: scroll;
+  padding-bottom: 2rem;
+}
+
+.back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 4px;
+  color: white;
+  z-index: 1;
+}

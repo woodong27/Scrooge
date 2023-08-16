@@ -13,7 +13,7 @@ const Loading = () => {
             <div className={styles.title}>
               <div>더 나은</div>
               <div>소비습관을</div>
-              <div style={{ color: "#A2D660" }}>스쿠루지와</div>
+              <div style={{ color: "#A2D660" }}>스크루지와</div>
               <div>함께</div>
             </div>
           </div>

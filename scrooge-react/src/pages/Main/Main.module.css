@@ -55,7 +55,7 @@
   width: 328px;
   height: 170px;
 
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   gap: 1px;
   margin-bottom: 0;
@@ -70,11 +70,17 @@
   position: relative;
   margin-left: 8px;
   margin-bottom: 40px;
-
+  display: flex;
+  justify-content: center;
   & img {
     width: 132px;
     height: 140px;
   }
+}
+
+.streak {
+  position: absolute;
+  top: 132px;
 }
 
 .payBtn {

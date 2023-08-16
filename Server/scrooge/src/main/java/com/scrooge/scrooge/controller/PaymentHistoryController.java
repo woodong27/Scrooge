@@ -8,6 +8,7 @@ import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryDto;
 import com.scrooge.scrooge.dto.SuccessResp;
 import com.scrooge.scrooge.dto.member.MemberDto;
 import com.scrooge.scrooge.dto.paymentHistory.PaymentHistoryRespDto;
+import com.scrooge.scrooge.dto.paymentHistory.RecapDto;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.PaymentHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,6 @@ public class PaymentHistoryController {
 
     private final PaymentHistoryService paymentHistoryService;
     private final MemberRepository memberRepository;
-    public boolean isSettlementDone = false;
 
     @Operation(summary = "소비내역을 등록하는 API", description = "소비내역 등록")
     @PostMapping
@@ -146,13 +146,6 @@ public class PaymentHistoryController {
     @Operation(summary = "일일 정산 후 경험치 획득")
     @PutMapping("/settlement-exp")
     public ResponseEntity<?> updateExpAfterDailySettlement(@RequestHeader("Authorization") String tokenHeader) {
-
-        if (isSettlementDone) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("오늘은 이미 정산 했습니다.");
-        }
-
-        isSettlementDone = true;
-
         String token = extractToken(tokenHeader);
 
         if(!jwtTokenProvider.validateToken(token)) {
@@ -173,6 +166,13 @@ public class PaymentHistoryController {
         return ResponseEntity.ok(todayTotalConsumption);
     }
 
+    // 내 소비에 대한 리캡을 조회하는 API
+    @Operation(summary = "소비에 대한 리캡을 조회하는 API")
+    @GetMapping("/recap/{memberId}")
+    public ResponseEntity<?> getMyRecap(@PathVariable("memberId")Long memberId) {
+        RecapDto recapDto = paymentHistoryService.getMyRecap(memberId);
+        return ResponseEntity.ok(recapDto);
+    }
 
 
 
