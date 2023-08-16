@@ -16,6 +16,7 @@ import CreateChallenge from "./pages/Challenge/CreateChallenge";
 import Community from "./pages/Community/Community";
 import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
+import WebSocketComponent from "./utils/WebSocketComponent";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -57,6 +58,7 @@ function App() {
               element={<Login loginHandler={loginHandler} />}
             />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/ws" element={<WebSocketComponent />} />
 
             {/* 로그인 안되서 테스트용 */}
             <Route path="/challenge" element={<Challenge />} />

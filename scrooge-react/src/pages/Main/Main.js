@@ -181,7 +181,8 @@ const Main = (props) => {
             <ProgressBar
               goal={weeklyGoal}
               consum={weeklyConsum}
-              setGoal={setGoal}></ProgressBar>
+              setGoal={setGoal}
+            ></ProgressBar>
           </Card>
         </div>
       )}
