@@ -41,7 +41,7 @@ public class CommunityCommentService {
                 .orElseThrow(() -> new NotFoundException("해당 게시글을 찾을 수 없습니다."));
 
         // 댓글 5개 이상 작성 퀘스트
-        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 3L)) {
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestIdAndIsSelected(memberId, 3L, true)) {
             questService.completeQuest(3L, memberId);
         }
 
