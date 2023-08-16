@@ -105,8 +105,12 @@ function App() {
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
-            <Route path="/challenge/my/:id" element={<ChallengeDetail />} />
+            <Route path="/challenge/my/:id/" element={<ChallengeDetail />} />
             <Route path="/challenge/chat" element={<Chatting />} />
+            <Route
+              path="/challenge/chat/:id/:team"
+              element={<WebSocketComponent />}
+            />
             <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/mypage/settings"
@@ -127,7 +131,6 @@ function App() {
             element={<Login loginHandler={loginHandler} />}
           />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/ws" element={<WebSocketComponent />} />
         </Routes>
       )}
     </div>

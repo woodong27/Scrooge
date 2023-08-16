@@ -62,6 +62,7 @@ const ChallengeDetail = () => {
         axios
           .get(`https://day6scrooge.duckdns.org/api/challenge/${params.id}`)
           .then((response) => {
+            console.log(response);
             setData((prevData) => ({
               ...prevData,
               authMethod: response.data.authMethod,
@@ -188,6 +189,12 @@ const ChallengeDetail = () => {
       )}
 
       <div className={styles.foot}>
+        <div className={styles.primary}>
+          <Link to={`/challenge/chat/${params.id}/${isTeamZero ? 0 : 1}`}>
+            팀 채팅
+          </Link>
+          <div className={styles.shadow}></div>
+        </div>
         <div
           className={todayAuth ? styles.already : styles.primary}
           onClick={todayAuth ? () => {} : showModalHandler}
