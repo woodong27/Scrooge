@@ -2,7 +2,6 @@ package com.example.scoorge_android
 
 import android.app.Activity
 import android.app.AlarmManager
-import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -42,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        val foregroundServiceIntent = Intent(this, MyForegroundService::class.java)
+//        startService(foregroundServiceIntent);
+
         if(!isNotificationPermissionGranted()) {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         val androidBridge = AndroidBridge()
         webview.addJavascriptInterface(androidBridge, "AndroidBridge")
 
+        Log.d("TAG", "여기")
         val androidAlarmAllow = AndroidAlarmAllow()
         webview.addJavascriptInterface(androidAlarmAllow ,"AndroidAlarmAllow")
         webview.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
@@ -173,7 +176,7 @@ class MainActivity : AppCompatActivity() {
     private fun isNotificationPermissionGranted(): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            return notificationManager.isNotificationListenerAccessGranted(ComponentName(application, MyNotificationListenerService::class.java))
+            return notificationManager.isNotificationListenerAccessGranted(ComponentName(application, MyNotificationListenerForegroundService::class.java))
         }
         else {
             return NotificationManagerCompat.getEnabledListenerPackages(applicationContext).contains(applicationContext.packageName)
