@@ -15,6 +15,7 @@ const Article = ({
   memberAvatarAddress,
 }) => {
   const globalToken = useSelector((state) => state.globalToken);
+  const myId = useSelector((state) => state.memberId);
 
   const [showContent, setContent] = useState("");
   //게시글에 좋아요 싫어요 개수
@@ -150,7 +151,7 @@ const Article = ({
   return (
     <div className={styles.box}>
       <Card height={330}>
-        <Link to={`/profile/${memberId}`}>
+        {memberId === myId ? (
           <div className={styles.authorInfo}>
             <img
               className={styles.character}
@@ -159,7 +160,19 @@ const Article = ({
             />
             <div className={styles.author}>{memberNickname}</div>
           </div>
-        </Link>
+        ) : (
+          <Link to={`/profile/${memberId}`}>
+            <div className={styles.authorInfo}>
+              <img
+                className={styles.character}
+                src={`https://storage.googleapis.com/scroogestorage/avatars/${memberAvatarAddress}-1.png`}
+                alt="캐릭터"
+              />
+              <div className={styles.author}>{memberNickname}</div>
+            </div>
+          </Link>
+        )}
+
         <Link to={`/community/${id}`}>
           <div className={styles.detail}>
             <div className={styles.pictureFrame}>
