@@ -1,0 +1,52 @@
+.bg {
+  position: fixed;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../public/images/clouds.png"),
+    linear-gradient(180deg, #8cd5ff 0%, #b0e2ff 46.67%, #fafbfc 99.99%);
+  background-size: cover, cover;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.input_layout {
+  position: absolute;
+  width: 84%;
+  height: 3rem;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 1rem;
+
+  & button {
+    height: 100%;
+    bottom: 1rem;
+    right: 0;
+    border-radius: 1rem;
+  }
+
+  & input {
+    padding-left: 1rem;
+  }
+}
+.chat {
+  font-size: 24px;
+  margin: 2rem 0;
+}
+
+.me {
+  text-align: left;
+}
+
+.you {
+  text-align: right;
+}

@@ -105,10 +105,10 @@ function App() {
             <Route path="/challenge" element={<Challenge />} />
             <Route path="/challenge/:id" element={<ChallengeJoin />} />
             <Route path="/challenge/create" element={<CreateChallenge />} />
-            <Route path="/challenge/my/:id" element={<ChallengeDetail />} />
+            <Route path="/challenge/my/:id/" element={<ChallengeDetail />} />
             <Route path="/challenge/chat" element={<Chatting />} />
             <Route
-              path="/challenge/chat/:id"
+              path="/challenge/chat/:id/:team"
               element={<WebSocketComponent />}
             />
             <Route path="/mypage" element={<MyPage />} />
