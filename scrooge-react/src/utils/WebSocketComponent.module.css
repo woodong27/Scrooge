@@ -13,7 +13,7 @@
   position: absolute;
   width: 84%;
   height: 3rem;
-  bottom: 2rem;
+  bottom: 1.6rem;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -54,8 +54,9 @@
     border: 1px solid black;
     background-color: white;
     top: 3.6rem;
-    width: 40%;
-    padding: 1rem;
+    min-width: 1rem;
+    max-width: 60%;
+    padding: 0.8rem;
     max-height: 4rem;
     overflow: hidden;
     right: 4rem;
@@ -84,8 +85,9 @@
     border: 1px solid black;
     background-color: white;
     top: 3.6rem;
-    width: 40%;
-    padding: 1rem;
+    max-width: 60%;
+    min-width: 1rem;
+    padding: 0.8rem;
     left: 4.4rem;
     border-radius: 0 1rem 1rem 1rem;
   }
@@ -101,7 +103,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 78%;
+  height: 80%;
   overflow: scroll;
   padding-bottom: 2rem;
 }
