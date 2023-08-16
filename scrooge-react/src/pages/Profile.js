@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import styles from "./Profile.module.css";
@@ -8,6 +8,7 @@ import Card from "../components/UI/Card";
 import BackGround from "../components/BackGround";
 
 const Profile = (props) => {
+  const navigate = useNavigate();
   const memberId = useSelector((state) => state.memberId);
   const params = useParams();
 
@@ -60,6 +61,10 @@ const Profile = (props) => {
 
   return (
     <BackGround>
+      <div className={styles.back}>
+        <button onClick={() => navigate(-1)}>돌아가기</button>
+      </div>
+
       {data && data.level && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
@@ -119,17 +124,22 @@ const Profile = (props) => {
                     <td className={styles.three}>{hereData.maxStreak}</td>
                   </tr>
                 </table>
-                <div>
-                  지난달과 비교했을 때 <br />
-                  당신이
-                  <span className={styles.highlight}>
-                    {hereData.lastMonthTotal - hereData.thisMonthTotal >
-                    myData.lastMonthTotalMonthTotal - myData.thisMonthTotal
-                      ? " 더 "
-                      : " 덜 "}
-                  </span>
-                  절약했네요!
-                </div>
+                {hereData.hasLastMonthPaymentHistory &&
+                myData.hasLastMonthPaymentHistory ? (
+                  <div>
+                    지난달과 비교했을 때 <br />
+                    당신이
+                    <span className={styles.highlight}>
+                      {hereData.lastMonthTotal - hereData.thisMonthTotal >
+                      myData.lastMonthTotalMonthTotal - myData.thisMonthTotal
+                        ? " 더 "
+                        : " 덜 "}
+                    </span>
+                    절약했네요!
+                  </div>
+                ) : (
+                  <div className={styles.notYet}>아직 비교가 어려워요</div>
+                )}
               </div>
             </div>
           </Card>

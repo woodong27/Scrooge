@@ -1,5 +1,9 @@
 .empty {
-  height: 60px;
+  height: 20px;
+}
+
+.back {
+  padding-top: 10px;
 }
 
 .infoheader {
@@ -115,4 +119,10 @@
 .highlight {
   font-size: 24px;
   color: crimson;
+}
+
+.notYet {
+  padding-top: 10px;
+  font-size: 20px;
+  color: rgb(101, 99, 99);
 }
