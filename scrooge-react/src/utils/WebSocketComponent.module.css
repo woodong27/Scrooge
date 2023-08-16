@@ -105,3 +105,12 @@
   overflow: scroll;
   padding-bottom: 2rem;
 }
+
+.back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 4px;
+  color: white;
+  z-index: 1;
+}
