@@ -10,6 +10,13 @@
   margin: 1.25rem;
 }
 
+.noBadgeImage {
+  width: 4.25rem;
+  height: 4.25rem;
+  margin: 1.25rem;
+  filter: brightness(0.2);
+}
+
 .title {
   font-size: 20px;
   font-weight: bold;
@@ -21,4 +28,12 @@
   padding: 1.6rem;
   border-radius: 40%;
   background-color: var(--input);
+}
+
+.noImg {
+  margin: 1rem;
+  padding: 1.6rem;
+  border-radius: 40%;
+  background-color: var(--input);
+  filter: brightness(0.2);
 }
