@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import ReactDom from "react-dom";
 
 import styles from "./BottomSheet.module.css";
@@ -15,8 +15,34 @@ const ModalOverlday = (props) => {
   );
 };
 
-const portalElement = document.getElementById("overlays");
 const BottomSheet = (props) => {
+  const [touchStartY, setTouchStartY] = useState(null);
+
+  const handleTouchStart = (event) => {
+    setTouchStartY(event.touches[0].clientY);
+  };
+
+  const handleTouchMove = (event) => {
+    if (touchStartY === null) return;
+
+    const deltaY = event.touches[0].clientY - touchStartY;
+
+    if (deltaY > 0) {
+      // 아래로 당기는 경우
+      if (deltaY > 50) {
+        props.onClose();
+        setTouchStartY(null);
+      }
+    } else if (deltaY < 0) {
+      // 위로 당기는 경우
+      if (deltaY < -50) {
+        props.onClose();
+        setTouchStartY(null);
+      }
+    }
+  };
+
+  const portalElement = document.getElementById("overlays");
   return (
     <Fragment>
       {ReactDom.createPortal(
@@ -24,7 +50,12 @@ const BottomSheet = (props) => {
         portalElement
       )}
       {ReactDom.createPortal(
-        <ModalOverlday>{props.children}</ModalOverlday>,
+        <ModalOverlday
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+        >
+          {props.children}
+        </ModalOverlday>,
         portalElement
       )}
     </Fragment>

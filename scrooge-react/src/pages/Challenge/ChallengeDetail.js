@@ -23,7 +23,7 @@ const ChallengeDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectChip, setSelectChip] = useState("나의 인증 현황");
   const [isTeamZero, setIsTeamZero] = useState();
-  const [selectedImg, setSelectedImg] = useState("");
+  const [selectedImg, setSelectedImg] = useState(null);
   const [makeToast, setMakeToast] = useState(false);
   const [failToast, setFailToast] = useState(false);
   const [todayAuth, setTodayAuth] = useState(false);
@@ -57,7 +57,6 @@ const ChallengeDetail = () => {
         response.data.endAt = endAt;
 
         setData(response.data);
-        console.log(response.data)
       })
       .then(() => {
         axios
@@ -96,7 +95,11 @@ const ChallengeDetail = () => {
       reader.readAsDataURL(file); // 파일을 Data URL 형태로 읽기 시작
     }
   };
-  const showModalHandler = () => setShowModal(true);
+  const showModalHandler = () => {
+    setSelectedImg(null);
+    setShowModal(true);
+  };
+
   const hideModalHandler = () => setShowModal(false);
   const submitAuthHandler = () => {
     formData.append("img", imgRef.current.files[0]);
@@ -174,6 +177,7 @@ const ChallengeDetail = () => {
           setTodayAuth={todayAuthHandler}
           token={globalToken}
           id={params.id}
+          Toast={makeToast}
         ></MyAuthProcess>
       ) : (
         <TeamAuthProcess

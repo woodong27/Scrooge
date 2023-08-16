@@ -27,7 +27,7 @@ const MyAuthProcess = (props) => {
         setData(resp.data);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [props]);
 
   return (
     <Fragment>
