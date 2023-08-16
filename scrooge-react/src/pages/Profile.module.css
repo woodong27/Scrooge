@@ -95,10 +95,11 @@
   width: 90%;
   font-size: 18px;
   white-space: nowrap;
-  margin-bottom: 28px;
+  margin-top: 8px;
+  margin-bottom: 18px;
 
   & tr {
-    margin-top: 12px;
+    margin-top: 8px;
   }
 
   & .up {
@@ -122,7 +123,7 @@
 }
 
 .notYet {
-  padding-top: 10px;
+  margin-top: 16px;
   font-size: 20px;
   color: rgb(101, 99, 99);
 }
