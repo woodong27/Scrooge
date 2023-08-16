@@ -5,17 +5,23 @@
   align-items: flex-start;
   align-content: flex-start;
   position: relative;
-  gap: 10px;
   flex-wrap: wrap;
+
+  & img {
+    position: absolute;
+    top: 0;
+    left: 0.4rem;
+  }
 }
 
 .content {
-  width: 240px;
-  padding: 10px 10px 10px 30px;
-  margin: 0 0 20px 48px;
+  width: 360px;
+  height: fit-content;
+  padding: 10px;
   text-align: left;
   border: 1.5px solid #000;
-  border-radius: 10px;
+  border-radius: 0 10px 10px 10px;
+  margin-left: 4rem;
 }
 
 .character {
@@ -28,14 +34,9 @@
 
 .up {
   width: 280px;
-  height: 16px;
-  position: absolute;
-  top: -16px;
-  left: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f57272;
+  height: 20px;
+  text-align: left;
+  margin-left: 4rem;
 }
 
 .nickname {
@@ -59,4 +60,8 @@
   color: #fff;
   background-color: #f57272;
   border-radius: 10px;
+}
+
+.link {
+  position: absolute;
 }

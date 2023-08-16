@@ -40,6 +40,9 @@ const Comment = (props) => {
 
       <div className={styles.up}>
         <div className={styles.nickname}>
+          <Link className={styles.link} to={`/profile/${props.memberId}`}>
+            {props.memberNickname}
+          </Link>
           {memberId === props.memberId ? (
             <>
               <Link to={`/profile/${props.memberId}`}>
