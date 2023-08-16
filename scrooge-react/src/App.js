@@ -24,48 +24,26 @@ import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
 import NicknameChange from "./pages/Settings/NicknameChange";
 import WebSocketComponent from "./utils/WebSocketComponent";
+import Cookies from "js-cookie";
 
 function App() {
+
+  const dispatch = useDispatch();
+
   const [isLogin, setIsLogin] = useState(false);
-  // const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
+   useEffect(() => {
+    // 페이지 로드 시 쿠키에서 accessToken 로드
+    const savedAccessToken = Cookies.get('accessToken');
+    if(savedAccessToken) {
+      setIsLogin(true); // 로그인 true
+      dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + savedAccessToken });
+      if(window.AndroidBridge) {
+        window.AndroidBridge.sendJwtTokenToAndroid(savedAccessToken);
+      }
+    }
+   }, []);
 
-  //   if (token !== null) {
-  //     const expirationTime = decodeAccessToken(token);
-
-  //     if(expirationTime) {
-  //       const currentTime = Date.now();
-  //       if(expirationTime <= currentTime) {
-  //         localStorage.removeItem("token");
-  //       }
-  //     }
-
-  //     if(localStorage.getItem("token") !== null) {
-
-  //       dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + token });
-  //       setIsLogin(true);
-
-  //       console.log(token);
-
-  //       const postData = {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       };
-
-  //       fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
-  //         .then((resp) => resp.json())
-  //         .then((data) => {
-  //           console.log(data.id);
-  //           dispatch({ type: "SET_ID_STRING", payload: data.id});
-  //         })
-  //         .catch((error) => console.log(error));
-  //     }
-  //   }
-  // }, []);
 
   const loginHandler = () => {
     setIsLogin(true);

@@ -3,11 +3,13 @@ import BackGround from "../../components/BackGround";
 import SettingModal from "../../components/UI/SettingModal";
 import Notification from "../../pages/Notification";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+
+import Cookies from "js-cookie";
 
 const Settings = ({ onLogout }) => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -47,20 +49,9 @@ const Settings = ({ onLogout }) => {
     setAlarmModal(false);
   };
 
-  // const handleSoundToggle = () => {
-  //   // Android와 통신하여 소리 상태 변경하기
-  //   if(window.AndroidSound) {
-  //     window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
-  //   }
-
-  //   const newSoundState = !isSoundOn;
-  //   setIsSoundOn(newSoundState);
-  //   localStorage.setItem("isSoundOn", newSoundState.toString());
-  // }
-
-
   const confirmLogout = () => {
     onLogout();
+    Cookies.remove('accessToken');
     dispatch({ type: "SET_TOKEN_STRING", payload: "" }); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기
     navigate("/"); // 로그아웃 후 리디렉션: "/"
   };
