@@ -44,9 +44,62 @@
 }
 
 .me {
-  text-align: left;
+  text-align: right;
+  position: relative;
+  height: 8rem;
+  flex-shrink: 0;
+
+  & .text {
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    top: 3.6rem;
+    width: 40%;
+    padding: 1rem;
+    max-height: 4rem;
+    overflow: hidden;
+    right: 4rem;
+    border-radius: 1rem 0 1rem 1rem;
+  }
+
+  & .nickname {
+    position: absolute;
+    right: 4rem;
+    top: 2rem;
+  }
+
+  & img {
+    height: 6rem;
+  }
 }
 
 .you {
-  text-align: right;
+  text-align: left;
+  flex-shrink: 0;
+
+  & .text {
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    top: 4rem;
+    width: 40%;
+    padding: 1rem;
+    left: 4rem;
+    border-radius: 1rem 0 1rem 1rem;
+  }
+
+  & .nickname {
+    position: absolute;
+    left: 4rem;
+    top: 2.4rem;
+  }
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 78%;
+  overflow: scroll;
+  padding-bottom: 2rem;
 }
