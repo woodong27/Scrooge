@@ -138,8 +138,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 시간 간격을 24시간으로 설정하여 매일 반복되도록 설정합니다.
-//        val intervalMillis: Long = 24 * 60 * 60 * 1000 //하루
-        val intervalMillis: Long = 1 * 60 * 1000 // 테스트용 1분 간격
+        val intervalMillis: Long = 24 * 60 * 60 * 1000 //하루
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
