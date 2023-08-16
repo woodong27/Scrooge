@@ -156,7 +156,7 @@ const MyPageProfile = () => {
                   src={`${process.env.PUBLIC_URL}/images/profile-icon.png`}
                   alt="캐릭터 아이콘"
                 />
-                <span>12</span>
+                <span>{characters.length}</span>
               </div>
               <div>
                 <img
