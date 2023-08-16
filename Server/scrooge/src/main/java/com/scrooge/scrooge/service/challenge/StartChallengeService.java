@@ -25,9 +25,7 @@ import org.webjars.NotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -227,6 +225,31 @@ public class StartChallengeService {
                 challengeRepository.save(challenge);
             }
         }
+    }
+
+    // 종료된 챌린지 조회하는 API (승패여부 포함)
+    public List<ChallengeEndResDto> getMyEndChallenges(Long memberId) {
+        List<Challenge> challengeList = new ArrayList<>();
+        List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findAllByMemberId(memberId);
+
+        // status가 3인 애 추가해주기
+        for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
+            if(Objects.equals(3, challengeParticipant.getChallenge().getStatus())) {
+                challengeList.add(challengeParticipant.getChallenge());
+            }
+        }
+
+        List<ChallengeEndResDto> challengeEndResDtoList = new ArrayList<>();
+        for(Challenge challenge : challengeList) {
+            ChallengeParticipant challengeParticipant = challengeParticipantRepository.findByMemberIdAndChallengeId(memberId, challenge.getId());
+            int challengeParticipantTeamNo = challengeParticipant.getTeam();
+            boolean isWin = challengeParticipantTeamNo == challenge.getWinTeamNo();
+
+            ChallengeEndResDto challengeEndResDto = new ChallengeEndResDto(challenge, isWin);
+            challengeEndResDtoList.add(challengeEndResDto);
+        }
+
+        return challengeEndResDtoList;
     }
 
     // Google Cloud platform에 이미지 업로드
