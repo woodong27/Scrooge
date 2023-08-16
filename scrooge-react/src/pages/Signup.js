@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BackGround from "../components/BackGround";
-import ButtonWhite from "../components/Button/ButtonWhite";
 import Card from "../components/UI/Card";
 import styles from "./Signup.module.css";
 
