@@ -163,6 +163,14 @@ const Signup = () => {
             회원가입에 실패했습니다.
           </div>
         </div>
+        <button
+          className={styles.yesAccount}
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          계정이 있으신가요?
+        </button>
       </CharacterCard>
 
       <ButtonWhite text="회원가입" onClick={handleSignup}></ButtonWhite>

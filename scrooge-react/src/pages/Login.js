@@ -31,6 +31,7 @@ const Login = ({ loginHandler }) => {
   const passwordInput = useRef();
 
   const navigate = useNavigate();
+
   const handleLogin = () => {
     if (!emailRegEx.test(state.email)) {
       emailInput.current.focus();
@@ -61,7 +62,7 @@ const Login = ({ loginHandler }) => {
       })
       .then((data) => {
         const jwtToken = data.token;
-        Cookies.set('accessToken', jwtToken, {expires: 7});
+        Cookies.set("accessToken", jwtToken, { expires: 7 });
         sendJwtTokenToAndroid(jwtToken);
 
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
@@ -109,6 +110,14 @@ const Login = ({ loginHandler }) => {
           이메일과 비밀번호를 확인해주세요.
         </div>
         <button className={styles.missPassword}> 비밀번호를 잊으셨나요?</button>
+        <button
+          className={styles.noAccount}
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          계정이 없으신가요?
+        </button>
       </CharacterCard>
 
       <ButtonWhite text="로그인" onClick={handleLogin}></ButtonWhite>
