@@ -39,7 +39,6 @@ const CreateChallenge = () => {
   };
 
   const CreateChallengeHandler = () => {
-    console.log(imgRefs.current[0]);
     if (
       title.length === 0 ||
       authMethod.length === 0 ||
@@ -70,9 +69,7 @@ const CreateChallenge = () => {
           Authorization: globalToken,
         },
       })
-      .then((resp) => {
-        navigate("/challenge", { state: "성공" });
-      })
+      .then(() => navigate("/challenge", { state: "생성" }))
       .catch((error) => {
         console.error("Error fetching data:", error);
         setMissToast(true);
