@@ -29,6 +29,15 @@
   color: var(--green);
 }
 
+.noAccount {
+  width: inherit;
+  margin-top: 8px;
+  text-align: right;
+  background: #fff;
+  padding-right: 32px;
+  color: var(--green);
+}
+
 .error {
   display: none;
   margin-top: 20px;
