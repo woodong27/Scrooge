@@ -65,8 +65,33 @@ class MainActivity : AppCompatActivity() {
         webview.webChromeClient = CustomWebChromeClient()
         webview.loadUrl("https://day6scrooge.duckdns.org/")
 
-        val androidSound = AndroidSound()
-        webview.addJavascriptInterface(androidSound, "AndroidSound")
+        mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
+        mediaPlayer.isLooping = true
+        mediaPlayer.start()
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        mediaPlayer.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isBgmOn = false
+        mediaPlayer.stop()
+        mediaPlayer.release()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        isBgmOn = false
+        mediaPlayer.stop()
+        mediaPlayer.release()
     }
 
 
@@ -113,8 +138,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 시간 간격을 24시간으로 설정하여 매일 반복되도록 설정합니다.
-//        val intervalMillis: Long = 24 * 60 * 60 * 1000 //하루
-        val intervalMillis: Long = 1 * 60 * 1000 // 테스트용 1분 간격
+        val intervalMillis: Long = 24 * 60 * 60 * 1000 //하루
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
@@ -144,28 +168,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    /* 소리 구현 위한 클래스 */
-    inner class AndroidSound {
-        @JavascriptInterface
-        fun sendSoundToggleToAndroid(isSoundOn: Boolean) {
-            if(isSoundOn) {
-                Log.d("CHECK", "소리를 꺼요")
-                isBgmOn = false
-                mediaPlayer.stop();
-                mediaPlayer.release();
-            }
-            else {
-                Log.d("CHECK", "소리를 켜요")
-                isBgmOn = true
-                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
-                mediaPlayer.isLooping = true
-                mediaPlayer.start()
-            }
-        }
-
-    }
-
 
     private fun isNotificationPermissionGranted(): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
