@@ -2,6 +2,7 @@ package com.scrooge.scrooge.service.challenge;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.scrooge.scrooge.config.FileUploadProperties;
 import com.scrooge.scrooge.domain.challenge.Challenge;
 import com.scrooge.scrooge.domain.challenge.ChallengeChattingRoom;
 import com.scrooge.scrooge.domain.challenge.ChallengeExampleImage;
@@ -36,7 +37,7 @@ public class ChallengeService {
     private final ChallengeChattingRoomRepository challengeChattingRoomRespository;
 
     private final FileUploadProperties fileUploadProperties;
-    private final UploadService uploadService;
+//    private final UploadService uploadService;
 
     private final Storage storage;
     private static final String bucketName = "scroogestorage";

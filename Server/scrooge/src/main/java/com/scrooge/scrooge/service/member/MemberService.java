@@ -78,6 +78,7 @@ public class MemberService {
         member.setMessage("상태메시지를 설정해주세요.");
         member.setExp(0);
         member.setStreak(0);
+        member.setMaxStreak(0);
         member.setWeeklyConsum(0);
         member.setWeeklyGoal(0);
         member.setMainAvatar(avatar);

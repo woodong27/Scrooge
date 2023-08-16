@@ -9,7 +9,7 @@
   flex-shrink: 0;
 }
 
-.header-text{
+.header-text {
   display: flex;
   height: 1.5rem;
   justify-content: center;
@@ -19,7 +19,7 @@
   font-size: 1.5rem;
 }
 
-.header-icon{
+.header-icon {
   width: 1.74006rem;
   height: 1.55138rem;
 }

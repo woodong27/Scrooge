@@ -52,6 +52,13 @@ public class Challenge {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
+    // Challenge 승 패 팀번호 저장
+    @Column(name = "win_team_no")
+    private Integer winTeamNo;
+
+    @Column(name = "lose_team_no")
+    private Integer loseTeamNo;
+
     // 다른 엔티티와 연결
     @OneToOne
     @JoinColumn(name = "challenge_master_id")

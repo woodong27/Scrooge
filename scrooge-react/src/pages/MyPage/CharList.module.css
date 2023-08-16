@@ -1,30 +1,33 @@
-.chartContainer{
-  margin: 0 0 4.625rem;
+.frame {
+  margin-bottom: 90px;
+}
+
+.chartContainer {
+  margin: 0 0 0 4.625rem;
   display: flex;
   flex-wrap: wrap;
 }
 
-.charContent{
-  display: flex;
+.item {
+  width: fit-content;
+  height: fit-content;
+  flex-direction: column;
+  margin: 6px 8px;
+  border: 1px solid rgb(150, 146, 146);
+  border-radius: 10px;
+
+  display: inline-block;
 }
 
-.profile-image{
+.one {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.profile {
   width: 6.25rem;
   height: 6.25rem;
-  margin-bottom: 0.625rem;
-}
-
-
-.btnContainer{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.gachaBtn{
-  background-color: tomato;
-  display: flex;
-  width: 20.625rem;
-  height: 3.125rem;
-  padding: 0.9375rem 3rem;
-  justify-content: center;
+  margin-bottom: 1rem;
+  margin: 0 2px;
 }

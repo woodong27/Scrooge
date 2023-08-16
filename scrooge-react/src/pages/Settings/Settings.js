@@ -3,7 +3,7 @@ import BackGround from "../../components/BackGround";
 import SettingModal from "../../components/UI/SettingModal";
 import Notification from "../../pages/Notification";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -18,8 +18,19 @@ const Settings = ({ onLogout }) => {
 
   const [alarmModal, setAlarmModal] = useState(false);
 
-  // BGM 관련
-  const[isSoundOn, setIsSoundOn] = useState(true); // 소리 켜진 상태로 시작
+  // // BGM 관련
+  // const [isSoundOn, setIsSoundOn] = useState(true)
+
+  // useEffect(() => {
+  //   const storedSoundStatus = localStorage.getItem("isSoundOn");
+  //   if (storedSoundStatus !== null) {
+  //     setIsSoundOn(storedSoundStatus === "true");
+  //   }
+  //   else {
+  //     setIsSoundOn(true);
+  //     localStorage.setItem("isSoundOn", "true");
+  //   }
+  // }, []);
 
   const handleLogoutModal = () => {
     setShowLogoutModal(!showLogoutModal);
@@ -36,19 +47,19 @@ const Settings = ({ onLogout }) => {
     setAlarmModal(false);
   };
 
-  const handleSoundToggle = () => {
-    // Android와 통신하여 소리 상태 변경하기
-    if(window.AndroidSound) {
-      window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
-    }
+  // const handleSoundToggle = () => {
+  //   // Android와 통신하여 소리 상태 변경하기
+  //   if(window.AndroidSound) {
+  //     window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
+  //   }
 
-    // 소리 상태 변경하기 
-    setIsSoundOn(!isSoundOn);
-  }
+  //   const newSoundState = !isSoundOn;
+  //   setIsSoundOn(newSoundState);
+  //   localStorage.setItem("isSoundOn", newSoundState.toString());
+  // }
 
 
   const confirmLogout = () => {
-    localStorage.removeItem("token");
     onLogout();
     dispatch({ type: "SET_TOKEN_STRING", payload: "" }); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기
     navigate("/"); // 로그아웃 후 리디렉션: "/"
@@ -87,7 +98,9 @@ const Settings = ({ onLogout }) => {
         <div className={styles.settingContent}>
           <div className={styles.infoHeader}>계정설정</div>
           <div className={styles.infoContent}>
-            <div>프로필 변경</div>
+            <Link to ="/nicknameChange">
+              <div>프로필 변경</div>
+            </Link>
             <Link to="/passwordChange">
               <div>비밀번호 변경</div>
             </Link>
@@ -96,9 +109,6 @@ const Settings = ({ onLogout }) => {
           <div className={styles.infoHeader}>추가설정</div>
           <div className={styles.infoContent}>
             <div onClick={handleAlarmOpen}>정산 알림 보내기</div>
-            <div onClick={handleSoundToggle}>
-             {isSoundOn ? "BGM 끄기" : "BGM 켜기"}
-            </div>
           </div>
 
           <div className={styles.infoHeader}>스크루지</div>

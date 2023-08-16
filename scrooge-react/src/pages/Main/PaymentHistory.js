@@ -76,6 +76,7 @@ const PaymentHistory = ({
       setCurrentIndex(currentIndex + 1);
     } else {
       if (date[0] === todayProp[0] && date[1] === todayProp[1]) {
+        console.log(goNext);
         postExp();
         handleSetTrue();
       }
@@ -86,48 +87,53 @@ const PaymentHistory = ({
       setOrigin(getTotal(formattedDate));
       setSettlement(true);
       handleCloseModal();
+      setCurrentIndex(currentIndex + 1);
     }
   };
 
   // 소비 내역 불러오기
   const getPaymentHistory = (month, day) => {
-    if (date.length === 2) {
-      const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
-        .toString()
-        .padStart(2, "0")}`;
+    const formattedDate = `2023-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
 
-      const postData = {
-        method: "GET",
-        headers: {
-          Authorization: globalToken,
-        },
-      };
+    const postData = {
+      method: "GET",
+      headers: {
+        Authorization: globalToken,
+      },
+    };
 
-      fetch(
-        `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
-        postData
-      )
-        .then((resp) => resp.json())
-        .then((data) => {
-          setData(data);
-          //첫 false를 index로 지정
-          const index = data.findIndex((item) => !item.isSettled);
-          if (index === -1) {
-            setSettlement(true);
-            setOrigin(getTotal(formattedDate));
-            setOrigin(total);
-            setCurrentIndex(data.length);
+    fetch(
+      `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
+      postData
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+        const index = data.findIndex((item) => !item.isSettled);
+        //모든 항목 정산 완료 / data가 없거나
+        if (index === -1) {
+          //소비 내역이 없을 때, 오늘 제외 무조건 정산 완료로
+          if (data.length === 0) {
+            if (month === todayProp[0] && day === todayProp[1]) {
+              setSettlement(todaySettlement);
+            } else {
+              setSettlement(true);
+            }
           } else {
-            setSettlement(false);
-            setCurrentIndex(index);
+            setSettlement(true);
           }
-          //데이터가 0인데 정산하기 안 누른 경우
-          if (data.length === 0 && !settlement) {
-            setSettlement(false);
-          }
-        })
-        .catch((error) => console.log(error));
-    }
+          setOrigin(getTotal(formattedDate));
+          setOrigin(total);
+          setCurrentIndex(data.length);
+        } else {
+          //정산 안 된
+          setSettlement(false);
+          setCurrentIndex(index);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -179,6 +185,7 @@ const PaymentHistory = ({
 
   // 일일정산 경험치 추가
   const postExp = () => {
+    console.log("postExp");
     const postData = {
       method: "PUT",
       headers: {
@@ -189,7 +196,10 @@ const PaymentHistory = ({
     fetch(
       "https://day6scrooge.duckdns.org/api/payment-history/settlement-exp",
       postData
-    ).then((res) => res.json());
+    ).then((res) => {
+      res.text();
+      console.log(res);
+    });
   };
 
   return (
@@ -222,7 +232,7 @@ const PaymentHistory = ({
                 <PaymentItem key={index} {...it} onEdit={onEdit} />
               ))
             ) : (
-              <p>!!소비 내역이 없습니다!! {settlement}</p>
+              <h4>소비 내역이 없습니다 {settlement}</h4>
             )}
             <PaymentAdd onCreate={onCreate} date={date} />
           </div>

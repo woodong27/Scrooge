@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     // BGM 구현 위한 변수
     private lateinit var mediaPlayer: MediaPlayer
+    private var isBgmOn: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,13 +65,33 @@ class MainActivity : AppCompatActivity() {
         webview.webChromeClient = CustomWebChromeClient()
         webview.loadUrl("https://day6scrooge.duckdns.org/")
 
-        /* BGM 구현 */
-        mediaPlayer = MediaPlayer.create(this, R.raw.bgm)
+        mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
         mediaPlayer.isLooping = true
         mediaPlayer.start()
+    }
 
-        val androidSound = AndroidSound()
-        webview.addJavascriptInterface(androidSound, "AndroidSound")
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        mediaPlayer.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isBgmOn = false
+        mediaPlayer.stop()
+        mediaPlayer.release()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        isBgmOn = false
+        mediaPlayer.stop()
+        mediaPlayer.release()
     }
 
 
@@ -145,23 +166,6 @@ class MainActivity : AppCompatActivity() {
                     .putExtra(Settings.EXTRA_APP_PACKAGE, "com.example.scoorge_android")
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 applicationContext.startActivity(intent)
-            }
-        }
-    }
-
-    /* 소리 구현 위한 클래스 */
-    inner class AndroidSound {
-        @JavascriptInterface
-        fun sendSoundToggleToAndroid(isSoundOn: Boolean) {
-            if(isSoundOn) {
-                Log.d("CHECK", "소리를 꺼요")
-                mediaPlayer.stop();
-            }
-            else {
-                Log.d("CHECK", "소리를 켜요")
-                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.bgm)
-                mediaPlayer.isLooping = true
-                mediaPlayer.start()
             }
         }
     }

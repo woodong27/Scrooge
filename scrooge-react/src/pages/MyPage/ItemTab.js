@@ -3,30 +3,35 @@ import styles from "./ReportTab.module.css";
 import CharList from "./CharList";
 import BadgeList from "./BadgeList";
 
-export default function ItemTab() {
+export default function ItemTab({ handleCharacterChange, characters }) {
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
     {
       id: 1,
-      tabTitle: '캐릭터',
-      content: <CharList />,
+      tabTitle: "캐릭터",
+      content: (
+        <CharList
+          handleCharacterChange={handleCharacterChange}
+          characters={characters}
+        />
+      ),
     },
     {
       id: 2,
-      tabTitle: '뱃지',
+      tabTitle: "뱃지",
       content: <BadgeList />,
-    }
-  ]
+    },
+  ];
 
   const handleTabClick = (e) => {
-    setCurrentTab(Number(e.target.id))
-  }
+    setCurrentTab(Number(e.target.id));
+  };
   return (
     <div className={styles.tabContainer}>
       {/* 탭 버튼 */}
       <div className={styles.tabs}>
-        {tabs.map((tab, i) => 
+        {tabs.map((tab, i) => (
           <button
             key={i}
             id={tab.id}
@@ -35,22 +40,20 @@ export default function ItemTab() {
           >
             {tab.tabTitle}
           </button>
-        )}
+        ))}
       </div>
       {/* 해당 내용 */}
       <div className={styles.content}>
-        {tabs.map((tab, i) =>
+        {tabs.map((tab, i) => (
           <div key={i}>
-            {currentTab === tab.id &&
+            {currentTab === tab.id && (
               <div>
                 <div>{tab.content}</div>
               </div>
-            }
+            )}
           </div>
-        )}
+        ))}
       </div>
-
-
     </div>
-  )
+  );
 }

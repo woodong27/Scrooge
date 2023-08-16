@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector } from "react-redux";
 
 import backImg from "../../assets/back.png";
@@ -10,6 +10,7 @@ import Chips from "../../components/UI/Chips";
 import AuthModal from "./AuthModal";
 import MyAuthProcess from "./MyAuthProcess";
 import TeamAuthProcess from "./TeamAuthProcess";
+import Toast from "../../components/UI/Toast";
 
 const ChallengeDetail = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -22,7 +23,12 @@ const ChallengeDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectChip, setSelectChip] = useState("나의 인증 현황");
   const [isTeamZero, setIsTeamZero] = useState();
-  const imgRef = useRef();
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [makeToast, setMakeToast] = useState(false);
+  const [failToast, setFailToast] = useState(false);
+  const [todayAuth, setTodayAuth] = useState(false);
+
+  const imgRef = useRef(null);
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
   const formData = new FormData();
 
@@ -69,26 +75,34 @@ const ChallengeDetail = () => {
                 break;
               }
             }
-
-            console.log(data);
           })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
+          .catch((error) => console.error("Error fetching data:", error));
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
-  const showModalHandler = () => setShowModal(true);
+  const inputChangeHandler = () => {
+    const file = imgRef.current.files[0];
+    if (file) {
+      const reader = new FileReader(); // FileReader 객체 생성
+
+      reader.onload = (e) => {
+        setSelectedImg(e.target.result); // 이미지 미리보기 설정
+      };
+
+      reader.readAsDataURL(file); // 파일을 Data URL 형태로 읽기 시작
+    }
+  };
+  const showModalHandler = () => {
+    setSelectedImg(null);
+    setShowModal(true);
+  };
+
   const hideModalHandler = () => setShowModal(false);
   const submitAuthHandler = () => {
     formData.append("img", imgRef.current.files[0]);
-
-    console.log(imgRef.current.files[0]);
-    console.log(formData.images);
-    console.log(globalToken);
 
     axios
       .post(
@@ -101,11 +115,16 @@ const ChallengeDetail = () => {
           },
         }
       )
-      .then(() => {})
+      .then(() => {
+        hideModalHandler();
+        setMakeToast(true);
+      })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        setFailToast(true);
       });
   };
+
+  const todayAuthHandler = () => setTodayAuth(true);
 
   return (
     <div className={styles.layout}>
@@ -154,17 +173,26 @@ const ChallengeDetail = () => {
       </div>
 
       {selectChip === "나의 인증 현황" ? (
-        <MyAuthProcess token={globalToken}></MyAuthProcess>
+        <MyAuthProcess
+          setTodayAuth={todayAuthHandler}
+          token={globalToken}
+          id={params.id}
+          Toast={makeToast}
+        ></MyAuthProcess>
       ) : (
         <TeamAuthProcess
           token={globalToken}
           isTeamZero={isTeamZero}
+          id={params.id}
         ></TeamAuthProcess>
       )}
 
       <div className={styles.foot}>
-        <div className={styles.primary} onClick={showModalHandler}>
-          인증하기
+        <div
+          className={todayAuth ? styles.already : styles.primary}
+          onClick={todayAuth ? () => {} : showModalHandler}
+        >
+          {todayAuth ? "오늘의 인증 완료" : "인증하기"}
           <div className={styles.shadow}></div>
         </div>
       </div>
@@ -182,11 +210,8 @@ const ChallengeDetail = () => {
               인증 규정
             </div>
             <div className={styles.auth_img}>
-              {authImg.map((e) => (
-                <img src={e.imgAddress} alt=""></img>
-              ))}
-              {authImg.map((e) => (
-                <img src={e.imgAddress} alt=""></img>
+              {authImg.map((e, i) => (
+                <img src={e.imgAddress} alt="" key={i}></img>
               ))}
             </div>
           </div>
@@ -205,6 +230,16 @@ const ChallengeDetail = () => {
               <span>하루 인증 횟수</span>
               1회
             </div>
+            <div className={styles.detail}>
+              {selectedImg ? (
+                <img src={selectedImg} alt=""></img>
+              ) : (
+                <Fragment>
+                  <span>선택된 사진</span>
+                  선택된 사진이 없어요
+                </Fragment>
+              )}
+            </div>
           </div>
 
           <input
@@ -213,6 +248,7 @@ const ChallengeDetail = () => {
             type="file"
             accept="image/*"
             ref={imgRef}
+            onChange={inputChangeHandler}
           />
           <label htmlFor="img" className={styles.loadImg}>
             사진 불러오기
@@ -221,7 +257,15 @@ const ChallengeDetail = () => {
           <div className={styles.authImg} onClick={submitAuthHandler}>
             인증하기
           </div>
+
+          {failToast && (
+            <Toast setToast={setFailToast} text="인증에 실패했어요!" />
+          )}
         </AuthModal>
+      )}
+
+      {makeToast && (
+        <Toast setToast={setMakeToast} text="인증이 완료 되었어요!" />
       )}
     </div>
   );

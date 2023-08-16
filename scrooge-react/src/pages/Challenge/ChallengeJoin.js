@@ -100,8 +100,13 @@ const ChallengeJoin = () => {
         <div>- 사진이 잘 보이도록 촬영해주세요.</div>
         <div className={styles.auth_img}>
           {data.challengeExampleImageDtoList &&
-            data.challengeExampleImageDtoList.map((e) => (
-              <img className={styles.img_list} src={e["imgAddress"]} alt="" />
+            data.challengeExampleImageDtoList.map((e, i) => (
+              <img
+                className={styles.img_list}
+                key={i}
+                src={e["imgAddress"]}
+                alt=""
+              />
             ))}
         </div>
       </div>

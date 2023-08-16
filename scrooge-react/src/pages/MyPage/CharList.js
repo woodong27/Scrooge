@@ -1,47 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+import SettingModal from "../../components/UI/SettingModal";
 import styles from "./CharList.module.css";
 
-const Button = ({ onClick, children, className }) => {
-  return (
-    <button className={className} onClick={onClick}>
-      {children}
-    </button>
-  );
-};
+const CharList = ({ handleCharacterChange, characters }) => {
+  const [modal, setModal] = useState(false);
+  const [characterId, setCharacterId] = useState(0);
 
-const CharList = () => {
-  const imageCount = 80; // 캐릭터 개수 만큼
-  const imagePath = `${process.env.PUBLIC_URL}/Character`;
-  const [randomImages, setRandomImages] = useState([]);
+  const handleModalOpen = (index) => {
+    setCharacterId(index);
+    setModal(true);
+  };
 
-  useEffect(() => {
-    const initialImages = Array.from({ length: imageCount }, (_, index) => (
-      <img
-        key={index} // 08-08 얘가 중요해요..
-        className={styles["profile-image"]}
-        src={`${imagePath}/gacha.png`}
-        alt={`프로필 사진 ${index + 1}`}
-      />
-    ));
+  const handleModalClose = () => {
+    setModal(false);
+  };
 
-    setRandomImages(initialImages);
-  }, []); // 컴포넌트가 처음 마운트될 때 한 번만 실행
+  const handleConfirm = () => {
+    handleCharacterChange(characterId);
+    setModal(false);
+  };
 
   return (
-    <div>
-      <div className={styles.btnContainer}>
-        <Button
-          className={styles.gachaBtn}
-          onClick={() => console.log("캐릭터....뽑습니다....")}
-        >
-          캐릭터 뽑기!!!!!!!!!!!!!!!
-        </Button>
+    <div className={styles.frame}>
+      <div className={styles.characters}>
+        <div className={styles.charContainer}>
+          {Array.from({ length: 100 }).map((_, index) => {
+            const imageUrl = characters.includes(index)
+              ? `https://storage.googleapis.com/scroogestorage/avatars/${index}-1.png`
+              : `${process.env.PUBLIC_URL}/Character/gacha.png`;
+
+            return (
+              <div key={index} className={styles.item}>
+                <div
+                  className={styles.one}
+                  onClick={() => handleModalOpen(index)}
+                >
+                  <img
+                    src={imageUrl}
+                    className={styles.profile}
+                    alt={`Item ${index}`}
+                  />
+                  <span>{index}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div className={styles.charContainer}>{randomImages}</div>
+      {modal && (
+        <SettingModal
+          message="메인 아바타를 변경하겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={handleModalClose}
+        />
+      )}
     </div>
   );
 };
 
 export default CharList;
-
-

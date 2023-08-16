@@ -17,10 +17,10 @@ const Article = (props) => {
   const [bad, setBad] = useState(false);
 
   useEffect(() => {
-    if (showContent.length <= 40) {
+    if (showContent.length <= 36) {
       setContent(showContent);
     } else {
-      setContent(showContent.slice(0, 37) + "...");
+      setContent(showContent.slice(0, 34) + "...");
     }
 
     //좋아요 싫어요 개수
@@ -153,14 +153,16 @@ const Article = (props) => {
   return (
     <div className={styles.box}>
       <Card height={330}>
-        <div className={styles.authorInfo}>
-          <img
-            className={styles.character}
-            src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
-            alt="캐릭터"
-          />
-          <div className={styles.author}>{props.memberNickname}</div>
-        </div>
+        <Link to={`/profile/${props.memberId}`}>
+          <div className={styles.authorInfo}>
+            <img
+              className={styles.character}
+              src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
+              alt="캐릭터"
+            />
+            <div className={styles.author}>{props.memberNickname}</div>
+          </div>
+        </Link>
         <Link to={`/community/${props.id}`}>
           <div className={styles.detail}>
             <div className={styles.pictureFrame}>
@@ -192,14 +194,14 @@ const Article = (props) => {
             )}
             <div className={styles.cnt}>{goodCnt}</div>
             {bad ? (
-              <button onClick={handleBadCancle} className={styles.emoji}>
+              <button onClick={handleBadCancle} className={styles.bademoji}>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/downColor.png`}
                   alt="야유"
                 />
               </button>
             ) : (
-              <button onClick={handleBad} className={styles.emoji}>
+              <button onClick={handleBad} className={styles.bademoji}>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/down.png`}
                   alt="야유"

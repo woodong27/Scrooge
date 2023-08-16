@@ -8,12 +8,16 @@ const PaymentItem = (props) => {
   }, [props]);
   return (
     <div className={styles.box}>
-      <p className={styles.usedAt}>{props.usedAt}</p>
-      <p className={styles.amount}>{amount}</p>
-      <p className={styles.paidAt}>
-        {props.paidAt.split("T")[1].split(".")[0]}
-      </p>
-      <p className={styles.cardName}>{props.cardName}</p>
+      <div className={styles.upLine}>
+        <p className={styles.usedAt}>{props.usedAt}</p>
+        <p className={styles.paidAt}>
+          {props.paidAt.split("T")[1].split(".")[0]}
+        </p>
+      </div>
+      <div className={styles.downLine}>
+        <p className={styles.amount}>{amount}</p>
+        <p className={styles.cardName}>{props.cardName}</p>
+      </div>
     </div>
   );
 };

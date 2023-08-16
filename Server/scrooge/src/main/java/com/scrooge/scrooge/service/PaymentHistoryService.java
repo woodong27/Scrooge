@@ -197,7 +197,7 @@ public class PaymentHistoryService {
             memberRepository.save(member);
 
             // 정산하기 관련 퀘스트 소지 시 퀘스트 완료 진행
-            if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 1L)) {
+            if (memberSelectedQuestRepository.existsByMemberIdAndQuestIdAndIsSelected(memberId, 1L, true)) {
                 questService.completeQuest(1L, memberId);
             }
 
@@ -258,14 +258,6 @@ public class PaymentHistoryService {
     // 내 소비에 대한 리캡을 조회하는 API
     public RecapDto getMyRecap(Long memberId) {
         // 소비내역 이번달 기준으로 ,,,
-
-        /* 반환하는 요소
-        0. 이 사람 ,, 정산 내역이 있는지 ,,
-        1. 많이 쓴 카테고리
-        2. 최대 스트릭
-        2-1. 최대 스트릭 상위 N% 인지 ,,
-        3. 무슨 시간에 돈을 많이 쓰는 유형인지 ,,, String
-     */
         RecapDto recapDto = new RecapDto();
 
         LocalDate date = LocalDate.now();
@@ -277,22 +269,76 @@ public class PaymentHistoryService {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 
+        // 저번 달의 시작일과 종료일 계산하기
+        YearMonth previousMonth = YearMonth.from(date).minusMonths(1);
+
+        LocalDate previousMonthStartDate = previousMonth.atDay(1);
+        LocalDate previousMonthEndDate = previousMonth.atEndOfMonth();
+
+        LocalDateTime previousMonthStartDateTime = LocalDateTime.of(previousMonthStartDate, LocalTime.MIN);
+        LocalDateTime previousMonthEndDateTime = LocalDateTime.of(previousMonthEndDate, LocalTime.MAX);
+
         List<PaymentHistory> paymentHistoryList = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, startDateTime, endDateTime);
+        List<PaymentHistory> lastPaymentHistoryList = paymentHistoryRepository.findByMemberIdAndPaidAtBetween(memberId, previousMonthStartDateTime, previousMonthEndDateTime);
+
+        if(lastPaymentHistoryList.size() == 0) {
+            recapDto.setHasLastMonthPaymentHistory(false);
+        }
+        else {
+            recapDto.setHasLastMonthPaymentHistory(true);
+            // 저번 달 소비 총합 계산
+            int lastMonthTotal = 0;
+            for(PaymentHistory paymentHistory : lastPaymentHistoryList) {
+                lastMonthTotal += paymentHistory.getAmount();
+            }
+            recapDto.setLastMonthTotal(lastMonthTotal);
+        }
+
+
         if(paymentHistoryList.size() == 0) {
             // 소비내역이 없음 ,, 정산 내역 없다고 false로 반환!
             recapDto.setHasPaymentHistory(false);
+            return recapDto;
         }
         else {
-            // 소비내역이 있다면 리캡 시작
             recapDto.setHasPaymentHistory(true);
+            // 소비내역이 있다면 리캡 시작
             // 1. 많이 쓴 카테고리
             Map<String, Integer> categoryFrequency = new HashMap<>();
-
+            // 2. 시간대 처리
+            Map<String, Integer> timeOfDayFrequency = new HashMap<>();
+            // 3. 총합 계산
+            int thisMonthTotal = 0;
             for(PaymentHistory paymentHistory : paymentHistoryList) {
+                // 카테고리
                 String category = paymentHistory.getCategory();
                 categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
+
+                // 시간대
+                LocalDateTime paidAt = paymentHistory.getPaidAt();
+                int hour = paidAt.getHour();
+                if(hour < 6) {
+                    timeOfDayFrequency.put("새벽", timeOfDayFrequency.getOrDefault("새벽", 0) + 1);
+                }
+                else if(hour < 12) {
+                    timeOfDayFrequency.put("오전", timeOfDayFrequency.getOrDefault("오전", 0) + 1);
+                }
+                else if(hour < 18) {
+                    timeOfDayFrequency.put("오후", timeOfDayFrequency.getOrDefault("오후", 0) + 1);
+                }
+                else {
+                    timeOfDayFrequency.put("밤", timeOfDayFrequency.getOrDefault("밤", 0) + 1);
+                }
+
+                // 총 합 계산
+                thisMonthTotal += paymentHistory.getAmount();
+            }
+            recapDto.setThisMonthTotal(thisMonthTotal);
+            if(recapDto.getLastMonthTotal() != null) {
+                recapDto.setTotalDifference(recapDto.getLastMonthTotal() - recapDto.getThisMonthTotal());
             }
 
+            // 가장 돈을 많이 쓴 카테고리
             String mostUsedCategory = null;
             int maxFrequency = 0;
 
@@ -304,6 +350,18 @@ public class PaymentHistoryService {
             }
             recapDto.setCategory(mostUsedCategory);
 
+            // 시간대별로 가장 많이 지출한 시간대
+            String mostSpendTimeOfDay = null;
+            int maxTimeOfDayFrequency = 0;
+
+            for(Map.Entry<String, Integer> entry : timeOfDayFrequency.entrySet()) {
+                if(entry.getValue() > maxTimeOfDayFrequency) {
+                    maxTimeOfDayFrequency = entry.getValue();
+                    mostSpendTimeOfDay = entry.getKey();
+                }
+            }
+            recapDto.setMostSpendTime(mostSpendTimeOfDay);
+
 
             // 3. 최대 스트릭
             // member 가져오기
@@ -313,7 +371,6 @@ public class PaymentHistoryService {
                 recapDto.setMaxStreak(maxStreak); // 최대 스트릭
 
                 // 최대 스트릭 상위 몇 프로 인지 ,,, 반환
-                // 1. 일단 ,,, Member들 ,, 2023 08 15에 이어서 작성하겠습니다 ,,,
                 List<Member> sortedMembers = memberRepository.findByOrderByMaxStreakDesc();
                 int totalMembers = sortedMembers.size();
                 int myMaxStreak = recapDto.getMaxStreak();
@@ -334,8 +391,6 @@ public class PaymentHistoryService {
                     recapDto.setTopStreakPercentage(roundedPercentage); // 상위 몇 퍼센트인지 적용
                 }
             }
-
-
             else {
                 throw new NotFoundException(memberId + "에 해당하는 member를 찾지 못했습니다.");
             }
