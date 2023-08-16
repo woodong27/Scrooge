@@ -15,6 +15,7 @@ const Modal = ({ item, index, goNext, onEdit, onCloseModal }) => {
     setOrigin(item.amount);
     setPlace(item.usedAt);
     setCard(item.cardName);
+    setCategory("");
   }, [item, index]);
 
   const buttons = [
