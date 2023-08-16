@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import styles from "./Detail.module.css";
 import CommentList from "./CommentList";
@@ -293,13 +293,17 @@ const Detail = () => {
         {data ? (
           <div className={styles.frame}>
             <div className={styles.authorInfo}>
-              <img
-                className={styles.character}
-                src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
-                alt="캐릭터"
-              />
+              <Link to={`/profile/${data.memberId}`}>
+                <img
+                  className={styles.character}
+                  src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
+                  alt="캐릭터"
+                />
+              </Link>
               <div>
-                <div className={styles.author}>{data.memberNickname}</div>
+                <Link to={`/profile/${data.memberId}`}>
+                  <div className={styles.author}>{data.memberNickname}</div>
+                </Link>
                 <div className={styles.line}>
                   <div className={styles.createdAt}>
                     {data.createdAt.split("T")[0]}{" "}
