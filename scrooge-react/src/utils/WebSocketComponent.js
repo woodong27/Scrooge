@@ -14,8 +14,12 @@ const WebSocketComponent = () => {
   const stompClient = Stomp.over(socket);
   const [data, setData] = useState();
   const [msg, setMsg] = useState([]);
+  const [txt, setTxt] = useState("");
+  const containerRef = useRef("");
 
   useEffect(() => {
+    msgRef.current.focus();
+
     axios
       .get("https://day6scrooge.duckdns.org/api/member/info", {
         headers: {
@@ -36,6 +40,10 @@ const WebSocketComponent = () => {
             ...prev,
             { content: parseData.content, sender: parseData.sender },
           ]);
+
+          setTimeout(() => {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+          }, 0);
         }
       );
     };
@@ -48,6 +56,10 @@ const WebSocketComponent = () => {
   }, []);
 
   const sendMsgHandler = () => {
+    if (!socket.readyState) return;
+    msgRef.current.focus();
+    setTxt("");
+
     stompClient.send(
       `/app/chat/${params.id}/${params.team}`,
       {},
@@ -58,20 +70,20 @@ const WebSocketComponent = () => {
   return (
     <div className={styles.bg}>
       <div className={styles.chat}>우리팀 채팅</div>
-      <div className={styles.body}>
+      <div className={styles.body} ref={containerRef}>
         {msg.map((e, i) =>
           e.sender === data.nickname ? (
             <div className={styles.me} key={i}>
-              <img src={`${process.env.PUBLIC_URL}/images/me.png`} alt=""></img>
-              <div className={styles.nickname}>{e.sender}</div>
-              <div className={styles.text}>{e.content}</div>
-            </div>
-          ) : (
-            <div className={styles.you} key={i}>
               <img
                 src={`${process.env.PUBLIC_URL}/images/you.png`}
                 alt=""
               ></img>
+              <div className={styles.nickname}>나</div>
+              <div className={styles.text}>{e.content}</div>
+            </div>
+          ) : (
+            <div className={styles.you} key={i}>
+              <img src={`${process.env.PUBLIC_URL}/images/me.png`} alt=""></img>
               <div className={styles.nickname}>{e.sender}</div>
               <div className={styles.text}>{e.content}</div>
             </div>
@@ -80,7 +92,13 @@ const WebSocketComponent = () => {
       </div>
       <div className={styles.input_layout}>
         <div className={styles.input_container}>
-          <input type="text" ref={msgRef} id="msg" />
+          <input
+            type="text"
+            ref={msgRef}
+            id="msg"
+            value={txt}
+            onChange={(e) => setTxt(e.target.value)}
+          />
           <button onClick={sendMsgHandler}>전송</button>
         </div>
       </div>
