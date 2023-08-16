@@ -153,14 +153,16 @@ const Article = (props) => {
   return (
     <div className={styles.box}>
       <Card height={330}>
-        <div className={styles.authorInfo}>
-          <img
-            className={styles.character}
-            src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
-            alt="캐릭터"
-          />
-          <div className={styles.author}>{props.memberNickname}</div>
-        </div>
+        <Link to={`/profile/${props.memberId}`}>
+          <div className={styles.authorInfo}>
+            <img
+              className={styles.character}
+              src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
+              alt="캐릭터"
+            />
+            <div className={styles.author}>{props.memberNickname}</div>
+          </div>
+        </Link>
         <Link to={`/community/${props.id}`}>
           <div className={styles.detail}>
             <div className={styles.pictureFrame}>

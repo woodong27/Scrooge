@@ -65,11 +65,6 @@ class MainActivity : AppCompatActivity() {
         webview.webChromeClient = CustomWebChromeClient()
         webview.loadUrl("https://day6scrooge.duckdns.org/")
 
-        /* BGM 구현 */
-        mediaPlayer = MediaPlayer.create(this, R.raw.bgm)
-        mediaPlayer.isLooping = true
-        mediaPlayer.start()
-
         val androidSound = AndroidSound()
         webview.addJavascriptInterface(androidSound, "AndroidSound")
     }

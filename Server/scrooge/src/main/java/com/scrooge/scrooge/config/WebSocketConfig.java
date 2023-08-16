@@ -18,6 +18,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*"); // 클라이언트 연결을 위한 엔드포인트 등록
+        registry.addEndpoint("/api/ws").setAllowedOrigins("*"); // 클라이언트 연결을 위한 엔드포인트 등록
     }
 }

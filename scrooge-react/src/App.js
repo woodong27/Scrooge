@@ -119,7 +119,7 @@ function App() {
             <Route path="/passwordChange" element={<PasswordChange />} />
             <Route path="/nicknameChange" element={<NicknameChange />} />
             <Route path="/notification" element={<Notification />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:id" element={<Profile />} />
           </Routes>
           <Footer />
         </>

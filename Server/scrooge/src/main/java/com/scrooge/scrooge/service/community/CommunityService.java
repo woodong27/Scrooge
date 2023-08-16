@@ -67,7 +67,7 @@ public class CommunityService {
         article.setCreatedAt(LocalDateTime.now());
 
         // 게시글 작성 퀘스트
-        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 4L)) {
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestIdAndIsSelected(memberId, 4L, true)) {
             questService.completeQuest(4L, memberId);
         }
 

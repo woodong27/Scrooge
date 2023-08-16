@@ -197,7 +197,7 @@ public class PaymentHistoryService {
             memberRepository.save(member);
 
             // 정산하기 관련 퀘스트 소지 시 퀘스트 완료 진행
-            if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 1L)) {
+            if (memberSelectedQuestRepository.existsByMemberIdAndQuestIdAndIsSelected(memberId, 1L, true)) {
                 questService.completeQuest(1L, memberId);
             }
 

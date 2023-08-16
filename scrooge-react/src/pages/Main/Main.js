@@ -29,6 +29,9 @@ const Main = (props) => {
   ]);
   const [imageIndex, setImageIndex] = useState(0);
 
+  // BGM 관련
+  // const [isSoundOn, setIsSoundOn] = useState(true);
+
   const handleOpen = () => {
     setIsEdit(true);
   };
@@ -180,6 +183,22 @@ const Main = (props) => {
   const consumFalseHandler = () => {
     setIsConsum(false);
   };
+
+  // BGM 관련 코드
+  // useEffect(() => {
+  //   const storedSoundStatus = localStorage.getItem("isSoundOn");
+  //   if (storedSoundStatus !== null) {
+  //     setIsSoundOn(storedSoundStatus === "true");
+  //   }
+  //   else {
+  //     setIsSoundOn(true);
+  //     localStorage.setItem("isSoundOn", "true");
+  //   }
+  // }, []);
+
+  // if(window.AndroidSound) {
+  //   window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
+  // }
 
   return (
     <BackGround>
