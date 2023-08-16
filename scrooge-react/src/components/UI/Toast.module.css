@@ -1,7 +1,7 @@
 .toast {
   position: absolute;
   bottom: 16rem;
-  z-index: 3;
+  z-index: 30;
   transition: opacity 0.5s ease, transform 0.5s ease;
   margin: 0 auto;
   width: 100vw;

@@ -44,6 +44,8 @@ const MyChallenge = () => {
       <div className={styles.list}>
         {globalToken === ""
           ? "로그인이 필요해요!"
+          : selectedCategory === "종료된"
+          ? "참여한 챌린지가 없어요!"
           : selectedCategory === "진행중"
           ? data.length === 0
             ? "참여중인 챌린지가 없어요!"
