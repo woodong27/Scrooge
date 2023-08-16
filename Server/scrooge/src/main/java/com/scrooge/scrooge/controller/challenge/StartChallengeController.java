@@ -1,10 +1,7 @@
 package com.scrooge.scrooge.controller.challenge;
 
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
-import com.scrooge.scrooge.dto.challengeDto.ChallengeStartRespDto;
-import com.scrooge.scrooge.dto.challengeDto.MyChallengeMyAuthDto;
-import com.scrooge.scrooge.dto.challengeDto.MyChallengeRespDto;
-import com.scrooge.scrooge.dto.challengeDto.StartedChallengeDto;
+import com.scrooge.scrooge.dto.challengeDto.*;
 import com.scrooge.scrooge.repository.challenge.ChallengeRepository;
 import com.scrooge.scrooge.service.challenge.StartChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
+import java.util.List;
 
 @Tag(name = "ChallengeStart", description = "시작된 챌린지에 관련된 API")
 @RestController
@@ -80,6 +79,20 @@ public class StartChallengeController {
         }
 
         return ResponseEntity.ok(startChallengeService.getTeamAuths(challengeId, jwtTokenProvider.extractMemberId(token)));
+    }
+
+    @Operation(summary = "종료된 챌린지 정보 조회")
+    @GetMapping("/end-challenge")
+    public ResponseEntity<?> getMyEndChallenges(@RequestHeader("Authorization") String header) {
+        String token = jwtTokenProvider.extractToken(header);
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+
+        List<ChallengeEndResDto> challengeEndResDtoList = startChallengeService.getMyEndChallenges(memberId);
+        return ResponseEntity.ok(challengeEndResDtoList);
     }
 
     private String extractToken (String tokenHeader){
