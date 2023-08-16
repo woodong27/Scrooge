@@ -8,6 +8,8 @@ import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.os.Build
 import android.provider.Settings
@@ -22,6 +24,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         this.context = context
         val busRouteIntent = Intent(context, MainActivity::class.java)
+        val imageResId = R.drawable.scrooge_img
         val stackBuilder = TaskStackBuilder.create(context)
         stackBuilder.addNextIntentWithParentStack(busRouteIntent)
         val busRoutePendingIntent =
@@ -31,8 +34,10 @@ class AlarmReceiver : BroadcastReceiver() {
                 .setSmallIcon(R.drawable.ic_launcher_foreground).setDefaults(Notification.DEFAULT_ALL)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true)
-                .setContentTitle("스크루지 타임")
-                .setContentText("정산을 합시다.")
+                .setContentTitle("[스크루지 영감]")
+                .setContentText("껄껄, 자네 아직 정산을 안 했는가?\n스크루지로 정산하러 가야 할 시간일세.")
+                .setLargeIcon(BitmapFactory.decodeResource(context.resources, imageResId))
+                .setSmallIcon(imageResId)
                 .setContentIntent(busRoutePendingIntent)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
