@@ -108,8 +108,6 @@
 }
 
 .underBtn {
-  position: fixed;
-  bottom: 40px;
   width: 100%;
   display: flex;
   justify-content: space-between;
