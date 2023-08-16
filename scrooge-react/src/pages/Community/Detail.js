@@ -293,17 +293,30 @@ const Detail = () => {
         {data ? (
           <div className={styles.frame}>
             <div className={styles.authorInfo}>
-              <Link to={`/profile/${data.memberId}`}>
+              {memberId === data.memberId ? (
                 <img
                   className={styles.character}
                   src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
                   alt="캐릭터"
                 />
-              </Link>
-              <div>
+              ) : (
                 <Link to={`/profile/${data.memberId}`}>
-                  <div className={styles.author}>{data.memberNickname}</div>
+                  <img
+                    className={styles.character}
+                    src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
+                    alt="캐릭터"
+                  />
                 </Link>
+              )}
+              <div>
+                {memberId === data.memberId ? (
+                  <div className={styles.author}>{data.memberNickname}</div>
+                ) : (
+                  <Link to={`/profile/${data.memberId}`}>
+                    <div className={styles.author}>{data.memberNickname}</div>
+                  </Link>
+                )}
+
                 <div className={styles.line}>
                   <div className={styles.createdAt}>
                     {data.createdAt.split("T")[0]}{" "}
