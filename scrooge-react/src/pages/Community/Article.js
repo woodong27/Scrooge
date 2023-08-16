@@ -70,6 +70,9 @@ const Article = (props) => {
     });
 
   const handleGood = () => {
+    if (bad) {
+      handleBadCancle();
+    }
     const goodData = {
       method: "POST",
       headers: {
@@ -110,6 +113,9 @@ const Article = (props) => {
       });
   };
   const handleBad = () => {
+    if (good) {
+      handleGoodCancle();
+    }
     const badData = {
       method: "POST",
       headers: {
