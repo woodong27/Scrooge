@@ -15,8 +15,9 @@ const MyPageProfile = () => {
   const maxExp = 100;
   const [modal, setModal] = useState(false);
   const [gacha, setGacha] = useState(0);
-  const [item, setItem] = useState([]);
   const [avatar, setAvatar] = useState(0);
+  const [characters, setCharacters] = useState([]);
+  const [newCharacter, setNewCharacters] = useState([]);
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -50,7 +51,25 @@ const MyPageProfile = () => {
       .catch((error) => console.log(error));
   }, [globalToken]); // [] : globalToken
 
+  useEffect(() => {
+    const getData = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: globalToken,
+      },
+    };
+    fetch(`https://day6scrooge.duckdns.org/api/avatar/my-avatar`, getData)
+      .then((res) => res.json())
+      .then((data) => {
+        const id = data.map((item) => item.avatar.id);
+        setCharacters(id);
+        setModal(false);
+      });
+  }, []);
+
   const handleGacha = () => {
+    console.log("가챠");
     //0번 남은 경우 통신 X
     if (gacha === 0) {
       return;
@@ -71,9 +90,10 @@ const MyPageProfile = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        setItem(data);
         setGacha(gacha - 1);
+        characters.push(parseInt(data.avatarId));
+        setCharacters(characters);
+        setNewCharacters(data);
         handleModalOpen();
       });
   };
@@ -148,7 +168,7 @@ const MyPageProfile = () => {
         {showItemList ? "소비 리포트 보러 가기" : "캐릭터 뽑으러 가기"}
       </div>
       {showItemList ? (
-        <ItemTab handleCharacterChange={handleChange} />
+        <ItemTab handleCharacterChange={handleChange} characters={characters} />
       ) : (
         <Report />
       )}
@@ -161,14 +181,14 @@ const MyPageProfile = () => {
           ></div>
           <div className={styles.modalContainer}>
             <img
-              src={`https://storage.googleapis.com/scroogestorage/avatars/${item.avatarId}-1.png`}
+              src={`https://storage.googleapis.com/scroogestorage/avatars/${newCharacter.avatarId}-1.png`}
               className={styles.profile}
               alt={`gacha`}
             />
             <span className={styles.ment}>
-              {item.isDuplicated
+              {newCharacter.isDuplicated
                 ? "이미 가지고 있는 캐릭터에요.."
-                : `${item.avatarId}번이 새로 생겼어요!!`}
+                : `${newCharacter.avatarId}번이 새로 생겼어요!!`}
             </span>
           </div>
         </div>

@@ -3,14 +3,19 @@ import styles from "./ReportTab.module.css";
 import CharList from "./CharList";
 import BadgeList from "./BadgeList";
 
-export default function ItemTab({ handleCharacterChange }) {
+export default function ItemTab({ handleCharacterChange, characters }) {
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
     {
       id: 1,
       tabTitle: "캐릭터",
-      content: <CharList handleCharacterChange={handleCharacterChange} />,
+      content: (
+        <CharList
+          handleCharacterChange={handleCharacterChange}
+          characters={characters}
+        />
+      ),
     },
     {
       id: 2,
