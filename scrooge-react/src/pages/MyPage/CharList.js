@@ -25,36 +25,27 @@ const CharList = ({ handleCharacterChange, characters }) => {
     <div className={styles.frame}>
       <div className={styles.characters}>
         <div className={styles.charContainer}>
-          {characters.map((e, index) => {
+          {Array.from({ length: 100 }).map((_, index) => {
+            const imageUrl = characters.includes(index)
+              ? `https://storage.googleapis.com/scroogestorage/avatars/${index}-1.png`
+              : `${process.env.PUBLIC_URL}/Character/gacha.png`;
+
             return (
               <div key={index} className={styles.item}>
-                <div className={styles.one} onClick={() => handleModalOpen(e)}>
+                <div
+                  className={styles.one}
+                  onClick={() => handleModalOpen(index)}
+                >
                   <img
-                    src={`https://storage.googleapis.com/scroogestorage/avatars/${e}-1.png`}
+                    src={imageUrl}
                     className={styles.profile}
                     alt={`Item ${index}`}
                   />
-                  <span>{e}</span>
+                  <span>{index}</span>
                 </div>
               </div>
             );
           })}
-
-          {Array.from({ length: 100 }).map(
-            (_, index) =>
-              !characters.includes(index) && (
-                <div key={index} className={styles.item}>
-                  <div className={styles.one}>
-                    <img
-                      src={`${process.env.PUBLIC_URL}/Character/gacha.png`}
-                      className={styles.profile}
-                      alt={`Item ${index}`}
-                    />
-                    <span>{index}</span>
-                  </div>
-                </div>
-              )
-          )}
         </div>
       </div>
       {modal && (
