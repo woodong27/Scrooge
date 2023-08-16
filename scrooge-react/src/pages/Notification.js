@@ -22,7 +22,7 @@ const Notification = ({ handleAlarmClose }) => {
   };
 
   const handleSaveTime = () => {
-    if (window.AndroidInterface && selectedTime) {
+    if (selectedTime && window.AndroidInterface ) {
       localStorage.setItem("savedTime", selectedTime);
       window.AndroidInterface.sendTimeToApp(selectedTime);
       setSavedTime(selectedTime);
