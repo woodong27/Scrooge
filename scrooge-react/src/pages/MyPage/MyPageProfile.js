@@ -12,7 +12,7 @@ const MyPageProfile = () => {
   const [showItemList, setShowItemList] = useState(false);
   const [levelId, setLevelId] = useState(1);
   const [exp, setExp] = useState(0);
-  const maxExp = 100;
+  const [maxExp, setMaxExp] = useState(0);
   const [modal, setModal] = useState(false);
   const [gacha, setGacha] = useState(0);
   const [avatar, setAvatar] = useState(0);
@@ -31,6 +31,24 @@ const MyPageProfile = () => {
     setModal(false);
   };
 
+  const handleMaxExp = () => {
+    let max = 0;
+    if (levelId <= 5) {
+      max = 500;
+    } else if (levelId <= 10) {
+      max = 600;
+    } else if (levelId <= 15) {
+      max = 700;
+    } else if (levelId <= 20) {
+      max = 800;
+    } else if (levelId <= 25) {
+      max = 900;
+    } else {
+      max = 1000;
+    }
+    setMaxExp(max);
+  };
+
   useEffect(() => {
     const postData = {
       method: "GET",
@@ -41,12 +59,14 @@ const MyPageProfile = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setData(data);
         setExp(data.exp);
-        console.log("레벨업 데이터", data.exp);
+        setMaxExp(data.maxExp);
         setLevelId(data.levelId);
         setAvatar(data.mainAvatar.id);
         setGacha(data.remainGacha);
+        handleMaxExp();
       })
       .catch((error) => console.log(error));
   }, [globalToken]); // [] : globalToken
