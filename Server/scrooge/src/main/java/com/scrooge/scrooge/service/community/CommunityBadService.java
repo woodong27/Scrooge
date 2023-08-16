@@ -38,7 +38,7 @@ public class CommunityBadService {
         articleBad.setMember(member);
         articleBad.setArticle(article);
 
-        if (memberSelectedQuestRepository.existsByMemberIdAndQuestId(memberId, 6L)) {
+        if (memberSelectedQuestRepository.existsByMemberIdAndQuestIdAndIsSelected(memberId, 6L, true)) {
             questService.completeQuest(6L, memberId);
         }
 
