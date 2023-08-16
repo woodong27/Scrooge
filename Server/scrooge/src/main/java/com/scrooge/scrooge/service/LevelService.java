@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,7 @@ public class LevelService {
     private final LevelRepository levelRepository;
 
     // 레벨업 하는 메서드
+    @Transactional
     public void levelUp(Member member) {
         /* 여기서 member 경험치가 증가했을 때 레벨업 조건인지 확인하기 */
         // 1. member의 레벨의 조건과 현재 사용자의 경험치를 비교한다.
