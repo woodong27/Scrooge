@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import styles from "./Profile.module.css";
 import CharacterCard from "../components/UI/CharacterCard";
+import Card from "../components/UI/Card";
 import BackGround from "../components/BackGround";
 
 const Profile = (props) => {
+  const navigate = useNavigate();
   const memberId = useSelector((state) => state.memberId);
   const params = useParams();
-  console.log(memberId, params.id);
 
   const [data, setData] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -24,7 +25,6 @@ const Profile = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
-        console.log("data", data);
       })
       .catch((error) => console.log(error));
 
@@ -40,7 +40,7 @@ const Profile = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setHereData(data);
-        console.log("hereData", hereData);
+        console.log("hereData", data);
       })
       .catch((error) => console.log(error));
   }, [params.id]);
@@ -54,13 +54,17 @@ const Profile = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setMyData(data);
-        console.log("myData", myData);
+        console.log("myData", data);
       })
       .catch((error) => console.log(error));
   }, [memberId]);
 
   return (
     <BackGround>
+      <div className={styles.back}>
+        <button onClick={() => navigate(-1)}>돌아가기</button>
+      </div>
+
       {data && data.level && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
@@ -95,6 +99,50 @@ const Profile = (props) => {
               </div>
             </div>
           </CharacterCard>
+          <Card height={246}>
+            <div className={styles.todayCard}>
+              <div>
+                <table className={styles.table}>
+                  <tr className={styles.up}>
+                    <th className={styles.one}>비교</th>
+                    <th className={styles.two}>나</th>
+                    <th className={styles.three}>{data.nickname}</th>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>이번 달</td>
+                    <td className={styles.two}>{myData.thisMonthTotal}</td>
+                    <td className={styles.three}>{hereData.thisMonthTotal}</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>주 소비</td>
+                    <td className={styles.two}>{myData.category}</td>
+                    <td className={styles.three}>{hereData.category}</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>정산일</td>
+                    <td className={styles.two}>{myData.maxStreak}</td>
+                    <td className={styles.three}>{hereData.maxStreak}</td>
+                  </tr>
+                </table>
+                {hereData.hasLastMonthPaymentHistory &&
+                myData.hasLastMonthPaymentHistory ? (
+                  <div>
+                    지난달과 비교했을 때 <br />
+                    당신이
+                    <span className={styles.highlight}>
+                      {hereData.lastMonthTotal - hereData.thisMonthTotal >
+                      myData.lastMonthTotalMonthTotal - myData.thisMonthTotal
+                        ? " 더 "
+                        : " 덜 "}
+                    </span>
+                    절약했네요!
+                  </div>
+                ) : (
+                  <div className={styles.notYet}>아직 비교가 어려워요</div>
+                )}
+              </div>
+            </div>
+          </Card>
         </div>
       )}
     </BackGround>
