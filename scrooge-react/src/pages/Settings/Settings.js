@@ -18,21 +18,19 @@ const Settings = ({ onLogout }) => {
 
   const [alarmModal, setAlarmModal] = useState(false);
 
-  // BGM 관련
-  const [isSoundOn, setIsSoundOn] = useState(true)
+  // // BGM 관련
+  // const [isSoundOn, setIsSoundOn] = useState(true)
 
-  useEffect(() => {
-    const storedSoundStatus = localStorage.getItem("isSoundOn");
-    if (storedSoundStatus !== null) {
-      setIsSoundOn(storedSoundStatus === "true");
-    }
-    else {
-      setIsSoundOn(true);
-      localStorage.setItem("isSoundOn", "true");
-    }
-  }, []);
-
-  console.log(isSoundOn)
+  // useEffect(() => {
+  //   const storedSoundStatus = localStorage.getItem("isSoundOn");
+  //   if (storedSoundStatus !== null) {
+  //     setIsSoundOn(storedSoundStatus === "true");
+  //   }
+  //   else {
+  //     setIsSoundOn(true);
+  //     localStorage.setItem("isSoundOn", "true");
+  //   }
+  // }, []);
 
   const handleLogoutModal = () => {
     setShowLogoutModal(!showLogoutModal);
@@ -49,16 +47,16 @@ const Settings = ({ onLogout }) => {
     setAlarmModal(false);
   };
 
-  const handleSoundToggle = () => {
-    // Android와 통신하여 소리 상태 변경하기
-    if(window.AndroidSound) {
-      window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
-    }
+  // const handleSoundToggle = () => {
+  //   // Android와 통신하여 소리 상태 변경하기
+  //   if(window.AndroidSound) {
+  //     window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
+  //   }
 
-    const newSoundState = !isSoundOn;
-    setIsSoundOn(newSoundState);
-    localStorage.setItem("isSoundOn", newSoundState.toString());
-  }
+  //   const newSoundState = !isSoundOn;
+  //   setIsSoundOn(newSoundState);
+  //   localStorage.setItem("isSoundOn", newSoundState.toString());
+  // }
 
 
   const confirmLogout = () => {
@@ -111,9 +109,6 @@ const Settings = ({ onLogout }) => {
           <div className={styles.infoHeader}>추가설정</div>
           <div className={styles.infoContent}>
             <div onClick={handleAlarmOpen}>정산 알림 보내기</div>
-            <div onClick={handleSoundToggle}>
-             {isSoundOn ? "BGM 끄기" : "BGM 켜기"}
-            </div>
           </div>
 
           <div className={styles.infoHeader}>스크루지</div>
