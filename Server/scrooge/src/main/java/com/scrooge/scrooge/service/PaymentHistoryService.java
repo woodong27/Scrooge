@@ -303,8 +303,10 @@ public class PaymentHistoryService {
         else {
             recapDto.setHasPaymentHistory(true);
             // 소비내역이 있다면 리캡 시작
-            // 1. 많이 쓴 카테고리
+            // 1-1. 자주 쓴 카테고리
             Map<String, Integer> categoryFrequency = new HashMap<>();
+            // 1-2. 돈을 많이 쓴 카테고리
+            Map<String, Integer> highSpendingCategory = new HashMap<>();
             // 2. 시간대 처리
             Map<String, Integer> timeOfDayFrequency = new HashMap<>();
             // 3. 총합 계산
@@ -313,6 +315,7 @@ public class PaymentHistoryService {
                 // 카테고리
                 String category = paymentHistory.getCategory();
                 categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
+                highSpendingCategory.put(category, highSpendingCategory.getOrDefault(category, 0) + paymentHistory.getAmount());
 
                 // 시간대
                 LocalDateTime paidAt = paymentHistory.getPaidAt();
@@ -337,8 +340,8 @@ public class PaymentHistoryService {
             if(recapDto.getLastMonthTotal() != null) {
                 recapDto.setTotalDifference(recapDto.getLastMonthTotal() - recapDto.getThisMonthTotal());
             }
-            
-            // 가장 돈을 많이 쓴 카테고리
+
+            // 가장 자주 쓴 카테고리
             String mostUsedCategory = null;
             int maxFrequency = 0;
 
@@ -348,7 +351,19 @@ public class PaymentHistoryService {
                     mostUsedCategory = entry.getKey();
                 }
             }
-            recapDto.setCategory(mostUsedCategory);
+            recapDto.setFrequentlyUsedCategory(mostUsedCategory);
+
+            // 가장 많이 쓴 카테고리
+            String highSpendingCategoryName = null;
+            int highSpendingCount = 0;
+
+            for(Map.Entry<String, Integer> entry : highSpendingCategory.entrySet()) {
+                if(entry.getValue() > highSpendingCount) {
+                    highSpendingCount = entry.getValue();
+                    highSpendingCategoryName = entry.getKey();
+                }
+            }
+            recapDto.setHighSpendingCategory(highSpendingCategoryName);
 
             // 시간대별로 가장 많이 지출한 시간대
             String mostSpendTimeOfDay = null;
