@@ -100,28 +100,7 @@ const Main = (props) => {
       .toString()
       .padStart(2, "0")}`;
     getTotal(formattedDate);
-
-    //안 쓰는 것 같기도 해서 일단 주석처리
-    // const todayData = {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: globalToken,
-    //   },
-    // };
-
-    // fetch(
-    //   `https://day6scrooge.duckdns.org/api/payment-history/date/${formattedDate}`,
-    //   todayData
-    // )
-    //   .then((resp) => resp.json())
-    //   .then((data) => {
-    //     // const index = data.findIndex((item) => !item.isSettled);
-    //     // if (index === -1) {
-    //     //   setSettlement(true);
-    //     // }
-    //   })
-    //   .catch((error) => console.log(error));
-  }, [isConsum]); //이걸 onCreate되면 하는 걸로 해야겠는데
+  }, [isConsum]);
 
   //이미지 움직이게
 
