@@ -23,7 +23,7 @@
   width: 264px;
   display: flex;
   justify-content: space-between;
-  margin: 0 0 12px 0;
+  margin: 0 0 6px 0;
 }
 
 .usedAt {
@@ -48,7 +48,7 @@
   width: 264px;
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .amount {
@@ -58,7 +58,6 @@
 }
 
 .cardName {
-  width: 60px;
   font-size: 14px;
   text-align: right;
   color: #61646b;
