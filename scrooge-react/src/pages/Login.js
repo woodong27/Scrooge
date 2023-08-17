@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 
 import BackGround from "../components/BackGround";
 import Card from "../components/UI/Card";
+import ButtonGreen from "../components/Button/ButtonGreen";
 import styles from "./Login.module.css";
 import Cookies from "js-cookie";
 
@@ -62,7 +63,7 @@ const Login = ({ loginHandler }) => {
       .then((data) => {
         const jwtToken = data.token;
         Cookies.set("accessToken", jwtToken, { expires: 7 });
-        Cookies.set("memberId", data.memberId, {expires: 7});
+        Cookies.set("memberId", data.memberId, { expires: 7 });
         sendJwtTokenToAndroid(jwtToken);
 
         dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + data.token });
@@ -111,7 +112,6 @@ const Login = ({ loginHandler }) => {
             이메일과 비밀번호를 확인해주세요.
           </div>
           <button className={styles.missPassword}>
-            {" "}
             비밀번호를 잊으셨나요?
           </button>
           <button
@@ -124,10 +124,9 @@ const Login = ({ loginHandler }) => {
           </button>
         </Card>
         <br />
+        <br />
         <div onClick={handleLogin}>
-          <Card height={8}>
-            <div className={styles.buttonText}>로그인</div>
-          </Card>
+          <ButtonGreen text="로그인" />
         </div>
       </div>
     </BackGround>

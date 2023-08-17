@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BackGround from "../components/BackGround";
+import ButtonGreen from "../components/Button/ButtonGreen";
 import Card from "../components/UI/Card";
 import styles from "./Signup.module.css";
 
@@ -173,11 +174,10 @@ const Signup = () => {
           </button>
         </Card>
         <br />
+        <br />
 
         <div onClick={handleSignup}>
-          <Card height={8}>
-            <div className={styles.buttonText}>회원가입</div>
-          </Card>
+          <ButtonGreen text="회원가입" />
         </div>
       </div>
     </BackGround>
