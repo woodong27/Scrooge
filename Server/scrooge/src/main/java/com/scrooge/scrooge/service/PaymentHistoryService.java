@@ -313,9 +313,12 @@ public class PaymentHistoryService {
             int thisMonthTotal = 0;
             for(PaymentHistory paymentHistory : paymentHistoryList) {
                 // 카테고리
-                String category = paymentHistory.getCategory();
-                categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
-                highSpendingCategory.put(category, highSpendingCategory.getOrDefault(category, 0) + paymentHistory.getAmount());
+                String category = null;
+                if(paymentHistory.getCategory() != null){
+                    category = paymentHistory.getCategory();
+                    categoryFrequency.put(category, categoryFrequency.getOrDefault(category, 0) + 1);
+                    highSpendingCategory.put(category, highSpendingCategory.getOrDefault(category, 0) + paymentHistory.getAmount());
+                }
 
                 // 시간대
                 LocalDateTime paidAt = paymentHistory.getPaidAt();
