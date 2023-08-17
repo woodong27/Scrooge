@@ -1,5 +1,9 @@
 .empty {
-  height: 40px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
 }
 
 .body {
@@ -37,6 +41,7 @@
 }
 
 .scrollitem {
+  width: 100%;
   height: fit-content;
   margin-top: 10px;
   overflow: scroll;

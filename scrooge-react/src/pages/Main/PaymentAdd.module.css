@@ -7,29 +7,28 @@
 
 .box {
   position: relative;
-  width: 92%;
-  height: 110px;
-  margin: 10px 0;
+  width: 88%;
+  height: 100px;
   background: var(--input);
 }
 
 .usedAt {
   position: absolute;
-  margin: 16px 0;
+  margin: 8px 0;
   top: 0;
   left: 10px;
 }
 
 .amount {
   position: absolute;
-  margin: 16px 0;
+  margin: 8px 0;
   top: 32px;
   left: 10px;
 }
 
 .cardName {
   position: absolute;
-  margin: 16px 0;
+  margin: 8px 0;
   top: 64px;
   left: 10px;
 }
