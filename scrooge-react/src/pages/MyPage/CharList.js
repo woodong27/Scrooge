@@ -26,22 +26,24 @@ const CharList = ({ handleCharacterChange, characters }) => {
       <div className={styles.characters}>
         <div className={styles.charContainer}>
           {Array.from({ length: 100 }).map((_, index) => {
-            const imageUrl = characters.includes(index)
-              ? `https://storage.googleapis.com/scroogestorage/avatars/${index}-1.png`
+            const imageUrl = characters.includes(index + 1)
+              ? `https://storage.googleapis.com/scroogestorage/avatars/${
+                  index + 1
+                }-1.png`
               : `${process.env.PUBLIC_URL}/Character/gacha.png`;
 
             return (
               <div key={index} className={styles.item}>
                 <div
                   className={styles.one}
-                  onClick={() => handleModalOpen(index)}
+                  onClick={() => handleModalOpen(index + 1)}
                 >
                   <img
                     src={imageUrl}
                     className={styles.profile}
                     alt={`Item ${index}`}
                   />
-                  <span>{index}</span>
+                  <span>{index + 1}</span>
                 </div>
               </div>
             );
