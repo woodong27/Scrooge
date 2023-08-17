@@ -2,15 +2,13 @@
   margin: 20px auto;
 }
 
-/* .box {
-  position: relative;
-  width: 294px;
-  height: 80px;
-  margin: 10px 0;
-  border-bottom: 1px dashed var(--input-text, #8d8e90);
-} */
+.body {
+  display: flex;
+  justify-content: center;
+}
+
 .box {
-  width: 264px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

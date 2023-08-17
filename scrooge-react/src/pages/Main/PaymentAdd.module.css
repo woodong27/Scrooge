@@ -1,7 +1,14 @@
+.body {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
 .box {
   position: relative;
-  width: 294px;
-  height: 112px;
+  width: 92%;
+  height: 110px;
   margin: 10px 0;
   background: var(--input);
 }
@@ -9,33 +16,21 @@
 .usedAt {
   position: absolute;
   margin: 16px 0;
-  width: 180px;
   top: 0;
   left: 10px;
-}
-
-.paidAt {
-  position: absolute;
-  margin: 16px 0;
-  top: 0;
-  width: 180px;
-  left: 10px;
-  color: #61646b;
 }
 
 .amount {
   position: absolute;
   margin: 16px 0;
   top: 32px;
-  width: 180px;
   left: 10px;
 }
 
 .cardName {
   position: absolute;
   margin: 16px 0;
-  bottom: 0;
-  width: 180px;
+  top: 64px;
   left: 10px;
 }
 
@@ -47,5 +42,5 @@
   border: none;
   background: #fff;
   border: 1px solid var(--input-text, #8d8e90);
-  border-radius: 10px;
+  border-radius: 12px;
 }
