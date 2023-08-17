@@ -31,24 +31,6 @@ const MyPageProfile = () => {
     setModal(false);
   };
 
-  const handleMaxExp = () => {
-    let max = 0;
-    if (levelId <= 5) {
-      max = 500;
-    } else if (levelId <= 10) {
-      max = 600;
-    } else if (levelId <= 15) {
-      max = 700;
-    } else if (levelId <= 20) {
-      max = 800;
-    } else if (levelId <= 25) {
-      max = 900;
-    } else {
-      max = 1000;
-    }
-    setMaxExp(max);
-  };
-
   useEffect(() => {
     const postData = {
       method: "GET",
@@ -65,7 +47,19 @@ const MyPageProfile = () => {
         setLevelId(data.levelId);
         setAvatar(data.mainAvatar.id);
         setGacha(data.remainGacha);
-        handleMaxExp();
+        if (data.levelId <= 5) {
+          setMaxExp(500);
+        } else if (data.levelId <= 10) {
+          setMaxExp(600);
+        } else if (data.levelId <= 15) {
+          setMaxExp(700);
+        } else if (data.levelId <= 20) {
+          setMaxExp(800);
+        } else if (data.levelId <= 25) {
+          setMaxExp(900);
+        } else {
+          setMaxExp(1000);
+        }
       })
       .catch((error) => console.log(error));
   }, [globalToken]); // [] : globalToken
@@ -176,8 +170,8 @@ const MyPageProfile = () => {
           </ul>
         </div>
       )}
-      <MyPageExpBar exp={exp} maxExp={maxExp} />
-      {/* <button onClick={increaseExp}>경험치 획득</button>  */}
+
+      {maxExp !== 0 && <MyPageExpBar exp={exp} maxExp={maxExp} />}
 
       <div
         className={`${styles["edit-btn"]} ${showItemList ? "active" : ""}`}
