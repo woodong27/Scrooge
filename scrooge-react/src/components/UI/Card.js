@@ -3,7 +3,7 @@ import styles from "./Card.module.css";
 
 const Card = (props) => {
   const heightStyle = {
-    height: `${props.height}vh`,
+    height: props.height ? `${props.height}vh` : "332px",
   };
   return (
     <div className={styles.frame}>
