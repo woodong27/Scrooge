@@ -13,13 +13,12 @@
   display: flex;
   height: 1.5rem;
   justify-content: center;
-  /* align-items: center; */
-  /* gap: 0.625rem; */
-
   font-size: 1.5rem;
 }
 
 .header-icon {
+  position: relative;
   width: 1.74006rem;
   height: 1.55138rem;
+  right: -10px;
 }
