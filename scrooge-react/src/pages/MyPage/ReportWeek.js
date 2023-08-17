@@ -156,7 +156,7 @@ const ReportWeek = () => {
         {showGraph ? (
           <BarChart
             width={350}
-            height={200}
+            height={220}
             margin={{ top: 12 }}
             data={weeklyDataResults}
             className={styles.chartBox}

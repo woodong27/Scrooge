@@ -27,7 +27,7 @@
 .chartContainer {
   display: flex;
   justify-content: center;
-  height: 200px;
+  height: 220px;
 }
 
 .chartBox {
