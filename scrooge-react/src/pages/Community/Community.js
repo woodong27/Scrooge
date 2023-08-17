@@ -9,7 +9,7 @@ import styles from "./Community.module.css";
 import HeaderToggle from "../../components/HeaderToggle";
 
 const Community = () => {
-  const memberId = useSelector((state) => state.memberId);
+  const memberId = parseInt(useSelector((state) => state.memberId));
   const [searchParams] = useSearchParams();
   const deleteId = searchParams.get("delete");
   const EditId = searchParams.get("edit");
@@ -24,6 +24,7 @@ const Community = () => {
       .then((data) => {
         setData(data);
         setMine(data.filter((item) => item.memberId === memberId));
+        console.log(memberId, data, mine);
       })
       .catch((error) => console.log(error));
   }, [EditId, memberId]);

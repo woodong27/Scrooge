@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
 
-const NewArticle = ({}) => {
+const NewArticle = () => {
   const globalToken = useSelector((state) => state.globalToken);
   const [content, setContent] = useState("");
   const navigate = useNavigate();
@@ -62,27 +62,29 @@ const NewArticle = ({}) => {
         show={"true"}
       />
 
-      <div className={styles.box}>
-        <img
-          className={styles.file}
-          src={`${process.env.PUBLIC_URL}/images/fileframe.png`}
-          alt="파일"
-        />
-        <img
-          className={styles.character}
-          src={`${process.env.PUBLIC_URL}/images/scrooge_img.png`}
-          alt="캐릭터"
-        />
-        <div className={styles.title}>
-          오늘 하루 당신의 <br /> 짠내나는 소비는?!
+      <div className={styles.body}>
+        <div className={styles.box}>
+          <div className={styles.up}>
+            <img
+              className={styles.character}
+              src={`${process.env.PUBLIC_URL}/images/scrooge_img.png`}
+              alt="캐릭터"
+            />
+            <div className={styles.title}>
+              오늘 하루 당신의 <br /> 짠내나는 소비는?!
+            </div>
+          </div>
+          <div className={styles.content}>
+            <textarea
+              className={styles.textarea}
+              rows={8}
+              placeholder="본인의 절약을 뽐내보세요~"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
         </div>
-        <textarea
-          className={styles.content}
-          placeholder="부서 회식 개이득... "
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <div>
+        <div className={styles.underBtns}>
           <label htmlFor="fileInput" className={styles.photo}>
             <img
               src={`${process.env.PUBLIC_URL}/images/camera.svg`}
@@ -97,17 +99,17 @@ const NewArticle = ({}) => {
             style={{ display: "none" }}
             onChange={handleImageChange}
           ></input>
-        </div>
 
-        <div className={styles.upload} onClick={handleSend}>
-          게시하기
+          <div className={styles.upload} onClick={handleSend}>
+            게시하기
+          </div>
         </div>
-      </div>
-      <div id="errorcontent" className={styles.error}>
-        본문이 너무 짧습니다.
-      </div>
-      <div id="errorphoto" className={styles.error}>
-        사진을 첨부해주세요.
+        <div id="errorcontent" className={styles.error}>
+          본문이 너무 짧습니다.
+        </div>
+        <div id="errorphoto" className={styles.error}>
+          사진을 첨부해주세요.
+        </div>
       </div>
     </div>
   );
