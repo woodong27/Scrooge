@@ -40,7 +40,6 @@
 }
 .chat {
   font-size: 24px;
-  margin: 2rem 0;
 }
 
 .me {
@@ -110,9 +109,15 @@
 
 .back {
   position: absolute;
-  top: 24px;
-  left: 24px;
+  left: 6vw;
   padding: 4px;
   color: white;
   z-index: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 12vh;
 }

@@ -50,7 +50,16 @@
 }
 
 .auth_condition {
-  margin: 1.5rem 0 1rem;
+  width: 84vw;
+  margin: 1.5rem auto 1rem;
+  display: flex;
+  justify-content: space-evenly;
+
+  & div {
+    display: flex;
+    justify-content: center;
+    flex-basis: 7rem;
+  }
 }
 
 .layout {

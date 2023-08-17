@@ -70,10 +70,12 @@ const WebSocketComponent = () => {
 
   return (
     <div className={styles.bg}>
-      <Link className={styles.back} to={`/challenge/my/${params.id}`}>
-        <img src={backImg} alt=""></img>
-      </Link>
-      <div className={styles.chat}>우리팀 채팅</div>
+      <div className={styles.header}>
+        <Link className={styles.back} to={`/challenge/my/${params.id}`}>
+          <img src={backImg} alt=""></img>
+        </Link>
+        <div className={styles.chat}>우리팀 채팅</div>
+      </div>
       <div className={styles.body} ref={containerRef}>
         {msg.map((e, i) =>
           e.sender === data.nickname ? (

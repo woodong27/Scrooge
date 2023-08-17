@@ -65,7 +65,7 @@ const ChallengeJoin = () => {
         setData(response.data);
 
         for (const id of response.data.participantIds) {
-          if (memberId === id) {
+          if (+memberId === id) {
             setIsJoin(true);
             break;
           }
@@ -115,7 +115,7 @@ const ChallengeJoin = () => {
         <div>{data.description}</div>
       </div>
 
-      {memberId === data.masterId ? (
+      {+memberId === data.masterId ? (
         <div className={styles.primary} onClick={startChallengeHandler}>
           챌린지 시작하기!
           <div className={styles.shadow}></div>
