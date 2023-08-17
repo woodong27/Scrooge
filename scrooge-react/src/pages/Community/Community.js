@@ -49,13 +49,12 @@ const Community = () => {
         title={"스크루지 빌리지"}
         titleColor={"#5B911F"}
         color={"#A2D660"}
-      >
-        <HeaderToggle
-          isMine={isMine}
-          myHandler={myHandler}
-          allHandler={allHandler}
-        />
-      </QuestHeader>
+      ></QuestHeader>
+      <HeaderToggle
+        isMine={isMine}
+        myHandler={myHandler}
+        allHandler={allHandler}
+      />
       <div className={styles.frame}>
         <ArticleList data={isMine ? mine : data} status={isMine} />
       </div>
