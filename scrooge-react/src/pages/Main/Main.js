@@ -125,6 +125,8 @@ const Main = () => {
     setIsConsum(false);
   };
 
+  // console.log(data.mainBadge.id);
+
   return (
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
@@ -133,13 +135,13 @@ const Main = () => {
             <Card height={44}>
               <div className={styles.oneCard}>
                 <div className={styles.infoheader}>
-                  <img
-                    className={styles.badge}
-                    src={`${process.env.PUBLIC_URL}/${
-                      data.mainBadge.imgAddress.split("/")[1]
-                    }/${+data.mainBadge.imgAddress.split("/")[2][5]}.png`}
-                    alt="뱃지"
-                  />
+                  {data.mainBadge && (
+                    <img
+                      className={styles.badge}
+                      src={`${process.env.PUBLIC_URL}/Badge/${data.mainBadge.id}.png`}
+                      alt="뱃지"
+                    />
+                  )}
                   <span>
                     <p>Lv. {data.levelId}</p>
                     <p>{data.nickname}</p>
