@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 120px;
+  height: 9rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,6 +13,16 @@
   color: #fff;
   display: flex;
   align-items: center;
+}
+
+.onlyItem {
+  height: 6rem;
+  font-size: 2rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
 }
 
 .back {

@@ -17,7 +17,12 @@ const QuestHeader = (props) => {
 
   return (
     <div className={styles.container} style={gradientStyle}>
-      <div className={styles.item} style={titleStyle}>
+      <div
+        className={
+          props.title === "스크루지 드림" ? styles.onlyItem : styles.item
+        }
+        style={titleStyle}
+      >
         {props.title}
       </div>
       {props.show && (
