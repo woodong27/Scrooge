@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import styles from "./Profile.module.css";
-import CharacterCard from "../components/UI/CharacterCard";
 import Card from "../components/UI/Card";
 import BackGround from "../components/BackGround";
 
@@ -60,7 +59,11 @@ const Profile = (props) => {
   return (
     <BackGround>
       <div className={styles.back}>
-        <button onClick={() => navigate(-1)}>돌아가기</button>
+        <img
+          src={`${process.env.PUBLIC_URL}/images/back.png`}
+          onClick={() => navigate(-1)}
+          alt="뒤로"
+        />
       </div>
 
       {data && data.level && data.mainAvatar.id && (
