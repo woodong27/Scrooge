@@ -31,6 +31,8 @@
 
 ## ERD
 
+![scrooge_erd](https://github.com/harinplz/algorithm_study/assets/62701446/f2cdc7e0-f253-47b6-9639-0f4fb20b5cb7)
+
 <br/>
 
 ## 아키텍처
@@ -44,18 +46,99 @@
 <br/>
 
 ## 협업툴
+- Git
+- Notion
+- Jira
+- MatterMost
 
 <br/>
 
 ## FE 디렉터리 구조
+```
+📦scrooge-react
+ ┣ 📂node_module
+ ┣ 📂public
+ ┣ 📂src
+ ┃ ┣ 📂assets
+ ┃ ┣ 📂components
+ ┃ ┣ 📂pages
+ ┃ ┣ 📂services
+ ┃ ┣ 📂store
+ ┃ ┗ 📂utils
+ ┣ 📜.gitignore
+ ┣ 📜Dockerfile
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┗ 📜README.md
+```
 
 <br/>
 
 ## BE 디렉터리 구조
+```
+📦Server
+ ┗ 📂scrooge
+ ┃ ┣ 📂build
+ ┃ ┃ ┣ 📂classes
+ ┃ ┃ ┃ ┗ 📂java
+ ┃ ┃ ┃ ┃ ┗ 📂main
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂scrooge
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂scheduler
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂scrooge
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂jwt
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂data
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ScroogeApplication.class
+ ┃ ┃ ┣ 📂resources
+ ┃ ┃ ┃ ┗ 📂main
+ ┃ ┃ ┃ ┃ ┣ 📜application.properties
+ ┃ ┃ ┃ ┃ ┗ 📜forward-lead-392307-4a37b2b70cad.json
+ ┃ ┃ ┗ 📂test
+ ┃ ┣ 📜.gitignore
+ ┃ ┣ 📜build.gradle
+ ┃ ┣ 📜Dockerfile
+ ┃ ┣ 📜gradlew
+ ┃ ┣ 📜gradlew.bat
+ ┃ ┣ 📜HELP.md
+ ┃ ┗ 📜settings.gradle
+```
 
 <br/>
 
 ## Mobile 디렉터리 구조
+
+```
+📦scrooge-android
+ ┣ 📂app
+ ┃ ┣ 📂build
+ ┃ ┣ 📂release
+ ┃ ┃ ┣ 📂main
+ ┃ ┃ ┃ ┣ 📂java
+ ┃ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂example
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂scoorge_android
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂model
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂network
+ ┃ ┃ ┃ ┣ 📂res
+ ┃ ┃ ┗ 📂test
+ ┣ 📂gradle
+ ┃ ┗ 📂wrapper
+ ┣ 📜.gitignore
+ ┣ 📜build.gradle
+ ┣ 📜gradle.properties
+ ┣ 📜gradlew
+ ┣ 📜gradlew.bat
+ ┣ 📜local.properties
+ ┣ 📜scrooge.jks
+ ┗ 📜settings.gradle
+```
 
 <br/>
 
