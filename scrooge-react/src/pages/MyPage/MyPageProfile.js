@@ -19,7 +19,7 @@ const MyPageProfile = () => {
   const [gacha, setGacha] = useState(0);
   const [avatar, setAvatar] = useState(0);
   const [characters, setCharacters] = useState([]);
-  const [newCharacter, setNewCharacters] = useState([]);
+  const [newCharacter, setNewCharacter] = useState([]);
   const [badges, setBadges] = useState([]);
 
   const handleEditBtn = () => {
