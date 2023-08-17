@@ -76,8 +76,9 @@ const NewArticle = () => {
           </div>
           <div className={styles.content}>
             <textarea
-              // rows={5}
-              placeholder="어떤 소비로 아꼈나요?"
+              className={styles.textarea}
+              rows={8}
+              placeholder="본인의 절약을 뽐내보세요~"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />

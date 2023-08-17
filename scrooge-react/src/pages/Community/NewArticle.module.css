@@ -37,6 +37,10 @@
   border-radius: 12px;
   text-align: left;
   border: 1px solid var(--input-text);
+  & .textarea {
+    width: 100%;
+    resize: none;
+  }
 }
 
 .underBtns {
