@@ -49,7 +49,6 @@ const Main = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         setData(data);
         setSettlement(data.isSettlementDone);
         setMessage(data.message);
@@ -134,6 +133,10 @@ const Main = () => {
             <Card height={44}>
               <div className={styles.oneCard}>
                 <div className={styles.infoheader}>
+                  <span>
+                    <p className={styles.level}>Lv. {data.levelId}</p>
+                    <p>{data.nickname}</p>
+                  </span>
                   {data.mainBadge && (
                     <img
                       className={styles.badge}
@@ -141,10 +144,6 @@ const Main = () => {
                       alt="뱃지"
                     />
                   )}
-                  <span>
-                    <p>Lv. {data.levelId}</p>
-                    <p>{data.nickname}</p>
-                  </span>
                 </div>
                 <div className={styles.border} />
 
