@@ -21,6 +21,7 @@ const QuestList = ({ props }) => {
     fetch("https://day6scrooge.duckdns.org/api/quest", postData)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setIng(data.filter((it) => it.selected && !it.done));
         setList(data.filter((it) => !it.selected));
         setFinish(data.filter((it) => it.done));
@@ -48,7 +49,9 @@ const QuestList = ({ props }) => {
         const selectedItem = list.find((item) => item.quest.id === id);
         if (selectedItem) {
           setIng((prevIng) => [...prevIng, selectedItem]);
-          setList((prevList) => prevList.filter((item) => item.id !== id));
+          setList((prevList) =>
+            prevList.filter((item) => item.quest.id !== id)
+          );
         }
       })
       .catch((error) => console.log(error));
