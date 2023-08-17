@@ -3,6 +3,7 @@ package com.scrooge.scrooge.service.member;
 import com.scrooge.scrooge.domain.*;
 import com.scrooge.scrooge.domain.member.Member;
 import com.scrooge.scrooge.domain.member.MemberOwningAvatar;
+import com.scrooge.scrooge.domain.member.MemberOwningBadge;
 import com.scrooge.scrooge.dto.AvatarDto;
 import com.scrooge.scrooge.dto.member.*;
 import com.scrooge.scrooge.config.jwt.JwtTokenProvider;
@@ -31,7 +32,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
     private final MemberOwningAvatarRepository memberOwningAvatarRepository;
+    private final MemberOwningBadgeRepository memberOwningBadgeRepository;
     private final AvatarRepository avatarRepository;
+    private final BadgeRepository badgeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -65,6 +68,7 @@ public class MemberService {
         }
 
         Avatar avatar = avatarRepository.findById(66L).orElse(null);
+        Badge badge = badgeRepository.findById(9L).orElse(null);
 
         String encodedPassword = bCryptPasswordEncoder.encode(signUpRequestDto.getPassword1());
 
@@ -82,6 +86,7 @@ public class MemberService {
         member.setWeeklyConsum(0);
         member.setWeeklyGoal(0);
         member.setMainAvatar(avatar);
+        member.setMainBadge(badge);
         member.setRemainGacha(2);
         member.setJoinedAt(LocalDateTime.now());
 
@@ -95,6 +100,12 @@ public class MemberService {
         memberOwningAvatar.setAvatar(avatar);
         memberOwningAvatar.setAcquiredAt(LocalDateTime.now());
         memberOwningAvatarRepository.save(memberOwningAvatar);
+
+        MemberOwningBadge memberOwningBadge = new MemberOwningBadge();
+        memberOwningBadge.setMember(member);
+        memberOwningBadge.setBadge(badge);
+        memberOwningBadge.setAcquiredAt(LocalDateTime.now());
+        memberOwningBadgeRepository.save(memberOwningBadge);
     }
 
     public Optional<MemberDto> getInfo(String email) {
