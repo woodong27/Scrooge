@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
-import CharacterCard from "../../components/UI/CharacterCard";
 import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
@@ -17,7 +16,6 @@ const Main = () => {
 
   const [settlement, setSettlement] = useState(false);
   const [isConsum, setIsConsum] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
 
   const [message, setMessage] = useState();
   const [weeklyGoal, setWeeklyGoal] = useState();
@@ -29,48 +27,12 @@ const Main = () => {
   ]);
   const [imageIndex, setImageIndex] = useState(0);
 
-  // BGM 관련
-  // const [isSoundOn, setIsSoundOn] = useState(true);
-
-  const handleOpen = () => {
-    setIsEdit(true);
-  };
-  const handleClose = () => {
-    setMessage(data.message);
-    setIsEdit(false);
-  };
   const handleSetTrue = () => {
     setSettlement(true);
   };
 
   const handleSetFalse = () => {
     setSettlement(false);
-  };
-
-  const handleSend = () => {
-    const obj = {
-      message: message,
-    };
-    const postData = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-      body: JSON.stringify(obj),
-    };
-    fetch("https://day6scrooge.duckdns.org/api/member/message", postData)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("상태메시지 저장 실패");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-        setMessage(data.message);
-        setIsEdit(false);
-      });
   };
 
   useEffect(() => {
@@ -87,7 +49,6 @@ const Main = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         setData(data);
         setSettlement(data.isSettlementDone);
         setMessage(data.message);
@@ -164,28 +125,12 @@ const Main = () => {
     setIsConsum(false);
   };
 
-  // BGM 관련 코드
-  // useEffect(() => {
-  //   const storedSoundStatus = localStorage.getItem("isSoundOn");
-  //   if (storedSoundStatus !== null) {
-  //     setIsSoundOn(storedSoundStatus === "true");
-  //   }
-  //   else {
-  //     setIsSoundOn(true);
-  //     localStorage.setItem("isSoundOn", "true");
-  //   }
-  // }, []);
-
-  // if(window.AndroidSound) {
-  //   window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
-  // }
-
   return (
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
-          <CharacterCard>
+          <Card height={340}>
             <div>
               <div className={styles.infoheader}>
                 <img
@@ -241,51 +186,10 @@ const Main = () => {
               )}
 
               <div className={styles.statemessage}>
-                {isEdit ? (
-                  <>
-                    <textarea
-                      className={styles.content}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      maxLength="50"
-                      rows="3"
-                    />
-                    <div className={styles.line}>
-                      <button
-                        className={styles.cancleBtn}
-                        onClick={handleClose}
-                      >
-                        취소
-                      </button>
-                      <button
-                        className={styles.completeBtn}
-                        onClick={handleSend}
-                      >
-                        완료
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <textarea
-                      className={styles.content}
-                      value={message}
-                      readOnly
-                    />
-
-                    <div className={styles.line}>
-                      <img
-                        className={styles.editBtn}
-                        src={`${process.env.PUBLIC_URL}/images/write.svg`}
-                        alt="수정"
-                        onClick={handleOpen}
-                      />
-                    </div>
-                  </>
-                )}
+                <textarea className={styles.content} value={message} readOnly />
               </div>
             </div>
-          </CharacterCard>
+          </Card>
           <div className={styles.rings}>
             <img
               className={styles.ring}
@@ -303,24 +207,27 @@ const Main = () => {
               alt="고리"
             />
           </div>
-          <Card height={236}>
+          <br />
+          <Card height={200}>
             <div className={styles.todayCard}>
-              <div className={styles.title}>
-                {date[0]}월 {date[1]}일, 오늘의 소비💸
+              <div>
+                <div className={styles.title}>
+                  {date[0]}월 {date[1]}일, 오늘의 소비💸
+                </div>
+                <div className={styles.amount}>
+                  {settlement
+                    ? `${total
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                    : "정산이 필요해요!"}
+                </div>
               </div>
-              <div className={styles.amount}>
-                {settlement
-                  ? `${total
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
-                  : "정산이 필요해요!"}
-              </div>
+              <ProgressBar
+                goal={weeklyGoal}
+                consum={weeklyConsum}
+                setGoal={setGoal}
+              ></ProgressBar>
             </div>
-            <ProgressBar
-              goal={weeklyGoal}
-              consum={weeklyConsum}
-              setGoal={setGoal}
-            ></ProgressBar>
           </Card>
         </div>
       )}

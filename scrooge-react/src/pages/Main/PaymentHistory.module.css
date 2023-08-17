@@ -1,24 +1,30 @@
 .empty {
-  height: 60px;
+  height: 40px;
 }
+
+.body {
+  width: 100%;
+  height: 78vh;
+  margin: 8px auto;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
 .card {
-  margin: 20px;
-  padding-left: 24px;
-  width: 320px;
-  height: 640px;
+  width: 84%;
   background-color: #fff;
   stroke-width: 1.5px;
   stroke: #000;
   text-align: left;
   border: 2px solid var(--input-text, #8d8e90);
-  border-radius: 20px;
+  border-radius: 12px;
 
   & .title {
     font-size: 24px;
     color: var(--green);
     padding-top: 20px;
     margin-left: 10px;
-    width: 280px;
 
     display: flex;
     align-content: center;
@@ -31,12 +37,15 @@
 }
 
 .scrollitem {
+  height: fit-content;
   margin-top: 10px;
   overflow: scroll;
 }
 
 .foot {
-  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .item {
@@ -47,35 +56,35 @@
   }
 }
 
+.foot {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .total {
+  width: 100%;
   padding-top: 14px;
   text-align: right;
   margin-right: 32px;
 }
 
-.btn {
+.btns {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 280px;
-  height: 50px;
-  border-radius: 20px;
-  margin: 20px 10px;
+}
+
+.btn {
+  position: absolute;
+  bottom: 16px;
+  border-radius: 12px;
   background-color: var(--green);
 }
 
-.finishBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 280px;
-  height: 50px;
-  border-radius: 20px;
-  margin: 20px 10px;
-
-  background-color: var(--btn);
-}
 /* scrollbar 안 보이게 */
-.card::-webkit-scrollbar {
+.scrollitem::-webkit-scrollbar {
   display: none;
 }

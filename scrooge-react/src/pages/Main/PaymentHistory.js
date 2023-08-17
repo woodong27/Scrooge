@@ -208,39 +208,38 @@ const PaymentHistory = ({
         <button onClick={consumFalseHandler}>홈 으로</button>
         {settlement}
       </div>
-      <div className={styles.card}>
-        <div className={styles.title}>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/left.svg`}
-            onClick={datebeforeHandler}
-            alt="왼쪽"
-          />
-          <div className={styles.date}>
-            {date[0]}월 {date[1]}일 소비
+      <div className={styles.body}>
+        <div className={styles.card}>
+          <div className={styles.title}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/left.svg`}
+              onClick={datebeforeHandler}
+              alt="왼쪽"
+            />
+            <div className={styles.date}>
+              {date[0]}월 {date[1]}일 소비
+            </div>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/right.svg`}
+              onClick={dateafterHandler}
+              alt="오른쪽"
+            />
           </div>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/right.svg`}
-            onClick={dateafterHandler}
-            alt="오른쪽"
-          />
-        </div>
 
-        <div className={styles.scrollitem}>
-          <div className={styles.item}>
-            {data && data.length > 0 ? (
-              data.map((it, index) => (
-                <PaymentItem key={index} {...it} onEdit={onEdit} />
-              ))
-            ) : (
-              <h4>소비 내역이 없습니다 {settlement}</h4>
-            )}
-            <PaymentAdd onCreate={onCreate} date={date} />
+          <div className={styles.scrollitem}>
+            <div className={styles.item}>
+              {data && data.length > 0 ? (
+                data.map((it, index) => (
+                  <PaymentItem key={index} {...it} onEdit={onEdit} />
+                ))
+              ) : (
+                <h4>소비 내역이 없습니다 {settlement}</h4>
+              )}
+              <PaymentAdd onCreate={onCreate} date={date} />
+            </div>
           </div>
-        </div>
-
-        <div className={styles.foot}>
-          {settlement ? (
-            <>
+          <div className={styles.foot}>
+            {settlement ? (
               <div className={styles.total}>
                 {origin || origin === 0
                   ? `총합: ${origin
@@ -248,13 +247,14 @@ const PaymentHistory = ({
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
                   : ""}
               </div>
-              <button className={styles.finishBtn}>정산완료</button>
-            </>
-          ) : (
-            <button onClick={handleOpenModal} className={styles.btn}>
-              정산하기
-            </button>
-          )}
+            ) : (
+              <div className={styles.btns}>
+                <button onClick={handleOpenModal} className={styles.btn}>
+                  정산하기
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {modal && data && (
