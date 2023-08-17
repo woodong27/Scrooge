@@ -105,7 +105,7 @@
 
 .addFrame {
   position: fixed;
-  bottom: 84px;
+  bottom: 76px;
   width: 100vw;
   height: 56px;
   display: flex;
