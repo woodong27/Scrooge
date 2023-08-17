@@ -53,7 +53,7 @@ const BadgeList = () => {
       .then((resp) => {
         console.log(resp.data);
         const arr = [...badges];
-        resp.data.map((e) => (arr[e.id] = e));
+        resp.data.map((e) => (arr[e.id - 1] = e));
 
         console.log(resp.data);
 
