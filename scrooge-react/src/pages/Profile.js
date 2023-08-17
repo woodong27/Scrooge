@@ -103,57 +103,53 @@ const Profile = (props) => {
           <br />
           <Card height={28}>
             <div className={styles.todayCard}>
-              <div>
-                <table className={styles.table}>
-                  <tr className={styles.up}>
-                    <th className={styles.one}>비교</th>
-                    <th className={styles.two}>나</th>
-                    <th className={styles.three}>{data.nickname}</th>
-                  </tr>
-                  <tr>
-                    <td className={styles.one}>이번 달</td>
-                    <td className={styles.two}>{myData.thisMonthTotal}</td>
-                    <td className={styles.three}>{hereData.thisMonthTotal}</td>
-                  </tr>
-                  <tr>
-                    <td className={styles.one}>자주 소비</td>
-                    <td className={styles.two}>
-                      {myData.frequentlyUsedCategory}
-                    </td>
-                    <td className={styles.three}>
-                      {hereData.frequentlyUsedCategory}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.one}>많이 소비</td>
-                    <td className={styles.two}>
-                      {myData.highSpendingCategory}
-                    </td>
-                    <td className={styles.three}>
-                      {hereData.highSpendingCategory}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.one}>스트릭</td>
-                    <td className={styles.two}>{myData.maxStreak}</td>
-                    <td className={styles.three}>{hereData.maxStreak}</td>
-                  </tr>
-                </table>
-                <div className={styles.ment}>
-                  {hereData.hasLastMonthPaymentHistory &&
-                  myData.hasLastMonthPaymentHistory ? (
-                    <div>
-                      당신의 절약 금액이
-                      <span className={styles.highlight}>
-                        {hereData.totalDifference > myData.totalDifference
-                          ? " 적어요 "
-                          : " 많아요 "}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={styles.notYet}>아직 비교가 어려워요</div>
-                  )}
-                </div>
+              <table className={styles.table}>
+                <tr className={styles.up}>
+                  <th className={styles.one}>비교</th>
+                  <th className={styles.two}>나</th>
+                  <th className={styles.three}>{data.nickname}</th>
+                </tr>
+                <tr>
+                  <td className={styles.one}>이번 달</td>
+                  <td className={styles.two}>{myData.thisMonthTotal}</td>
+                  <td className={styles.three}>{hereData.thisMonthTotal}</td>
+                </tr>
+                <tr>
+                  <td className={styles.one}>자주 소비</td>
+                  <td className={styles.two}>
+                    {myData.frequentlyUsedCategory}
+                  </td>
+                  <td className={styles.three}>
+                    {hereData.frequentlyUsedCategory}
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.one}>많이 소비</td>
+                  <td className={styles.two}>{myData.highSpendingCategory}</td>
+                  <td className={styles.three}>
+                    {hereData.highSpendingCategory}
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.one}>스트릭</td>
+                  <td className={styles.two}>{myData.maxStreak}</td>
+                  <td className={styles.three}>{hereData.maxStreak}</td>
+                </tr>
+              </table>
+              <div className={styles.ment}>
+                {hereData.hasLastMonthPaymentHistory &&
+                myData.hasLastMonthPaymentHistory ? (
+                  <div>
+                    당신의 절약 금액이
+                    <span className={styles.highlight}>
+                      {hereData.totalDifference > myData.totalDifference
+                        ? " 적어요 "
+                        : " 많아요 "}
+                    </span>
+                  </div>
+                ) : (
+                  <div className={styles.notYet}>아직 비교가 어려워요</div>
+                )}
               </div>
             </div>
           </Card>
