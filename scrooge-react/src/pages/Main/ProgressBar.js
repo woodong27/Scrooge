@@ -35,7 +35,7 @@ const ProgressBar = ({ goal, consum, setGoal }) => {
           <div className={styles["progress-bar-red"]} />
         )}
       </div>
-      <div>
+      <div className={styles.goal}>
         {goal ? (
           <p className={styles["progress-text"]}>
             이번 주 남은 금액: {minus}원
