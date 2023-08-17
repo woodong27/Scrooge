@@ -100,7 +100,7 @@ const Profile = (props) => {
               </div>
             </div>
           </Card>
-          <div className={styles.rings}></div>
+          <br />
           <Card height={28}>
             <div className={styles.todayCard}>
               <div>
