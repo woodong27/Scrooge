@@ -24,10 +24,14 @@ const ChallengeItem = (props) => {
         <Link to={`/challenge/my/${props.id}`}>
           <button>{props.text}</button>
         </Link>
-      ) : (
+      ) : props.text === "살펴보기" || props.text === "참여하기" ? (
         <Link to={`/challenge/${props.id}`}>
           <button>{props.text}</button>
         </Link>
+      ) : props.text ? (
+        <div className={styles.isWin}>승리</div>
+      ) : (
+        <div className={styles.isLose}>패배</div>
       )}
     </div>
   );

@@ -54,3 +54,25 @@
   margin: 0;
   justify-content: flex-start;
 }
+
+.isWin {
+  background: var(--green);
+  border-radius: 1rem;
+  width: 70%;
+  height: 2rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.isLose {
+  background: red;
+  border-radius: 1rem;
+  width: 70%;
+  height: 2rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

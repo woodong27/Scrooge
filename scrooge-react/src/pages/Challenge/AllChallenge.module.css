@@ -5,3 +5,11 @@
   gap: 1.5rem;
   padding-bottom: 7rem;
 }
+
+.chipsConatiner {
+  display: flex;
+  width: 84vw;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+}

@@ -12,6 +12,7 @@ const MyChallenge = () => {
 
   const category = ["시작전", "진행중", "종료된"];
   const [data, setData] = useState([]);
+  const [endData, setEndData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("진행중");
 
   useEffect(() => {
@@ -29,23 +30,48 @@ const MyChallenge = () => {
       });
   }, [selectedCategory]);
 
+  useEffect(() => {
+    axios
+      .get("https://day6scrooge.duckdns.org/api/challenge/end-challenge", {
+        headers,
+      })
+      .then((resp) => setEndData(resp.data))
+      .catch((e) => console.log(e));
+  }, []);
+
   return (
     <div>
-      {category.map((e, i) => (
-        <Chips
-          selected={selectedCategory}
-          setSelect={setSelectedCategory}
-          key={i}
-        >
-          {e}
-        </Chips>
-      ))}
+      <div className={styles.chipsContainer}>
+        {category.map((e, i) => (
+          <Chips
+            selected={selectedCategory}
+            setSelect={setSelectedCategory}
+            key={i}
+          >
+            {e}
+          </Chips>
+        ))}
+      </div>
 
       <div className={styles.list}>
         {globalToken === ""
           ? "로그인이 필요해요!"
           : selectedCategory === "종료된"
-          ? "종료된 챌린지가 없어요!"
+          ? endData.length
+            ? endData.map((e) => (
+                <ChallengeItem
+                  key={e.id}
+                  id={e.id}
+                  title={e.title}
+                  currentParticipants={e.currentParticipants}
+                  minParticipants={e.minParticipants}
+                  period={e.period}
+                  category={e.category}
+                  mainImg={e.mainImageAddress}
+                  text={e.isWin}
+                ></ChallengeItem>
+              ))
+            : "종료된 챌린지가 없어요!"
           : selectedCategory === "진행중"
           ? data.length === 0
             ? "참여중인 챌린지가 없어요!"
