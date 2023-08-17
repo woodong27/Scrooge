@@ -24,35 +24,37 @@ const CharList = ({ handleCharacterChange, characters }) => {
   return (
     <div className={styles.frame}>
       <div className={styles.characters}>
-        <div className={styles.charContainer}>
-          {Array.from({ length: 100 }).map((_, index) => {
-            const imageUrl = characters.includes(index + 1)
-              ? `https://storage.googleapis.com/scroogestorage/avatars/${
-                  index + 1
-                }-1.png`
-              : `${process.env.PUBLIC_URL}/Character/gacha.png`;
+        {characters.length && (
+          <div className={styles.charContainer}>
+            {Array.from({ length: 100 }).map((_, index) => {
+              const imageUrl = characters.includes(index + 1)
+                ? `https://storage.googleapis.com/scroogestorage/avatars/${
+                    index + 1
+                  }-1.png`
+                : `${process.env.PUBLIC_URL}/Character/gacha.png`;
 
-            return (
-              <div key={index} className={styles.item}>
-                <div
-                  className={styles.one}
-                  onClick={
-                    imageUrl.includes("gacha")
-                      ? null
-                      : () => handleModalOpen(index + 1)
-                  }
-                >
-                  <img
-                    src={imageUrl}
-                    className={styles.profile}
-                    alt={`Item ${index}`}
-                  />
-                  <span>{index + 1}</span>
+              return (
+                <div key={index} className={styles.item}>
+                  <div
+                    className={styles.one}
+                    onClick={
+                      imageUrl.includes("gacha")
+                        ? null
+                        : () => handleModalOpen(index + 1)
+                    }
+                  >
+                    <img
+                      src={imageUrl}
+                      className={styles.profile}
+                      alt={`Item ${index}`}
+                    />
+                    <span>{index + 1}</span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
       {modal && (
         <SettingModal
