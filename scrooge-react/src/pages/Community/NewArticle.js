@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import QuestHeader from "../../components/QuestHeader";
 import styles from "./NewArticle.module.css";
+import Spinner from "../../components/Spinner";
 
 const NewArticle = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -12,6 +13,7 @@ const NewArticle = () => {
   const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formData = new FormData();
   const handleImageChange = (event) => {
@@ -25,6 +27,8 @@ const NewArticle = () => {
       errorDiv.style.display = "block";
       return;
     }
+    setIsLoading(true);
+
     formData.append("content", content);
     formData.append("img", selectedImage);
 
@@ -45,6 +49,7 @@ const NewArticle = () => {
       })
       .then((data) => {
         setContent("");
+        setIsLoading(false);
         navigate("/community");
       })
       .catch((error) => {
@@ -111,6 +116,8 @@ const NewArticle = () => {
           사진을 첨부해주세요.
         </div>
       </div>
+
+      {isLoading && <Spinner isGreen></Spinner>}
     </div>
   );
 };

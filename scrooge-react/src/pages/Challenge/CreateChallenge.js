@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import Chips from "../../components/UI/Chips";
 import backImg from "../../assets/back.png";
 import Toast from "../../components/UI/Toast";
+import Spinner from "../../components/Spinner";
 
 const CreateChallenge = () => {
   const formData = new FormData();
@@ -24,6 +25,7 @@ const CreateChallenge = () => {
   const [authMethod, setAuthMethod] = useState("");
   const [introduce, setIntroduce] = useState("");
   const [selectedImg, setSelectedImg] = useState(Array(5).fill(null));
+  const [isLoading, setIsLoading] = useState(false);
 
   const imgRefs = useRef([]);
 
@@ -49,6 +51,8 @@ const CreateChallenge = () => {
       return;
     }
 
+    setIsLoading(true);
+
     const postData = {
       title: title,
       category: selectCategory,
@@ -70,7 +74,10 @@ const CreateChallenge = () => {
           Authorization: globalToken,
         },
       })
-      .then(() => navigate("/challenge", { state: "생성" }))
+      .then(() => {
+        setIsLoading(false);
+        navigate("/challenge", { state: "생성" });
+      })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setMissToast(true);
@@ -324,6 +331,7 @@ const CreateChallenge = () => {
         {missToast && (
           <Toast setToast={setMissToast} text="빠진 부분이 있어요!" />
         )}
+        {isLoading && <Spinner></Spinner>}
       </div>
     </div>
   );
