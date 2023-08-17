@@ -129,50 +129,31 @@ const Main = () => {
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
         <div>
-          <div className={styles.empty} />
-          <Card height={340}>
-            <div>
-              <div className={styles.infoheader}>
-                <img
-                  className={styles.badge}
-                  src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
-                  alt="뱃지"
-                />
-                <span>
-                  <p>Lv. {data.levelId}</p>
-                  <p>{data.nickname}</p>
-                </span>
-              </div>
-              <div className={styles.border} />
-
-              {settlement ? (
-                //정산 완료
-                <span className={styles.charactercoin}>
+          <div className={styles.body}>
+            <Card height={44}>
+              <div className={styles.oneCard}>
+                <div className={styles.infoheader}>
                   <img
-                    className={styles.character}
-                    src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
-                    alt="캐릭터"
+                    className={styles.badge}
+                    src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
+                    alt="뱃지"
                   />
+                  <span>
+                    <p>Lv. {data.levelId}</p>
+                    <p>{data.nickname}</p>
+                  </span>
+                </div>
+                <div className={styles.border} />
 
-                  <div className={styles.coin} onClick={consumTrueHandler}>
+                {settlement ? (
+                  //정산 완료
+                  <span className={styles.charactercoin}>
                     <img
-                      src={`${process.env.PUBLIC_URL}/images/coin.png`}
-                      alt="코인"
+                      className={styles.character}
+                      src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
+                      alt="캐릭터"
                     />
-                    <div className={styles.payBtn}>정산하기</div>{" "}
-                    <div className={styles.streak}>{data.streak}일 째</div>
-                  </div>
-                </span>
-              ) : (
-                //정산 전
-                <span className={styles.charactercoin}>
-                  <img
-                    className={styles.character}
-                    src={images[imageIndex]}
-                    alt="캐릭터"
-                  />
 
-                  {imageIndex === 1 && (
                     <div className={styles.coin} onClick={consumTrueHandler}>
                       <img
                         src={`${process.env.PUBLIC_URL}/images/coin.png`}
@@ -181,54 +162,61 @@ const Main = () => {
                       <div className={styles.payBtn}>정산하기</div>{" "}
                       <div className={styles.streak}>{data.streak}일 째</div>
                     </div>
-                  )}
-                </span>
-              )}
+                  </span>
+                ) : (
+                  //정산 전
+                  <span className={styles.charactercoin}>
+                    <img
+                      className={styles.character}
+                      src={images[imageIndex]}
+                      alt="캐릭터"
+                    />
 
-              <div className={styles.statemessage}>
-                <textarea className={styles.content} value={message} readOnly />
+                    {imageIndex === 1 && (
+                      <div className={styles.coin} onClick={consumTrueHandler}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/coin.png`}
+                          alt="코인"
+                        />
+                        <div className={styles.payBtn}>정산하기</div>{" "}
+                        <div className={styles.streak}>{data.streak}일 째</div>
+                      </div>
+                    )}
+                  </span>
+                )}
+
+                <div className={styles.statemessage}>
+                  <textarea
+                    className={styles.content}
+                    value={message}
+                    readOnly
+                  />
+                </div>
               </div>
-            </div>
-          </Card>
-          <div className={styles.rings}>
-            <img
-              className={styles.ring}
-              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
-              alt="고리"
-            />
-            <img
-              className={styles.ring}
-              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
-              alt="고리"
-            />
-            <img
-              className={styles.ring}
-              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
-              alt="고리"
-            />
+            </Card>
+            <div className={styles.rings}></div>
+            <Card height={28}>
+              <div className={styles.todayCard}>
+                <div>
+                  <div className={styles.title}>
+                    {date[0]}월 {date[1]}일, 오늘의 소비💸
+                  </div>
+                  <div className={styles.amount}>
+                    {settlement
+                      ? `${total
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                      : "정산이 필요해요!"}
+                  </div>
+                </div>
+                <ProgressBar
+                  goal={weeklyGoal}
+                  consum={weeklyConsum}
+                  setGoal={setGoal}
+                ></ProgressBar>
+              </div>
+            </Card>
           </div>
-          <br />
-          <Card height={200}>
-            <div className={styles.todayCard}>
-              <div>
-                <div className={styles.title}>
-                  {date[0]}월 {date[1]}일, 오늘의 소비💸
-                </div>
-                <div className={styles.amount}>
-                  {settlement
-                    ? `${total
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
-                    : "정산이 필요해요!"}
-                </div>
-              </div>
-              <ProgressBar
-                goal={weeklyGoal}
-                consum={weeklyConsum}
-                setGoal={setGoal}
-              ></ProgressBar>
-            </div>
-          </Card>
         </div>
       )}
       {isConsum && (
