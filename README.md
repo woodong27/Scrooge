@@ -43,6 +43,43 @@
 
 ## 기술 스택
 
+### BE
+- IntelliJ IDEA
+- Java
+- Spring Boot
+- Spring Security
+- JWT
+- Spring Web
+- JPA
+- MySQL
+- Swagger
+- GCP
+- Web Socket
+
+### AI
+- OpenCV
+- Fast API
+- Python
+
+### FE
+- Visual Studio Code
+- React.js
+- Webstomp
+- js-cookie
+
+### MOBILE
+- Android Studio
+- Kotlin
+- Notification Listener
+- Retrofit
+- okHttp3
+- Alarm Manager
+
+### Infra
+- AWS EC2
+- Jenkins
+- NGINX
+
 <br/>
 
 ## 협업툴
