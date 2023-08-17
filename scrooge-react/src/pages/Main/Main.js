@@ -126,8 +126,6 @@ const Main = () => {
     setIsConsum(false);
   };
 
-  // console.log(data.mainBadge.id);
-
   return (
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
