@@ -1,14 +1,12 @@
-.title {
-  font-size: 24px;
-  color: #e8be9b;
-  text-align: left;
-  margin-left: 24px;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 0 #ecd35b;
+.body {
+  width: 94%;
+  display: flex;
+  justify-content: center;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 80px;
 }

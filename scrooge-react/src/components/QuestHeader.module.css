@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 6.5rem;
+  height: 6rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,6 +13,8 @@
   color: #fff;
   display: flex;
   align-items: center;
+
+  position: relative;
 }
 
 .onlyItem {
@@ -28,4 +30,8 @@
 .back {
   position: absolute;
   left: 30px;
+}
+
+.childern {
+  position: absolute;
 }
