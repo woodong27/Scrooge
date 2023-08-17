@@ -38,8 +38,6 @@ const QuestItem = ({ title, handleAdd, show, selectQuest, id, questId }) => {
     fetch(`https://day6scrooge.duckdns.org/api/quest/member`, postData)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        console.log(data.find((item) => item.id === id));
         setData(data.find((item) => item.id === id));
       })
       .catch((error) => console.log(error));
