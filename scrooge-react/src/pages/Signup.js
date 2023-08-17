@@ -105,7 +105,7 @@ const Signup = () => {
     <BackGround>
       <div className={styles.empty} />
       <div className={styles.body}>
-        <Card height={440}>
+        <Card height={56}>
           <div className={styles.title}>회원가입</div>
 
           <div className={styles.frame}>
@@ -175,7 +175,7 @@ const Signup = () => {
         <br />
 
         <div onClick={handleSignup}>
-          <Card height={60}>
+          <Card height={8}>
             <div className={styles.buttonText}>회원가입</div>
           </Card>
         </div>
