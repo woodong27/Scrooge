@@ -35,9 +35,11 @@ function App() {
    useEffect(() => {
     // 페이지 로드 시 쿠키에서 accessToken 로드
     const savedAccessToken = Cookies.get('accessToken');
-    if(savedAccessToken) {
+    const savedMemberId = Cookies.get('memberId');
+    if(savedAccessToken && savedMemberId) {
       setIsLogin(true); // 로그인 true
       dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + savedAccessToken });
+      dispatch({ type: "SET_ID_STRING", payload: savedMemberId });
       if(window.AndroidBridge) {
         window.AndroidBridge.sendJwtTokenToAndroid(savedAccessToken);
       }
