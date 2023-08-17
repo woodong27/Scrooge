@@ -23,15 +23,17 @@ const AllChallenge = () => {
 
   return (
     <div>
-      {category.map((e, i) => (
-        <Chips
-          selected={selectedCategory}
-          setSelect={setSelectedCategory}
-          key={i}
-        >
-          {e}
-        </Chips>
-      ))}
+      <div className={styles.chipsConatiner}>
+        {category.map((e, i) => (
+          <Chips
+            selected={selectedCategory}
+            setSelect={setSelectedCategory}
+            key={i}
+          >
+            {e}
+          </Chips>
+        ))}
+      </div>
 
       <div className={styles.list}>
         {data.map((e) => {
