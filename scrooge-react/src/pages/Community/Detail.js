@@ -293,84 +293,77 @@ const Detail = () => {
         {data ? (
           <div className={styles.frame}>
             <div className={styles.authorInfo}>
-              {memberId === data.memberId ? (
-                <img
-                  className={styles.character}
-                  src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
-                  alt="캐릭터"
-                />
-              ) : (
-                <Link to={`/profile/${data.memberId}`}>
+              <div className={styles.minusOption}>
+                {memberId === data.memberId ? (
                   <img
                     className={styles.character}
                     src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
                     alt="캐릭터"
                   />
-                </Link>
-              )}
-              <div>
-                {memberId === data.memberId ? (
-                  <div className={styles.author}>{data.memberNickname}</div>
                 ) : (
                   <Link to={`/profile/${data.memberId}`}>
-                    <div className={styles.author}>{data.memberNickname}</div>
+                    <img
+                      className={styles.character}
+                      src={`https://storage.googleapis.com/scroogestorage/avatars/${data.memberAvatarAddress}-1.png`}
+                      alt="캐릭터"
+                    />
                   </Link>
                 )}
-
-                <div className={styles.line}>
-                  <div className={styles.createdAt}>
-                    {data.createdAt.split("T")[0]}{" "}
-                    {data.createdAt.split("T")[1].split(".")[0]}
-                  </div>
+                <div>
                   {memberId === data.memberId ? (
-                    <div>
-                      {isOption ? (
-                        <>
-                          {isEdit ? (
-                            <div className={styles.btns}>
-                              <div
-                                className={styles.edit}
-                                onClick={handleCancle}
-                              >
-                                취소
-                              </div>
-                              <div
-                                className={styles.delete}
-                                onClick={handleSend}
-                              >
-                                완료
-                              </div>
-                            </div>
-                          ) : (
-                            <div className={styles.btns}>
-                              <div className={styles.edit} onClick={handleEdit}>
-                                수정
-                              </div>
-                              <div
-                                className={styles.delete}
-                                onClick={handleDelete}
-                              >
-                                삭제
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div onClick={handleOpen} className={styles.option}>
-                          <img
-                            src={`${process.env.PUBLIC_URL}/images/option.png`}
-                            alt="더보기"
-                          />
-                        </div>
-                      )}
-                    </div>
+                    <div className={styles.author}>{data.memberNickname}</div>
                   ) : (
-                    ""
+                    <Link to={`/profile/${data.memberId}`}>
+                      <div className={styles.author}>{data.memberNickname}</div>
+                    </Link>
                   )}
+
+                  <div className={styles.line}>
+                    <div className={styles.createdAt}>
+                      {data.createdAt.split("T")[0]}{" "}
+                      {data.createdAt.split("T")[1].split(".")[0]}
+                    </div>
+                  </div>
                 </div>
               </div>
+              {memberId === data.memberId ? (
+                <div className={styles.optionBtn}>
+                  {isOption ? (
+                    <>
+                      {isEdit ? (
+                        <div className={styles.btns}>
+                          <div className={styles.edit} onClick={handleCancle}>
+                            취소
+                          </div>
+                          <div className={styles.delete} onClick={handleSend}>
+                            완료
+                          </div>
+                        </div>
+                      ) : (
+                        <div className={styles.btns}>
+                          <div className={styles.edit} onClick={handleEdit}>
+                            수정
+                          </div>
+                          <div className={styles.delete} onClick={handleDelete}>
+                            삭제
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div onClick={handleOpen} className={styles.option}>
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/option.png`}
+                        alt="더보기"
+                      />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
-            <div>
+            <div className={styles.mainContent}>
               {isEdit ? (
                 <textarea
                   className={styles.editContent}
