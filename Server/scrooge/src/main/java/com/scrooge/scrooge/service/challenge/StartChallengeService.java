@@ -18,12 +18,17 @@ import com.scrooge.scrooge.service.QuestService;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.LevelService;
 import lombok.RequiredArgsConstructor;
+import org.imgscalr.Scalr;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -268,6 +273,14 @@ public class StartChallengeService {
 
     // Google Cloud platform에 이미지 업로드
     public String uploadAuthImage(MultipartFile img) throws IOException {
+        BufferedImage originalImage = ImageIO.read(img.getInputStream());
+        BufferedImage resizedImage = Scalr.resize(originalImage, 800);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "jpg", outputStream);
+
+        byte[] optimizedImageData = outputStream.toByteArray();
+
         String uuid = UUID.randomUUID().toString();
         String ext = img.getContentType();
 
@@ -275,10 +288,9 @@ public class StartChallengeService {
                 .setContentType(ext)
                 .build();
 
-        storage.create(blobInfo, img.getInputStream());
+        storage.create(blobInfo, new ByteArrayInputStream(optimizedImageData));
 
-        String imgAddress = GCP_ADDRESS + bucketName + "/" + uuid;
-        return imgAddress;
+        return GCP_ADDRESS + bucketName + "/" + uuid;
     }
 
 }
