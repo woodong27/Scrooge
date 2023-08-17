@@ -1,5 +1,4 @@
 .weekDays {
-  /* display: inline-flex; */
   display: flex;
   justify-content: space-around;
 }
@@ -8,7 +7,6 @@
   background-color: transparent;
 }
 
-/* ReportChart  */
 .reportContent {
   display: flex;
   width: 20.5rem;
@@ -29,23 +27,21 @@
 .chartContainer {
   display: flex;
   justify-content: center;
-  height: 230px;
+  height: 200px;
 }
 
 .chartBox {
   padding-top: 20px;
   background: var(--input, rgba(240, 240, 240, 0.5));
   border-radius: 10px;
-  margin-bottom: 20px;
 }
 
 .placeholerDiv {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 350px;
-  height: 250px;
+  width: 84vw;
+  height: 240px;
   background: var(--input, rgba(240, 240, 240, 0.5));
   border-radius: 10px;
-  margin-bottom: 20px;
 }

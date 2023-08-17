@@ -51,12 +51,10 @@ const Settings = ({ onLogout }) => {
 
   const confirmLogout = () => {
     onLogout();
-    Cookies.remove('accessToken');
+    Cookies.remove("accessToken");
     dispatch({ type: "SET_TOKEN_STRING", payload: "" }); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기
     navigate("/"); // 로그아웃 후 리디렉션: "/"
   };
-
-
 
   const confirmWithdraw = async () => {
     try {
@@ -84,12 +82,11 @@ const Settings = ({ onLogout }) => {
 
   return (
     <BackGround>
-      <div>설정페이지 헤더</div>
       <div className={styles.settingContainer}>
         <div className={styles.settingContent}>
           <div className={styles.infoHeader}>계정설정</div>
           <div className={styles.infoContent}>
-            <Link to ="/nicknameChange">
+            <Link to="/nicknameChange">
               <div>프로필 변경</div>
             </Link>
             <Link to="/passwordChange">

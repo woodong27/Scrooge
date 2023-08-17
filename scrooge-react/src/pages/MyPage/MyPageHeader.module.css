@@ -20,6 +20,9 @@
 }
 
 .header-icon {
+  position: absolute;
   width: 1.74006rem;
   height: 1.55138rem;
+  right: 8%;
+  top: 7.1%;
 }

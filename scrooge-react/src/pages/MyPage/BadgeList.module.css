@@ -37,3 +37,9 @@
   background-color: var(--input);
   filter: brightness(0.2);
 }
+
+.container {
+  margin: 0 auto;
+  width: 80%;
+  height: 80%;
+}
