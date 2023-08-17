@@ -2,8 +2,14 @@
   margin: 20px auto;
 }
 
+.body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .box {
-  justify-items: center;
+  width: 100%;
   touch-action: pan-x;
 }
 
