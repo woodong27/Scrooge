@@ -17,7 +17,7 @@ const MyPageProfile = () => {
   const [gacha, setGacha] = useState(0);
   const [avatar, setAvatar] = useState(0);
   const [characters, setCharacters] = useState([]);
-  const [newCharacter, setNewCharacters] = useState([]);
+  const [newCharacter, setNewCharacter] = useState([]);
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -62,7 +62,7 @@ const MyPageProfile = () => {
         }
       })
       .catch((error) => console.log(error));
-  }, [globalToken]); // [] : globalToken
+  }, [globalToken]);
 
   useEffect(() => {
     const getData = {
@@ -82,7 +82,6 @@ const MyPageProfile = () => {
   }, []);
 
   const handleGacha = () => {
-    //0번 남은 경우 통신 X
     if (gacha === 0) {
       return;
     }
@@ -103,9 +102,11 @@ const MyPageProfile = () => {
       })
       .then((data) => {
         setGacha(gacha - 1);
-        characters.push(parseInt(data.avatarId));
-        setCharacters(characters);
-        setNewCharacters(data);
+        if (!characters.includes(parseInt(data.avatarId))) {
+          characters.push(parseInt(data.avatarId));
+          setCharacters(characters);
+        }
+        setNewCharacter(data);
         handleModalOpen();
       });
   };
