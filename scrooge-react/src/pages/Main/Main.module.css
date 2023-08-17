@@ -14,9 +14,15 @@
   align-items: center;
 
   & p {
-    text-align: right;
+    width: fit-content;
+    text-align: left;
     font-size: 24px;
     margin: 0;
+
+    &.level {
+      margin-left: 4px;
+      font-size: 18px;
+    }
   }
 }
 
@@ -117,6 +123,10 @@
   justify-content: center;
   flex-direction: column;
   padding: 16px auto;
+}
+
+.level {
+  text-align: left;
 }
 
 .title {
