@@ -74,7 +74,7 @@
 }
 
 .todayCard {
-  margin: 12px 0;
+  height: 28vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,9 +82,11 @@
 }
 
 .table {
-  width: 90%;
+  width: 84%;
   font-size: 16px;
   white-space: nowrap;
+  display: flex;
+  flex-direction: column;
 
   & tr {
     margin-top: 8px;
@@ -95,14 +97,18 @@
   }
 
   & .one {
-    width: 80px;
+    flex: 1;
   }
   & .two {
-    width: 100px;
+    flex: 2;
   }
   & .three {
-    width: 100px;
+    flex: 2;
   }
+}
+
+.ment {
+  margin-top: 20px;
 }
 
 .highlight {
