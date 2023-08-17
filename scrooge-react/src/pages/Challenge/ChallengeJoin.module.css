@@ -1,15 +1,21 @@
 .layout {
   position: relative;
-  min-height: 100vh;
   background-color: white;
   z-index: 2;
+  overflow: hidden;
+}
+
+.body {
+  height: 100vh;
+  overflow-y: scroll;
+  padding-bottom: 8px;
 }
 
 .container {
-  width: 20rem;
+  width: 84vw;
   margin: auto;
   text-align: left;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   border-bottom: 2px solid #ebecf0;
 
   & p {
@@ -27,7 +33,7 @@
 }
 
 .mid_container {
-  width: 20rem;
+  width: 84vw;
   margin: auto;
   text-align: left;
   padding-bottom: 1rem;
@@ -44,7 +50,7 @@
 }
 
 .bottom_container {
-  width: 20rem;
+  width: 84vw;
   margin: auto;
   text-align: left;
   padding-bottom: 1.5rem;
@@ -65,8 +71,7 @@
 }
 
 .content {
-  position: absolute;
-  width: 20rem;
+  width: 84vw;
   margin-top: 0.4rem;
   display: flex;
   justify-content: space-between;
@@ -117,7 +122,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 328px;
+  width: 84vw;
   height: 64px;
   border-radius: 10px;
   border: 1px solid #000;
@@ -132,7 +137,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 328px;
+  width: 84vw;
   height: 64px;
   border-radius: 10px;
   border: 1px solid #000;
@@ -147,7 +152,7 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  width: 328px;
+  width: 84vw;
   height: 64px;
   border-radius: 10px;
   border: 1px solid #000;
