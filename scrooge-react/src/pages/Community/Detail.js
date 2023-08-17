@@ -11,7 +11,7 @@ const Detail = () => {
   const navigate = useNavigate();
   const params = useParams();
   const globalToken = useSelector((state) => state.globalToken);
-  const memberId = useSelector((state) => state.memberId);
+  const memberId = parseInt(useSelector((state) => state.memberId));
 
   const [data, setData] = useState(null); //게시글 상세조회
   //게시글에 좋아요 싫어요 개수

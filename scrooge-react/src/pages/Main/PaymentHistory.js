@@ -203,8 +203,11 @@ const PaymentHistory = ({
   return (
     <div>
       <div className={styles.empty}>
-        <button onClick={consumFalseHandler}>홈 으로</button>
-        {settlement}
+        <img
+          src={`${process.env.PUBLIC_URL}/images/back.png`}
+          onClick={consumFalseHandler}
+          alt="뒤로"
+        />
       </div>
       <div className={styles.body}>
         <div className={styles.card}>
