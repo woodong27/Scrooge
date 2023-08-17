@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import styles from "./Comment.module.css";
 
 const Comment = (props) => {
-  const memberId = useSelector((state) => state.memberId);
+  const memberId = parseInt(useSelector((state) => state.memberId));
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState("");
 

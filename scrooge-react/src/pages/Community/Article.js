@@ -15,7 +15,7 @@ const Article = ({
   memberAvatarAddress,
 }) => {
   const globalToken = useSelector((state) => state.globalToken);
-  const myId = useSelector((state) => state.memberId);
+  const myId = parseInt(useSelector((state) => state.memberId));
 
   const [showContent, setContent] = useState("");
   //게시글에 좋아요 싫어요 개수
