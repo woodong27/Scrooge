@@ -6,7 +6,7 @@
   position: relative;
   background: #eaeed3;
   width: 100%;
-  height: 20px;
+  height: 24px;
   transition: width 0.3s;
   border-radius: 12px;
   margin-bottom: 8px;
@@ -17,7 +17,7 @@
   justify-content: flex-end;
   position: absolute;
   background: #5db075;
-  height: 20px;
+  height: 24px;
   border-radius: 12px;
   margin-bottom: 8px;
 }
@@ -27,8 +27,8 @@
   justify-content: flex-end;
   position: absolute;
   background: #d86c6c;
-  height: 20px;
   width: 100%;
+  height: 24px;
   border-radius: 12px;
 }
 
@@ -36,6 +36,13 @@
   text-align: right;
   margin: 8px 4px;
   font-size: 14px;
+}
+
+.goal {
+  height: 4vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .setting {

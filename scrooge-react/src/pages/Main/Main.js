@@ -128,97 +128,69 @@ const Main = () => {
   return (
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
-        <div>
-          <div className={styles.body}>
-            <Card height={44}>
-              <div className={styles.oneCard}>
-                <div className={styles.infoheader}>
-                  <span>
-                    <p className={styles.level}>Lv. {data.levelId}</p>
-                    <p>{data.nickname}</p>
-                  </span>
-                  {data.mainBadge && (
-                    <img
-                      className={styles.badge}
-                      src={`${process.env.PUBLIC_URL}/Badge/${data.mainBadge.id}.png`}
-                      alt="뱃지"
-                    />
-                  )}
-                </div>
-                <div className={styles.border} />
-
-                {settlement ? (
-                  //정산 완료
-                  <span className={styles.charactercoin}>
-                    <img
-                      className={styles.character}
-                      src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
-                      alt="캐릭터"
-                    />
-
-                    <div className={styles.coin} onClick={consumTrueHandler}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/coin.png`}
-                        alt="코인"
-                      />
-                      <div className={styles.payBtn}>정산하기</div>{" "}
-                      <div className={styles.streak}>{data.streak}일 째</div>
-                    </div>
-                  </span>
-                ) : (
-                  //정산 전
-                  <span className={styles.charactercoin}>
-                    <img
-                      className={styles.character}
-                      src={images[imageIndex]}
-                      alt="캐릭터"
-                    />
-
-                    {imageIndex === 1 && (
-                      <div className={styles.coin} onClick={consumTrueHandler}>
-                        <img
-                          src={`${process.env.PUBLIC_URL}/images/coin.png`}
-                          alt="코인"
-                        />
-                        <div className={styles.payBtn}>정산하기</div>{" "}
-                        <div className={styles.streak}>{data.streak}일 째</div>
-                      </div>
-                    )}
-                  </span>
-                )}
-
-                <div className={styles.statemessage}>
-                  <textarea
-                    className={styles.content}
-                    value={message}
-                    readOnly
+        <div className={styles.body}>
+          <Card height={44}>
+            <div className={styles.oneCard}>
+              <div className={styles.infoheader}>
+                <span>
+                  <p className={styles.level}>Lv. {data.levelId}</p>
+                  <p>{data.nickname}</p>
+                </span>
+                {data.mainBadge && (
+                  <img
+                    className={styles.badge}
+                    src={`${process.env.PUBLIC_URL}/Badge/${data.mainBadge.id}.png`}
+                    alt="뱃지"
                   />
+                )}
+              </div>
+              <div className={styles.border} />
+              <span className={styles.charactercoin}>
+                <img
+                  className={styles.character}
+                  src={images[imageIndex]}
+                  alt="캐릭터"
+                />
+
+                <div
+                  className={imageIndex === 0 ? styles.hiddenCoin : styles.coin}
+                  onClick={consumTrueHandler}
+                >
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/coin.png`}
+                    alt="코인"
+                  />
+                  <div className={styles.payBtn}>정산하기</div>{" "}
+                  <div className={styles.streak}>{data.streak}일 째</div>
+                </div>
+              </span>
+              <div className={styles.statemessage}>
+                <textarea className={styles.content} value={message} readOnly />
+              </div>
+            </div>
+          </Card>
+          <div className={styles.rings}></div>
+          <Card height={28}>
+            <div className={styles.todayCard}>
+              <div>
+                <div className={styles.title}>
+                  {date[0]}월 {date[1]}일, 오늘의 소비💸
+                </div>
+                <div className={styles.amount}>
+                  {settlement
+                    ? `${total
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                    : "정산이 필요해요!"}
                 </div>
               </div>
-            </Card>
-            <div className={styles.rings}></div>
-            <Card height={28}>
-              <div className={styles.todayCard}>
-                <div>
-                  <div className={styles.title}>
-                    {date[0]}월 {date[1]}일, 오늘의 소비💸
-                  </div>
-                  <div className={styles.amount}>
-                    {settlement
-                      ? `${total
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
-                      : "정산이 필요해요!"}
-                  </div>
-                </div>
-                <ProgressBar
-                  goal={weeklyGoal}
-                  consum={weeklyConsum}
-                  setGoal={setGoal}
-                ></ProgressBar>
-              </div>
-            </Card>
-          </div>
+              <ProgressBar
+                goal={weeklyGoal}
+                consum={weeklyConsum}
+                setGoal={setGoal}
+              ></ProgressBar>
+            </div>
+          </Card>
         </div>
       )}
       {isConsum && (
