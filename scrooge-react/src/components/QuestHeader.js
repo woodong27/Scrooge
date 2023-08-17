@@ -31,7 +31,7 @@ const QuestHeader = (props) => {
           onClick={handleBack}
         />
       )}
-      {props.children}
+      <div className={styles.childern}>{props.children}</div>
     </div>
   );
 };

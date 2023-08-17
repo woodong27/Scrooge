@@ -54,9 +54,11 @@ const Community = () => {
         isMine={isMine}
         myHandler={myHandler}
         allHandler={allHandler}
+        color={"#A2D660"}
       />
       <div className={styles.frame}>
         <ArticleList data={isMine ? mine : data} status={isMine} />
+        <div className={styles.empty}></div>
       </div>
     </div>
   );

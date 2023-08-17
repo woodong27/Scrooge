@@ -33,10 +33,12 @@ const CommentList = React.memo(({ id, comments }) => {
   };
 
   return (
-    <div className={styles.container}>
-      {data.map((it) => (
-        <Comment key={it.id} {...it} commentDelete={commentDelete} />
-      ))}
+    <div className={styles.body}>
+      <div className={styles.container}>
+        {data.map((it) => (
+          <Comment key={it.id} {...it} commentDelete={commentDelete} />
+        ))}
+      </div>
     </div>
   );
 });
