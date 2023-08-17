@@ -187,7 +187,7 @@ const MyPageProfile = () => {
       >
         {showItemList ? "소비 리포트 보러 가기" : "캐릭터 뽑으러 가기"}
       </div>
-      {showItemList ? (
+      {showItemList && characters.length > 0 ? (
         <ItemTab handleCharacterChange={handleChange} characters={characters} />
       ) : (
         <Report />

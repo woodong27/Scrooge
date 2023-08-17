@@ -4,6 +4,7 @@ import CharList from "./CharList";
 import BadgeList from "./BadgeList";
 
 export default function ItemTab({ handleCharacterChange, characters }) {
+  // console.log(characters);
   const [currentTab, setCurrentTab] = useState(1);
 
   const tabs = [
