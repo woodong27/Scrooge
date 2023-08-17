@@ -86,7 +86,7 @@ const Login = ({ loginHandler }) => {
     <BackGround>
       <div className={styles.empty} />
       <div className={styles.body}>
-        <Card height={360}>
+        <Card height={44}>
           <div className={styles.title}>로그인</div>
 
           <input
@@ -124,7 +124,7 @@ const Login = ({ loginHandler }) => {
         </Card>
         <br />
         <div onClick={handleLogin}>
-          <Card height={60}>
+          <Card height={8}>
             <div className={styles.buttonText}>로그인</div>
           </Card>
         </div>
