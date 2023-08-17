@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import styles from "./NicknameChange.module.css";
+import BackGround from "../../components/BackGround";
+import back from "../../assets/blackback.png";
 
 const NicknameChange = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -75,29 +78,44 @@ const NicknameChange = () => {
   };
 
   return (
-    <div>
-      <button onClick={() => navigate(-1)}>이전</button>
-      <h1>닉네임 변경</h1>
-      <input
-        type="text"
-        placeholder={currentNickname}
-        value={newNickname}
-        onChange={(e) => setNewNickname(e.target.value)}
-      />
-      <button onClick={handleNicknameChange}>변경</button>
-      {isNicknameChanged && <p>닉네임이 변경되었습니다.</p>}
+    <BackGround>
+      <div className={styles.settingContainer}>
+        <div className={styles.settingContent}>
+          <div className={styles.profile}>
+            <img src={back} onClick={() => navigate(-1)} alt=""></img>
+            <h1>프로필 변경</h1>
+          </div>
 
-      <h1>상태 메시지 변경</h1>
-      <input
-        type="text"
-        placeholder={currentMsg}
-        value={msg}
-        onChange={(e) => setMsg(e.target.value)}
-      />
-      <button onClick={handleMsgChange}>변경</button>
-      {isNicknameChanged && <p>닉네임이 변경되었습니다.</p>}
-      {isMsgChanged && <p>상태메시지가 변경되었습니다.</p>}
-    </div>
+          <div className={styles.body}>
+            <h2>닉네임 변경</h2>
+            <div className={styles.inputBody}>
+              <input
+                type="text"
+                placeholder={currentNickname}
+                value={newNickname}
+                onChange={(e) => setNewNickname(e.target.value)}
+              />
+              <button onClick={handleNicknameChange}>변경</button>
+            </div>
+            {isNicknameChanged && <p>닉네임이 변경되었습니다.</p>}
+          </div>
+
+          <div className={styles.body}>
+            <h2>상태 메시지 변경</h2>
+            <div className={styles.inputBody}>
+              <input
+                type="text"
+                placeholder={currentMsg}
+                value={msg}
+                onChange={(e) => setMsg(e.target.value)}
+              />
+              <button onClick={handleMsgChange}>변경</button>
+            </div>
+            {isMsgChanged && <p>상태메시지가 변경되었습니다.</p>}
+          </div>
+        </div>
+      </div>
+    </BackGround>
   );
 };
 

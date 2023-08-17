@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styles from "./PasswordChange.module.css"
 
+import styles from "./PasswordChange.module.css";
+import BackGround from "../../components/BackGround";
+import back from "../../assets/blackback.png";
 
 const PasswordChange = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -12,21 +14,24 @@ const PasswordChange = () => {
   const [message, setMessage] = useState("");
 
   const handleChangePassword = async () => {
-    try{
+    try {
       const obj = {
         currentPassword,
-        newPassword
+        newPassword,
       };
       const postData = {
         method: "PUT",
         headers: {
-          "Content-Type" : "application/json",
-          Authorization: globalToken
+          "Content-Type": "application/json",
+          Authorization: globalToken,
         },
-        body: JSON.stringify(obj)
+        body: JSON.stringify(obj),
       };
 
-      const resp = await fetch(`https://day6scrooge.duckdns.org/api/member/change-password`,postData);
+      const resp = await fetch(
+        `https://day6scrooge.duckdns.org/api/member/change-password`,
+        postData
+      );
 
       if (resp.status === 200) {
         const data = await resp.json();
@@ -35,39 +40,47 @@ const PasswordChange = () => {
       } else {
         setMessage("비밀번호 변경 실패");
       }
-    } catch(error) {
+    } catch (error) {
       console.error("API 호출 오류:", error);
-      setMessage("다시 시도해주세요")
+      setMessage("다시 시도해주세요");
     }
   };
 
-  return(   
-    <div className={styles.container}>
-      <button onClick={() => navigate(-1)}>이전</button>
-      <h2>비밀번호 변경</h2>
-      <div>
-        <p>현재 비밀번호</p>
-        <input
-          className={styles.pwInput}
-          type="password"
-          placeholder="현재 비밀번호"
-          value={currentPassword}
-          onChange = {(e) => setCurrentPassword(e.target.value)} 
-        />
+  return (
+    <BackGround>
+      <div className={styles.settingContainer}>
+        <div className={styles.settingContent}>
+          <div className={styles.profile}>
+            <img src={back} onClick={() => navigate(-1)} alt=""></img>
+            <h2>비밀번호 변경</h2>
+          </div>
+          <div className={styles.body}>
+            <div>
+              <p>현재 비밀번호</p>
+              <input
+                className={styles.pwInput}
+                type="password"
+                placeholder="현재 비밀번호"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <p>새 비밀번호</p>
+              <input
+                className={styles.pwInput}
+                type="password"
+                placeholder="새 비밀번호"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </div>
+            <button onClick={handleChangePassword}>비밀번호 변경</button>
+            {message && <p className={styles.message}>{message}</p>}
+          </div>
+        </div>
       </div>
-      <div>
-        <p>새 비밀번호</p>
-        <input
-          className={styles.pwInput} 
-          type="password"
-          placeholder="새 비밀번호"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-      </div>
-      <button onClick={handleChangePassword}>비밀번호 변경</button>
-      {message && <p className={styles.message}>{message}</p>}
-    </div>
+    </BackGround>
   );
 };
 

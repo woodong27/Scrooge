@@ -52,6 +52,7 @@ const Settings = ({ onLogout }) => {
   const confirmLogout = () => {
     onLogout();
     Cookies.remove("accessToken");
+    Cookies.remove("memberId");
     dispatch({ type: "SET_TOKEN_STRING", payload: "" }); // 로그아웃: 리덕스 스토어에서 토큰 정보 지우기
     navigate("/"); // 로그아웃 후 리디렉션: "/"
   };
