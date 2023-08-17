@@ -19,7 +19,6 @@ import Detail from "./pages/Community/Detail";
 import NewArticle from "./pages/Community/NewArticle";
 import Chatting from "./pages/Challenge/Chatting";
 import Profile from "./pages/Profile";
-// import Settings from "./pages/Settings/Settings";
 import Notification from "./pages/Notification";
 import PasswordChange from "./pages/Settings/PasswordChange";
 import NicknameChange from "./pages/Settings/NicknameChange";
@@ -27,25 +26,26 @@ import WebSocketComponent from "./utils/WebSocketComponent";
 import Cookies from "js-cookie";
 
 function App() {
-
   const dispatch = useDispatch();
 
   const [isLogin, setIsLogin] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     // 페이지 로드 시 쿠키에서 accessToken 로드
-    const savedAccessToken = Cookies.get('accessToken');
-    const savedMemberId = Cookies.get('memberId');
-    if(savedAccessToken && savedMemberId) {
+    const savedAccessToken = Cookies.get("accessToken");
+    const savedMemberId = Cookies.get("memberId");
+    if (savedAccessToken && savedMemberId) {
       setIsLogin(true); // 로그인 true
-      dispatch({ type: "SET_TOKEN_STRING", payload: "Bearer " + savedAccessToken });
+      dispatch({
+        type: "SET_TOKEN_STRING",
+        payload: "Bearer " + savedAccessToken,
+      });
       dispatch({ type: "SET_ID_STRING", payload: savedMemberId });
-      if(window.AndroidBridge) {
+      if (window.AndroidBridge) {
         window.AndroidBridge.sendJwtTokenToAndroid(savedAccessToken);
       }
     }
-   }, []);
-
+  }, []);
 
   const loginHandler = () => {
     setIsLogin(true);

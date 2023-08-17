@@ -11,6 +11,7 @@ import AuthModal from "./AuthModal";
 import MyAuthProcess from "./MyAuthProcess";
 import TeamAuthProcess from "./TeamAuthProcess";
 import Toast from "../../components/UI/Toast";
+import Spinner from "../../components/Spinner";
 
 const ChallengeDetail = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -27,6 +28,7 @@ const ChallengeDetail = () => {
   const [makeToast, setMakeToast] = useState(false);
   const [failToast, setFailToast] = useState(false);
   const [todayAuth, setTodayAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const imgRef = useRef(null);
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
@@ -102,8 +104,9 @@ const ChallengeDetail = () => {
 
   const hideModalHandler = () => setShowModal(false);
   const submitAuthHandler = () => {
-    formData.append("img", imgRef.current.files[0]);
+    setIsLoading(true);
 
+    formData.append("img", imgRef.current.files[0]);
     axios
       .post(
         `https://day6scrooge.duckdns.org/api/challenge/${params.id}/auth`,
@@ -116,6 +119,7 @@ const ChallengeDetail = () => {
         }
       )
       .then(() => {
+        setIsLoading(false);
         hideModalHandler();
         setMakeToast(true);
       })
@@ -267,6 +271,7 @@ const ChallengeDetail = () => {
           {failToast && (
             <Toast setToast={setFailToast} text="인증에 실패했어요!" />
           )}
+          {isLoading && <Spinner></Spinner>}
         </AuthModal>
       )}
 

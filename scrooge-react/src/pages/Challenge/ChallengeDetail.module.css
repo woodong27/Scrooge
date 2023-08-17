@@ -34,7 +34,7 @@
 }
 
 .fight_container {
-  width: 328px;
+  width: 84vw;
   position: relative;
   margin: 15px auto;
   padding: 1rem 0;
@@ -129,7 +129,7 @@
   width: 100%;
   margin-top: 1rem;
   margin-bottom: 0.4rem;
-  height: 16rem;
+  height: 14rem;
   white-space: nowrap;
   overflow-x: scroll;
 
