@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import styles from "./Comment.module.css";
 
 const Comment = (props) => {
-  const globalToken = useSelector((state) => state.globalToken);
   const memberId = useSelector((state) => state.memberId);
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState("");
@@ -23,18 +22,34 @@ const Comment = (props) => {
 
   return (
     <div className={styles.box}>
-      <Link to={`/profile/${props.memberId}`}>
+      {memberId === props.memberId ? (
         <img
           className={styles.character}
           src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
           alt="캐릭터"
         />
-      </Link>
+      ) : (
+        <Link to={`/profile/${props.memberId}`}>
+          <img
+            className={styles.character}
+            src={`https://storage.googleapis.com/scroogestorage/avatars/${props.memberAvatarAddress}-1.png`}
+            alt="캐릭터"
+          />
+        </Link>
+      )}
+
       <div className={styles.up}>
         <div className={styles.nickname}>
-          <Link to={`/profile/${props.memberId}`}>{props.memberNickname}</Link>
+          <Link className={styles.link} to={`/profile/${props.memberId}`}>
+            {props.memberNickname}
+          </Link>
           {memberId === props.memberId ? (
             <>
+              <Link to={`/profile/${props.memberId}`}>
+                <span className={styles.commentAuthor}>
+                  {props.memberNickname}
+                </span>
+              </Link>
               {isEdit ? (
                 <div className={styles.delete} onClick={handleDelete}>
                   삭제
@@ -49,7 +64,7 @@ const Comment = (props) => {
               )}
             </>
           ) : (
-            ""
+            <span className={styles.commentAuthor}>{props.memberNickname}</span>
           )}
         </div>
       </div>

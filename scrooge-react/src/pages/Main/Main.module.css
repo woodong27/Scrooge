@@ -1,18 +1,21 @@
-.empty {
-  height: 60px;
+.body {
+  display: flex;
+  height: 90vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoheader {
   display: flex;
-  width: 304px;
-  padding: 0px 10px 0px 5px;
+  padding: 0px 8px;
   margin-top: 10px;
   justify-content: space-between;
   align-items: center;
 
   & p {
     text-align: right;
-    font-size: 28px;
+    font-size: 24px;
     margin: 0;
   }
 }
@@ -23,7 +26,7 @@
   color: #fff;
   padding: 8px 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
 }
 
@@ -45,25 +48,21 @@
 }
 
 .badge {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   margin-left: 8px;
 }
 
 .charactercoin {
   display: flex;
-  width: 328px;
-  height: 170px;
-
-  justify-content: left;
+  justify-content: center;
+  height: 150px;
   align-items: center;
   gap: 1px;
-  margin-bottom: 0;
 }
 
 .character {
-  width: 170px;
-  height: 170px;
+  height: 140px;
 }
 
 .coin {
@@ -92,79 +91,49 @@
   font-size: 20px;
   border: 1px solid var(--on, #000);
   padding: 4px 2px;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #fff;
 }
 
 .statemessage {
   position: relative;
-  width: 272px;
-  height: 88px;
-  margin: 0px 10px 0px 12px;
-  padding: 10px 14px;
-  border-radius: 10px;
+  font-size: 14px;
+  margin: 0 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
   border: 2px solid #000;
   background: #fff;
   text-align: left;
   line-height: 1.8;
 }
 
-.rings {
-  display: flex;
-  position: absolute;
-  top: 438px;
-  width: 240px;
-  height: 48px;
-  margin-left: 60px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.ring {
-  z-index: 1;
-  width: 30px;
-  height: 60px;
+.content {
+  width: 100%;
+  line-height: 20px;
 }
 
 .todayCard {
-  margin: 28px 10px 10px 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px auto;
 }
 
 .title {
   text-align: left;
-  margin-bottom: 8px;
+  margin: 24px 0 0 16px;
 }
 
 .amount {
   display: flex;
-  width: 288px;
-  height: 84px;
+  margin: 8px;
+  height: 60px;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   background-color: var(--input);
 }
 
-.content {
-  width: 100%;
-  height: 60px;
-  line-height: 20px;
-}
-
-.line {
-  display: flex;
-  justify-content: right;
-}
-
-.cancleBtn {
-  background: #fff;
-  margin-right: 16px;
-}
-
-.completeBtn {
-  background: #fff;
-}
-
-.editBtn {
-  background: #fff;
+.rings {
+  height: 4vh;
 }

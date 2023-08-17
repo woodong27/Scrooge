@@ -16,12 +16,17 @@ import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.repository.member.MemberSelectedQuestRepository;
 import com.scrooge.scrooge.service.QuestService;
 import lombok.RequiredArgsConstructor;
+import org.imgscalr.Scalr;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -72,15 +77,23 @@ public class CommunityService {
         }
 
         // 이미지 파일 등록 구현
+        // 1. 이미지 최적화
+        BufferedImage originalImage = ImageIO.read(img.getInputStream());
+        BufferedImage resizedImage = Scalr.resize(originalImage, 800);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "jpg", outputStream);
+
+        byte[] optimizedImageData = outputStream.toByteArray();
 
         String uuid = UUID.randomUUID().toString();
         String ext = img.getContentType();
 
         BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, uuid)
-                        .setContentType(ext)
-                        .build();
+                .setContentType(ext)
+                .build();
 
-        storage.create(blobInfo, img.getInputStream());
+        storage.create(blobInfo, new ByteArrayInputStream(optimizedImageData));
 
         String imgAddress = GCP_ADDRESS + bucketName + "/" + uuid;
         article.setImgAdress(imgAddress);

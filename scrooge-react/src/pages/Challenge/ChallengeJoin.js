@@ -121,7 +121,14 @@ const ChallengeJoin = () => {
           <div className={styles.shadow}></div>
         </div>
       ) : (
-        <div>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "2rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
           {isJoin ? (
             <div className={styles.primary2}>
               이미 참여중이에요!

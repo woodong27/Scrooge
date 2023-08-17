@@ -97,25 +97,25 @@ const Modal = ({ item, index, goNext, onEdit, onCloseModal }) => {
             <div className={styles.content}>
               {`${item.paidAt.slice(0, 19).split("T")[1]} `}
             </div>
-          </div>{" "}
-        </div>
-        <p className={styles.where}>어디에 썼나요?</p>
-        <div className={styles.pickCategory}>
-          {buttons.map((button) => (
-            <button
-              key={button.id}
-              className={
-                category === button.label ? styles.selected : styles.category
-              }
-              onClick={() => handleCategory(button.label)}
-            >
-              {button.label}
-            </button>
-          ))}
-        </div>
-        <div className={styles.underBtn}>
-          <button onClick={handleQuitEdit}>초기화</button>
-          <button onClick={handleEdit}>완료</button>
+          </div>
+          <p className={styles.where}>어디에 썼나요?</p>
+          <div className={styles.pickCategory}>
+            {buttons.map((button) => (
+              <button
+                key={button.id}
+                className={
+                  category === button.label ? styles.selected : styles.category
+                }
+                onClick={() => handleCategory(button.label)}
+              >
+                {button.label}
+              </button>
+            ))}
+          </div>
+          <div className={styles.underBtn}>
+            <button onClick={handleQuitEdit}>초기화</button>
+            <button onClick={handleEdit}>완료</button>
+          </div>
         </div>
       </div>
     </Fragment>

@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import styles from "./Notification.module.css";
 
 const Notification = ({ handleAlarmClose }) => {
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTime, setSelectedTime] = useState("23:00:00");
   const [savedTime, setSavedTime] = useState(null);
 
   //로컬에 저장된 시간 불러오기
@@ -22,7 +22,7 @@ const Notification = ({ handleAlarmClose }) => {
   };
 
   const handleSaveTime = () => {
-    if (window.AndroidInterface && selectedTime) {
+    if (selectedTime && window.AndroidInterface ) {
       localStorage.setItem("savedTime", selectedTime);
       window.AndroidInterface.sendTimeToApp(selectedTime);
       setSavedTime(selectedTime);

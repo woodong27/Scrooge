@@ -1,23 +1,25 @@
+.frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .card {
+  width: 100%;
   position: absolute;
   bottom: 8px;
   right: 8px;
-  width: 328px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1.5px solid #000;
-
-  /* scv가 그려지는 효과 */
-  stroke-width: 1.5px;
-  stroke: #000;
   background-color: white;
 }
 
 .card_shadow {
-  margin-left: 36px;
   position: relative;
   top: 20px;
-  width: 328px;
-  border-radius: 10px;
+  width: 84%;
+  border-radius: 12px;
   border: 1.5px solid #000;
   background: var(--green);
 }

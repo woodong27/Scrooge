@@ -15,7 +15,7 @@
 
 .character {
   width: 60px;
-  margin: 0 16px;
+  margin: 0 8px;
 }
 
 .author {
@@ -47,11 +47,10 @@
 }
 
 .line {
-  width: 300px;
   height: 18px;
   display: flex;
   justify-content: space-between;
-  margin: 8px 0 0 6px;
+  margin: 8px auto;
 }
 
 .reaction {
@@ -62,12 +61,16 @@
   & .bademoji {
     padding-bottom: 4px;
     margin-right: 4px;
-    background: #fff;
+    background: #ffffff00;
   }
   & .emoji {
     margin-right: 4px;
-    background: #fff;
+    background: #ffffff00;
   }
+}
+
+.comment {
+  padding-right: 10px;
 }
 
 .cnt {

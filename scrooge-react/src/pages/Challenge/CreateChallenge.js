@@ -23,6 +23,7 @@ const CreateChallenge = () => {
   const [title, setTitle] = useState("");
   const [authMethod, setAuthMethod] = useState("");
   const [introduce, setIntroduce] = useState("");
+  const [selectedImg, setSelectedImg] = useState(Array(5).fill(null));
 
   const imgRefs = useRef([]);
 
@@ -74,6 +75,22 @@ const CreateChallenge = () => {
         console.error("Error fetching data:", error);
         setMissToast(true);
       });
+  };
+
+  const inputChangeHandler = (id) => {
+    const file = imgRefs.current[id].files[0];
+
+    if (file) {
+      const reader = new FileReader(); // FileReader 객체 생성
+
+      reader.onload = (e) => {
+        const arr = [...selectedImg];
+        arr[id] = e.target.result;
+        setSelectedImg(arr); // 이미지 미리보기 설정
+      };
+
+      reader.readAsDataURL(file); // 파일을 Data URL 형태로 읽기 시작
+    }
   };
 
   return (
@@ -152,41 +169,96 @@ const CreateChallenge = () => {
       <div className={styles.auth_method}>
         <div>인증샷 예시등록(5장이 필요해요)</div>
         <div className={styles.auth_img}>
-          <span>
-            인증 성공 예시를 추가해주세요
-            <img
-              src={`${process.env.PUBLIC_URL}/images/image.png`}
-              alt="더미"
-            />
-          </span>
-          <span>
-            인증 성공 예시를 추가해주세요
-            <img
-              src={`${process.env.PUBLIC_URL}/images/image.png`}
-              alt="더미"
-            />
-          </span>
-          <span>
-            인증 성공 예시를 추가해주세요
-            <img
-              src={`${process.env.PUBLIC_URL}/images/image.png`}
-              alt="더미"
-            />
-          </span>
-          <span>
-            인증 성공 예시를 추가해주세요
-            <img
-              src={`${process.env.PUBLIC_URL}/images/image.png`}
-              alt="더미"
-            />
-          </span>
-          <span>
-            인증 성공 예시를 추가해주세요
-            <img
-              src={`${process.env.PUBLIC_URL}/images/image.png`}
-              alt="더미"
-            />
-          </span>
+          <label htmlFor="img0">
+            {selectedImg[0] ? (
+              <img
+                className={styles.selectedImg}
+                src={selectedImg[0]}
+                alt=""
+              ></img>
+            ) : (
+              <>
+                "인증 성공 예시를 추가해주세요"
+                <img
+                  className={styles.img}
+                  src={`${process.env.PUBLIC_URL}/images/image.png`}
+                  alt=""
+                />
+              </>
+            )}
+          </label>
+          <label htmlFor="img1">
+            {selectedImg[1] ? (
+              <img
+                className={styles.selectedImg}
+                src={selectedImg[1]}
+                alt=""
+              ></img>
+            ) : (
+              <>
+                "인증 성공 예시를 추가해주세요"
+                <img
+                  className={styles.img}
+                  src={`${process.env.PUBLIC_URL}/images/image.png`}
+                  alt=""
+                />
+              </>
+            )}
+          </label>
+          <label htmlFor="img2">
+            {selectedImg[2] ? (
+              <img
+                className={styles.selectedImg}
+                src={selectedImg[2]}
+                alt=""
+              ></img>
+            ) : (
+              <>
+                "인증 성공 예시를 추가해주세요"
+                <img
+                  className={styles.img}
+                  src={`${process.env.PUBLIC_URL}/images/image.png`}
+                  alt=""
+                />
+              </>
+            )}
+          </label>
+          <label htmlFor="img3">
+            {selectedImg[3] ? (
+              <img
+                className={styles.selectedImg}
+                src={selectedImg[3]}
+                alt=""
+              ></img>
+            ) : (
+              <>
+                "인증 성공 예시를 추가해주세요"
+                <img
+                  className={styles.img}
+                  src={`${process.env.PUBLIC_URL}/images/image.png`}
+                  alt=""
+                />
+              </>
+            )}
+          </label>
+          <label htmlFor="img4">
+            {selectedImg[4] ? (
+              <img
+                className={styles.selectedImg}
+                src={selectedImg[4]}
+                alt=""
+              ></img>
+            ) : (
+              <>
+                "인증 성공 예시를 추가해주세요"
+                <img
+                  className={styles.img}
+                  src={`${process.env.PUBLIC_URL}/images/image.png`}
+                  alt=""
+                />
+              </>
+            )}
+          </label>
         </div>
       </div>
 
@@ -203,19 +275,44 @@ const CreateChallenge = () => {
       </div>
 
       <input
+        style={{ display: "none" }}
+        id="img0"
         type="file"
         accept="image/*"
         ref={(e) => (imgRefs.current[0] = e)}
+        onChange={() => inputChangeHandler(0)}
       />
       <input
+        style={{ display: "none" }}
+        id="img1"
         type="file"
         accept="image/*"
         ref={(e) => (imgRefs.current[1] = e)}
+        onChange={() => inputChangeHandler(1)}
       />
       <input
+        style={{ display: "none" }}
+        id="img2"
         type="file"
         accept="image/*"
         ref={(e) => (imgRefs.current[2] = e)}
+        onChange={() => inputChangeHandler(2)}
+      />
+      <input
+        style={{ display: "none" }}
+        id="img3"
+        type="file"
+        accept="image/*"
+        ref={(e) => (imgRefs.current[3] = e)}
+        onChange={() => inputChangeHandler(3)}
+      />
+      <input
+        style={{ display: "none" }}
+        id="img4"
+        type="file"
+        accept="image/*"
+        ref={(e) => (imgRefs.current[4] = e)}
+        onChange={() => inputChangeHandler(4)}
       />
 
       <div className={styles.foot}>

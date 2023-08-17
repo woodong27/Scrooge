@@ -18,12 +18,17 @@ import com.scrooge.scrooge.service.QuestService;
 import com.scrooge.scrooge.repository.member.MemberRepository;
 import com.scrooge.scrooge.service.LevelService;
 import lombok.RequiredArgsConstructor;
+import org.imgscalr.Scalr;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -213,17 +218,21 @@ public class StartChallengeService {
                 int teamZeroSuccessCount = challengeAuthRepository.countZeroSuccessCount(challenge.getId());
                 int teamOneSuccessCount = challengeAuthRepository.countOneSuccessCount(challenge.getId());
 
-                if(teamZeroSuccessCount > teamOneSuccessCount) { // 0팀이 이긴다면
-                    challenge.setWinTeamNo(0);
-                    challenge.setLoseTeamNo(1);
-                }
-                else if(teamZeroSuccessCount < teamOneSuccessCount) { // 1팀이 이긴다면
-                    challenge.setWinTeamNo(1);
-                    challenge.setLoseTeamNo(0);
+                // 0팀이 승리
+                int winTeam = 0;
+                int loseTeam = 1;
+
+                // 1팀이 승리
+                if (teamZeroSuccessCount < teamOneSuccessCount) { // 1팀이 이긴다면
+                    winTeam = 1;
+                    loseTeam = 0;
                 }
 
+                challenge.setWinTeamNo(winTeam);
+                challenge.setLoseTeamNo(loseTeam);
+
                 // 이긴 팀 결정됐다면 멤버 경험치 올려줘야함 ,,,
-                List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findByChallengeIdAndTeam(challenge.getId(), challenge.getWinTeamNo());
+                List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findByChallengeIdAndTeam(challenge.getId(), winTeam);
                 for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
                     Member member = challengeParticipant.getMember();
                     member.setExp(member.getExp() + 500);
@@ -264,6 +273,14 @@ public class StartChallengeService {
 
     // Google Cloud platform에 이미지 업로드
     public String uploadAuthImage(MultipartFile img) throws IOException {
+        BufferedImage originalImage = ImageIO.read(img.getInputStream());
+        BufferedImage resizedImage = Scalr.resize(originalImage, 800);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "jpg", outputStream);
+
+        byte[] optimizedImageData = outputStream.toByteArray();
+
         String uuid = UUID.randomUUID().toString();
         String ext = img.getContentType();
 
@@ -271,10 +288,9 @@ public class StartChallengeService {
                 .setContentType(ext)
                 .build();
 
-        storage.create(blobInfo, img.getInputStream());
+        storage.create(blobInfo, new ByteArrayInputStream(optimizedImageData));
 
-        String imgAddress = GCP_ADDRESS + bucketName + "/" + uuid;
-        return imgAddress;
+        return GCP_ADDRESS + bucketName + "/" + uuid;
     }
 
 }

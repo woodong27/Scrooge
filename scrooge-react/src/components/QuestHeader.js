@@ -17,7 +17,10 @@ const QuestHeader = (props) => {
 
   return (
     <div className={styles.container} style={gradientStyle}>
-      <div className={styles.item} style={titleStyle}>
+      <div
+        className={!props.childern ? styles.onlyItem : styles.item}
+        style={titleStyle}
+      >
         {props.title}
       </div>
       {props.show && (
@@ -28,7 +31,7 @@ const QuestHeader = (props) => {
           onClick={handleBack}
         />
       )}
-      {props.children}
+      <div className={styles.childern}>{props.children}</div>
     </div>
   );
 };

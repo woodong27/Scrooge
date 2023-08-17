@@ -1,6 +1,11 @@
-.challenge-toggle {
+.body {
+  display: flex;
+  justify-content: center;
+}
+
+.toggle {
   width: 80%;
-  height: 3rem;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

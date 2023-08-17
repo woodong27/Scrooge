@@ -2,6 +2,14 @@
   padding-top: 60px;
 }
 
+.body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
 .title {
   font-size: 24px;
   height: 60px;
@@ -23,6 +31,23 @@
 .missPassword {
   width: inherit;
   margin-top: 30px;
+  text-align: right;
+  background: #fff;
+  padding-right: 32px;
+  color: var(--green);
+}
+
+.buttonText {
+  font-size: 24px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.noAccount {
+  width: inherit;
+  margin-top: 8px;
   text-align: right;
   background: #fff;
   padding-right: 32px;

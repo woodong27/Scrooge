@@ -3,12 +3,11 @@ import { useSelector } from "react-redux";
 
 import ProgressBar from "./ProgressBar";
 import styles from "./Main.module.css";
-import CharacterCard from "../../components/UI/CharacterCard";
 import Card from "../../components/UI/Card";
 import BackGround from "../../components/BackGround";
 import PaymentHistory from "../../pages/Main/PaymentHistory";
 
-const Main = (props) => {
+const Main = () => {
   const globalToken = useSelector((state) => state.globalToken);
 
   const [data, setData] = useState([]);
@@ -17,7 +16,6 @@ const Main = (props) => {
 
   const [settlement, setSettlement] = useState(false);
   const [isConsum, setIsConsum] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
 
   const [message, setMessage] = useState();
   const [weeklyGoal, setWeeklyGoal] = useState();
@@ -29,48 +27,12 @@ const Main = (props) => {
   ]);
   const [imageIndex, setImageIndex] = useState(0);
 
-  // BGM 관련
-  // const [isSoundOn, setIsSoundOn] = useState(true);
-
-  const handleOpen = () => {
-    setIsEdit(true);
-  };
-  const handleClose = () => {
-    setMessage(data.message);
-    setIsEdit(false);
-  };
   const handleSetTrue = () => {
     setSettlement(true);
   };
 
   const handleSetFalse = () => {
     setSettlement(false);
-  };
-
-  const handleSend = () => {
-    const obj = {
-      message: message,
-    };
-    const postData = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
-      body: JSON.stringify(obj),
-    };
-    fetch("https://day6scrooge.duckdns.org/api/member/message", postData)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("상태메시지 저장 실패");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-        setMessage(data.message);
-        setIsEdit(false);
-      });
   };
 
   useEffect(() => {
@@ -163,70 +125,35 @@ const Main = (props) => {
     setIsConsum(false);
   };
 
-  // BGM 관련 코드
-  // useEffect(() => {
-  //   const storedSoundStatus = localStorage.getItem("isSoundOn");
-  //   if (storedSoundStatus !== null) {
-  //     setIsSoundOn(storedSoundStatus === "true");
-  //   }
-  //   else {
-  //     setIsSoundOn(true);
-  //     localStorage.setItem("isSoundOn", "true");
-  //   }
-  // }, []);
-
-  // if(window.AndroidSound) {
-  //   window.AndroidSound.sendSoundToggleToAndroid(isSoundOn);
-  // }
-
   return (
     <BackGround>
       {!isConsum && data && data.levelId && data.mainAvatar.id && (
         <div>
-          <div className={styles.empty} />
-          <CharacterCard>
-            <div>
-              <div className={styles.infoheader}>
-                <img
-                  className={styles.badge}
-                  src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
-                  alt="뱃지"
-                />
-                <span>
-                  <p>Lv. {data.levelId}</p>
-                  <p>{data.nickname}</p>
-                </span>
-              </div>
-              <div className={styles.border} />
-
-              {settlement ? (
-                //정산 완료
-                <span className={styles.charactercoin}>
+          <div className={styles.body}>
+            <Card height={44}>
+              <div className={styles.oneCard}>
+                <div className={styles.infoheader}>
                   <img
-                    className={styles.character}
-                    src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
-                    alt="캐릭터"
+                    className={styles.badge}
+                    src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
+                    alt="뱃지"
                   />
+                  <span>
+                    <p>Lv. {data.levelId}</p>
+                    <p>{data.nickname}</p>
+                  </span>
+                </div>
+                <div className={styles.border} />
 
-                  <div className={styles.coin} onClick={consumTrueHandler}>
+                {settlement ? (
+                  //정산 완료
+                  <span className={styles.charactercoin}>
                     <img
-                      src={`${process.env.PUBLIC_URL}/images/coin.png`}
-                      alt="코인"
+                      className={styles.character}
+                      src={`https://storage.googleapis.com/scroogestorage/avatars/${data.mainAvatar.id}-1.png`}
+                      alt="캐릭터"
                     />
-                    <div className={styles.payBtn}>정산하기</div>{" "}
-                    <div className={styles.streak}>{data.streak}일 째</div>
-                  </div>
-                </span>
-              ) : (
-                //정산 전
-                <span className={styles.charactercoin}>
-                  <img
-                    className={styles.character}
-                    src={images[imageIndex]}
-                    alt="캐릭터"
-                  />
 
-                  {imageIndex === 1 && (
                     <div className={styles.coin} onClick={consumTrueHandler}>
                       <img
                         src={`${process.env.PUBLIC_URL}/images/coin.png`}
@@ -235,92 +162,61 @@ const Main = (props) => {
                       <div className={styles.payBtn}>정산하기</div>{" "}
                       <div className={styles.streak}>{data.streak}일 째</div>
                     </div>
-                  )}
-                </span>
-              )}
-
-              <div className={styles.statemessage}>
-                {isEdit ? (
-                  <>
-                    <textarea
-                      className={styles.content}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      maxLength="50"
-                      rows="3"
-                    />
-                    <div className={styles.line}>
-                      <button
-                        className={styles.cancleBtn}
-                        onClick={handleClose}
-                      >
-                        취소
-                      </button>
-                      <button
-                        className={styles.completeBtn}
-                        onClick={handleSend}
-                      >
-                        완료
-                      </button>
-                    </div>
-                  </>
+                  </span>
                 ) : (
-                  <>
-                    <textarea
-                      className={styles.content}
-                      value={message}
-                      readOnly
+                  //정산 전
+                  <span className={styles.charactercoin}>
+                    <img
+                      className={styles.character}
+                      src={images[imageIndex]}
+                      alt="캐릭터"
                     />
 
-                    <div className={styles.line}>
-                      <img
-                        className={styles.editBtn}
-                        src={`${process.env.PUBLIC_URL}/images/write.svg`}
-                        alt="수정"
-                        onClick={handleOpen}
-                      />
-                    </div>
-                  </>
+                    {imageIndex === 1 && (
+                      <div className={styles.coin} onClick={consumTrueHandler}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/coin.png`}
+                          alt="코인"
+                        />
+                        <div className={styles.payBtn}>정산하기</div>{" "}
+                        <div className={styles.streak}>{data.streak}일 째</div>
+                      </div>
+                    )}
+                  </span>
                 )}
+
+                <div className={styles.statemessage}>
+                  <textarea
+                    className={styles.content}
+                    value={message}
+                    readOnly
+                  />
+                </div>
               </div>
-            </div>
-          </CharacterCard>
-          <div className={styles.rings}>
-            <img
-              className={styles.ring}
-              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
-              alt="고리"
-            />
-            <img
-              className={styles.ring}
-              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
-              alt="고리"
-            />
-            <img
-              className={styles.ring}
-              src={`${process.env.PUBLIC_URL}/images/main-ring.png`}
-              alt="고리"
-            />
+            </Card>
+            <div className={styles.rings}></div>
+            <Card height={28}>
+              <div className={styles.todayCard}>
+                <div>
+                  <div className={styles.title}>
+                    {date[0]}월 {date[1]}일, 오늘의 소비💸
+                  </div>
+                  <div className={styles.amount}>
+                    {settlement
+                      ? `${total
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
+                      : "정산이 필요해요!"}
+                  </div>
+                </div>
+                <ProgressBar
+                  goal={weeklyGoal}
+                  consum={weeklyConsum}
+                  setGoal={setGoal}
+                ></ProgressBar>
+              </div>
+            </Card>
           </div>
-          <Card height={236}>
-            <div className={styles.todayCard}>
-              <div className={styles.title}>
-                {date[0]}월 {date[1]}일, 오늘의 소비💸
-              </div>
-              <div className={styles.amount}>
-                {settlement
-                  ? `${total
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원`
-                  : "정산이 필요해요!"}
-              </div>
-            </div>
-            <ProgressBar
-              goal={weeklyGoal}
-              consum={weeklyConsum}
-              setGoal={setGoal}
-            ></ProgressBar>
-          </Card>
         </div>
       )}
       {isConsum && (

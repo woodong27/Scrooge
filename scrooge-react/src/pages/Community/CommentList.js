@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comment from "./Comment";
+import styles from "./CommentList.module.css";
 
 const CommentList = React.memo(({ id, comments }) => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -32,10 +33,12 @@ const CommentList = React.memo(({ id, comments }) => {
   };
 
   return (
-    <div>
-      {data.map((it) => (
-        <Comment key={it.id} {...it} commentDelete={commentDelete} />
-      ))}
+    <div className={styles.body}>
+      <div className={styles.container}>
+        {data.map((it) => (
+          <Comment key={it.id} {...it} commentDelete={commentDelete} />
+        ))}
+      </div>
     </div>
   );
 });

@@ -53,7 +53,6 @@ const Profile = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setMyData(data);
-        console.log("myData", data);
       })
       .catch((error) => console.log(error));
   }, [memberId]);
@@ -67,7 +66,7 @@ const Profile = (props) => {
       {data && data.level && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
-          <CharacterCard>
+          <Card height={44}>
             <div>
               <div className={styles.infoheader}>
                 <img
@@ -97,8 +96,9 @@ const Profile = (props) => {
                 />
               </div>
             </div>
-          </CharacterCard>
-          <Card height={246}>
+          </Card>
+          <div className={styles.rings}></div>
+          <Card height={28}>
             <div className={styles.todayCard}>
               <div>
                 <table className={styles.table}>
@@ -113,12 +113,25 @@ const Profile = (props) => {
                     <td className={styles.three}>{hereData.thisMonthTotal}</td>
                   </tr>
                   <tr>
-                    <td className={styles.one}>주 소비</td>
-                    <td className={styles.two}>{myData.category}</td>
-                    <td className={styles.three}>{hereData.category}</td>
+                    <td className={styles.one}>자주 소비</td>
+                    <td className={styles.two}>
+                      {myData.frequentlyUsedCategory}
+                    </td>
+                    <td className={styles.three}>
+                      {hereData.frequentlyUsedCategory}
+                    </td>
                   </tr>
                   <tr>
-                    <td className={styles.one}>정산일</td>
+                    <td className={styles.one}>많이 소비</td>
+                    <td className={styles.two}>
+                      {myData.highSpendingCategory}
+                    </td>
+                    <td className={styles.three}>
+                      {hereData.highSpendingCategory}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.one}>스트릭</td>
                     <td className={styles.two}>{myData.maxStreak}</td>
                     <td className={styles.three}>{hereData.maxStreak}</td>
                   </tr>
@@ -126,15 +139,12 @@ const Profile = (props) => {
                 {hereData.hasLastMonthPaymentHistory &&
                 myData.hasLastMonthPaymentHistory ? (
                   <div>
-                    지난달과 비교했을 때 <br />
-                    당신이
+                    당신의 절약 금액이
                     <span className={styles.highlight}>
-                      {hereData.lastMonthTotal - hereData.thisMonthTotal >
-                      myData.lastMonthTotalMonthTotal - myData.thisMonthTotal
-                        ? " 더 "
-                        : " 덜 "}
+                      {hereData.totalDifference > myData.totalDifference
+                        ? " 적어요 "
+                        : " 많아요 "}
                     </span>
-                    절약했네요!
                   </div>
                 ) : (
                   <div className={styles.notYet}>아직 비교가 어려워요</div>
