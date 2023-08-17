@@ -1,5 +1,5 @@
 .box {
-  width: 360px;
+  width: 100%;
   height: fit-content;
   display: flex;
   align-items: flex-start;
@@ -15,7 +15,7 @@
 }
 
 .content {
-  width: 360px;
+  width: 100%;
   height: fit-content;
   padding: 10px;
   text-align: left;
@@ -27,9 +27,6 @@
 .character {
   width: 60px;
   height: 60px;
-  position: absolute;
-  left: 10px;
-  bottom: 24px;
 }
 
 .up {
@@ -46,7 +43,7 @@
 .option {
   width: 20px;
   position: absolute;
-  right: 0px;
+  right: 8px;
   top: 0px;
 }
 

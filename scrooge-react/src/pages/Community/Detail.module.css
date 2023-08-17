@@ -1,14 +1,15 @@
 .box {
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .testbox {
-  height: 700px;
+  width: 96%;
+  margin-bottom: 60px;
 }
 
 .frame {
-  height: 600px;
-  overflow: scroll;
+  height: fit-content;
 }
 
 .frame::-webkit-scrollbar {
@@ -16,28 +17,32 @@
 }
 
 .authorInfo {
-  width: 330px;
+  width: 94%;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: space-between;
   padding-left: 28px;
   margin: 0;
 }
 
+.minusOption {
+  width: 100%;
+  display: flex;
+}
+
 .character {
-  width: 60px;
   height: 60px;
   margin-right: 8px;
 }
 
 .author {
-  width: 270px;
   text-align: left;
   font-size: 20px;
   margin: 12px 0 4px 0;
 }
 
 .line {
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }
@@ -48,8 +53,8 @@
 }
 
 .btns {
-  width: 80px;
   display: flex;
+  width: 80px;
   justify-content: space-between;
   margin-right: 12px;
 }
@@ -59,9 +64,17 @@
   padding-bottom: 4px;
 }
 
+.mainContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .picture {
-  width: 330px;
+  width: 94%;
   max-height: 600px;
+  margin-left: 4%;
 }
 
 .content {
@@ -122,7 +135,7 @@
   height: 32px;
   margin-left: 32px;
   text-align: left;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #000;
   padding-left: 16px;
   margin-bottom: 8px;
@@ -139,10 +152,10 @@
   position: absolute;
   top: 200px;
   left: 28px;
-  width: 296px;
+  width: 94%;
   height: 130px;
   padding: 16px;
   background-color: #fff;
   border: 1px solid #000;
-  border-radius: 20px;
+  border-radius: 12px;
 }

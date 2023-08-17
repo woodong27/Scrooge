@@ -1,5 +1,5 @@
 .header {
-  margin: 10px 0;
+  margin: 10px auto;
 }
 
 .box {
@@ -15,7 +15,7 @@
 
 .character {
   width: 60px;
-  margin: 0 8px;
+  margin: 0 16px;
 }
 
 .author {
@@ -50,7 +50,7 @@
   height: 18px;
   display: flex;
   justify-content: space-between;
-  margin: 8px auto;
+  margin: 8px 0;
 }
 
 .reaction {
@@ -61,16 +61,16 @@
   & .bademoji {
     padding-bottom: 4px;
     margin-right: 4px;
-    background: #ffffff00;
+    background: #fff;
   }
   & .emoji {
     margin-right: 4px;
-    background: #ffffff00;
+    background: #fff;
   }
 }
 
 .comment {
-  padding-right: 10px;
+  padding-right: 12px;
 }
 
 .cnt {

@@ -100,7 +100,7 @@ const Profile = (props) => {
               </div>
             </div>
           </Card>
-          <div className={styles.rings}></div>
+          <br />
           <Card height={28}>
             <div className={styles.todayCard}>
               <div>
@@ -139,19 +139,21 @@ const Profile = (props) => {
                     <td className={styles.three}>{hereData.maxStreak}</td>
                   </tr>
                 </table>
-                {hereData.hasLastMonthPaymentHistory &&
-                myData.hasLastMonthPaymentHistory ? (
-                  <div>
-                    당신의 절약 금액이
-                    <span className={styles.highlight}>
-                      {hereData.totalDifference > myData.totalDifference
-                        ? " 적어요 "
-                        : " 많아요 "}
-                    </span>
-                  </div>
-                ) : (
-                  <div className={styles.notYet}>아직 비교가 어려워요</div>
-                )}
+                <div className={styles.ment}>
+                  {hereData.hasLastMonthPaymentHistory &&
+                  myData.hasLastMonthPaymentHistory ? (
+                    <div>
+                      당신의 절약 금액이
+                      <span className={styles.highlight}>
+                        {hereData.totalDifference > myData.totalDifference
+                          ? " 적어요 "
+                          : " 많아요 "}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={styles.notYet}>아직 비교가 어려워요</div>
+                  )}
+                </div>
               </div>
             </div>
           </Card>
