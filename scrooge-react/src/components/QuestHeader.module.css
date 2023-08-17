@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 9rem;
+  height: 6.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,6 +27,5 @@
 
 .back {
   position: absolute;
-  top: 50px;
   left: 30px;
 }

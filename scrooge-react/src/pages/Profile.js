@@ -66,7 +66,7 @@ const Profile = (props) => {
       {data && data.level && data.mainAvatar.id && (
         <div>
           <div className={styles.empty} />
-          <CharacterCard>
+          <Card height={44}>
             <div>
               <div className={styles.infoheader}>
                 <img
@@ -96,8 +96,9 @@ const Profile = (props) => {
                 />
               </div>
             </div>
-          </CharacterCard>
-          <Card height={248}>
+          </Card>
+          <div className={styles.rings}></div>
+          <Card height={28}>
             <div className={styles.todayCard}>
               <div>
                 <table className={styles.table}>

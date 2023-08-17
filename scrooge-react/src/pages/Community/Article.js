@@ -150,7 +150,7 @@ const Article = ({
 
   return (
     <div className={styles.box}>
-      <Card height={330}>
+      <Card height={44}>
         {memberId === myId ? (
           <div className={styles.authorInfo}>
             <img
