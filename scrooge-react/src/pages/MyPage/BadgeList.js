@@ -17,7 +17,7 @@ const BadgeList = () => {
   const [badgeDescription, setBadgeDescription] = useState();
   const [badges, setBadges] = useState(Array(9));
 
-  const handleModalOpen = (idx) => {
+  const handleModalOpen = () => {
     setModal(true);
   };
 
@@ -54,6 +54,8 @@ const BadgeList = () => {
         console.log(resp.data);
         const arr = [...badges];
         resp.data.map((e) => (arr[e.id] = e));
+
+        console.log(resp.data);
 
         setBadges(arr);
       })

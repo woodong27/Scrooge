@@ -138,7 +138,7 @@ const Main = () => {
                     className={styles.badge}
                     src={`${process.env.PUBLIC_URL}/${
                       data.mainBadge.imgAddress.split("/")[1]
-                    }/${+data.mainBadge.imgAddress.split("/")[2][5] + 1}.png`}
+                    }/${+data.mainBadge.imgAddress.split("/")[2][5]}.png`}
                     alt="뱃지"
                   />
                   <span>

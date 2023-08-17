@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styles from "./NicknameChange.module.css"
+import styles from "./NicknameChange.module.css";
 
 const NicknameChange = () => {
   const globalToken = useSelector((state) => state.globalToken);
@@ -9,7 +9,10 @@ const NicknameChange = () => {
   const [currentNickname, setCurrentNickname] = useState("");
   const [newNickname, setNewNickname] = useState("");
   const [isNicknameChanged, setIsNicknameChanged] = useState(false);
- 
+  const [currentMsg, setCurrentMsg] = useState("");
+  const [msg, setMsg] = useState("");
+  const [isMsgChanged, setIsMsgChanged] = useState(false);
+
   useEffect(() => {
     const postData = {
       method: "GET",
@@ -21,7 +24,9 @@ const NicknameChange = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setCurrentNickname(data.nickname);
+        setCurrentMsg(data.message);
       })
       .catch((error) => console.log(error));
   }, [globalToken]);
@@ -38,11 +43,34 @@ const NicknameChange = () => {
       }),
     };
 
-    fetch("https://day6scrooge.duckdns.org/api/member/change-nickname", postData)
+    fetch(
+      "https://day6scrooge.duckdns.org/api/member/change-nickname",
+      postData
+    )
       .then((resp) => resp.json())
       .then((data) => {
         setIsNicknameChanged(true);
       })
+      .catch((error) => console.log(error));
+  };
+
+  const handleMsgChange = () => {
+    const postData = {
+      method: "PUT",
+      headers: {
+        Authorization: globalToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: msg,
+      }),
+    };
+
+    console.log(msg);
+
+    fetch("https://day6scrooge.duckdns.org/api/member/message", postData)
+      .then((resp) => resp.json())
+      .then(() => setIsMsgChanged(true))
       .catch((error) => console.log(error));
   };
 
@@ -58,6 +86,17 @@ const NicknameChange = () => {
       />
       <button onClick={handleNicknameChange}>변경</button>
       {isNicknameChanged && <p>닉네임이 변경되었습니다.</p>}
+
+      <h1>상태 메시지 변경</h1>
+      <input
+        type="text"
+        placeholder={currentMsg}
+        value={msg}
+        onChange={(e) => setMsg(e.target.value)}
+      />
+      <button onClick={handleMsgChange}>변경</button>
+      {isNicknameChanged && <p>닉네임이 변경되었습니다.</p>}
+      {isMsgChanged && <p>상태메시지가 변경되었습니다.</p>}
     </div>
   );
 };
