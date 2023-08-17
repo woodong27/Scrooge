@@ -55,7 +55,7 @@ const QuestItem = ({ title, handleAdd, show, selectQuest, id, questId }) => {
   };
 
   return (
-    <div>
+    <div className={styles.body}>
       {selectQuest ? (
         <div className={styles.box} onClick={handleSelectOpen}>
           <YellowCard props={title} />
