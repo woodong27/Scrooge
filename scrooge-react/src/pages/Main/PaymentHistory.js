@@ -185,7 +185,6 @@ const PaymentHistory = ({
 
   // 일일정산 경험치 추가
   const postExp = () => {
-    console.log("postExp");
     const postData = {
       method: "PUT",
       headers: {
@@ -198,7 +197,6 @@ const PaymentHistory = ({
       postData
     ).then((res) => {
       res.text();
-      console.log(res);
     });
   };
 
