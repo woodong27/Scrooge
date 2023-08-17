@@ -8,15 +8,15 @@ const MyPageExpBar = ({ exp, maxExp }) => {
   useEffect(() => {
     setProgress(exp / maxExp);
     setShowImg(exp === maxExp);
-  },[exp, maxExp]);
+  }, [exp, maxExp]);
 
   return (
     <div className={styles.expBarContainer}>
       <div className={styles.expBarBg}>
         <div
           className={styles.expBar}
-          style = {{
-            width: `${progress * 100}%`
+          style={{
+            width: `${progress * 100}%`,
           }}
         />
         {showImg ? (
@@ -25,14 +25,13 @@ const MyPageExpBar = ({ exp, maxExp }) => {
             alt="레벨업 후"
             className={`${styles.afterExp} ${styles.expBarImage}`}
           />
-          ) : (        
+        ) : (
           <img
             src={`${process.env.PUBLIC_URL}/images/beforeExp.svg`}
             alt="레벨업 전"
             className={`${styles.beforeExp} ${styles.expBarImage}`}
           />
         )}
-
       </div>
       <p className={styles.expText}>
         Exp : {exp} / {maxExp}
