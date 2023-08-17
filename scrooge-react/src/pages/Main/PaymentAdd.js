@@ -108,34 +108,36 @@ const PaymentAdd = ({ onCreate, date }) => {
   };
 
   return (
-    <div className={styles.box}>
-      <input
-        className={styles.usedAt}
-        ref={usedAtInput}
-        name="usedAt"
-        value={state.usedAt}
-        placeholder="사용처"
-        onChange={handleChangeState}
-      />
-      <input
-        className={styles.amount}
-        ref={amountInput}
-        name="amount"
-        value={state.amount}
-        placeholder="결제 금액"
-        onChange={handleChangeState}
-      />
-      <input
-        className={styles.cardName}
-        ref={cardNameInput}
-        name="cardName"
-        value={state.cardName}
-        placeholder="카드 이름"
-        onChange={handleChangeState}
-      />
-      <button className={styles.btn} onClick={submitPaymentItem}>
-        추가
-      </button>
+    <div className={styles.body}>
+      <div className={styles.box}>
+        <input
+          className={styles.usedAt}
+          ref={usedAtInput}
+          name="usedAt"
+          value={state.usedAt}
+          placeholder="사용처"
+          onChange={handleChangeState}
+        />
+        <input
+          className={styles.amount}
+          ref={amountInput}
+          name="amount"
+          value={state.amount}
+          placeholder="결제 금액"
+          onChange={handleChangeState}
+        />
+        <input
+          className={styles.cardName}
+          ref={cardNameInput}
+          name="cardName"
+          value={state.cardName}
+          placeholder="카드 이름"
+          onChange={handleChangeState}
+        />
+        <button className={styles.btn} onClick={submitPaymentItem}>
+          추가
+        </button>
+      </div>
     </div>
   );
 };
