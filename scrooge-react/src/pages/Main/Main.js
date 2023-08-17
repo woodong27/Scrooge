@@ -49,6 +49,7 @@ const Main = () => {
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         setData(data);
         setSettlement(data.isSettlementDone);
         setMessage(data.message);
@@ -135,7 +136,9 @@ const Main = () => {
                 <div className={styles.infoheader}>
                   <img
                     className={styles.badge}
-                    src={`${process.env.PUBLIC_URL}/images/sample-badge.svg`}
+                    src={`${process.env.PUBLIC_URL}/${
+                      data.mainBadge.imgAddress.split("/")[1]
+                    }/${+data.mainBadge.imgAddress.split("/")[2][5] + 1}.png`}
                     alt="뱃지"
                   />
                   <span>

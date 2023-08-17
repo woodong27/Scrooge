@@ -36,7 +36,11 @@ const CharList = ({ handleCharacterChange, characters }) => {
               <div key={index} className={styles.item}>
                 <div
                   className={styles.one}
-                  onClick={() => handleModalOpen(index + 1)}
+                  onClick={
+                    imageUrl.includes("gacha")
+                      ? null
+                      : () => handleModalOpen(index + 1)
+                  }
                 >
                   <img
                     src={imageUrl}
