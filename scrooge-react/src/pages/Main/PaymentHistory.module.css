@@ -42,7 +42,7 @@
 
 .scrollitem {
   width: 100%;
-  height: fit-content;
+  height: 84vh;
   margin-top: 10px;
   overflow: scroll;
 }

@@ -24,7 +24,6 @@ const Community = () => {
       .then((data) => {
         setData(data);
         setMine(data.filter((item) => item.memberId === memberId));
-        console.log(memberId, data, mine);
       })
       .catch((error) => console.log(error));
   }, [EditId, memberId]);
