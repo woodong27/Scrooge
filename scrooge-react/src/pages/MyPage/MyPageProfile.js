@@ -4,9 +4,11 @@ import styles from "./MyPageProfile.module.css";
 import MyPageExpBar from "./MyPageExpBar";
 import Report from "./Report";
 import ItemTab from "./ItemTab";
+import axios from "axios";
 
 const MyPageProfile = () => {
   const globalToken = useSelector((state) => state.globalToken);
+  const headers = { Authorization: globalToken };
 
   const [data, setData] = useState([]);
   const [showItemList, setShowItemList] = useState(false);
@@ -18,6 +20,7 @@ const MyPageProfile = () => {
   const [avatar, setAvatar] = useState(0);
   const [characters, setCharacters] = useState([]);
   const [newCharacter, setNewCharacters] = useState([]);
+  const [badges, setBadges] = useState([]);
 
   const handleEditBtn = () => {
     setShowItemList((prevState) => !prevState);
@@ -52,9 +55,7 @@ const MyPageProfile = () => {
   useEffect(() => {
     const postData = {
       method: "GET",
-      headers: {
-        Authorization: globalToken,
-      },
+      headers,
     };
     fetch("https://day6scrooge.duckdns.org/api/member/info", postData)
       .then((resp) => resp.json())
@@ -73,10 +74,7 @@ const MyPageProfile = () => {
   useEffect(() => {
     const getData = {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: globalToken,
-      },
+      headers,
     };
     fetch(`https://day6scrooge.duckdns.org/api/avatar/my-avatar`, getData)
       .then((res) => res.json())
@@ -85,6 +83,15 @@ const MyPageProfile = () => {
         setCharacters(id);
         setModal(false);
       });
+
+    axios
+      .get("https://day6scrooge.duckdns.org/api/badge/member", {
+        headers,
+      })
+      .then((resp) => {
+        setBadges(resp.data);
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   const handleGacha = () => {
@@ -163,7 +170,7 @@ const MyPageProfile = () => {
                   src={`${process.env.PUBLIC_URL}/images/badge-icon.png`}
                   alt="뱃지 아이콘"
                 />
-                <span>6</span>
+                <span>{badges.length}</span>
               </div>
             </li>
             <li>

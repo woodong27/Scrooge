@@ -2,10 +2,8 @@
   margin-bottom: 90px;
 }
 
-.chartContainer {
-  margin: 0 0 0 4.625rem;
-  display: flex;
-  flex-wrap: wrap;
+.charContainer {
+  margin-top: 8px;
 }
 
 .item {

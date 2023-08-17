@@ -1,5 +1,6 @@
 .modalContainer {
   position: fixed;
+  z-index: 30;
   top: 0;
   left: 0;
   width: 100%;
@@ -13,21 +14,18 @@
 .modal {
   background-color: white;
   width: 70%;
-  height: 10%;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 .modalBtn {
-  
   display: flex;
   justify-content: center;
   gap: 10px;
-  
 }
 
-button{
-  padding: .5rem 1rem;
+button {
+  padding: 0.5rem 1rem;
   border-radius: 5px;
 }
