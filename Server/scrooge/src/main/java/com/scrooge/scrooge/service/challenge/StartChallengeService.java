@@ -213,17 +213,21 @@ public class StartChallengeService {
                 int teamZeroSuccessCount = challengeAuthRepository.countZeroSuccessCount(challenge.getId());
                 int teamOneSuccessCount = challengeAuthRepository.countOneSuccessCount(challenge.getId());
 
-                if(teamZeroSuccessCount > teamOneSuccessCount) { // 0팀이 이긴다면
-                    challenge.setWinTeamNo(0);
-                    challenge.setLoseTeamNo(1);
-                }
-                else if(teamZeroSuccessCount < teamOneSuccessCount) { // 1팀이 이긴다면
-                    challenge.setWinTeamNo(1);
-                    challenge.setLoseTeamNo(0);
+                // 0팀이 승리
+                int winTeam = 0;
+                int loseTeam = 1;
+
+                // 1팀이 승리
+                if (teamZeroSuccessCount < teamOneSuccessCount) { // 1팀이 이긴다면
+                    winTeam = 1;
+                    loseTeam = 0;
                 }
 
+                challenge.setWinTeamNo(winTeam);
+                challenge.setLoseTeamNo(loseTeam);
+
                 // 이긴 팀 결정됐다면 멤버 경험치 올려줘야함 ,,,
-                List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findByChallengeIdAndTeam(challenge.getId(), challenge.getWinTeamNo());
+                List<ChallengeParticipant> challengeParticipantList = challengeParticipantRepository.findByChallengeIdAndTeam(challenge.getId(), winTeam);
                 for(ChallengeParticipant challengeParticipant : challengeParticipantList) {
                     Member member = challengeParticipant.getMember();
                     member.setExp(member.getExp() + 500);
