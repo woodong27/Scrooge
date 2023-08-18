@@ -17,7 +17,7 @@ const ChallengeToggle = (props) => {
         }`}
         onClick={props.myChallengeHandler}
       >
-        마이 페이지
+        마이 챌린지
       </div>
     </div>
   );

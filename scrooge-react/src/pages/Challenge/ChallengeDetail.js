@@ -124,6 +124,8 @@ const ChallengeDetail = () => {
         setMakeToast(true);
       })
       .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
         setFailToast(true);
       });
   };
@@ -269,7 +271,7 @@ const ChallengeDetail = () => {
           </div>
 
           {failToast && (
-            <Toast setToast={setFailToast} text="인증에 실패했어요!" />
+            <Toast setToast={setFailToast} text="사진등록에 실패했어요!" />
           )}
           {isLoading && <Spinner></Spinner>}
         </AuthModal>
