@@ -124,6 +124,7 @@ const ChallengeDetail = () => {
         setMakeToast(true);
       })
       .catch((error) => {
+        setIsLoading(false);
         setFailToast(true);
       });
   };
