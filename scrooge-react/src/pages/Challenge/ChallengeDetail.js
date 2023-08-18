@@ -71,7 +71,7 @@ const ChallengeDetail = () => {
             setAuthImg(response.data.challengeExampleImageDtoList);
 
             for (let i = 0; i < response.data.participantIds.length; i++) {
-              if (response.data.participantIds[i] === memberId) {
+              if (response.data.participantIds[i] === +memberId) {
                 if (i % 2 === 0) setIsTeamZero(true);
                 else setIsTeamZero(false);
                 break;
