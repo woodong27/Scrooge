@@ -1,0 +1,39 @@
+.container {
+  width: 100vw;
+  height: 6rem;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  height: 6rem;
+  font-size: 2rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+
+  position: relative;
+}
+
+.onlyItem {
+  height: 6rem;
+  font-size: 2rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+}
+
+.back {
+  position: absolute;
+  left: 30px;
+}
+
+.childern {
+  position: absolute;
+  right: 8%;
+}

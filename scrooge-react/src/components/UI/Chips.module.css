@@ -1,0 +1,36 @@
+.chipsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0 1rem;
+  justify-content: space-between;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e5e7eb;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--input-text);
+  margin-bottom: 0.5rem;
+}
+
+.selected {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--blue);
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--input-text);
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  display: flex;
+  width: 84vw;
+  margin: 0 auto;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}

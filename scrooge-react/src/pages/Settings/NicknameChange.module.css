@@ -1,0 +1,60 @@
+.settingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 92vh;
+}
+
+.settingContent {
+  position: relative;
+  padding: 2vh 4vw;
+  width: 76vw;
+  height: 509.6px;
+  background: #fff;
+  border-radius: 12px;
+
+  & img {
+    position: absolute;
+    left: 2rem;
+  }
+
+  & h1 {
+    font-size: 28px;
+  }
+}
+
+.body {
+  margin-top: 4rem;
+
+  &:first-of-type {
+    margin-top: 6rem;
+  }
+}
+
+.inputBody {
+  height: 2rem;
+  width: 84%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+
+  & input {
+    height: 100%;
+    border: 1px solid var(--input-text);
+    border-radius: 12px;
+    padding: 0 4px;
+    width: 68%;
+  }
+
+  & button {
+    height: 100%;
+    border: 1px solid var(--input-text);
+    border-radius: 12px;
+  }
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

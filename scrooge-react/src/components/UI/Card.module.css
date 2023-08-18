@@ -1,0 +1,27 @@
+.frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  border-radius: 12px;
+  border: 1.5px solid #000;
+  background-color: white;
+  margin: 0px auto;
+}
+
+.card_shadow {
+  position: relative;
+  top: 20px;
+  width: 84%;
+  margin-left: 10px;
+  border-radius: 12px;
+  border: 1.5px solid #000;
+  background: var(--green);
+}

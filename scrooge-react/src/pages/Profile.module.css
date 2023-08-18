@@ -1,0 +1,127 @@
+.back {
+  height: 60px;
+}
+
+.infoheader {
+  display: flex;
+  padding: 0px 8px;
+  margin-top: 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  & p {
+    text-align: right;
+    font-size: 24px;
+    margin: 0;
+  }
+}
+
+.box {
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.foot {
+  display: flex;
+  flex-flow: column;
+  row-gap: 15px;
+  margin-top: 80px;
+}
+
+.border {
+  border-top: 1px solid #444444;
+  margin: 10px 0px;
+}
+
+.badge {
+  width: 48px;
+  height: 48px;
+  margin-left: 8px;
+}
+
+.charactercoin {
+  display: flex;
+  justify-content: center;
+  height: 150px;
+  align-items: center;
+  gap: 1px;
+}
+
+.character {
+  height: 140px;
+}
+
+.title {
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.statemessage {
+  position: relative;
+  font-size: 14px;
+  margin: 0 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 2px solid #000;
+  background: #fff;
+  text-align: left;
+  line-height: 1.8;
+}
+
+.content {
+  width: 100%;
+  line-height: 20px;
+}
+
+.todayCard {
+  height: 28vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.table {
+  width: 84%;
+  font-size: 16px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+
+  & tr {
+    margin-top: 8px;
+  }
+
+  & .up {
+    border-bottom: 1px solid rgb(176, 171, 171);
+  }
+
+  & .one {
+    flex: 1;
+  }
+  & .two {
+    flex: 2;
+  }
+  & .three {
+    flex: 2;
+  }
+}
+
+.ment {
+  margin-top: 20px;
+}
+
+.highlight {
+  font-size: 20px;
+  color: crimson;
+}
+
+.notYet {
+  margin-top: 8px;
+  font-size: 18px;
+  color: rgb(101, 99, 99);
+}
+
+.rings {
+  height: 4vh;
+}

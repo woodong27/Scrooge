@@ -1,0 +1,161 @@
+.box {
+  display: flex;
+  align-items: center;
+}
+
+.testbox {
+  width: 96%;
+  margin-bottom: 60px;
+}
+
+.frame {
+  height: fit-content;
+}
+
+.frame::-webkit-scrollbar {
+  width: 0;
+}
+
+.authorInfo {
+  width: 94%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 28px;
+  margin: 0;
+}
+
+.minusOption {
+  width: 100%;
+  display: flex;
+}
+
+.character {
+  height: 60px;
+  margin-right: 8px;
+}
+
+.author {
+  text-align: left;
+  font-size: 20px;
+  margin: 12px 0 4px 0;
+}
+
+.line {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.createdAt {
+  font-size: 13px;
+  color: var(--input-text);
+}
+
+.btns {
+  display: flex;
+  width: 80px;
+  justify-content: space-between;
+  margin-right: 12px;
+}
+
+.option {
+  margin-right: 12px;
+  padding-bottom: 4px;
+}
+
+.mainContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.picture {
+  width: 94%;
+  max-height: 600px;
+  margin-left: 4%;
+}
+
+.content {
+  width: 330px;
+  height: fit-content;
+  text-align: left;
+  margin-left: 30px;
+  margin-top: 8px;
+  white-space: pre-line;
+}
+
+.reaction {
+  height: 26px;
+  margin: 18px 28px 32px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  height: 28px;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin-right: 4px;
+}
+
+.emoji {
+  background-color: #fff;
+}
+
+.bademoji {
+  background-color: #fff;
+  margin-top: 8px;
+}
+
+.addFrame {
+  position: fixed;
+  bottom: 76px;
+  width: 100vw;
+  height: 56px;
+  display: flex;
+  align-items: center;
+
+  border-top: 1px solid var(--input-text);
+  background-color: #fff;
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  width: 260px;
+  height: 32px;
+  margin-left: 32px;
+  text-align: left;
+  border-radius: 12px;
+  border: 1px solid #000;
+  padding-left: 16px;
+  margin-bottom: 8px;
+}
+
+.sendBtn {
+  width: 72px;
+  height: 36px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.editContent {
+  position: absolute;
+  top: 200px;
+  left: 28px;
+  width: 94%;
+  height: 130px;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 12px;
+}

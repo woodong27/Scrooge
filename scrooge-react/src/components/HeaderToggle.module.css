@@ -1,0 +1,27 @@
+.body {
+  display: flex;
+  justify-content: center;
+}
+
+.toggle {
+  width: 80%;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--input-text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.active_tab {
+  color: black;
+}

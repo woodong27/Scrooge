@@ -1,0 +1,20 @@
+.card {
+  width: 84vw;
+  height: 400px;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  border-radius: 10px;
+  border: 1.5px solid #000;
+  background-color: white;
+}
+
+.card_shadow {
+  width: 84vw;
+  height: 400px;
+  position: relative;
+  border-radius: 10px;
+  margin-left: 36px;
+  border: 1.5px solid #000;
+  background: var(--green);
+}
