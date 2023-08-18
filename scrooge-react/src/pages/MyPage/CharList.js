@@ -26,7 +26,7 @@ const CharList = ({ handleCharacterChange, characters }) => {
       <div className={styles.characters}>
         {characters.length && (
           <div className={styles.charContainer}>
-            {Array.from({ length: 100 }).map((_, index) => {
+            {Array.from({ length: 101 }).map((_, index) => {
               const imageUrl = characters.includes(index + 1)
                 ? `https://storage.googleapis.com/scroogestorage/avatars/${
                     index + 1
