@@ -1,0 +1,15 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 1.5rem;
+  padding-bottom: 7rem;
+}
+
+.chipsContainer {
+  display: flex;
+  width: 84vw;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+}

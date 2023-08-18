@@ -1,0 +1,64 @@
+.box {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  position: relative;
+  flex-wrap: wrap;
+
+  & img {
+    position: absolute;
+    top: 0;
+    left: 0.4rem;
+  }
+}
+
+.content {
+  width: 100%;
+  height: fit-content;
+  padding: 10px;
+  text-align: left;
+  border: 1.5px solid #000;
+  border-radius: 0 10px 10px 10px;
+  margin-left: 4rem;
+}
+
+.character {
+  width: 60px;
+  height: 60px;
+}
+
+.up {
+  width: 280px;
+  height: 20px;
+  text-align: left;
+  margin-left: 4rem;
+}
+
+.nickname {
+  font-size: 16px;
+}
+
+.option {
+  width: 20px;
+  position: absolute;
+  right: 8px;
+  top: 0px;
+}
+
+.delete {
+  width: 32px;
+  font-size: 14px;
+  position: absolute;
+  right: 0px;
+  top: -2px;
+  padding: 2px 4px;
+  color: #fff;
+  background-color: #f57272;
+  border-radius: 10px;
+}
+
+.link {
+  position: absolute;
+}

@@ -1,0 +1,50 @@
+.backGround {
+  width: 100%;
+}
+
+.body {
+  width: 84%;
+  margin: 0 auto;
+}
+
+.main {
+  position: relative;
+  top: 72px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  height: 250px;
+  gap: 10px;
+}
+
+.title {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: start;
+  font-size: 44px;
+  line-height: 56px;
+  letter-spacing: 3.52px;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
+  filter: drop-shadow(3px 3px 0 rgba(8, 15, 8, 0.89));
+}
+
+.foot {
+  position: absolute;
+  width: 84%;
+  bottom: 140px;
+  height: 230px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  & img {
+    position: relative;
+    top: 15px;
+    width: 90%;
+    margin-left: 8px;
+  }
+}

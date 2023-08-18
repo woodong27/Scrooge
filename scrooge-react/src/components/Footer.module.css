@@ -1,0 +1,29 @@
+.body {
+  margin: 0;
+  padding: 0;
+}
+
+.list {
+  position: fixed;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-top: var(--input) 1px solid;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  z-index: 1;
+  margin: 0;
+  box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
+
+  & img {
+    width: 28px;
+    height: 28px;
+  }
+
+  & div {
+    font-size: 12px;
+  }
+}

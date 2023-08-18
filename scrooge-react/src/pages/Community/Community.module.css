@@ -1,0 +1,16 @@
+.box {
+  height: 90vh;
+}
+
+.frame {
+  overflow: auto;
+  padding-bottom: 40px;
+}
+
+.frame::-webkit-scrollbar {
+  width: 0;
+}
+
+.empty {
+  margin-bottom: 80px;
+}

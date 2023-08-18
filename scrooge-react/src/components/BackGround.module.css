@@ -1,0 +1,10 @@
+.bg {
+  z-index: -1;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  background-image: url("../../public/images/bg-images.png"),
+    linear-gradient(180deg, #8cd5ff 0%, #b0e2ff 46.67%, #fafbfc 99.99%);
+  background-size: cover, cover;
+  background-repeat: no-repeat, no-repeat;
+}

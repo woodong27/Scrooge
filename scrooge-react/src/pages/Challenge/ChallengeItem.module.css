@@ -1,0 +1,78 @@
+.container {
+  width: 20rem;
+  height: 156px;
+  margin: auto;
+  border: 1px solid black;
+  border-radius: 1rem;
+
+  & img {
+    width: 80px;
+    height: 80px;
+    margin: 0 10px;
+    border-radius: 50%;
+  }
+
+  & p:not(.title) {
+    font-size: 12px;
+    margin: 0;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  & button {
+    background: #b0e2ff;
+    border-radius: 1rem;
+    width: 70%;
+    height: 2rem;
+    margin: 0 auto;
+  }
+}
+
+.item_top {
+  height: 7rem;
+  display: flex;
+  align-items: center;
+}
+
+.img_container {
+  width: 50%;
+  height: 5rem;
+}
+
+.text_container {
+  height: 5rem;
+  margin-right: 0.4rem;
+}
+
+.title {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  height: 3rem;
+  font-size: 20px;
+  margin: 0;
+  justify-content: flex-start;
+}
+
+.isWin {
+  background: var(--green);
+  border-radius: 1rem;
+  width: 70%;
+  height: 2rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.isLose {
+  background: red;
+  border-radius: 1rem;
+  width: 70%;
+  height: 2rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

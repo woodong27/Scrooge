@@ -1,0 +1,31 @@
+.frame {
+  margin-bottom: 90px;
+}
+
+.charContainer {
+  margin-top: 8px;
+}
+
+.item {
+  width: fit-content;
+  height: fit-content;
+  flex-direction: column;
+  margin: 6px 8px;
+  border: 1px solid rgb(150, 146, 146);
+  border-radius: 10px;
+
+  display: inline-block;
+}
+
+.one {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.profile {
+  width: 6.25rem;
+  height: 6.25rem;
+  margin-bottom: 1rem;
+  margin: 0 2px;
+}
