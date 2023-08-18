@@ -6,8 +6,8 @@ const ProgressBar = (props) => {
 
   useEffect(() => {
     const allCnt = props.ally + props.enemy;
-    const allyCnt = (props.ally / allCnt) * 100;
-    const enemyCnt = (props.enemy / allCnt) * 100;
+    const allyCnt = parseInt((props.ally / allCnt) * 100);
+    const enemyCnt = parseInt((props.enemy / allCnt) * 100);
 
     allCnt && setProgress({ ally: allyCnt, enemy: enemyCnt });
   }, [props]);
