@@ -6,6 +6,7 @@
 "아끼는 재미가 없어!"  
 ```
 
+![image](https://github.com/woodong27/Scrooge/assets/122415763/94b6d48e-25e7-4710-a0f4-73984026ef51)
 - Gamification을 통해 소비습관을 개선하는 서비스
 - 스크루지 빌리지, 파이트, 드림과 같은 다양한 기능으로 경험치 획득 가능
 
