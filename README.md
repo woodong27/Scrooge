@@ -156,7 +156,7 @@
 
 ## 아키텍처
 
-![System Architecture](https://github.com/woodong27/Scrooge/assets/122415763/5e17bbdb-e7a6-4ebd-a523-2ee31b7927e8)
+![Scrooge_System Architecture](https://github.com/woodong27/Scrooge/assets/122415763/6da3a7d2-224e-4fd9-950f-e208853d3ef7)
 
 <br/>
 
