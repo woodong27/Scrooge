@@ -156,7 +156,7 @@
 
 ## 아키텍처
 
-![image](https://github.com/harinplz/algorithm_study/assets/62701446/09436f42-d307-44b4-afc7-7adf991ae170)
+![System Architecture](https://github.com/woodong27/Scrooge/assets/122415763/5e17bbdb-e7a6-4ebd-a523-2ee31b7927e8)
 
 <br/>
 
